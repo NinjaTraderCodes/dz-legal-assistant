@@ -1,0 +1,4775 @@
+{
+  "schemaVersion": "1.0",
+  "kind": "claim",
+  "id": "tatliq",
+  "label": {
+    "ar": "التطليق بطلب من الزوجة",
+    "en": "Judicial divorce at the wife's request (tatliq)"
+  },
+  "verified": false,
+  "stage": "reconciled",
+  "derivedBy": {
+    "role": "reconciler",
+    "model": "claude-opus-5-5",
+    "date": "2026-11-18"
+  },
+  "area": "family",
+  "imports": [
+    {
+      "module": "court-sections",
+      "blocks": [
+        "b3",
+        "b4",
+        "b7",
+        "b8",
+        "b30",
+        "b34",
+        "b42",
+        "b55",
+        "t4"
+      ],
+      "how": {
+        "ar": "دعوى التطليق وتوابعها (النفقة والحضانة والزيارة والسكن ومتاع البيت) من اختصاص قسم شؤون الأسرة، وفي المحاكم التي لم تنشأ فيها الأقسام ينظر القسم المدني؛ والنيابة العامة طرف أصلي؛ ويتبع الاختصاص الإقليمي في مواد الأسرة قاعدة الوحدة المشتركة بحسب موضوع كل طلب.",
+        "en": "The tatliq claim and its consequences (maintenance, custody, visitation, housing, household goods) belong to the family section, and in courts without sections the civil section hears it; the public prosecutor is a principal party; territory in family matters follows the shared rule, by the subject of each request."
+      }
+    },
+    {
+      "module": "ordinary-court-exits",
+      "blocks": [
+        "b36",
+        "b37",
+        "x6",
+        "n7"
+      ],
+      "how": {
+        "ar": "يعتمد التطليق كثيرا على ضرر يشكل جريمة أو على حكم جزائي ضد الزوج؛ فيلزم التحقق من وجود متابعة جزائية بشأن الوقائع ومن حجية الحكم الجزائي أمام القاضي المدني.",
+        "en": "Tatliq often rests on harm that is an offence or on a criminal judgment against the husband; the lawyer must check for criminal proceedings on the facts and the binding force of a criminal judgment on the civil judge."
+      }
+    }
+  ],
+  "slots": [
+    "requests",
+    "court_has_section_for_matter",
+    "marriage_registered",
+    "consummation_or_invitation",
+    "tatliq_ground_nonmaintenance",
+    "maintenance_previously_judged",
+    "maintenance_unpaid_since",
+    "bed_desertion_ground",
+    "absence_ground",
+    "wife_knew_husband_indigence",
+    "custody_entitlement_date",
+    "debtor_is_foreign_national",
+    "divorce_action_pending",
+    "spouses_divorced",
+    "criminal_case_on_same_facts",
+    "obligation_is_tort_compensation",
+    "damage_caused_by_offence"
+  ],
+  "proposedSlots": [
+    {
+      "id": "tatliq_ground_nonmaintenance",
+      "type": "yesNoUnknown",
+      "question": {
+        "ar": "هل تؤسس الزوجة طلب التطليق على امتناع الزوج عن الإنفاق عليها؟",
+        "en": "Does the wife base the tatliq claim on the husband's failure to maintain her?"
+      },
+      "why": "Prior step p1, boundary n9 and document doc2 read it: the Family Code ground of non-maintenance applies only after a judgment ordering maintenance and fails if the wife knew of his poverty at the marriage. Same fact as derivation B's tatliq_ground = maintenance_default; kept as a yes/no because a wife may rely on several grounds at once."
+    },
+    {
+      "id": "bed_desertion_ground",
+      "type": "choice",
+      "question": {
+        "ar": "هل تؤسس الزوجة طلبها على الهجر في المضجع، وما مدته في تاريخ العريضة؟",
+        "en": "Does the wife rely on desertion of the marital bed, and how long has it lasted at the petition's date?"
+      },
+      "choices": [
+        {
+          "id": "not_relied",
+          "label": {
+            "ar": "لا تؤسس الطلب على الهجر في المضجع",
+            "en": "The claim does not rely on desertion of the bed"
+          }
+        },
+        {
+          "id": "over_four_months",
+          "label": {
+            "ar": "هجر في المضجع لأكثر من أربعة أشهر",
+            "en": "Desertion of the bed for more than four months"
+          }
+        },
+        {
+          "id": "four_months_or_less",
+          "label": {
+            "ar": "هجر في المضجع لا يتجاوز أربعة أشهر",
+            "en": "Desertion of the bed for four months or less"
+          }
+        }
+      ],
+      "why": "Boundary n1 and element e2 read it: the Family Code ground of desertion of the bed requires more than four months. Holds derivation B's tatliq_ground = abandonment together with B's abandonment_over_four_months."
+    },
+    {
+      "id": "absence_ground",
+      "type": "choice",
+      "question": {
+        "ar": "هل تؤسس الزوجة طلبها على غيبة الزوج، وهل مضت سنة على الغيبة بدون عذر ولا نفقة في تاريخ العريضة؟",
+        "en": "Does the wife rely on the husband's absence, and has the absence lasted a year, without excuse and without maintenance, at the petition's date?"
+      },
+      "choices": [
+        {
+          "id": "not_relied",
+          "label": {
+            "ar": "لا تؤسس الطلب على الغيبة",
+            "en": "The claim does not rely on absence"
+          }
+        },
+        {
+          "id": "met",
+          "label": {
+            "ar": "غيبة مضت عليها سنة بدون عذر ولا نفقة",
+            "en": "Absence that has lasted a year, without excuse and without maintenance"
+          }
+        },
+        {
+          "id": "not_met",
+          "label": {
+            "ar": "غيبة لم تمض عليها سنة، أو لها عذر، أو مع إنفاق",
+            "en": "Absence of less than a year, or with an excuse, or with maintenance paid"
+          }
+        }
+      ],
+      "why": "Boundary n2 and element e2 read it: the Family Code ground of absence requires a year to have passed without excuse and without maintenance. Holds derivation B's tatliq_ground = absence."
+    },
+    {
+      "id": "wife_knew_husband_indigence",
+      "type": "yesNoUnknown",
+      "question": {
+        "ar": "هل كانت الزوجة عالمة بإعسار زوجها وقت الزواج؟",
+        "en": "Did the wife know of her husband's insolvency when she married?"
+      },
+      "why": "Boundary n9 reads it: the Family Code excludes the non-maintenance ground when the wife knew of his insolvency at the marriage (derivation B)."
+    },
+    {
+      "id": "custody_entitlement_date",
+      "type": "date",
+      "question": {
+        "ar": "ما تاريخ نشوء حق المدعية في حضانة الأولاد وإمكان مطالبتها بها (غالبا الافتراق)؟",
+        "en": "On what date did the plaintiff's right to custody of the children arise, so that she could claim it (usually the separation)?"
+      },
+      "why": "Deadline d2 starts from it; the Family Code makes the right to custody fall after more than a year without a request and without excuse (derivation B)."
+    }
+  ],
+  "basis": [
+    {
+      "id": "b1",
+      "role": "basis",
+      "cite": {
+        "code": "family-code",
+        "article": "48",
+        "paragraphs": [
+          1
+        ]
+      },
+      "says": {
+        "ar": "ينحل عقد الزواج بالطلاق، ومنه الطلاق بطلب من الزوجة في الحدود التي يبينها القانون، مع مراعاة اشتراط الحكم ومحاولات الصلح.",
+        "en": "Marriage is dissolved by divorce, including divorce at the wife's request within the limits the code sets, subject to the rule on judgment and reconciliation attempts."
+      },
+      "required": true
+    },
+    {
+      "id": "b2",
+      "role": "basis",
+      "cite": {
+        "code": "family-code",
+        "article": "53",
+        "paragraphs": [
+          1
+        ]
+      },
+      "says": {
+        "ar": "يجوز للزوجة أن تطلب التطليق للأسباب التي يعددها النص.",
+        "en": "The wife may ask for judicial divorce on the grounds the text lists."
+      },
+      "required": true
+    },
+    {
+      "id": "b3",
+      "role": "basis",
+      "cite": {
+        "code": "family-code",
+        "article": "53",
+        "paragraphs": [
+          1,
+          2
+        ]
+      },
+      "says": {
+        "ar": "من أسباب التطليق عدم الإنفاق بعد صدور حكم بوجوبه، إلا إذا كانت الزوجة عالمة بإعسار الزوج وقت الزواج.",
+        "en": "One ground is failure to maintain after a judgment ordering maintenance, unless the wife knew of the husband's poverty when she married."
+      }
+    },
+    {
+      "id": "b4",
+      "role": "basis",
+      "cite": {
+        "code": "family-code",
+        "article": "53",
+        "paragraphs": [
+          1,
+          3
+        ]
+      },
+      "says": {
+        "ar": "من أسباب التطليق العيوب التي تحول دون تحقيق الهدف من الزواج.",
+        "en": "One ground is a defect that prevents the purpose of marriage."
+      }
+    },
+    {
+      "id": "b5",
+      "role": "basis",
+      "cite": {
+        "code": "family-code",
+        "article": "53",
+        "paragraphs": [
+          1,
+          4
+        ]
+      },
+      "says": {
+        "ar": "من أسباب التطليق الهجر في المضجع فوق أربعة أشهر.",
+        "en": "One ground is desertion of the marital bed for more than four months."
+      }
+    },
+    {
+      "id": "b6",
+      "role": "basis",
+      "cite": {
+        "code": "family-code",
+        "article": "53",
+        "paragraphs": [
+          1,
+          5
+        ]
+      },
+      "says": {
+        "ar": "من أسباب التطليق الحكم على الزوج عن جريمة تمس شرف الأسرة وتستحيل معها مواصلة الحياة الزوجية.",
+        "en": "One ground is the husband's conviction for an offence touching the family's honour that makes married life impossible to continue."
+      }
+    },
+    {
+      "id": "b7",
+      "role": "basis",
+      "cite": {
+        "code": "family-code",
+        "article": "53",
+        "paragraphs": [
+          1,
+          6
+        ]
+      },
+      "says": {
+        "ar": "من أسباب التطليق غيبة الزوج بعد مرور سنة بدون عذر ولا نفقة.",
+        "en": "One ground is the husband's absence once a year has passed without excuse and without maintenance."
+      }
+    },
+    {
+      "id": "b8",
+      "role": "basis",
+      "cite": {
+        "code": "family-code",
+        "article": "53",
+        "paragraphs": [
+          1,
+          7
+        ]
+      },
+      "says": {
+        "ar": "من أسباب التطليق مخالفة الزوج لأحكام تعدد الزوجات.",
+        "en": "One ground is the husband's breach of the rules on taking a further wife."
+      }
+    },
+    {
+      "id": "b9",
+      "role": "basis",
+      "cite": {
+        "code": "family-code",
+        "article": "53",
+        "paragraphs": [
+          1,
+          8
+        ]
+      },
+      "says": {
+        "ar": "من أسباب التطليق ارتكاب فاحشة مبينة.",
+        "en": "One ground is a manifest immoral act."
+      }
+    },
+    {
+      "id": "b10",
+      "role": "basis",
+      "cite": {
+        "code": "family-code",
+        "article": "53",
+        "paragraphs": [
+          1,
+          9
+        ]
+      },
+      "says": {
+        "ar": "من أسباب التطليق الشقاق المستمر بين الزوجين.",
+        "en": "One ground is persistent discord between the spouses."
+      }
+    },
+    {
+      "id": "b11",
+      "role": "basis",
+      "cite": {
+        "code": "family-code",
+        "article": "53",
+        "paragraphs": [
+          1,
+          10
+        ]
+      },
+      "says": {
+        "ar": "من أسباب التطليق مخالفة الشروط المتفق عليها في عقد الزواج.",
+        "en": "One ground is breach of the conditions agreed in the marriage contract."
+      }
+    },
+    {
+      "id": "b12",
+      "role": "basis",
+      "cite": {
+        "code": "family-code",
+        "article": "53",
+        "paragraphs": [
+          1,
+          11
+        ]
+      },
+      "says": {
+        "ar": "من أسباب التطليق كل ضرر معتبر شرعا.",
+        "en": "One ground is any harm recognised by the Sharia."
+      }
+    },
+    {
+      "id": "b13",
+      "role": "damages",
+      "cite": {
+        "code": "family-code",
+        "article": "53 مكرر",
+        "paragraphs": [
+          1
+        ]
+      },
+      "says": {
+        "ar": "للقاضي عند الحكم بالتطليق أن يحكم للمطلقة بتعويض عن الضرر الذي لحقها.",
+        "en": "On granting tatliq the judge may award the wife compensation for the harm she suffered."
+      }
+    },
+    {
+      "id": "b14",
+      "role": "basis",
+      "cite": {
+        "code": "family-code",
+        "article": "112",
+        "paragraphs": [
+          1
+        ]
+      },
+      "says": {
+        "ar": "لزوجة المفقود أو الغائب أن تطلب الطلاق على أساس سبب الغيبة.",
+        "en": "The wife of a missing or absent husband may ask for divorce on the ground of absence."
+      }
+    },
+    {
+      "id": "b15",
+      "role": "basis",
+      "cite": {
+        "code": "family-code",
+        "article": "8",
+        "paragraphs": [
+          2
+        ]
+      },
+      "says": {
+        "ar": "على الزوج الذي يريد زواجا جديدا إخبار الزوجة السابقة والمرأة المقبل على الزواج بها وطلب ترخيص رئيس المحكمة.",
+        "en": "A husband who wants a new marriage must inform the existing wife and the intended wife and ask the court president for authorisation."
+      }
+    },
+    {
+      "id": "b16",
+      "role": "basis",
+      "cite": {
+        "code": "family-code",
+        "article": "8 مكرر",
+        "paragraphs": [
+          1
+        ]
+      },
+      "says": {
+        "ar": "في حالة التدليس يجوز لكل زوجة أن ترفع دعوى التطليق ضد الزوج.",
+        "en": "In case of deception each wife may sue the husband for tatliq."
+      }
+    },
+    {
+      "id": "b17",
+      "role": "basis",
+      "cite": {
+        "code": "family-code",
+        "article": "19",
+        "paragraphs": [
+          1
+        ]
+      },
+      "says": {
+        "ar": "للزوجين أن يشترطا في عقد الزواج أو في عقد رسمي لاحق الشروط التي يريانها، ومنها عدم التعدد وعمل المرأة.",
+        "en": "The spouses may stipulate conditions in the marriage contract or a later official deed, such as no further wife and the wife's right to work."
+      }
+    },
+    {
+      "id": "b18",
+      "role": "procedure",
+      "cite": {
+        "code": "family-code",
+        "article": "56",
+        "paragraphs": [
+          1
+        ]
+      },
+      "says": {
+        "ar": "إذا اشتد الخصام ولم يثبت الضرر وجب تعيين حكمين من أهل الزوجين يقدمان تقريرا في أجل شهرين.",
+        "en": "Where the discord is severe and harm is not proved, two arbitrators from the spouses' families must be appointed and report within two months."
+      }
+    },
+    {
+      "id": "b19",
+      "role": "proof",
+      "cite": {
+        "code": "family-code",
+        "article": "22",
+        "paragraphs": [
+          1
+        ]
+      },
+      "says": {
+        "ar": "يثبت الزواج بمستخرج من سجل الحالة المدنية، وإن لم يسجل يثبت بحكم قضائي.",
+        "en": "Marriage is proved by a civil-status extract; if it was not registered, by a court judgment."
+      }
+    },
+    {
+      "id": "b20",
+      "role": "procedure",
+      "cite": {
+        "code": "family-code",
+        "article": "49",
+        "paragraphs": [
+          1
+        ]
+      },
+      "says": {
+        "ar": "لا يثبت الطلاق إلا بحكم بعد عدة محاولات صلح لا تتجاوز مدتها ثلاثة أشهر من تاريخ رفع الدعوى.",
+        "en": "Divorce is established only by judgment after several reconciliation attempts lasting no more than three months from the filing of the claim."
+      }
+    },
+    {
+      "id": "b21",
+      "role": "procedure",
+      "cite": {
+        "code": "family-code",
+        "article": "57",
+        "paragraphs": [
+          1
+        ]
+      },
+      "says": {
+        "ar": "الأحكام الصادرة في التطليق غير قابلة للاستئناف إلا في جوانبها المادية.",
+        "en": "Judgments on tatliq cannot be appealed except in their financial aspects."
+      }
+    },
+    {
+      "id": "b22",
+      "role": "procedure",
+      "cite": {
+        "code": "family-code",
+        "article": "57",
+        "paragraphs": [
+          2
+        ]
+      },
+      "says": {
+        "ar": "الأحكام المتعلقة بالحضانة قابلة للاستئناف.",
+        "en": "Judgments on custody can be appealed."
+      }
+    },
+    {
+      "id": "b23",
+      "role": "procedure",
+      "cite": {
+        "code": "family-code",
+        "article": "57 مكرر",
+        "paragraphs": [
+          1
+        ]
+      },
+      "says": {
+        "ar": "للقاضي أن يفصل استعجالا بأمر على عريضة في التدابير المؤقتة ولا سيما النفقة والحضانة والزيارة والمسكن.",
+        "en": "The judge may rule urgently, by order on petition, on provisional measures, notably maintenance, custody, visitation and housing."
+      }
+    },
+    {
+      "id": "b24",
+      "role": "basis",
+      "cite": {
+        "code": "family-code",
+        "article": "61",
+        "paragraphs": [
+          1
+        ]
+      },
+      "says": {
+        "ar": "للمطلقة الحق في النفقة في عدة الطلاق ولا تخرج من السكن العائلي أثناءها إلا في حالة الفاحشة المبينة.",
+        "en": "A divorced wife is entitled to maintenance during the waiting period and does not leave the family home during it, save for a manifest immoral act."
+      }
+    },
+    {
+      "id": "b25",
+      "role": "basis",
+      "cite": {
+        "code": "family-code",
+        "article": "74",
+        "paragraphs": [
+          1
+        ]
+      },
+      "says": {
+        "ar": "تجب نفقة الزوجة على زوجها بالدخول بها أو دعوتها إليه ببينة.",
+        "en": "The husband owes the wife maintenance from consummation, or from a proven call to consummate."
+      }
+    },
+    {
+      "id": "b26",
+      "role": "basis",
+      "cite": {
+        "code": "family-code",
+        "article": "75",
+        "paragraphs": [
+          1
+        ]
+      },
+      "says": {
+        "ar": "تجب نفقة الولد على الأب ما لم يكن له مال، إلى الحدود التي يبينها النص.",
+        "en": "The father owes maintenance to his children who have no means, within the limits the text sets."
+      }
+    },
+    {
+      "id": "b27",
+      "role": "basis",
+      "cite": {
+        "code": "family-code",
+        "article": "78",
+        "paragraphs": [
+          1
+        ]
+      },
+      "says": {
+        "ar": "تشمل النفقة الغذاء والكسوة والعلاج والسكن أو أجرته والضروريات عرفا.",
+        "en": "Maintenance covers food, clothing, medical care, housing or its rent, and what custom treats as necessary."
+      }
+    },
+    {
+      "id": "b28",
+      "role": "limit",
+      "cite": {
+        "code": "family-code",
+        "article": "80",
+        "paragraphs": [
+          1
+        ]
+      },
+      "says": {
+        "ar": "تستحق النفقة من تاريخ رفع الدعوى، وللقاضي أن يحكم بها بناء على بينة لمدة لا تتجاوز سنة قبل رفع الدعوى.",
+        "en": "Maintenance is due from the filing of the claim; on evidence the judge may award it for no more than a year before filing."
+      }
+    },
+    {
+      "id": "b29",
+      "role": "basis",
+      "cite": {
+        "code": "family-code",
+        "article": "64",
+        "paragraphs": [
+          1
+        ]
+      },
+      "says": {
+        "ar": "الأم أولى بحضانة ولدها ثم من يليها بالترتيب مع مراعاة مصلحة المحضون، ويحكم القاضي بحق الزيارة عند إسناد الحضانة.",
+        "en": "The mother comes first for custody, then the others in the listed order, in the child's interest; the judge awarding custody must rule on visitation."
+      }
+    },
+    {
+      "id": "b30",
+      "role": "basis",
+      "cite": {
+        "code": "family-code",
+        "article": "72",
+        "paragraphs": [
+          1
+        ]
+      },
+      "says": {
+        "ar": "عند الطلاق يوفر الأب سكنا ملائما للحاضنة أو يدفع بدل الإيجار.",
+        "en": "On divorce the father provides suitable housing for the custodian or pays the rent."
+      }
+    },
+    {
+      "id": "b31",
+      "role": "basis",
+      "cite": {
+        "code": "family-code",
+        "article": "72",
+        "paragraphs": [
+          2
+        ]
+      },
+      "says": {
+        "ar": "تبقى الحاضنة في بيت الزوجية حتى ينفذ الأب الحكم المتعلق بالسكن.",
+        "en": "The custodian stays in the marital home until the father carries out the housing judgment."
+      }
+    },
+    {
+      "id": "b32",
+      "role": "proof",
+      "cite": {
+        "code": "family-code",
+        "article": "73",
+        "paragraphs": [
+          1
+        ]
+      },
+      "says": {
+        "ar": "عند النزاع في متاع البيت دون بينة يقبل قول الزوجة مع اليمين في المعتاد للنساء وقول الزوج مع اليمين في المعتاد للرجال.",
+        "en": "In a dispute over household goods without evidence, the wife's word on oath prevails for what is usual for women and the husband's for what is usual for men."
+      }
+    },
+    {
+      "id": "b33",
+      "role": "proof",
+      "cite": {
+        "code": "family-code",
+        "article": "73",
+        "paragraphs": [
+          2
+        ]
+      },
+      "says": {
+        "ar": "الأمتعة المشتركة يقتسمها الزوجان مع اليمين.",
+        "en": "Goods common to both are divided between them on oath."
+      }
+    },
+    {
+      "id": "b34",
+      "role": "basis",
+      "cite": {
+        "code": "family-code",
+        "article": "37",
+        "paragraphs": [
+          1
+        ]
+      },
+      "says": {
+        "ar": "لكل من الزوجين ذمة مالية مستقلة.",
+        "en": "Each spouse has a separate estate."
+      }
+    },
+    {
+      "id": "b35",
+      "role": "basis",
+      "cite": {
+        "code": "family-code",
+        "article": "16",
+        "paragraphs": [
+          1
+        ]
+      },
+      "says": {
+        "ar": "تستحق الزوجة الصداق كاملا بالدخول أو بوفاة الزوج، ونصفه بالطلاق قبل الدخول.",
+        "en": "The wife is owed the whole dowry on consummation or the husband's death, and half on divorce before consummation."
+      }
+    },
+    {
+      "id": "b36",
+      "role": "procedure",
+      "cite": {
+        "code": "cpca",
+        "article": "436",
+        "paragraphs": [
+          1
+        ]
+      },
+      "says": {
+        "ar": "ترفع دعوى الطلاق من أحد الزوجين أمام قسم شؤون الأسرة بعريضة وفق أشكال رفع الدعوى.",
+        "en": "A divorce claim by one spouse is brought before the family section by petition in the usual form."
+      }
+    },
+    {
+      "id": "b37",
+      "role": "procedure",
+      "cite": {
+        "code": "cpca",
+        "article": "438",
+        "paragraphs": [
+          1
+        ]
+      },
+      "says": {
+        "ar": "على المدعي في دعوى الطلاق أن يبلغ رسميا المدعى عليه والنيابة العامة بنسخة من العريضة.",
+        "en": "The plaintiff in a divorce claim must formally serve a copy of the petition on the defendant and the public prosecutor."
+      }
+    },
+    {
+      "id": "b38",
+      "role": "procedure",
+      "cite": {
+        "code": "cpca",
+        "article": "438",
+        "paragraphs": [
+          2
+        ]
+      },
+      "says": {
+        "ar": "يجوز تبليغ النيابة العامة عن طريق أمانة الضبط.",
+        "en": "The prosecutor may be notified through the registry."
+      }
+    },
+    {
+      "id": "b39",
+      "role": "proof",
+      "cite": {
+        "code": "cpca",
+        "article": "451",
+        "paragraphs": [
+          1,
+          2
+        ]
+      },
+      "says": {
+        "ar": "يعاين القاضي ويكيف الوقائع المؤسسة لطلب التطليق ويفصل في تأسيسه مراعيا ظروف تقديمه.",
+        "en": "The judge examines and characterises the facts relied on for tatliq and decides whether the claim is founded, in view of the circumstances."
+      }
+    },
+    {
+      "id": "b40",
+      "role": "proof",
+      "cite": {
+        "code": "cpca",
+        "article": "451",
+        "paragraphs": [
+          3
+        ]
+      },
+      "says": {
+        "ar": "للقاضي أن يأمر بالتحقيق أو بخبرة طبية أو بالانتقال للمعاينة.",
+        "en": "The judge may order an inquiry, a medical expertise or a site visit."
+      }
+    },
+    {
+      "id": "b41",
+      "role": "procedure",
+      "cite": {
+        "code": "cpca",
+        "article": "452",
+        "paragraphs": [
+          1
+        ]
+      },
+      "says": {
+        "ar": "الطعن بالنقض لا يوقف تنفيذ أحكام التطليق.",
+        "en": "An appeal in cassation does not stay the execution of tatliq judgments."
+      }
+    },
+    {
+      "id": "b42",
+      "role": "procedure",
+      "cite": {
+        "code": "cpca",
+        "article": "40",
+        "paragraphs": [
+          1,
+          3
+        ]
+      },
+      "says": {
+        "ar": "ترفع دعاوى الطلاق والحضانة والنفقة والسكن أمام محكمة مسكن الزوجية ومكان ممارسة الحضانة وموطن الدائن بالنفقة ومكان وجود السكن على التوالي دون سواها.",
+        "en": "Divorce, custody, maintenance and housing claims go, respectively and only, to the court of the marital home, of the place where custody is exercised, of the maintenance creditor's domicile and of the place where the dwelling is."
+      }
+    },
+    {
+      "id": "b43",
+      "role": "procedure",
+      "cite": {
+        "code": "cpca",
+        "article": "323",
+        "paragraphs": [
+          2
+        ]
+      },
+      "says": {
+        "ar": "يؤمر بالنفاذ المعجل عند طلبه في مادة النفقة ومنح مسكن الزوجية للحاضنة، رغم المعارضة أو الاستئناف.",
+        "en": "Provisional execution, despite opposition or appeal, is ordered on request in maintenance matters and for the grant of the marital home to the custodian."
+      }
+    },
+    {
+      "id": "b44",
+      "role": "limit",
+      "cite": {
+        "code": "civil-code",
+        "article": "12",
+        "paragraphs": [
+          2
+        ]
+      },
+      "says": {
+        "ar": "يسري على انحلال الزواج القانون الوطني للزوج وقت رفع الدعوى.",
+        "en": "The dissolution of marriage is governed by the husband's national law at the time the claim is filed."
+      }
+    },
+    {
+      "id": "b45",
+      "role": "limit",
+      "cite": {
+        "code": "civil-code",
+        "article": "13",
+        "paragraphs": [
+          1
+        ]
+      },
+      "says": {
+        "ar": "يطبق القانون الجزائري وحده إذا كان أحد الزوجين جزائريا وقت انعقاد الزواج، إلا في أهلية الزواج.",
+        "en": "Algerian law alone applies if either spouse was Algerian when the marriage was made, except as to capacity to marry."
+      }
+    },
+    {
+      "id": "b46",
+      "role": "procedure",
+      "cite": {
+        "code": "cpca",
+        "article": "53",
+        "paragraphs": [
+          1
+        ]
+      },
+      "says": {
+        "ar": "تقوم وحدة الموضوع إذا رفع نفس النزاع إلى جهتين قضائيتين مختصتين من نفس الدرجة.",
+        "en": "There is lis pendens when the same dispute is brought before more than one competent court of the same level."
+      }
+    },
+    {
+      "id": "b47",
+      "role": "procedure",
+      "cite": {
+        "code": "cpca",
+        "article": "55",
+        "paragraphs": [
+          1
+        ]
+      },
+      "says": {
+        "ar": "يقوم الارتباط بين قضايا مترابطة يستلزم حسن سير العدالة الفصل فيها معا.",
+        "en": "Cases are connected when sound justice requires them to be heard and decided together."
+      }
+    },
+    {
+      "id": "b48",
+      "role": "procedure",
+      "cite": {
+        "code": "family-code",
+        "article": "7",
+        "paragraphs": [
+          2
+        ]
+      },
+      "says": {
+        "ar": "يكتسب الزوج القاصر أهلية التقاضي فيما يتعلق بآثار عقد الزواج.",
+        "en": "A minor spouse has capacity to sue on the effects of the marriage contract."
+      }
+    },
+    {
+      "id": "b49",
+      "role": "limit",
+      "cite": {
+        "code": "family-code",
+        "article": "54",
+        "paragraphs": [
+          1
+        ]
+      },
+      "says": {
+        "ar": "للزوجة أن تخالع نفسها بمقابل مالي دون موافقة الزوج.",
+        "en": "The wife may free herself by khul against payment, without the husband's consent."
+      }
+    },
+    {
+      "id": "b50",
+      "role": "limit",
+      "cite": {
+        "code": "family-code",
+        "article": "52",
+        "paragraphs": [
+          1
+        ]
+      },
+      "says": {
+        "ar": "إذا تبين تعسف الزوج في الطلاق حكم للمطلقة بالتعويض.",
+        "en": "Where the husband's divorce is abusive, the divorced wife is awarded compensation."
+      }
+    },
+    {
+      "id": "b51",
+      "role": "limit",
+      "cite": {
+        "code": "family-code",
+        "article": "8 مكرر 1",
+        "paragraphs": [
+          1
+        ]
+      },
+      "says": {
+        "ar": "يفسخ الزواج الجديد قبل الدخول إذا لم يحصل الزوج على الترخيص القضائي.",
+        "en": "The new marriage is annulled before consummation if the husband did not obtain the court's authorisation."
+      }
+    },
+    {
+      "id": "b52",
+      "role": "procedure",
+      "cite": {
+        "code": "family-code",
+        "article": "49",
+        "paragraphs": [
+          2
+        ]
+      },
+      "says": {
+        "ar": "يحرر القاضي محضرا بمساعي الصلح ونتائجها يوقعه مع كاتب الضبط والطرفين.",
+        "en": "The judge draws up a record of the reconciliation attempts and their results, signed with the clerk and the parties."
+      }
+    },
+    {
+      "id": "b53",
+      "role": "procedure",
+      "cite": {
+        "code": "family-code",
+        "article": "49",
+        "paragraphs": [
+          3
+        ]
+      },
+      "says": {
+        "ar": "تسجل أحكام الطلاق وجوبا في الحالة المدنية بسعي من النيابة العامة.",
+        "en": "Divorce judgments are registered in the civil status by the public prosecutor."
+      }
+    },
+    {
+      "id": "b54",
+      "role": "proof",
+      "cite": {
+        "code": "family-code",
+        "article": "22",
+        "paragraphs": [
+          2
+        ]
+      },
+      "says": {
+        "ar": "يسجل حكم تثبيت الزواج في الحالة المدنية بسعي من النيابة العامة.",
+        "en": "A judgment proving a marriage is registered in the civil status by the public prosecutor."
+      }
+    },
+    {
+      "id": "b55",
+      "role": "basis",
+      "cite": {
+        "code": "family-code",
+        "article": "79",
+        "paragraphs": [
+          1
+        ]
+      },
+      "says": {
+        "ar": "يراعي القاضي في تقدير النفقة حال الطرفين وظروف المعاش، ولا يراجع تقديره قبل مضي سنة من الحكم.",
+        "en": "The judge fixes maintenance by the means of the parties and the cost of living and does not revise it before a year from the judgment."
+      }
+    },
+    {
+      "id": "b56",
+      "role": "basis",
+      "cite": {
+        "code": "family-code",
+        "article": "62",
+        "paragraphs": [
+          1,
+          2
+        ]
+      },
+      "says": {
+        "ar": "الحضانة رعاية الولد وتربيته وحمايته، ويشترط في الحاضن أن يكون أهلا لذلك.",
+        "en": "Custody is the care, upbringing and protection of the child, and the custodian must be fit for it."
+      }
+    },
+    {
+      "id": "b57",
+      "role": "limit",
+      "cite": {
+        "code": "family-code",
+        "article": "68",
+        "paragraphs": [
+          1
+        ]
+      },
+      "says": {
+        "ar": "إذا لم يطلب من له الحق في الحضانة مدة تزيد عن سنة بدون عذر سقط حقه فيها.",
+        "en": "A person entitled to custody who does not ask for it for more than a year without excuse loses the right."
+      }
+    },
+    {
+      "id": "b58",
+      "role": "basis",
+      "cite": {
+        "code": "family-code",
+        "article": "14",
+        "paragraphs": [
+          1
+        ]
+      },
+      "says": {
+        "ar": "الصداق ملك للزوجة تتصرف فيه كما تشاء.",
+        "en": "The dowry belongs to the wife, who may dispose of it as she wishes."
+      },
+      "interpretive": true,
+      "interpretiveNote": "The article makes the dowry the wife's property; whether jewellery claimed back is part of the dowry or her own property depends on how it was given, which no text in the store settles (derivation B)."
+    },
+    {
+      "id": "b59",
+      "role": "procedure",
+      "cite": {
+        "code": "cpca",
+        "article": "439",
+        "paragraphs": [
+          1
+        ]
+      },
+      "says": {
+        "ar": "محاولات الصلح وجوبية وتتم في جلسة سرية.",
+        "en": "Reconciliation attempts are compulsory and held in closed session."
+      }
+    },
+    {
+      "id": "b60",
+      "role": "procedure",
+      "cite": {
+        "code": "cpca",
+        "article": "442",
+        "paragraphs": [
+          1
+        ]
+      },
+      "says": {
+        "ar": "يجوز للقاضي منح الزوجين مهلة تفكير واتخاذ التدابير المؤقتة اللازمة بأمر غير قابل لأي طعن.",
+        "en": "The judge may give the spouses a period for reflection and take the necessary provisional measures by an order open to no appeal."
+      }
+    },
+    {
+      "id": "b61",
+      "role": "limit",
+      "cite": {
+        "code": "cpca",
+        "article": "442",
+        "paragraphs": [
+          2
+        ]
+      },
+      "says": {
+        "ar": "يجب ألا تتجاوز محاولات الصلح ثلاثة أشهر من تاريخ رفع دعوى الطلاق.",
+        "en": "Reconciliation attempts may not exceed three months from the filing of the divorce action."
+      }
+    },
+    {
+      "id": "b62",
+      "role": "procedure",
+      "cite": {
+        "code": "cpca",
+        "article": "443",
+        "paragraphs": [
+          4
+        ]
+      },
+      "says": {
+        "ar": "في حالة عدم الصلح أو تخلف أحد الزوجين رغم مهلة التفكير يشرع في مناقشة موضوع الدعوى.",
+        "en": "If reconciliation fails, or a spouse stays away despite the period for reflection, the merits are debated."
+      }
+    },
+    {
+      "id": "b63",
+      "role": "procedure",
+      "cite": {
+        "code": "cpca",
+        "article": "451",
+        "paragraphs": [
+          4
+        ]
+      },
+      "says": {
+        "ar": "يجب تسبيب الإجراء المأمور به إذا تعلق بخبرة طبية.",
+        "en": "An order for a medical expertise must be reasoned."
+      }
+    },
+    {
+      "id": "b64",
+      "role": "procedure",
+      "cite": {
+        "code": "cpca",
+        "article": "15"
+      },
+      "says": {
+        "ar": "يجب أن تتضمن العريضة الجهة القضائية وهوية الطرفين وعرضا موجزا للوقائع والطلبات والوسائل والمستندات، وإلا لم تقبل شكلا.",
+        "en": "The petition must state the court, the parties, a short account of facts, requests and grounds, and the supporting documents, or it is inadmissible in form."
+      }
+    },
+    {
+      "id": "b65",
+      "role": "procedure",
+      "cite": {
+        "code": "cpca",
+        "article": "14",
+        "paragraphs": [
+          1
+        ]
+      },
+      "says": {
+        "ar": "ترفع الدعوى بعريضة مكتوبة موقعة ومؤرخة تودع بأمانة الضبط بعدد من النسخ يساوي عدد الأطراف.",
+        "en": "The action is brought by a written, signed and dated petition lodged at the registry in as many copies as there are parties."
+      }
+    },
+    {
+      "id": "b66",
+      "role": "procedure",
+      "cite": {
+        "code": "cpca",
+        "article": "13",
+        "paragraphs": [
+          1,
+          2
+        ]
+      },
+      "says": {
+        "ar": "لا يجوز التقاضي دون صفة ومصلحة، ويثير القاضي تلقائيا انعدام الصفة.",
+        "en": "No one may sue without standing and interest, and the judge raises lack of standing of his own motion."
+      }
+    },
+    {
+      "id": "b67",
+      "role": "procedure",
+      "cite": {
+        "code": "cpca",
+        "article": "17",
+        "paragraphs": [
+          1
+        ]
+      },
+      "says": {
+        "ar": "لا تقيد العريضة إلا بعد دفع الرسوم المحددة قانونا ما لم ينص القانون على خلاف ذلك.",
+        "en": "The petition is registered only after the fees set by law are paid, unless the law provides otherwise."
+      }
+    },
+    {
+      "id": "b68",
+      "role": "proof",
+      "cite": {
+        "code": "cpca",
+        "article": "153",
+        "paragraphs": [
+          4
+        ]
+      },
+      "says": {
+        "ar": "يجوز سماع الأقارب والزوج الذين يمنع النص سماعهم، عدا الفروع، في قضايا حالة الأشخاص والطلاق.",
+        "en": "The relatives and the spouse the article bars as witnesses, except descendants, may be heard in personal-status and divorce cases."
+      }
+    },
+    {
+      "id": "b69",
+      "role": "proof",
+      "cite": {
+        "code": "cpca",
+        "article": "150",
+        "paragraphs": [
+          1
+        ]
+      },
+      "says": {
+        "ar": "يجوز الأمر بسماع الشهود في الوقائع القابلة بطبيعتها للإثبات بالشهادة متى كان التحقيق جائزا ومفيدا.",
+        "en": "Witnesses may be heard on facts that can be proved by witness where an inquiry is admissible and useful."
+      }
+    },
+    {
+      "id": "b70",
+      "role": "proof",
+      "cite": {
+        "code": "civil-code",
+        "article": "323",
+        "paragraphs": [
+          1
+        ]
+      },
+      "says": {
+        "ar": "على الدائن إثبات الالتزام وعلى المدين إثبات التخلص منه.",
+        "en": "The creditor proves the obligation and the debtor proves his release."
+      },
+      "interpretive": true,
+      "interpretiveNote": "The rule is written for obligations; applying it to the wife's burden of proving the ground of tatliq is an analogy, which neither the Family Code nor the procedure code states (derivation B; open point o12)."
+    },
+    {
+      "id": "b71",
+      "role": "procedure",
+      "cite": {
+        "code": "cpca",
+        "article": "323",
+        "paragraphs": [
+          3
+        ]
+      },
+      "says": {
+        "ar": "يجوز للقاضي في الأحوال الأخرى أن يأمر بالنفاذ المعجل في حالة الاستعجال بكفالة أو بدونها.",
+        "en": "In other cases the judge may order provisional execution in urgency, with or without security."
+      }
+    },
+    {
+      "id": "b72",
+      "role": "procedure",
+      "cite": {
+        "code": "cpca",
+        "article": "419",
+        "paragraphs": [
+          1
+        ]
+      },
+      "says": {
+        "ar": "يتحمل الخصم الذي خسر الدعوى المصاريف ما لم يقرر القاضي غير ذلك بتسبيب.",
+        "en": "The losing party bears the costs unless the judge, with reasons, decides otherwise."
+      }
+    },
+    {
+      "id": "b73",
+      "role": "procedure",
+      "cite": {
+        "code": "cpca",
+        "article": "16",
+        "paragraphs": [
+          3,
+          4
+        ]
+      },
+      "says": {
+        "ar": "يجب أجل عشرين يوما بين تسليم التكليف بالحضور وأول جلسة، ويمدد إلى ثلاثة أشهر إذا كان المكلف مقيما في الخارج.",
+        "en": "A period of twenty days is needed between service of the summons and the first hearing, extended to three months for a person summoned who lives abroad."
+      }
+    },
+    {
+      "id": "b74",
+      "role": "procedure",
+      "cite": {
+        "code": "cpca",
+        "article": "10",
+        "paragraphs": [
+          1
+        ]
+      },
+      "says": {
+        "ar": "تمثيل الخصوم بمحام وجوبي أمام جهات الاستئناف والنقض ما لم ينص القانون على خلاف ذلك.",
+        "en": "Representation by a lawyer is compulsory before appeal courts and the court of cassation unless the law provides otherwise."
+      }
+    },
+    {
+      "id": "b75",
+      "role": "procedure",
+      "cite": {
+        "code": "cpca",
+        "article": "25",
+        "paragraphs": [
+          2
+        ]
+      },
+      "says": {
+        "ar": "يمكن تعديل موضوع النزاع بتقديم طلبات عارضة مرتبطة بالادعاءات الأصلية.",
+        "en": "The subject of the dispute may be changed by additional requests connected with the original claims."
+      }
+    },
+    {
+      "id": "b76",
+      "role": "procedure",
+      "cite": {
+        "code": "cpca",
+        "article": "21",
+        "paragraphs": [
+          1
+        ]
+      },
+      "says": {
+        "ar": "يجب إيداع الأوراق والسندات التي يستند إليها الخصوم بأمانة الضبط بأصولها أو نسخ رسمية أو مطابقة وتبلغ للخصم.",
+        "en": "The papers relied on must be lodged at the registry in the original, an official copy or a certified copy, and communicated to the opponent."
+      }
+    },
+    {
+      "id": "b77",
+      "role": "limit",
+      "cite": {
+        "code": "family-code",
+        "article": "37",
+        "paragraphs": [
+          2
+        ]
+      },
+      "says": {
+        "ar": "يجوز للزوجين الاتفاق في عقد الزواج أو في عقد رسمي لاحق على الأموال المشتركة المكتسبة خلال الحياة الزوجية ونسب كل منهما.",
+        "en": "The spouses may agree, in the marriage contract or a later official deed, on the common property acquired during the marriage and the share of each."
+      }
+    }
+  ],
+  "elements": [
+    {
+      "id": "e1",
+      "toProve": {
+        "ar": "قيام رابطة زوجية صحيحة بين الطرفين لم تنحل بعد.",
+        "en": "A valid marriage between the parties, not yet dissolved."
+      },
+      "factsToState": [
+        {
+          "ar": "تاريخ ومكان عقد الزواج والجهة التي حررته، وتسجيله في الحالة المدنية.",
+          "en": "The date and place of the marriage, who drew it up, and its civil-status registration."
+        },
+        {
+          "ar": "حصول الدخول أو الدعوة إليه، والأولاد إن وجدوا.",
+          "en": "Whether the marriage was consummated or consummation was called for, and any children."
+        },
+        {
+          "ar": "عنوان مسكن الزوجية.",
+          "en": "The address of the marital home."
+        }
+      ],
+      "events": [
+        "marriage"
+      ],
+      "slots": [
+        "marriage_registered",
+        "consummation_or_invitation",
+        "spouses_divorced"
+      ],
+      "burden": "plaintiff",
+      "proof": [
+        {
+          "means": "civil-status extract of the marriage certificate",
+          "basis": [
+            "b19"
+          ],
+          "note": {
+            "ar": "إن لم يسجل الزواج يثبت بحكم قضائي يسجل بدوره في الحالة المدنية.",
+            "en": "An unregistered marriage is proved by a judgment, which is itself registered in the civil status."
+          }
+        },
+        {
+          "means": "judgment proving the marriage",
+          "basis": [
+            "b19",
+            "b54"
+          ]
+        }
+      ],
+      "basis": [
+        "b19",
+        "b54",
+        "b1",
+        "b66"
+      ]
+    },
+    {
+      "id": "e2",
+      "toProve": {
+        "ar": "الهجر في المضجع لأكثر من أربعة أشهر، أو غيبة الزوج لمدة سنة بدون عذر ولا نفقة.",
+        "en": "Desertion of the marital bed for more than four months, or the husband's absence for a year without excuse and without maintenance."
+      },
+      "factsToState": [
+        {
+          "ar": "تاريخ بداية الهجر أو الغيبة ومدته إلى تاريخ العريضة وظروفه.",
+          "en": "When the desertion or absence began, how long it has lasted at the petition's date, and the circumstances."
+        },
+        {
+          "ar": "انعدام العذر وانقطاع النفقة أثناء الغيبة.",
+          "en": "That there is no excuse, and no maintenance paid during the absence."
+        }
+      ],
+      "events": [
+        "abandonment"
+      ],
+      "slots": [
+        "bed_desertion_ground",
+        "absence_ground"
+      ],
+      "burden": "plaintiff",
+      "proof": [
+        {
+          "means": "witnesses, relatives other than descendants included",
+          "basis": [
+            "b68",
+            "b69"
+          ]
+        },
+        {
+          "means": "inquiry ordered by the judge",
+          "basis": [
+            "b39",
+            "b40"
+          ]
+        },
+        {
+          "means": "burden on the plaintiff, by analogy",
+          "basis": [
+            "b70"
+          ],
+          "note": {
+            "ar": "قاعدة عبء الإثبات مكتوبة للالتزامات وتطبق هنا بالقياس.",
+            "en": "The burden rule is written for obligations and is applied here by analogy."
+          }
+        }
+      ],
+      "basis": [
+        "b5",
+        "b7",
+        "b14",
+        "b39"
+      ]
+    },
+    {
+      "id": "e3",
+      "toProve": {
+        "ar": "امتناع الزوج عن الإنفاق بعد صدور حكم بوجوب النفقة.",
+        "en": "The husband's failure to maintain after a judgment ordering maintenance."
+      },
+      "factsToState": [
+        {
+          "ar": "الحكم القاضي بالنفقة وتاريخه ومبلغه وتبليغه وعدم تنفيذه.",
+          "en": "The maintenance judgment, its date, its amount, its service and its non-performance."
+        },
+        {
+          "ar": "تاريخ توقف الزوج عن الإنفاق، والدخول بالزوجة أو دعوتها إليه.",
+          "en": "The date the husband stopped maintaining, and the consummation or the call to it."
+        },
+        {
+          "ar": "أن الزوجة لم تكن عالمة بإعسار الزوج وقت الزواج.",
+          "en": "That the wife did not know of the husband's poverty when she married."
+        }
+      ],
+      "events": [
+        "maintenance_unpaid"
+      ],
+      "slots": [
+        "tatliq_ground_nonmaintenance",
+        "maintenance_previously_judged",
+        "maintenance_unpaid_since",
+        "consummation_or_invitation",
+        "wife_knew_husband_indigence"
+      ],
+      "burden": "plaintiff",
+      "proof": [
+        {
+          "means": "the maintenance judgment and a record of its non-performance",
+          "basis": [
+            "b3"
+          ],
+          "note": {
+            "ar": "لا يقوم هذا السبب إذا كانت الزوجة عالمة بإعسار الزوج وقت الزواج؛ والنص لا يحدد من يثبت العلم.",
+            "en": "The ground fails if the wife knew of the husband's poverty when she married; the text does not say who proves that knowledge."
+          }
+        },
+        {
+          "means": "evidence of consummation or of the call to it",
+          "basis": [
+            "b25"
+          ]
+        }
+      ],
+      "basis": [
+        "b3",
+        "b25",
+        "b27",
+        "b39"
+      ]
+    },
+    {
+      "id": "e4",
+      "toProve": {
+        "ar": "ضرر معتبر شرعا ألحقه الزوج بالزوجة، كالضرب أو الإيذاء أو السب، أو حكم جزائي على الزوج عن جريمة تمس شرف الأسرة.",
+        "en": "Harm recognised by the Sharia that the husband did to the wife, such as beating or ill-treatment, or a criminal conviction of the husband for an offence touching the family's honour."
+      },
+      "factsToState": [
+        {
+          "ar": "وقائع الضرر وتواريخها وأماكنها والشكاوى المقدمة بشأنها.",
+          "en": "The acts of harm, their dates and places, and any complaints made about them."
+        },
+        {
+          "ar": "الشهادات الطبية والأحكام الجزائية إن وجدت.",
+          "en": "Medical certificates and any criminal judgment."
+        }
+      ],
+      "events": [
+        "spouse_harm",
+        "criminal_conviction"
+      ],
+      "slots": [
+        "criminal_case_on_same_facts"
+      ],
+      "burden": "plaintiff",
+      "proof": [
+        {
+          "means": "medical certificates, inquiry or medical expertise ordered by the judge",
+          "basis": [
+            "b39",
+            "b40",
+            "b63"
+          ]
+        },
+        {
+          "means": "a criminal judgment on the same facts",
+          "basis": [
+            "ordinary-court-exits.b36",
+            "b6"
+          ],
+          "note": {
+            "ar": "يرتبط القاضي المدني بالحكم الجزائي في الوقائع التي فصل فيها وكان فصله فيها ضروريا.",
+            "en": "The civil judge is bound by a criminal judgment on the facts it necessarily decided."
+          }
+        },
+        {
+          "means": "witnesses, relatives other than descendants included",
+          "basis": [
+            "b68",
+            "b69"
+          ]
+        },
+        {
+          "means": "burden on the plaintiff, by analogy",
+          "basis": [
+            "b70"
+          ]
+        }
+      ],
+      "basis": [
+        "b12",
+        "b6",
+        "b13",
+        "b39"
+      ]
+    },
+    {
+      "id": "e5",
+      "toProve": {
+        "ar": "عند الاقتضاء، سبب آخر من أسباب التطليق: العيب، مخالفة أحكام التعدد أو التدليس، الفاحشة المبينة، الشقاق المستمر، مخالفة شروط عقد الزواج.",
+        "en": "Where relied on, another ground: a defect, breach of the rules on a further marriage or deception, a manifest immoral act, persistent discord, breach of the marriage-contract conditions."
+      },
+      "factsToState": [
+        {
+          "ar": "الواقعة المكونة للسبب وتاريخها ووسيلة إثباتها، والشرط المكتوب في عقد الزواج أو العقد الرسمي اللاحق إن تعلق الأمر بمخالفته.",
+          "en": "The fact making up the ground, its date and its proof, and the written condition in the marriage contract or later official deed where its breach is relied on."
+        }
+      ],
+      "events": [
+        "other"
+      ],
+      "burden": "plaintiff",
+      "proof": [
+        {
+          "means": "medical expertise for a defect; the marriage contract for a condition; witnesses and inquiry",
+          "basis": [
+            "b40",
+            "b17",
+            "b69"
+          ]
+        },
+        {
+          "means": "arbitrators for persistent discord where harm is not proved",
+          "basis": [
+            "b18"
+          ]
+        }
+      ],
+      "basis": [
+        "b4",
+        "b8",
+        "b9",
+        "b10",
+        "b11",
+        "b15",
+        "b16",
+        "b17",
+        "b18"
+      ]
+    }
+  ],
+  "requests": [
+    {
+      "id": "r1",
+      "kind": "tatliq",
+      "accessory": false,
+      "amount": false,
+      "text": {
+        "ar": "الحكم بتطليق المدعية من المدعى عليه للسبب المبين في العريضة (...) طبقا للمادة 53 من قانون الأسرة.",
+        "en": "Grant the plaintiff a judicial divorce from the defendant on the ground stated in the petition (...) under article 53 of the Family Code."
+      },
+      "basis": [
+        "b2",
+        "b1",
+        "b39"
+      ]
+    },
+    {
+      "id": "r2",
+      "kind": "damages",
+      "accessory": true,
+      "amount": true,
+      "text": {
+        "ar": "إلزام المدعى عليه بأن يدفع للمدعية مبلغ (...) دج تعويضا عن الضرر اللاحق بها.",
+        "en": "Order the defendant to pay the plaintiff (...) DZD as compensation for the harm she suffered."
+      },
+      "basis": [
+        "b13"
+      ]
+    },
+    {
+      "id": "r3",
+      "kind": "maintenance",
+      "accessory": true,
+      "amount": true,
+      "text": {
+        "ar": "إلزام المدعى عليه بأن يدفع نفقة (...) بمبلغ (...) دج شهريا ابتداء من تاريخ رفع الدعوى، ونفقة العدة بمبلغ (...) دج.",
+        "en": "Order the defendant to pay maintenance for (...) of (...) DZD a month from the filing of the claim, and waiting-period maintenance of (...) DZD."
+      },
+      "basis": [
+        "b24",
+        "b25",
+        "b26",
+        "b27",
+        "b28",
+        "b55"
+      ]
+    },
+    {
+      "id": "r4",
+      "kind": "custody",
+      "accessory": true,
+      "amount": false,
+      "text": {
+        "ar": "إسناد حضانة الأولاد (...) للمدعية.",
+        "en": "Award custody of the children (...) to the plaintiff."
+      },
+      "basis": [
+        "b29",
+        "b56",
+        "b22"
+      ]
+    },
+    {
+      "id": "r5",
+      "kind": "visitation",
+      "accessory": true,
+      "amount": false,
+      "text": {
+        "ar": "تنظيم حق زيارة المدعى عليه للأولاد (...).",
+        "en": "Set the defendant's right to visit the children (...)."
+      },
+      "basis": [
+        "b29"
+      ]
+    },
+    {
+      "id": "r6",
+      "kind": "housing",
+      "accessory": true,
+      "amount": true,
+      "text": {
+        "ar": "إلزام المدعى عليه بتوفير سكن ملائم لممارسة الحضانة أو دفع بدل إيجار بمبلغ (...) دج شهريا.",
+        "en": "Order the defendant to provide suitable housing for the exercise of custody or to pay rent of (...) DZD a month."
+      },
+      "basis": [
+        "b30",
+        "b31"
+      ]
+    },
+    {
+      "id": "r7",
+      "kind": "restitution",
+      "accessory": true,
+      "amount": false,
+      "text": {
+        "ar": "إلزام المدعى عليه بتمكين المدعية من أثاثها ومصوغها وأغراضها الشخصية المبينة في القائمة (...).",
+        "en": "Order the defendant to hand over to the plaintiff her furniture, jewellery and personal belongings listed in (...)."
+      },
+      "basis": [
+        "b32",
+        "b33",
+        "b34",
+        "b77",
+        "b58"
+      ]
+    },
+    {
+      "id": "r8",
+      "kind": "provisional_execution",
+      "accessory": true,
+      "amount": false,
+      "when": {
+        "any": [
+          {
+            "slot": "requests",
+            "includes": "maintenance"
+          },
+          {
+            "slot": "requests",
+            "includes": "housing"
+          }
+        ]
+      },
+      "text": {
+        "ar": "شمول الحكم بالنفاذ المعجل فيما يخص النفقة والسكن.",
+        "en": "Order provisional execution of the judgment as to maintenance and housing."
+      },
+      "basis": [
+        "b43",
+        "b71"
+      ]
+    },
+    {
+      "id": "r9",
+      "kind": "other",
+      "accessory": true,
+      "amount": false,
+      "text": {
+        "ar": "تحميل المدعى عليه المصاريف القضائية.",
+        "en": "Order the defendant to bear the costs."
+      },
+      "basis": [
+        "b72"
+      ]
+    }
+  ],
+  "court": {
+    "section": {
+      "value": "family",
+      "basis": [
+        "court-sections.b7",
+        "court-sections.b8",
+        "court-sections.b3",
+        "b36"
+      ],
+      "alternatives": [
+        {
+          "when": {
+            "slot": "court_has_section_for_matter",
+            "is": "no"
+          },
+          "value": "civil",
+          "basis": [
+            "court-sections.b4"
+          ]
+        }
+      ],
+      "message": {
+        "ar": "المادة 423 من قانون الإجراءات المدنية والإدارية: ينظر قسم شؤون الأسرة في دعاوى انحلال الرابطة الزوجية وتوابعها والنفقة والحضانة والزيارة، وتنص المادة 436 على رفع دعوى الطلاق أمامه؛ وفي المحاكم التي لم تنشأ فيها الأقسام ينظر القسم المدني (المادة 32). القسم المختار يختلف عن المقترح؛ تحقق من أقسام المحكمة.",
+        "en": "CPCA article 423: the family section hears the dissolution of marriage and its consequences, maintenance, custody and visitation, and article 436 sends the divorce claim to it; in courts without sections the civil section hears it (article 32). The section chosen differs from the one proposed; check the court's sections."
+      },
+      "interpretive": true,
+      "interpretiveNote": "The civil fall-back reads the fifth paragraph of article 32 (court-sections.b4: courts where the sections have not been created); whether it also covers a court that has sections but not the family section is a reading, as the court-sections module records (its open point o7). Kept from derivation B; derivation A did not mark it."
+    },
+    "territory": [
+      {
+        "id": "t1",
+        "rule": {
+          "ar": "التطليق: محكمة مسكن الزوجية دون سواها؛ الحضانة: مكان ممارستها؛ النفقة: موطن الدائن بها؛ السكن: مكان وجود السكن. وتتبع بقية طلبات الأسرة (ومنها متاع بيت الزوجية) القاعدة المستوردة.",
+          "en": "Tatliq: only the court of the marital home; custody: where it is exercised; maintenance: the creditor's domicile; housing: where the dwelling is. The other family requests (household goods among them) follow the imported rule."
+        },
+        "basis": [
+          "b42",
+          "court-sections.b42",
+          "court-sections.b55"
+        ]
+      }
+    ]
+  },
+  "deadlines": [
+    {
+      "id": "d1",
+      "kind": "limitation",
+      "period": {
+        "value": 1,
+        "unit": "year"
+      },
+      "startsFrom": {
+        "slot": "maintenance_unpaid_since",
+        "event": "maintenance_unpaid",
+        "description": {
+          "ar": "تاريخ توقف المدعى عليه عن الإنفاق",
+          "en": "The date the defendant stopped maintaining"
+        }
+      },
+      "raisedBy": "unclear",
+      "when": {
+        "slot": "requests",
+        "includes": "maintenance"
+      },
+      "effectWhenExpired": "warn",
+      "warnBandDays": 15,
+      "message": {
+        "ar": "المادة 80 من قانون الأسرة: تستحق النفقة من تاريخ رفع الدعوى، وللقاضي أن يحكم بها بناء على بينة لمدة لا تتجاوز سنة قبل رفع الدعوى. تحقق من تاريخ توقف الإنفاق ومن الفترة المطالب بها. قراءتان: سقف لما يحكم به عن الفترة السابقة على رفع الدعوى، أو سلطة تقديرية للقاضي ضمن سنة تتوقف على البينة؛ والنص لا يبين طريقة حساب السنة.",
+        "en": "Family Code article 80: maintenance is due from the filing of the claim, and on evidence the judge may award it for no more than one year before filing. Check when maintenance stopped and the period claimed. Two readings: a cap on what is awarded for the time before filing, or a discretion of the judge within one year that depends on evidence; the text does not say how the year is counted."
+      },
+      "basis": [
+        "b28"
+      ],
+      "extract": {
+        "period": "لمدة لا تتجاوز سنة قبل رفع الدعوى",
+        "sanction": "تستحق النفقة من تاريخ رفع الدعوى"
+      },
+      "interpretive": true,
+      "interpretiveNote": "The article caps how far back maintenance may be awarded; it is not a limitation of the action in the Civil Code's sense, and no text says how the year is counted backwards from the filing date or who raises it (the Civil Code's counting article reaches limitation periods only; the CPCA's reaches periods of that code only). Modelled as a warning on arrears older than one year (derivation A).",
+      "readings": [
+        {
+          "reading": {
+            "ar": "سقف لمدة النفقة السابقة على رفع الدعوى: ما زاد على سنة لا يحكم به.",
+            "en": "A cap on maintenance before filing: whatever lies beyond one year is not awarded."
+          },
+          "basis": [
+            "b28"
+          ]
+        },
+        {
+          "reading": {
+            "ar": "سلطة تقديرية للقاضي في الحكم بالنفقة السابقة ضمن سنة، تتوقف على البينة.",
+            "en": "A discretion of the judge to award past maintenance within one year, on evidence."
+          },
+          "basis": [
+            "b28"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "d2",
+      "kind": "forfeiture",
+      "period": {
+        "value": 1,
+        "unit": "year"
+      },
+      "startsFrom": {
+        "slot": "custody_entitlement_date",
+        "event": "custody_unclaimed",
+        "description": {
+          "ar": "تاريخ نشوء حق المدعية في الحضانة وإمكان مطالبتها بها (غالبا تاريخ الافتراق).",
+          "en": "The date from which the wife's right to custody arose and she could have claimed it (usually the separation)."
+        }
+      },
+      "raisedBy": "unclear",
+      "when": {
+        "slot": "requests",
+        "includes": "custody"
+      },
+      "effectWhenExpired": "warn",
+      "warnBandDays": 15,
+      "message": {
+        "ar": "المادة 68 من قانون الأسرة: إذا لم يطلب من له الحق في الحضانة مدة تزيد عن سنة بدون عذر سقط حقه فيها. تحقق من تاريخ نشوء الحق في الحضانة ومن وجود عذر. النص لا يبين بداية السنة: من الافتراق، أو من آخر يوم أمكنت فيه المطالبة، أو لا تبدأ إلا بعد انحلال الزواج فلا تمس طلب الحضانة المقدم مع التطليق.",
+        "en": "Family Code article 68: a person entitled to custody who does not ask for it for more than one year without excuse loses the right. Check the date from which the right to custody arose and whether there was an excuse. The text does not say when the year starts: from the separation, from the last day a claim was possible, or only once the marriage is dissolved, in which case it does not touch a custody request made with the tatliq claim."
+      },
+      "basis": [
+        "b57"
+      ],
+      "extract": {
+        "period": "مدة تزيد عن سنة",
+        "sanction": "سقط حقه فيها"
+      },
+      "interpretive": true,
+      "interpretiveNote": "The article does not say from what day the year runs, how it is counted, who raises it, or whether it reaches a custody request joined to the tatliq claim, when custody as a separate right follows the dissolution (custody is ruled with divorce, Family Code articles 64 and 72). The counting is left out and the effect is a warning (derivation B; open point o2).",
+      "readings": [
+        {
+          "reading": {
+            "ar": "تبدأ السنة من تاريخ نشوء الحق في الحضانة (الافتراق).",
+            "en": "The year runs from the day the right to custody arose (the separation)."
+          },
+          "basis": [
+            "b57"
+          ]
+        },
+        {
+          "reading": {
+            "ar": "تبدأ السنة من آخر تاريخ كان فيه الحاضن قادرا على المطالبة.",
+            "en": "The year runs from the last day on which the person could have claimed."
+          },
+          "basis": [
+            "b57"
+          ]
+        },
+        {
+          "reading": {
+            "ar": "لا تسري السنة قبل انحلال الزواج، فلا تمس طلب الحضانة المقدم مع طلب التطليق.",
+            "en": "The year does not run before the marriage is dissolved, so it does not touch a custody request made with the tatliq claim."
+          },
+          "basis": [
+            "b57",
+            "b29",
+            "b30"
+          ]
+        }
+      ]
+    }
+  ],
+  "priorSteps": [
+    {
+      "id": "p1",
+      "kind": "other",
+      "slots": [
+        "maintenance_previously_judged",
+        "tatliq_ground_nonmaintenance"
+      ],
+      "requiredWhen": {
+        "slot": "tatliq_ground_nonmaintenance",
+        "is": "yes"
+      },
+      "effectWhenMissing": "warn",
+      "effectWhenUnknown": "ask",
+      "message": {
+        "ar": "المادة 53 من قانون الأسرة: لا يقوم سبب عدم الإنفاق إلا بعد صدور حكم بوجوب النفقة، ما لم تكن الزوجة عالمة بإعسار الزوج وقت الزواج. تحقق من وجود الحكم بالنفقة بين الطرفين ومن عدم تنفيذه.",
+        "en": "Family Code article 53: the ground of non-maintenance stands only after a judgment ordering maintenance, unless the wife knew of the husband's poverty when she married. Check that a maintenance judgment exists between the parties and has not been carried out."
+      },
+      "basis": [
+        "b3"
+      ],
+      "interpretive": true,
+      "interpretiveNote": "The article makes the earlier judgment part of the ground and attaches no sanction to its absence other than the ground failing; treating it as a step before filing that warns is a reading (derivation B). Never block."
+    },
+    {
+      "id": "p2",
+      "kind": "other",
+      "slots": [
+        "marriage_registered"
+      ],
+      "effectWhenMissing": "warn",
+      "effectWhenUnknown": "ask",
+      "message": {
+        "ar": "المادة 22 من قانون الأسرة: يثبت الزواج بمستخرج من سجل الحالة المدنية، وفي حالة عدم تسجيله يثبت بحكم قضائي يسجل في الحالة المدنية. تحقق من تسجيل الزواج أو من وجود حكم يثبته أو من طلب إثباته.",
+        "en": "Family Code article 22: marriage is proved by a civil-status extract and, if not registered, by a court judgment that is then registered. Check the registration of the marriage, a judgment proving it, or a request to prove it."
+      },
+      "basis": [
+        "b19",
+        "b54"
+      ],
+      "interpretive": true,
+      "interpretiveNote": "The article says how marriage is proved; it does not say whether the judgment proving an unregistered marriage must come before the tatliq claim or may be asked in the same petition. Warn, never block (both derivations)."
+    }
+  ],
+  "documents": [
+    {
+      "id": "doc1",
+      "name": {
+        "ar": "مستخرج من سجل الحالة المدنية يثبت الزواج (أو الحكم الذي يثبته) والدفتر العائلي",
+        "en": "An extract of the civil-status register proving the marriage (or the judgment proving it) and the family record book"
+      },
+      "why": {
+        "ar": "إثبات قيام الرابطة الزوجية وصفة المدعية.",
+        "en": "Proves the marriage and the plaintiff's standing."
+      },
+      "basis": [
+        "b19",
+        "b54",
+        "b66"
+      ]
+    },
+    {
+      "id": "doc2",
+      "name": {
+        "ar": "الحكم القاضي بالنفقة وما يثبت عدم تنفيذه",
+        "en": "The maintenance judgment and proof of its non-performance"
+      },
+      "requiredWhen": {
+        "slot": "tatliq_ground_nonmaintenance",
+        "is": "yes"
+      },
+      "why": {
+        "ar": "سبب عدم الإنفاق يفترض حكما سابقا بوجوب النفقة.",
+        "en": "The non-maintenance ground presupposes an earlier judgment ordering maintenance."
+      },
+      "basis": [
+        "b3"
+      ]
+    },
+    {
+      "id": "doc3",
+      "name": {
+        "ar": "شهادات ميلاد الأولاد",
+        "en": "The children's birth certificates"
+      },
+      "requiredWhen": {
+        "any": [
+          {
+            "slot": "requests",
+            "includes": "custody"
+          },
+          {
+            "slot": "requests",
+            "includes": "housing"
+          },
+          {
+            "slot": "requests",
+            "includes": "visitation"
+          }
+        ]
+      },
+      "why": {
+        "ar": "إثبات الأولاد المطلوب إسناد حضانتهم والسكن لممارستها وتنظيم الزيارة.",
+        "en": "Proves the children for whom custody, housing and visitation are asked."
+      },
+      "basis": [
+        "b29",
+        "b30"
+      ]
+    },
+    {
+      "id": "doc4",
+      "name": {
+        "ar": "ما يثبت السبب المعتمد: الشهادات الطبية، الحكم الجزائي، المحاضر، أسماء الشهود",
+        "en": "Proof of the ground relied on: medical certificates, a criminal judgment, records, names of witnesses"
+      },
+      "why": {
+        "ar": "يكيف القاضي الوقائع المؤسسة للتطليق ويفصل في تأسيسه، وله أن يأمر بالتحقيق أو بالخبرة.",
+        "en": "The judge characterises the facts relied on for tatliq and decides whether it is founded, and may order an inquiry or an expertise."
+      },
+      "basis": [
+        "b39",
+        "b40",
+        "b12",
+        "b6",
+        "b5"
+      ]
+    },
+    {
+      "id": "doc5",
+      "name": {
+        "ar": "نسخ من العريضة بعدد الأطراف لتبليغها رسميا للمدعى عليه وللنيابة العامة",
+        "en": "Copies of the petition, one per party, for formal service on the defendant and the public prosecutor"
+      },
+      "why": {
+        "ar": "يجب على المدعي في دعوى الطلاق تبليغ المدعى عليه والنيابة العامة بنسخة من العريضة، ويجوز تبليغ النيابة عن طريق أمانة الضبط.",
+        "en": "The plaintiff in a divorce claim must serve a copy of the petition on the defendant and the prosecutor; the prosecutor may be notified through the registry."
+      },
+      "basis": [
+        "b37",
+        "b38",
+        "b65"
+      ]
+    },
+    {
+      "id": "doc6",
+      "name": {
+        "ar": "قائمة المتاع والمصوغ وما يثبت ملكيتها",
+        "en": "A list of the furniture and jewellery and proof of ownership"
+      },
+      "requiredWhen": {
+        "slot": "requests",
+        "includes": "restitution"
+      },
+      "why": {
+        "ar": "القول للزوجة مع اليمين فيما يعتاد للنساء عند انعدام البينة.",
+        "en": "Without evidence the wife is believed on oath for what is customary for women."
+      },
+      "basis": [
+        "b32",
+        "b33"
+      ]
+    },
+    {
+      "id": "doc7",
+      "name": {
+        "ar": "ما يثبت دفع الرسوم القضائية",
+        "en": "Proof that the court fees are paid"
+      },
+      "why": {
+        "ar": "لا تقيد العريضة إلا بعد دفع الرسوم.",
+        "en": "The petition is registered only after the fees are paid."
+      },
+      "basis": [
+        "b67"
+      ]
+    }
+  ],
+  "boundaries": [
+    {
+      "id": "n1",
+      "looksLike": {
+        "ar": "تطليق للهجر في المضجع.",
+        "en": "Tatliq for desertion of the bed."
+      },
+      "isActually": "outside:ground-not-met",
+      "tellingFacts": [
+        {
+          "ar": "لم تتجاوز مدة الهجر أربعة أشهر في تاريخ العريضة.",
+          "en": "The desertion has not lasted more than four months at the petition's date."
+        }
+      ],
+      "when": {
+        "slot": "bed_desertion_ground",
+        "is": "four_months_or_less"
+      },
+      "slots": [
+        "bed_desertion_ground"
+      ],
+      "message": {
+        "ar": "المادة 53 من قانون الأسرة: الهجر في المضجع سبب للتطليق إذا كان فوق أربعة أشهر. تحقق من مدة الهجر ووسيلة إثباتها ومن سبب آخر يؤسس عليه الطلب.",
+        "en": "Family Code article 53: desertion of the bed is a ground when it lasts more than four months. Check how long it has lasted, how it will be proved, and whether another ground supports the claim."
+      },
+      "basis": [
+        "b5"
+      ]
+    },
+    {
+      "id": "n2",
+      "looksLike": {
+        "ar": "تطليق لغيبة الزوج.",
+        "en": "Tatliq for the husband's absence."
+      },
+      "isActually": "outside:ground-not-met",
+      "tellingFacts": [
+        {
+          "ar": "لم تمض سنة على الغيبة، أو للزوج عذر، أو ينفق على الزوجة.",
+          "en": "A year has not passed, or the husband has an excuse, or he maintains the wife."
+        }
+      ],
+      "when": {
+        "slot": "absence_ground",
+        "is": "not_met"
+      },
+      "slots": [
+        "absence_ground"
+      ],
+      "message": {
+        "ar": "المادتان 53 و112 من قانون الأسرة: الغيبة سبب للتطليق بعد مرور سنة بدون عذر ولا نفقة. تحقق من مدة الغيبة وعذرها والإنفاق أثناءها.",
+        "en": "Family Code articles 53 and 112: absence is a ground once a year has passed without excuse and without maintenance. Check the length of the absence, any excuse and any maintenance paid."
+      },
+      "basis": [
+        "b7",
+        "b14"
+      ]
+    },
+    {
+      "id": "n3",
+      "looksLike": {
+        "ar": "تطليق يخضع للقانون الجزائري.",
+        "en": "A tatliq governed by Algerian law."
+      },
+      "isActually": "outside:foreign-applicable-law",
+      "tellingFacts": [
+        {
+          "ar": "الزوج أجنبي الجنسية وقت رفع الدعوى ولم يكن أي من الزوجين جزائريا وقت الزواج.",
+          "en": "The husband is a foreign national when the claim is filed and neither spouse was Algerian when they married."
+        }
+      ],
+      "when": {
+        "slot": "debtor_is_foreign_national",
+        "is": "yes"
+      },
+      "slots": [
+        "debtor_is_foreign_national"
+      ],
+      "message": {
+        "ar": "المادة 12 من القانون المدني: يسري على انحلال الزواج القانون الوطني للزوج وقت رفع الدعوى، والمادة 13 تطبق القانون الجزائري وحده إذا كان أحد الزوجين جزائريا وقت انعقاد الزواج. تحقق من جنسية الزوجين وقت الزواج.",
+        "en": "Civil Code article 12: dissolution of marriage is governed by the husband's national law when the claim is filed, and article 13 applies Algerian law alone if either spouse was Algerian when the marriage was made. Check both spouses' nationality at the marriage."
+      },
+      "basis": [
+        "b44",
+        "b45"
+      ]
+    },
+    {
+      "id": "n4",
+      "looksLike": {
+        "ar": "دعوى تطليق مستقلة.",
+        "en": "A stand-alone tatliq claim."
+      },
+      "isActually": "outside:pending-related-action",
+      "tellingFacts": [
+        {
+          "ar": "توجد بين الزوجين دعوى طلاق أو تطليق أو خلع قائمة لم يفصل فيها.",
+          "en": "A divorce, tatliq or khul action between the spouses is pending and undecided."
+        }
+      ],
+      "when": {
+        "slot": "divorce_action_pending",
+        "is": "yes"
+      },
+      "slots": [
+        "divorce_action_pending"
+      ],
+      "message": {
+        "ar": "المادتان 53 و55 من قانون الإجراءات المدنية والإدارية: تقوم وحدة الموضوع إذا رفع نفس النزاع إلى جهتين، ويقوم الارتباط إذا استلزم حسن سير العدالة الفصل في القضايا معا. تحقق من الدعوى القائمة ومن إمكان تقديم الطلب فيها.",
+        "en": "CPCA articles 53 and 55: lis pendens arises when the same dispute is before more than one court, and connection when sound justice requires the cases to be decided together. Check the pending action and whether the request can be made in it."
+      },
+      "basis": [
+        "b46",
+        "b47"
+      ]
+    },
+    {
+      "id": "n5",
+      "looksLike": {
+        "ar": "طلب تطليق من زوجة.",
+        "en": "A wife's petition for tatliq."
+      },
+      "isActually": "outside:effects-of-divorce-already-pronounced",
+      "tellingFacts": [
+        {
+          "ar": "سبق أن صدر حكم بالطلاق بين الطرفين، فلا زواج قائم للتطليق منه ولم يبق إلا آثاره.",
+          "en": "A divorce between the parties has already been pronounced by judgment, so no marriage is left to dissolve; only its consequences remain."
+        }
+      ],
+      "when": {
+        "slot": "spouses_divorced",
+        "is": "yes"
+      },
+      "slots": [
+        "spouses_divorced"
+      ],
+      "message": {
+        "ar": "المادتان 48 و49 من قانون الأسرة: ينحل عقد الزواج بالطلاق، ولا يثبت الطلاق إلا بحكم. إذا صدر حكم بالطلاق، فتحقق مما إذا كان المطلوب آثاره فقط (النفقة أو الحضانة أو السكن).",
+        "en": "Family Code articles 48 and 49: marriage is dissolved by divorce, and divorce is established only by judgment. If a divorce judgment already exists, check whether only its consequences (maintenance, custody, housing) are sought."
+      },
+      "basis": [
+        "b1",
+        "b20"
+      ]
+    },
+    {
+      "id": "n6",
+      "looksLike": {
+        "ar": "طلب الزوجة فك الرابطة الزوجية.",
+        "en": "The wife's request to end the marriage."
+      },
+      "isActually": "outside:khul",
+      "tellingFacts": [
+        {
+          "ar": "تعرض الزوجة مقابلا ماليا ولا تؤسس طلبها على سبب من أسباب التطليق.",
+          "en": "The wife offers a payment and relies on no ground for tatliq."
+        }
+      ],
+      "message": {
+        "ar": "المادة 54 من قانون الأسرة: الخلع بمقابل مالي دون موافقة الزوج، ويختلف عن التطليق المؤسس على سبب من أسباب المادة 53. تحقق من وجود سبب من أسباب التطليق.",
+        "en": "Family Code article 54: khul is against payment, without the husband's consent, and differs from tatliq based on a ground of article 53. Check whether a ground for tatliq exists."
+      },
+      "basis": [
+        "b49",
+        "b2"
+      ]
+    },
+    {
+      "id": "n7",
+      "looksLike": {
+        "ar": "تطليق بسبب زواج الزوج بأخرى.",
+        "en": "Tatliq because the husband took another wife."
+      },
+      "isActually": "outside:annulment-of-new-marriage",
+      "tellingFacts": [
+        {
+          "ar": "المطلوب فسخ الزواج الجديد المبرم دون ترخيص قبل الدخول، لا فك الزواج القائم.",
+          "en": "What is sought is the annulment of the new marriage made without authorisation, before consummation, not the end of the existing one."
+        }
+      ],
+      "message": {
+        "ar": "المادة 8 مكرر 1 من قانون الأسرة: يفسخ الزواج الجديد قبل الدخول إذا لم يحصل الزوج على الترخيص؛ والمادة 8 مكرر تجيز للزوجة طلب التطليق في حالة التدليس.",
+        "en": "Family Code article 8 bis 1: the new marriage is annulled before consummation if the husband had no authorisation; article 8 bis lets the wife ask for tatliq in case of deception."
+      },
+      "basis": [
+        "b51",
+        "b16"
+      ]
+    },
+    {
+      "id": "n8",
+      "looksLike": {
+        "ar": "تعويض المطلقة عن الطلاق.",
+        "en": "Compensation of a divorced wife."
+      },
+      "isActually": "outside:husband-divorce",
+      "tellingFacts": [
+        {
+          "ar": "الزوج هو الذي طلب الطلاق بإرادته، والتعويض يطلب عن تعسفه.",
+          "en": "The husband asked for divorce by his own will, and compensation is sought for his abuse."
+        }
+      ],
+      "message": {
+        "ar": "المادة 52 من قانون الأسرة: التعويض عن تعسف الزوج في الطلاق يختلف عن التعويض عند الحكم بالتطليق (المادة 53 مكرر).",
+        "en": "Family Code article 52: compensation for the husband's abusive divorce differs from compensation on a tatliq judgment (article 53 bis)."
+      },
+      "basis": [
+        "b50",
+        "b13"
+      ]
+    },
+    {
+      "id": "n9",
+      "looksLike": {
+        "ar": "تطليق لعدم الإنفاق.",
+        "en": "Tatliq for non-payment of maintenance."
+      },
+      "isActually": "outside:ground-excluded",
+      "tellingFacts": [
+        {
+          "ar": "كانت الزوجة عالمة بإعسار زوجها وقت الزواج.",
+          "en": "The wife knew of her husband's insolvency when she married."
+        }
+      ],
+      "when": {
+        "all": [
+          {
+            "slot": "tatliq_ground_nonmaintenance",
+            "is": "yes"
+          },
+          {
+            "slot": "wife_knew_husband_indigence",
+            "is": "yes"
+          }
+        ]
+      },
+      "slots": [
+        "tatliq_ground_nonmaintenance",
+        "wife_knew_husband_indigence"
+      ],
+      "message": {
+        "ar": "المادة 53 من قانون الأسرة: يجوز طلب التطليق لعدم الإنفاق ما لم تكن الزوجة عالمة بإعسار زوجها وقت الزواج. تحقق مما كانت تعلمه الزوجة وقت الزواج ومن السبب الآخر الذي يمكن الاستناد إليه.",
+        "en": "Family Code article 53: tatliq for non-payment of maintenance is open unless the wife knew of her husband's insolvency when she married. Check what the wife knew at the time of the marriage and whether another ground can be relied on."
+      },
+      "basis": [
+        "b3"
+      ]
+    },
+    {
+      "id": "n10",
+      "looksLike": {
+        "ar": "طلب تطليق لزواج غير مسجل.",
+        "en": "A petition for tatliq of an unregistered marriage."
+      },
+      "isActually": "outside:proof-of-marriage-claim",
+      "tellingFacts": [
+        {
+          "ar": "لا مستخرج من سجل الحالة المدنية يثبت الزواج ولا حكم يثبته.",
+          "en": "No civil-status extract and no judgment proves the marriage."
+        }
+      ],
+      "message": {
+        "ar": "المادة 22 من قانون الأسرة: يثبت الزواج غير المسجل بحكم قضائي. تحقق من وجوب دعوى إثبات الزواج أو من تقديم طلب إثباته.",
+        "en": "Family Code article 22: an unregistered marriage is proved by a judgment. Check whether an action to prove the marriage is needed, or a request to prove it."
+      },
+      "basis": [
+        "b19",
+        "b54"
+      ]
+    },
+    {
+      "id": "n11",
+      "looksLike": {
+        "ar": "طلب تطليق.",
+        "en": "A petition for tatliq."
+      },
+      "isActually": "outside:divorce-by-husband-or-consent",
+      "tellingFacts": [
+        {
+          "ar": "الطلاق بإرادة الزوج أو بتراضي الزوجين لا بطلب الزوجة لسبب.",
+          "en": "The divorce is by the husband's will or by mutual consent, not at the wife's request on a ground."
+        }
+      ],
+      "message": {
+        "ar": "المادة 48 من قانون الأسرة: يتم الطلاق بإرادة الزوج أو بتراضي الزوجين أو بطلب من الزوجة. تحقق من طريق الانحلال المقصود.",
+        "en": "Family Code article 48: divorce is by the husband's will, by mutual consent or at the wife's request. Check which way of dissolution is meant."
+      },
+      "basis": [
+        "b1"
+      ]
+    }
+  ],
+  "openPoints": [
+    {
+      "id": "o1",
+      "question": {
+        "ar": "هل حد السنة في استحقاق النفقة السابقة على رفع الدعوى أجل تقادم أم سقف للحكم، وكيف يحسب ومن يثيره؟",
+        "en": "Is the one-year bound on maintenance before filing a limitation or a cap on the award, how is it counted, and who raises it?"
+      },
+      "why": {
+        "ar": "النص يحدد المدة دون طريقة حسابها ودون بيان من يثيرها، ومادة الحساب في القانون المدني تخص التقادم ومادة قانون الإجراءات تخص آجاله.",
+        "en": "The text sets the period but not how it is counted or who raises it; the Civil Code's counting article concerns limitation and the procedure code's concerns its own periods."
+      },
+      "readings": [
+        {
+          "reading": {
+            "ar": "سقف موضوعي يطبقه القاضي.",
+            "en": "A substantive cap the judge applies."
+          },
+          "basis": [
+            "b28"
+          ]
+        },
+        {
+          "reading": {
+            "ar": "سلطة تقديرية مشروطة بالبينة.",
+            "en": "A discretion that depends on evidence."
+          },
+          "basis": [
+            "b28"
+          ]
+        }
+      ],
+      "protectiveReading": {
+        "ar": "التنبيه إذا كان توقف الإنفاق سابقا لأكثر من سنة على رفع الدعوى، دون منع.",
+        "en": "Warn when maintenance stopped more than a year before filing; never block."
+      },
+      "grade": "C",
+      "refs": [
+        "d1"
+      ]
+    },
+    {
+      "id": "o2",
+      "question": {
+        "ar": "من أي يوم تبدأ سنة سقوط الحق في الحضانة، وكيف تحسب، ومن يثير السقوط، وهل تمس طلب الحضانة المقدم مع طلب التطليق؟",
+        "en": "From what day does the year after which the right to custody falls run, how is it counted, who raises it, and does it reach a custody request made with the tatliq claim?"
+      },
+      "why": {
+        "ar": "النص لا يحدد بدء السنة ولا من يثير السقوط، والحضانة بوصفها حقا مستقلا تترتب على الطلاق.",
+        "en": "The article does not say when the year starts or who raises the lapse, and custody as a separate right follows the divorce."
+      },
+      "readings": [
+        {
+          "reading": {
+            "ar": "بدء السنة من الافتراق.",
+            "en": "From the separation."
+          },
+          "basis": [
+            "b57"
+          ]
+        },
+        {
+          "reading": {
+            "ar": "بدء السنة من آخر يوم أمكنت فيه المطالبة.",
+            "en": "From the last day a claim was possible."
+          },
+          "basis": [
+            "b57"
+          ]
+        },
+        {
+          "reading": {
+            "ar": "لا تسري قبل انحلال الزواج.",
+            "en": "It does not run before the marriage is dissolved."
+          },
+          "basis": [
+            "b57",
+            "b29",
+            "b30"
+          ]
+        }
+      ],
+      "protectiveReading": {
+        "ar": "التنبيه عند مضي أكثر من سنة على نشوء الحق دون منع.",
+        "en": "Warn when more than a year has passed since the right arose; never block."
+      },
+      "grade": "C",
+      "refs": [
+        "d2"
+      ]
+    },
+    {
+      "id": "o3",
+      "question": {
+        "ar": "هل يجب أن يسبق حكم إثبات الزواج غير المسجل دعوى التطليق، أم يجوز طلبه في نفس العريضة؟",
+        "en": "Must a judgment proving an unregistered marriage precede the tatliq claim, or can it be asked in the same petition?"
+      },
+      "why": {
+        "ar": "النص يبين وسيلة الإثبات فقط.",
+        "en": "The text only says how marriage is proved."
+      },
+      "protectiveReading": {
+        "ar": "التنبيه عند عدم التسجيل وعدم المنع.",
+        "en": "Warn when the marriage is unregistered; never block."
+      },
+      "grade": "C",
+      "refs": [
+        "p2",
+        "n10"
+      ]
+    },
+    {
+      "id": "o4",
+      "question": {
+        "ar": "من يثبت علم الزوجة بإعسار الزوج وقت الزواج، وهل يكفي حكم النفقة دون إثبات محاولة تنفيذه، وما أثر غياب الحكم؟",
+        "en": "Who proves the wife's knowledge of the husband's poverty at marriage, does the maintenance judgment suffice without proof of an attempt to enforce it, and what follows if there is no judgment?"
+      },
+      "why": {
+        "ar": "النص يشترط عدم الإنفاق بعد الحكم ويستثني حالة العلم دون تحديد عبء الإثبات أو وسيلة إثبات عدم التنفيذ أو جزاء غياب الحكم.",
+        "en": "The text requires non-maintenance after the judgment and excepts the wife's knowledge, without allocating the burden, saying how non-performance is shown, or attaching a sanction to a missing judgment."
+      },
+      "protectiveReading": {
+        "ar": "إرفاق الحكم وما يثبت عدم تنفيذه، والتنبيه عند غياب الحكم أو علم الزوجة بالإعسار، دون منع.",
+        "en": "Attach the judgment and proof of non-performance; warn when there is no judgment or the wife knew of the poverty; never block."
+      },
+      "grade": "C",
+      "refs": [
+        "p1",
+        "e3",
+        "doc2",
+        "n9"
+      ]
+    },
+    {
+      "id": "o5",
+      "question": {
+        "ar": "ما الجرائم التي تعد ماسة بشرف الأسرة، وهل يعد ترك الأسرة أو عدم دفع النفقة جريمة، وهل يوقف القاضي الفصل في التطليق المؤسس على الضرر إلى حين الفصل في الدعوى العمومية؟",
+        "en": "Which offences touch the family's honour, are abandonment of the family or non-payment of maintenance offences, and must the judge defer a tatliq based on harm until the public action is decided?"
+      },
+      "why": {
+        "ar": "قانون العقوبات وقانون الإجراءات الجزائية غير موجودين في المخزن.",
+        "en": "The Penal Code and the Code of Criminal Procedure are not in the store."
+      },
+      "protectiveReading": {
+        "ar": "التنبيه عند وجود متابعة جزائية على نفس الوقائع، وسؤال المحامي عن أي شكوى جزائية.",
+        "en": "Warn when criminal proceedings exist on the same facts, and ask the lawyer about any criminal complaint."
+      },
+      "grade": "D",
+      "refs": [
+        "e4",
+        "b6",
+        "ordinary-court-exits.x6"
+      ]
+    },
+    {
+      "id": "o6",
+      "question": {
+        "ar": "أي صياغة لقانون الأسرة تحكم وقائع سابقة لتعديل سنة 2005، ومنها أسباب التطليق والتعويض عند التطليق؟",
+        "en": "Which wording of the Family Code governs facts before the 2005 amendment, including the grounds of tatliq and compensation on tatliq?"
+      },
+      "why": {
+        "ar": "ملاحظة المخزن تصادق على النص الحالي فقط ولا تحسم التطبيق الزمني، والصياغة السابقة للمادتين غير موجودة في المخزن.",
+        "en": "The store's note certifies only the current text and does not settle temporal application, and the earlier wording of the two articles is not in the store."
+      },
+      "protectiveReading": {
+        "ar": "اعتماد النص الحالي مع تنبيه المحامي إلى التحقق من تاريخ الوقائع القديمة.",
+        "en": "Use the current text and have the lawyer check the date of old facts."
+      },
+      "grade": "D",
+      "refs": [
+        "b2",
+        "b3",
+        "b4",
+        "b5",
+        "b6",
+        "b7",
+        "b8",
+        "b9",
+        "b10",
+        "b11",
+        "b12",
+        "b13"
+      ]
+    },
+    {
+      "id": "o7",
+      "question": {
+        "ar": "هل يشترط إعذار قبل طلب التعويض عن التطليق؟",
+        "en": "Is a formal notice needed before the claim for compensation on tatliq?"
+      },
+      "why": {
+        "ar": "القانون المدني يجعل التعويض مستحقا بعد الإعذار ما لم يوجد نص، والمادة 53 مكرر تجعله بيد القاضي عند الحكم بالتطليق دون ذكر للإعذار.",
+        "en": "The Civil Code makes compensation due after notice unless a text provides otherwise, and article 53 bis leaves it to the judge on granting tatliq without mentioning notice."
+      },
+      "readings": [
+        {
+          "reading": {
+            "ar": "لا إعذار: التعويض يحكم به القاضي عند التطليق.",
+            "en": "No notice: the judge awards the compensation on granting tatliq."
+          },
+          "basis": [
+            "b13"
+          ]
+        },
+        {
+          "reading": {
+            "ar": "يشترط الإعذار وفق القواعد العامة.",
+            "en": "Notice is needed under the general rules."
+          }
+        }
+      ],
+      "protectiveReading": {
+        "ar": "لا يمنع التصدير؛ ينبه المحامي إلى فحص المسألة.",
+        "en": "Do not block; the lawyer is told to check."
+      },
+      "grade": "C",
+      "refs": [
+        "r2"
+      ]
+    },
+    {
+      "id": "o8",
+      "question": {
+        "ar": "أي مسكن زوجي يحدد الاختصاص إذا غادرت الزوجة بيت الزوجية؟",
+        "en": "Which marital home fixes the court if the wife has left it?"
+      },
+      "why": {
+        "ar": "النص يقول مكان المسكن الزوجي دون بيان حالة مغادرة الزوجة.",
+        "en": "The text says the place of the marital home and does not cover a wife who has left."
+      },
+      "readings": [
+        {
+          "reading": {
+            "ar": "آخر مسكن زوجي مشترك.",
+            "en": "The last shared marital home."
+          },
+          "basis": [
+            "b42"
+          ]
+        },
+        {
+          "reading": {
+            "ar": "المسكن الحالي للزوجة الحاضنة.",
+            "en": "The present dwelling of the custodian wife."
+          },
+          "basis": [
+            "b42"
+          ]
+        }
+      ],
+      "protectiveReading": {
+        "ar": "تحقق من المسكن الزوجي الأخير ومن مكان الحضانة قبل الإيداع.",
+        "en": "Check the last marital home and the place of custody before filing."
+      },
+      "grade": "C",
+      "refs": [
+        "t1"
+      ]
+    },
+    {
+      "id": "o9",
+      "question": {
+        "ar": "هل يؤثر اختلاف النص الفرنسي عن العربي في أسباب التطليق (العيوب، الغيبة، الفاحشة)؟",
+        "en": "Do differences between the French and Arabic texts of the grounds (defects, absence, immoral act) matter?"
+      },
+      "why": {
+        "ar": "النص الفرنسي غير موجود في المخزن، وما ذكر عنه مصدره الذاكرة.",
+        "en": "The French text is not in the store; what was said of it comes from memory."
+      },
+      "protectiveReading": {
+        "ar": "يتبع النص العربي، وينبه المحامي إلى عدم الاكتفاء بشرط واحد في الغيبة.",
+        "en": "The Arabic is followed; the lawyer should not rely on one condition alone for absence."
+      },
+      "grade": "D",
+      "refs": [
+        "b4",
+        "b7",
+        "b9"
+      ]
+    },
+    {
+      "id": "o10",
+      "question": {
+        "ar": "هل تطبق قواعد خاصة للمساعدة القضائية والرسوم في قضايا الأسرة؟",
+        "en": "Do special legal-aid and fee rules apply to family claims?"
+      },
+      "why": {
+        "ar": "لا نص في المخزن عن المساعدة القضائية؛ النص العام يحيل إلى الرسوم المقررة قانونا.",
+        "en": "No legal-aid text is in the store; the general text refers to the fees set by law."
+      },
+      "protectiveReading": {
+        "ar": "يتحقق المحامي من الرسوم قبل الإيداع.",
+        "en": "The lawyer checks the fees before filing."
+      },
+      "grade": "D",
+      "refs": [
+        "doc7"
+      ]
+    },
+    {
+      "id": "o11",
+      "question": {
+        "ar": "هل تستبدل نصوص الإجراءات العامة المذكورة هنا (العريضة، الرسوم، المستندات، الصلح) بالوحدات المشتركة عند صدور سجلاتها النهائية؟",
+        "en": "Should the general procedure texts cited here (petition, fees, documents, reconciliation) be replaced by the shared modules once their records are final?"
+      },
+      "why": {
+        "ar": "لا يوجد سجل نهائي لوحدات أركان العريضة والصلح والإثبات والطلبات التبعية يمكن الاستيراد منه.",
+        "en": "No final record exists for the modules on the petition's formal elements, conciliation, proof and accessory requests to import from."
+      },
+      "protectiveReading": {
+        "ar": "الإبقاء على الإحالات المباشرة إلى حين الاستيراد، دون أثر.",
+        "en": "Keep the direct citations until they can be imported; they have no effect."
+      },
+      "grade": "C",
+      "refs": [
+        "b59",
+        "b60",
+        "b61",
+        "b62",
+        "b64",
+        "b65",
+        "b66",
+        "b67",
+        "b74",
+        "b75",
+        "b76"
+      ]
+    },
+    {
+      "id": "o12",
+      "question": {
+        "ar": "من يتحمل عبء إثبات سبب التطليق؟",
+        "en": "Who bears the burden of proving the ground of tatliq?"
+      },
+      "why": {
+        "ar": "لا نص في قانون الأسرة أو قانون الإجراءات يوزع العبء صراحة؛ قاعدة القانون المدني مكتوبة للالتزامات، ونص الإجراءات يجعل للقاضي معاينة الوقائع وتكييفها.",
+        "en": "No Family Code or procedure text allocates the burden in terms; the Civil Code rule is written for obligations, and the procedure text gives the judge the task of examining and characterising the facts."
+      },
+      "readings": [
+        {
+          "reading": {
+            "ar": "على المدعية إثبات السبب قياسا على قاعدة الدائن.",
+            "en": "The plaintiff proves the ground, by analogy with the creditor's rule."
+          },
+          "basis": [
+            "b70"
+          ]
+        },
+        {
+          "reading": {
+            "ar": "يعاين القاضي الوقائع ويأمر بما يراه من تدابير التحقيق.",
+            "en": "The judge examines the facts and orders the measures of inquiry he sees fit."
+          },
+          "basis": [
+            "b39",
+            "b40"
+          ]
+        }
+      ],
+      "protectiveReading": {
+        "ar": "تعد المدعية أدلة السبب المعتمد وترفقها.",
+        "en": "The plaintiff prepares and attaches the proof of the ground relied on."
+      },
+      "grade": "C",
+      "refs": [
+        "b70",
+        "e2",
+        "e4"
+      ]
+    }
+  ],
+  "checklist": [
+    {
+      "id": "k1",
+      "item": "Basis: the Family Code article listing the grounds on which the wife may ask for judicial divorce (tatliq), as amended by Ordinance 05-02 of 2005 (ten grounds).",
+      "from": [
+        "derivationA"
+      ],
+      "answer": "applies",
+      "refs": [
+        "b1",
+        "b2",
+        "b3",
+        "b4",
+        "b5",
+        "b6",
+        "b7",
+        "b8",
+        "b9",
+        "b10",
+        "b11",
+        "b12",
+        "r1"
+      ],
+      "note": "Ten grounds in paragraphs 2 to 11 of the grounds article, wording of ordinance 05-02."
+    },
+    {
+      "id": "k2",
+      "item": "Which ground is relied on: refusal to pay maintenance after a judgment ordering it (unless the wife knew of his insolvency at the time of marriage); infirmity preventing the purpose of marriage; refusal to share the bed for more than four months; conviction for an offence harming the family's honour with a sentence of more than one year; absence of more than one year without excuse or maintenance; breach of the polygamy conditions; an established immoral act; persistent discord; breach of a clause of the marriage contract; any harm legally recognised.",
+      "from": [
+        "derivationA"
+      ],
+      "answer": "applies",
+      "refs": [
+        "b3",
+        "b4",
+        "b5",
+        "b6",
+        "b7",
+        "b8",
+        "b9",
+        "b10",
+        "b11",
+        "b12",
+        "e2",
+        "e3",
+        "e4",
+        "e5",
+        "n1",
+        "n2",
+        "n9"
+      ],
+      "note": "The current text of the conviction ground sets no minimum sentence: it requires an offence touching the family's honour that makes married life impossible to continue."
+    },
+    {
+      "id": "k3",
+      "item": "Element: a valid marriage between the parties, proved by a civil-status extract; if the marriage is not registered, it must first or at the same time be proved by judgment (Family Code provision on registration and proof of marriage).",
+      "from": [
+        "derivationA"
+      ],
+      "answer": "applies",
+      "refs": [
+        "e1",
+        "b19",
+        "b54",
+        "p2",
+        "doc1",
+        "n10",
+        "o3"
+      ]
+    },
+    {
+      "id": "k4",
+      "item": "Element (non-maintenance ground): a prior judgment ordering maintenance and its non-execution; the wife's ignorance of the husband's poverty when she married; the cross-references to the maintenance articles.",
+      "from": [
+        "derivationA"
+      ],
+      "answer": "applies",
+      "refs": [
+        "e3",
+        "b3",
+        "p1",
+        "n9",
+        "doc2",
+        "o4"
+      ]
+    },
+    {
+      "id": "k5",
+      "item": "Element (abandonment / refusal of the bed): the duration exceeds four months; how the starting date is proved.",
+      "from": [
+        "derivationA"
+      ],
+      "answer": "applies",
+      "refs": [
+        "e2",
+        "b5",
+        "n1"
+      ],
+      "note": "Proof of the starting date: witnesses (relatives other than descendants may be heard in divorce cases) and inquiry."
+    },
+    {
+      "id": "k6",
+      "item": "Element (absence): absence of more than one year without a legitimate excuse or without maintenance; distinguish from the missing person (mafqud) regime.",
+      "from": [
+        "derivationA"
+      ],
+      "answer": "applies",
+      "refs": [
+        "e2",
+        "b7",
+        "b14",
+        "n2"
+      ],
+      "note": "The wife of a missing or of an absent husband may ask for divorce on the absence ground."
+    },
+    {
+      "id": "k7",
+      "item": "Element (harm): harm legally recognised (violence, insults); proof by medical certificate, criminal judgment, witnesses; whether a criminal conviction is needed or not.",
+      "from": [
+        "derivationA"
+      ],
+      "answer": "applies",
+      "refs": [
+        "e4",
+        "b12",
+        "b6",
+        "b39",
+        "b40",
+        "ordinary-court-exits.b36",
+        "ordinary-court-exits.x6"
+      ],
+      "note": "The harm ground does not require a conviction; the separate conviction ground does."
+    },
+    {
+      "id": "k8",
+      "item": "Burden of proof: the wife proves the ground she relies on; free proof of facts (witnesses, presumptions).",
+      "from": [
+        "derivationA"
+      ],
+      "answer": "applies",
+      "refs": [
+        "e1",
+        "e2",
+        "e3",
+        "e4",
+        "e5",
+        "b39",
+        "b40",
+        "b68",
+        "b69",
+        "b70",
+        "o12"
+      ],
+      "note": "No family or procedure text allocates the burden in terms; the Civil Code rule is applied by analogy (interpretive)."
+    },
+    {
+      "id": "k9",
+      "item": "Damages: the Family Code article allowing the judge, when granting tatliq, to award the wife compensation for the harm suffered (article 53 bis).",
+      "from": [
+        "derivationA"
+      ],
+      "answer": "applies",
+      "refs": [
+        "b13",
+        "r2",
+        "n8",
+        "o7"
+      ]
+    },
+    {
+      "id": "k10",
+      "item": "Mandatory reconciliation attempts by the judge before divorce is pronounced, within a maximum period of three months from the filing of the claim; personal appearance of the spouses; record of the reconciliation attempt (Family Code and CPCA family chapter).",
+      "from": [
+        "derivationA"
+      ],
+      "answer": "applies",
+      "refs": [
+        "b20",
+        "b52",
+        "b59",
+        "b60",
+        "b61",
+        "b62",
+        "o11"
+      ],
+      "note": "The attempts are made by the judge after filing; they are not a step before filing. The conciliation-mediation module has no final record to import."
+    },
+    {
+      "id": "k11",
+      "item": "Persistent discord: appointment of two arbitrators (hakamayn), one from each family, with a report within two months.",
+      "from": [
+        "derivationA"
+      ],
+      "answer": "applies",
+      "refs": [
+        "b18",
+        "b10",
+        "e5"
+      ]
+    },
+    {
+      "id": "k12",
+      "item": "Divorce only by a judgment; the judgment is final, not open to appeal except in its financial aspects; cassation remains possible.",
+      "from": [
+        "derivationA"
+      ],
+      "answer": "applies",
+      "refs": [
+        "b20",
+        "b21",
+        "b22",
+        "b41"
+      ]
+    },
+    {
+      "id": "k13",
+      "item": "Competent section: the family affairs section (qism shu'un al-usra) of the tribunal; if the court has no sections, the tribunal sits in its general composition.",
+      "from": [
+        "derivationA"
+      ],
+      "answer": "applies",
+      "refs": [
+        "court-sections.b7",
+        "court-sections.b8",
+        "court-sections.b4",
+        "b36"
+      ],
+      "note": "Where sections were not created, the civil section hears every dispute except social ones."
+    },
+    {
+      "id": "k14",
+      "item": "Territorial jurisdiction: the court of the place of the marital domicile for divorce and its consequences; for custody the place where custody is exercised; for maintenance the creditor's domicile; public-order nature of family territorial rules.",
+      "from": [
+        "derivationA"
+      ],
+      "answer": "applies",
+      "refs": [
+        "t1",
+        "b42",
+        "court-sections.t4",
+        "court-sections.b42",
+        "o8"
+      ],
+      "note": "The procedure code sends these claims to the named courts 'and no other'; whether that makes the rule one of public order is for the territorial-jurisdiction module, which has no final record."
+    },
+    {
+      "id": "k15",
+      "item": "Public prosecution is a principal party in family cases (Family Code article 3 bis); communication of the file to the prosecutor.",
+      "from": [
+        "derivationA"
+      ],
+      "answer": "applies",
+      "refs": [
+        "court-sections.b34",
+        "b37",
+        "b38",
+        "doc5"
+      ]
+    },
+    {
+      "id": "k16",
+      "item": "No limitation period for the tatliq action itself; but for harm-based grounds the time elapsed may matter as to proof; for maintenance arrears, the court may award maintenance from the date of the claim and, on proof, up to one year before it.",
+      "from": [
+        "derivationA"
+      ],
+      "answer": "applies",
+      "refs": [
+        "d1",
+        "b28",
+        "o1"
+      ],
+      "note": "No text in the store sets a period for the tatliq action itself. The general limitations of the periods module concern obligations and are not imported."
+    },
+    {
+      "id": "k17",
+      "item": "Accessory request: maintenance of the wife during the waiting period (idda) and of the children, from the Family Code maintenance chapter.",
+      "from": [
+        "derivationA"
+      ],
+      "answer": "applies",
+      "refs": [
+        "r3",
+        "b24",
+        "b25",
+        "b26",
+        "b27",
+        "b28",
+        "b55"
+      ]
+    },
+    {
+      "id": "k18",
+      "item": "Accessory request: custody of the children to the mother first, order of custodians, the child's interest; visitation right for the father.",
+      "from": [
+        "derivationA"
+      ],
+      "answer": "applies",
+      "refs": [
+        "r4",
+        "r5",
+        "b29",
+        "b56",
+        "b22",
+        "d2"
+      ]
+    },
+    {
+      "id": "k19",
+      "item": "Accessory request: housing for the custodian or rent allowance, charged to the father; the wife stays in the marital home until the judgment on housing is executed.",
+      "from": [
+        "derivationA"
+      ],
+      "answer": "applies",
+      "refs": [
+        "r6",
+        "b30",
+        "b31"
+      ]
+    },
+    {
+      "id": "k20",
+      "item": "Accessory request: return of the wife's personal belongings, furniture and jewellery (household goods); rule on disputes about household goods (her word with oath for what is usual for women).",
+      "from": [
+        "derivationA"
+      ],
+      "answer": "applies",
+      "refs": [
+        "r7",
+        "b32",
+        "b33",
+        "b34",
+        "b77",
+        "b58",
+        "doc6"
+      ]
+    },
+    {
+      "id": "k21",
+      "item": "Accessory request: the deferred part of the dowry (sadaq), if unpaid.",
+      "from": [
+        "derivationA"
+      ],
+      "answer": "applies",
+      "refs": [
+        "b35",
+        "b75"
+      ],
+      "note": "Not among the usual request lines; the dowry statement is kept for the lawyer who adds it as a connected request."
+    },
+    {
+      "id": "k22",
+      "item": "Provisional measures: the judge may order urgent provisional measures by order on petition (maintenance, custody, visitation, housing) during the proceedings (Family Code article 57 bis).",
+      "from": [
+        "derivationA"
+      ],
+      "answer": "applies",
+      "refs": [
+        "b23",
+        "b60",
+        "court-sections.b30"
+      ]
+    },
+    {
+      "id": "k23",
+      "item": "Provisional execution: family judgments on maintenance, custody and housing are executory provisionally by law or at the judge's discretion.",
+      "from": [
+        "derivationA"
+      ],
+      "answer": "applies",
+      "refs": [
+        "b43",
+        "b71",
+        "r8",
+        "b41"
+      ],
+      "note": "The procedure code orders provisional execution on request for maintenance and the custodian's housing; in other cases only in urgency."
+    },
+    {
+      "id": "k24",
+      "item": "Documents: marriage certificate, family booklet, children's birth certificates, prior maintenance judgment and record of non-execution (bailiff), medical certificates, criminal judgment, proof of absence or abandonment, residence certificate.",
+      "from": [
+        "derivationA"
+      ],
+      "answer": "applies",
+      "refs": [
+        "doc1",
+        "doc2",
+        "doc3",
+        "doc4",
+        "doc5",
+        "doc6",
+        "doc7"
+      ]
+    },
+    {
+      "id": "k25",
+      "item": "Petition formal elements: identity of the parties, court, statement of facts and grounds, signed by the lawyer; fees.",
+      "from": [
+        "derivationA"
+      ],
+      "answer": "applies",
+      "refs": [
+        "b64",
+        "b65",
+        "b67",
+        "o11"
+      ],
+      "note": "Common to every claim; the petition-formal-elements module has no final record, so the procedure texts are cited directly (open point o11)."
+    },
+    {
+      "id": "k26",
+      "item": "Boundary: khul (the wife's redemption by paying a sum, without proof of a ground) is a separate claim; divorce by the husband's will is a separate claim; divorce by mutual consent is a separate procedure.",
+      "from": [
+        "derivationA"
+      ],
+      "answer": "applies",
+      "refs": [
+        "n6",
+        "n8",
+        "n11",
+        "b49",
+        "b50",
+        "b1"
+      ]
+    },
+    {
+      "id": "k27",
+      "item": "Boundary: an action for maintenance only (without dissolution) or for return to the marital home is a distinct claim; tatliq for absence differs from a declaration of disappearance.",
+      "from": [
+        "derivationA"
+      ],
+      "answer": "applies",
+      "refs": [
+        "n5",
+        "n2",
+        "b14"
+      ],
+      "note": "Return to the marital home is a separate family-section claim (court-sections.b7); no item of this record."
+    },
+    {
+      "id": "k28",
+      "item": "Boundary: polygamy without informing the wife gives her a right to tatliq and to ask the annulment of the new marriage if not consummated.",
+      "from": [
+        "derivationA"
+      ],
+      "answer": "applies",
+      "refs": [
+        "b8",
+        "b15",
+        "b16",
+        "n7",
+        "b51"
+      ]
+    },
+    {
+      "id": "k29",
+      "item": "Foreign element: a defendant residing abroad (service abroad, longer periods for appearance); conflict of laws in the Civil Code for divorce (law of the husband's nationality at filing, Algerian law if one spouse is Algerian).",
+      "from": [
+        "derivationA"
+      ],
+      "answer": "applies",
+      "refs": [
+        "n3",
+        "b44",
+        "b45",
+        "b73"
+      ],
+      "note": "Service abroad itself is left to the shared modules."
+    },
+    {
+      "id": "k30",
+      "item": "Pending divorce or khul action between the same spouses: lis pendens or joinder.",
+      "from": [
+        "derivationA"
+      ],
+      "answer": "applies",
+      "refs": [
+        "n4",
+        "b46",
+        "b47"
+      ]
+    },
+    {
+      "id": "k31",
+      "item": "Idda begins from the judgment; the wife's right to remarry and its link to the date of the judgment.",
+      "from": [
+        "derivationA"
+      ],
+      "answer": "applies",
+      "refs": [
+        "b24",
+        "r3"
+      ],
+      "note": "Waiting-period rules matter for the waiting-period maintenance requested; they set no period for filing."
+    },
+    {
+      "id": "k32",
+      "item": "Effect of the 2005 amendment: added grounds (breach of contract clauses, harm) and article 53 bis on compensation; the old version required less; check the version in force.",
+      "from": [
+        "derivationA"
+      ],
+      "answer": "searchedNotFound",
+      "refs": [
+        "o6"
+      ],
+      "note": "The store holds only the current wording of the grounds article and of the compensation article (ordinance 05-02); the 1984 wording is not in it. Searched the family-code text view for older wordings of articles 53 and 53 bis. Requested."
+    },
+    {
+      "id": "k33",
+      "item": "Is there a valid marriage between the parties, and is it registered or proved by a judgment of proof of marriage?",
+      "from": [
+        "derivationB"
+      ],
+      "answer": "applies",
+      "refs": [
+        "e1",
+        "p2",
+        "b19",
+        "b54",
+        "n10"
+      ]
+    },
+    {
+      "id": "k34",
+      "item": "Is the plaintiff the wife, and is the defendant her husband (no divorce already pronounced between them)?",
+      "from": [
+        "derivationB"
+      ],
+      "answer": "applies",
+      "refs": [
+        "n5",
+        "b1",
+        "b2",
+        "b66"
+      ]
+    },
+    {
+      "id": "k35",
+      "item": "Which legal ground of taṭlīq is relied on: failure to maintain, defect, abandonment beyond four months, imprisonment, absence, serious harm, or another ground in the family code?",
+      "from": [
+        "derivationB"
+      ],
+      "answer": "applies",
+      "refs": [
+        "b3",
+        "b4",
+        "b5",
+        "b6",
+        "b7",
+        "b8",
+        "b9",
+        "b10",
+        "b11",
+        "b12"
+      ],
+      "note": "The ground is read through the proposed slots tatliq_ground_nonmaintenance, bed_desertion_ground and absence_ground (one per ground that has a checkable condition)."
+    },
+    {
+      "id": "k36",
+      "item": "For failure to maintain: was there a prior judgment for maintenance, and did the husband stay in default after it? Is the wife aware of his means?",
+      "from": [
+        "derivationB"
+      ],
+      "answer": "applies",
+      "refs": [
+        "p1",
+        "b3",
+        "e3",
+        "n9"
+      ]
+    },
+    {
+      "id": "k37",
+      "item": "For abandonment: has the husband left the marital bed for more than four months, and how is it proved?",
+      "from": [
+        "derivationB"
+      ],
+      "answer": "applies",
+      "refs": [
+        "n1",
+        "b5",
+        "e2"
+      ]
+    },
+    {
+      "id": "k38",
+      "item": "For harm (darar): what harm is legally recognised, and how is it proved (witnesses, medical certificate, criminal judgment)?",
+      "from": [
+        "derivationB"
+      ],
+      "answer": "applies",
+      "refs": [
+        "e4",
+        "b12",
+        "b39",
+        "b40",
+        "b68",
+        "b69",
+        "ordinary-court-exits.b36"
+      ]
+    },
+    {
+      "id": "k39",
+      "item": "Which court has territorial jurisdiction in family matters (the place of the marital home, the custodian's residence, etc.) and is the rule of public order?",
+      "from": [
+        "derivationB"
+      ],
+      "answer": "applies",
+      "refs": [
+        "t1",
+        "court-sections.t4",
+        "b42",
+        "o8"
+      ],
+      "note": "Public-order character not settled in the store's texts beyond 'and no other'."
+    },
+    {
+      "id": "k40",
+      "item": "Is the case listed before the family affairs section, and what if the court has no sections?",
+      "from": [
+        "derivationB"
+      ],
+      "answer": "applies",
+      "refs": [
+        "b36",
+        "court-sections.b7",
+        "court-sections.b8",
+        "court-sections.b4"
+      ],
+      "note": "Answered by the record's own section rule (family; civil where the court has not created the section)."
+    },
+    {
+      "id": "k41",
+      "item": "Is there a pending divorce, taṭlīq or khul action between the spouses (lis pendens)?",
+      "from": [
+        "derivationB"
+      ],
+      "answer": "applies",
+      "refs": [
+        "n4",
+        "b46",
+        "b47"
+      ]
+    },
+    {
+      "id": "k42",
+      "item": "Is the conciliation attempt by the judge mandatory, within what period, and what is recorded in the minutes?",
+      "from": [
+        "derivationB"
+      ],
+      "answer": "applies",
+      "refs": [
+        "b20",
+        "b52",
+        "b59",
+        "b60",
+        "b61",
+        "b62"
+      ]
+    },
+    {
+      "id": "k43",
+      "item": "Must the public prosecutor be joined as a party in family cases?",
+      "from": [
+        "derivationB"
+      ],
+      "answer": "applies",
+      "refs": [
+        "court-sections.b34",
+        "b37",
+        "b38",
+        "b53",
+        "doc5"
+      ]
+    },
+    {
+      "id": "k44",
+      "item": "What mandatory elements must the petition contain (names, addresses, facts, requests, grounds)?",
+      "from": [
+        "derivationB"
+      ],
+      "answer": "applies",
+      "refs": [
+        "b64",
+        "b65",
+        "o11"
+      ]
+    },
+    {
+      "id": "k45",
+      "item": "Is there any limitation or forfeiture period for the taṭlīq claim, or is it open at any time?",
+      "from": [
+        "derivationB"
+      ],
+      "answer": "applies",
+      "refs": [
+        "d1",
+        "d2",
+        "o1",
+        "o2"
+      ],
+      "note": "No period for the tatliq claim itself; the three months of reconciliation are the judge's period after filing."
+    },
+    {
+      "id": "k46",
+      "item": "Is a formal notice required before filing (for maintenance or abandonment)?",
+      "from": [
+        "derivationB"
+      ],
+      "answer": "applies",
+      "refs": [
+        "o7"
+      ],
+      "note": "No text in the store requires a notice before tatliq or before a maintenance or custody request; whether the Civil Code notice rule reaches compensation on tatliq is open point o7. The formal-notice module is not imported."
+    },
+    {
+      "id": "k47",
+      "item": "What documents must be attached: marriage certificate, family record, proof of the ground relied on, judgments, medical reports?",
+      "from": [
+        "derivationB"
+      ],
+      "answer": "applies",
+      "refs": [
+        "doc1",
+        "doc2",
+        "doc3",
+        "doc4",
+        "doc5",
+        "doc6",
+        "doc7"
+      ]
+    },
+    {
+      "id": "k48",
+      "item": "Which accessory requests can be joined: damages, maintenance of the wife during the waiting period, custody, children's maintenance, housing, personal belongings and jewellery?",
+      "from": [
+        "derivationB"
+      ],
+      "answer": "applies",
+      "refs": [
+        "r2",
+        "r3",
+        "r4",
+        "r5",
+        "r6",
+        "r7",
+        "r8",
+        "r9"
+      ]
+    },
+    {
+      "id": "k49",
+      "item": "What is the legal basis for damages in taṭlīq, and when are they granted?",
+      "from": [
+        "derivationB"
+      ],
+      "answer": "applies",
+      "refs": [
+        "b13",
+        "r2",
+        "o7"
+      ]
+    },
+    {
+      "id": "k50",
+      "item": "How is the custody request governed: the custodian's rights, housing for the custodian, visitation?",
+      "from": [
+        "derivationB"
+      ],
+      "answer": "applies",
+      "refs": [
+        "r4",
+        "r5",
+        "r6",
+        "b29",
+        "b56",
+        "b30",
+        "b31",
+        "d2"
+      ]
+    },
+    {
+      "id": "k51",
+      "item": "Are the dowry and its unpaid balance claimable in the same action?",
+      "from": [
+        "derivationB"
+      ],
+      "answer": "applies",
+      "refs": [
+        "b35",
+        "b75"
+      ],
+      "note": "No text joins an unpaid dowry balance to the tatliq claim in terms; connected additional requests are allowed."
+    },
+    {
+      "id": "k52",
+      "item": "Is the judgment of taṭlīq open to appeal, and which parts are not?",
+      "from": [
+        "derivationB"
+      ],
+      "answer": "applies",
+      "refs": [
+        "b21",
+        "b22",
+        "b41"
+      ]
+    },
+    {
+      "id": "k53",
+      "item": "Is provisional execution available for maintenance and housing parts?",
+      "from": [
+        "derivationB"
+      ],
+      "answer": "applies",
+      "refs": [
+        "b43",
+        "b71",
+        "r8"
+      ]
+    },
+    {
+      "id": "k54",
+      "item": "Does the court appoint a judicial expert or hold an investigation (witness hearing) for the grounds?",
+      "from": [
+        "derivationB"
+      ],
+      "answer": "applies",
+      "refs": [
+        "b40",
+        "b63",
+        "b68",
+        "b69",
+        "b18"
+      ]
+    },
+    {
+      "id": "k55",
+      "item": "What if the wife is abroad or the husband is abroad, or his address is unknown?",
+      "from": [
+        "derivationB"
+      ],
+      "answer": "applies",
+      "refs": [
+        "b73",
+        "n3",
+        "b64"
+      ],
+      "note": "Defendant abroad: the longer period between service and first hearing; unknown address: the petition gives the last known domicile."
+    },
+    {
+      "id": "k56",
+      "item": "Is the claim of the wife in the waiting period (idda) maintenance part of the same petition?",
+      "from": [
+        "derivationB"
+      ],
+      "answer": "applies",
+      "refs": [
+        "b24",
+        "r3"
+      ]
+    },
+    {
+      "id": "k57",
+      "item": "What are the exits from the ordinary court: none expected, unless public bodies or criminal facts interfere?",
+      "from": [
+        "derivationB"
+      ],
+      "answer": "applies",
+      "refs": [
+        "ordinary-court-exits.x6",
+        "ordinary-court-exits.n7"
+      ],
+      "note": "Family claims stay with the family section; the only exit is the criminal one."
+    },
+    {
+      "id": "k58",
+      "item": "Is a criminal complaint on the same facts a bar to or a pause of the civil action?",
+      "from": [
+        "derivationB"
+      ],
+      "answer": "applies",
+      "refs": [
+        "ordinary-court-exits.x6",
+        "ordinary-court-exits.b36",
+        "o5"
+      ]
+    },
+    {
+      "id": "k59",
+      "item": "Does the judge verify that the grounds are established before pronouncing the divorce, and how is the burden of proof placed?",
+      "from": [
+        "derivationB"
+      ],
+      "answer": "applies",
+      "refs": [
+        "b39",
+        "b70",
+        "e1",
+        "e2",
+        "e3",
+        "e4",
+        "o12"
+      ]
+    },
+    {
+      "id": "k60",
+      "item": "Do the fees and legal aid rules apply to this claim?",
+      "from": [
+        "derivationB"
+      ],
+      "answer": "applies",
+      "refs": [
+        "b67",
+        "doc7",
+        "o10"
+      ],
+      "note": "Fees: applies. Legal aid: no text in the store (open point o10, grade D)."
+    },
+    {
+      "id": "k61",
+      "item": "Does the person need to be represented by a lawyer before the family section?",
+      "from": [
+        "derivationB"
+      ],
+      "answer": "applies",
+      "refs": [
+        "b74"
+      ],
+      "note": "A lawyer is compulsory only before appeal courts and the court of cassation."
+    },
+    {
+      "id": "k62",
+      "item": "Is the claim of restitution of the wife's furniture and jewellery proved by writing or by other means?",
+      "from": [
+        "derivationB"
+      ],
+      "answer": "applies",
+      "refs": [
+        "r7",
+        "b32",
+        "b33",
+        "b58"
+      ]
+    },
+    {
+      "id": "k63",
+      "item": "Store note on the Family Code articles cited: the text is certified as the current snapshot only and not for an earlier case; from which date does each wording apply, and what does it change for this unit?",
+      "from": [
+        "derivationA",
+        "derivationB"
+      ],
+      "answer": "applies",
+      "refs": [
+        "o6"
+      ],
+      "note": "The record cites the ordinance 05-02 wording of articles 3 bis, 7, 8, 8 bis, 8 bis 1, 19, 22, 37, 48, 49, 52, 53, 53 bis, 54, 57, 57 bis, 64 and 72 (Official Journal 2005 no. 15, 27 February 2005) and the law 84-11 wording of the others. The note says commencement follows Civil Code article 4 (one full day after publication in Algiers, after receipt elsewhere) with no single national date; Civil Code article 2 (not verified) applies a law only to the future. For a petition filed now the current wording applies to facts after March 2005; for older facts the earlier wording is not in the store (open point o6, grade D)."
+    },
+    {
+      "id": "k64",
+      "item": "Store note on Civil Code article 12: amendment certification and commencement unresolved for the 2005 wording; temporal applicability unsettled. What does it change for this unit?",
+      "from": [
+        "derivationA"
+      ],
+      "answer": "applies",
+      "refs": [
+        "b44",
+        "n3"
+      ],
+      "note": "The text is not verified (grade D). The cited paragraph puts dissolution under the husband's national law at filing; the boundary only warns and asks the lawyer to check."
+    },
+    {
+      "id": "k65",
+      "item": "Store note on Civil Code article 13: original 1975 text; the Arabic cross-reference (articles 11 and 12) differs from the French print (12 and 13), and temporal applicability is unsettled. Does it still govern divorce with a foreign element?",
+      "from": [
+        "derivationA"
+      ],
+      "answer": "applies",
+      "refs": [
+        "b45",
+        "n3"
+      ],
+      "note": "Cited in the Arabic wording, which refers to the articles on validity of marriage and on its effects and dissolution; not verified (grade D); the boundary only warns."
+    },
+    {
+      "id": "k66",
+      "item": "Penal Code: which offences touch the family's honour (conviction ground), abandonment of the family; Code of Criminal Procedure on deferring the civil case.",
+      "from": [
+        "derivationA"
+      ],
+      "answer": "searchedNotFound",
+      "refs": [
+        "o5"
+      ],
+      "note": "Searched the store's codes (cpca, civil-code, family-code, commercial-code, labour texts, law-22-13): no Penal Code or Code of Criminal Procedure. Requested."
+    },
+    {
+      "id": "k67",
+      "item": "Neighbour flag: cpca 40 ¶10 (work-accident exception to the labour territorial rule).",
+      "from": [
+        "derivationA",
+        "derivationB"
+      ],
+      "answer": "doesNotApply",
+      "note": "The paragraph is an exception to the labour-dispute item of the article; it says nothing on family claims, whose item (¶3) is cited by b42."
+    },
+    {
+      "id": "k68",
+      "item": "Neighbour flag: cpca 21 ¶2 (the judge may accept ordinary copies of documents).",
+      "from": [
+        "derivationB"
+      ],
+      "answer": "doesNotApply",
+      "note": "It relaxes the general rule on lodging documents in every claim; it changes nothing in the documents listed for tatliq (open point o11)."
+    },
+    {
+      "id": "k69",
+      "item": "Neighbour flag: cpca 22 ¶1 (documents handed to the registrar for inventory before they enter the file, on pain of rejection).",
+      "from": [
+        "derivationB"
+      ],
+      "answer": "doesNotApply",
+      "note": "A general rule on lodging documents in every claim, for the petition-formal-elements module; it adds no document particular to tatliq (open point o11)."
+    }
+  ],
+  "examples": [
+    {
+      "id": "ex1",
+      "by": "derivationA",
+      "title": "Clean case: harm and desertion over four months, marriage registered, custody asked well inside the year, no maintenance requested.",
+      "petitionDate": "2026-11-20",
+      "slots": {
+        "court_has_section_for_matter": "yes",
+        "marriage_registered": "yes",
+        "tatliq_ground_nonmaintenance": "no",
+        "bed_desertion_ground": "over_four_months",
+        "absence_ground": "not_relied",
+        "debtor_is_foreign_national": "no",
+        "divorce_action_pending": "no",
+        "spouses_divorced": "no",
+        "criminal_case_on_same_facts": "no",
+        "obligation_is_tort_compensation": "no",
+        "requests": [
+          "tatliq",
+          "damages",
+          "custody",
+          "housing"
+        ],
+        "custody_entitlement_date": "2026-06-01"
+      },
+      "expect": {
+        "findings": [
+          {
+            "ref": "d1",
+            "effect": "none"
+          },
+          {
+            "ref": "d2",
+            "effect": "none"
+          },
+          {
+            "ref": "p1",
+            "effect": "none"
+          },
+          {
+            "ref": "p2",
+            "effect": "none"
+          },
+          {
+            "ref": "n1",
+            "effect": "none"
+          },
+          {
+            "ref": "n2",
+            "effect": "none"
+          },
+          {
+            "ref": "n3",
+            "effect": "none"
+          },
+          {
+            "ref": "n4",
+            "effect": "none"
+          },
+          {
+            "ref": "n5",
+            "effect": "none"
+          },
+          {
+            "ref": "n9",
+            "effect": "none"
+          }
+        ],
+        "section": "family",
+        "questions": []
+      }
+    },
+    {
+      "id": "ex2",
+      "by": "derivationA",
+      "title": "Maintenance stopped long ago: arrears beyond one year, far outside; maintenance judgment exists.",
+      "petitionDate": "2026-11-20",
+      "slots": {
+        "court_has_section_for_matter": "yes",
+        "marriage_registered": "yes",
+        "tatliq_ground_nonmaintenance": "yes",
+        "bed_desertion_ground": "not_relied",
+        "absence_ground": "not_relied",
+        "debtor_is_foreign_national": "no",
+        "divorce_action_pending": "no",
+        "spouses_divorced": "no",
+        "criminal_case_on_same_facts": "no",
+        "obligation_is_tort_compensation": "no",
+        "requests": [
+          "tatliq",
+          "maintenance"
+        ],
+        "maintenance_previously_judged": "yes",
+        "maintenance_unpaid_since": "2024-03-01",
+        "wife_knew_husband_indigence": "no"
+      },
+      "expect": {
+        "findings": [
+          {
+            "ref": "d1",
+            "effect": "warn"
+          },
+          {
+            "ref": "p1",
+            "effect": "none"
+          },
+          {
+            "ref": "n9",
+            "effect": "none"
+          }
+        ],
+        "section": "family",
+        "questions": []
+      }
+    },
+    {
+      "id": "ex3",
+      "by": "derivationA",
+      "title": "Maintenance stopped a few days less than a year before filing: inside the band, a warning.",
+      "petitionDate": "2026-11-20",
+      "slots": {
+        "court_has_section_for_matter": "yes",
+        "marriage_registered": "yes",
+        "tatliq_ground_nonmaintenance": "no",
+        "bed_desertion_ground": "over_four_months",
+        "absence_ground": "not_relied",
+        "debtor_is_foreign_national": "no",
+        "divorce_action_pending": "no",
+        "spouses_divorced": "no",
+        "criminal_case_on_same_facts": "no",
+        "obligation_is_tort_compensation": "no",
+        "requests": [
+          "tatliq",
+          "maintenance"
+        ],
+        "maintenance_unpaid_since": "2025-11-25"
+      },
+      "expect": {
+        "findings": [
+          {
+            "ref": "d1",
+            "effect": "warn"
+          },
+          {
+            "ref": "p1",
+            "effect": "none"
+          }
+        ],
+        "questions": []
+      }
+    },
+    {
+      "id": "ex4",
+      "by": "derivationA",
+      "title": "Maintenance stopped recently: far inside the year.",
+      "petitionDate": "2026-11-20",
+      "slots": {
+        "court_has_section_for_matter": "yes",
+        "marriage_registered": "yes",
+        "tatliq_ground_nonmaintenance": "no",
+        "bed_desertion_ground": "over_four_months",
+        "absence_ground": "not_relied",
+        "debtor_is_foreign_national": "no",
+        "divorce_action_pending": "no",
+        "spouses_divorced": "no",
+        "criminal_case_on_same_facts": "no",
+        "obligation_is_tort_compensation": "no",
+        "requests": [
+          "tatliq",
+          "maintenance"
+        ],
+        "maintenance_unpaid_since": "2026-06-01"
+      },
+      "expect": {
+        "findings": [
+          {
+            "ref": "d1",
+            "effect": "none"
+          }
+        ],
+        "questions": []
+      }
+    },
+    {
+      "id": "ex5",
+      "by": "derivationA",
+      "title": "Non-maintenance ground without a maintenance judgment: a warning.",
+      "petitionDate": "2026-11-20",
+      "slots": {
+        "court_has_section_for_matter": "yes",
+        "marriage_registered": "yes",
+        "tatliq_ground_nonmaintenance": "yes",
+        "bed_desertion_ground": "not_relied",
+        "absence_ground": "not_relied",
+        "debtor_is_foreign_national": "no",
+        "divorce_action_pending": "no",
+        "spouses_divorced": "no",
+        "criminal_case_on_same_facts": "no",
+        "obligation_is_tort_compensation": "no",
+        "requests": [
+          "tatliq"
+        ],
+        "maintenance_previously_judged": "no",
+        "wife_knew_husband_indigence": "no"
+      },
+      "expect": {
+        "findings": [
+          {
+            "ref": "p1",
+            "effect": "warn"
+          },
+          {
+            "ref": "d1",
+            "effect": "none"
+          },
+          {
+            "ref": "n9",
+            "effect": "none"
+          }
+        ],
+        "questions": []
+      }
+    },
+    {
+      "id": "ex6",
+      "by": "derivationA",
+      "title": "Non-maintenance ground, maintenance judgment unknown; marriage not registered.",
+      "petitionDate": "2026-11-20",
+      "slots": {
+        "court_has_section_for_matter": "yes",
+        "marriage_registered": "no",
+        "tatliq_ground_nonmaintenance": "yes",
+        "bed_desertion_ground": "not_relied",
+        "absence_ground": "not_relied",
+        "debtor_is_foreign_national": "no",
+        "divorce_action_pending": "no",
+        "spouses_divorced": "no",
+        "criminal_case_on_same_facts": "no",
+        "obligation_is_tort_compensation": "no",
+        "requests": [
+          "tatliq"
+        ],
+        "maintenance_previously_judged": "unknown",
+        "wife_knew_husband_indigence": "no"
+      },
+      "expect": {
+        "findings": [
+          {
+            "ref": "p1",
+            "effect": "ask"
+          },
+          {
+            "ref": "p2",
+            "effect": "warn"
+          }
+        ],
+        "questions": [
+          "maintenance_previously_judged"
+        ]
+      }
+    },
+    {
+      "id": "ex7",
+      "by": "derivationA",
+      "title": "Nothing known but the section and the absence of any criminal case or tort claim: every check of the record asks.",
+      "petitionDate": "2026-11-20",
+      "slots": {
+        "requests": [
+          "tatliq"
+        ],
+        "court_has_section_for_matter": "yes",
+        "criminal_case_on_same_facts": "no",
+        "obligation_is_tort_compensation": "no"
+      },
+      "expect": {
+        "findings": [
+          {
+            "ref": "d1",
+            "effect": "none"
+          },
+          {
+            "ref": "d2",
+            "effect": "none"
+          },
+          {
+            "ref": "p1",
+            "effect": "ask"
+          },
+          {
+            "ref": "p2",
+            "effect": "ask"
+          },
+          {
+            "ref": "n1",
+            "effect": "ask"
+          },
+          {
+            "ref": "n2",
+            "effect": "ask"
+          },
+          {
+            "ref": "n3",
+            "effect": "ask"
+          },
+          {
+            "ref": "n4",
+            "effect": "ask"
+          },
+          {
+            "ref": "n5",
+            "effect": "ask"
+          },
+          {
+            "ref": "n9",
+            "effect": "ask"
+          }
+        ],
+        "section": "family",
+        "questions": [
+          "tatliq_ground_nonmaintenance",
+          "marriage_registered",
+          "bed_desertion_ground",
+          "absence_ground",
+          "debtor_is_foreign_national",
+          "divorce_action_pending",
+          "spouses_divorced",
+          "wife_knew_husband_indigence"
+        ]
+      }
+    },
+    {
+      "id": "ex8",
+      "by": "derivationA",
+      "title": "Every boundary true: short desertion, absence not met, foreign husband, pending action, already divorced.",
+      "petitionDate": "2026-11-20",
+      "slots": {
+        "court_has_section_for_matter": "yes",
+        "marriage_registered": "yes",
+        "tatliq_ground_nonmaintenance": "no",
+        "bed_desertion_ground": "four_months_or_less",
+        "absence_ground": "not_met",
+        "debtor_is_foreign_national": "yes",
+        "divorce_action_pending": "yes",
+        "spouses_divorced": "yes",
+        "criminal_case_on_same_facts": "no",
+        "obligation_is_tort_compensation": "no",
+        "requests": [
+          "tatliq"
+        ]
+      },
+      "expect": {
+        "findings": [
+          {
+            "ref": "n1",
+            "effect": "warn"
+          },
+          {
+            "ref": "n2",
+            "effect": "warn"
+          },
+          {
+            "ref": "n3",
+            "effect": "warn"
+          },
+          {
+            "ref": "n4",
+            "effect": "warn"
+          },
+          {
+            "ref": "n5",
+            "effect": "warn"
+          }
+        ],
+        "questions": []
+      }
+    },
+    {
+      "id": "ex9",
+      "by": "derivationA",
+      "title": "Criminal case on the beating, court without sections: civil section proposed (the imported criminal exit x6 warns in the final record; the examples tool cannot name it).",
+      "petitionDate": "2026-11-20",
+      "slots": {
+        "court_has_section_for_matter": "no",
+        "marriage_registered": "yes",
+        "tatliq_ground_nonmaintenance": "no",
+        "bed_desertion_ground": "not_relied",
+        "absence_ground": "not_relied",
+        "debtor_is_foreign_national": "no",
+        "divorce_action_pending": "no",
+        "spouses_divorced": "no",
+        "criminal_case_on_same_facts": "yes",
+        "requests": [
+          "tatliq",
+          "damages"
+        ]
+      },
+      "expect": {
+        "findings": [
+          {
+            "ref": "p1",
+            "effect": "none"
+          },
+          {
+            "ref": "n5",
+            "effect": "none"
+          }
+        ],
+        "section": "civil",
+        "questions": []
+      }
+    },
+    {
+      "id": "ex10",
+      "by": "derivationA",
+      "title": "Maintenance requested, date it stopped unknown: the deadline asks.",
+      "petitionDate": "2026-11-20",
+      "slots": {
+        "court_has_section_for_matter": "yes",
+        "marriage_registered": "yes",
+        "tatliq_ground_nonmaintenance": "no",
+        "bed_desertion_ground": "over_four_months",
+        "absence_ground": "not_relied",
+        "debtor_is_foreign_national": "no",
+        "divorce_action_pending": "no",
+        "spouses_divorced": "no",
+        "criminal_case_on_same_facts": "no",
+        "obligation_is_tort_compensation": "no",
+        "requests": [
+          "tatliq",
+          "maintenance"
+        ]
+      },
+      "expect": {
+        "findings": [
+          {
+            "ref": "d1",
+            "effect": "ask"
+          }
+        ],
+        "questions": [
+          "maintenance_unpaid_since"
+        ]
+      }
+    },
+    {
+      "id": "exb1",
+      "by": "derivationB",
+      "title": "Abandonment for more than four months, registered marriage, clean.",
+      "petitionDate": "2026-09-01",
+      "slots": {
+        "marriage_registered": "yes",
+        "spouses_divorced": "no",
+        "divorce_action_pending": "no",
+        "requests": [
+          "tatliq"
+        ],
+        "tatliq_ground_nonmaintenance": "no",
+        "bed_desertion_ground": "over_four_months"
+      },
+      "expect": {
+        "findings": [
+          {
+            "ref": "p1",
+            "effect": "none"
+          },
+          {
+            "ref": "p2",
+            "effect": "none"
+          },
+          {
+            "ref": "n1",
+            "effect": "none"
+          },
+          {
+            "ref": "n5",
+            "effect": "none"
+          },
+          {
+            "ref": "n4",
+            "effect": "none"
+          },
+          {
+            "ref": "d2",
+            "effect": "none"
+          }
+        ]
+      }
+    },
+    {
+      "id": "exb2",
+      "by": "derivationB",
+      "title": "Maintenance ground with a prior judgment.",
+      "petitionDate": "2026-09-01",
+      "slots": {
+        "marriage_registered": "yes",
+        "spouses_divorced": "no",
+        "divorce_action_pending": "no",
+        "requests": [
+          "tatliq"
+        ],
+        "tatliq_ground_nonmaintenance": "yes",
+        "bed_desertion_ground": "not_relied",
+        "maintenance_previously_judged": "yes",
+        "wife_knew_husband_indigence": "no"
+      },
+      "expect": {
+        "findings": [
+          {
+            "ref": "p1",
+            "effect": "none"
+          },
+          {
+            "ref": "n9",
+            "effect": "none"
+          },
+          {
+            "ref": "n1",
+            "effect": "none"
+          }
+        ]
+      }
+    },
+    {
+      "id": "exb3",
+      "by": "derivationB",
+      "title": "Maintenance ground without a prior judgment.",
+      "petitionDate": "2026-09-01",
+      "slots": {
+        "marriage_registered": "yes",
+        "spouses_divorced": "no",
+        "divorce_action_pending": "no",
+        "requests": [
+          "tatliq"
+        ],
+        "tatliq_ground_nonmaintenance": "yes",
+        "maintenance_previously_judged": "no",
+        "wife_knew_husband_indigence": "no"
+      },
+      "expect": {
+        "findings": [
+          {
+            "ref": "p1",
+            "effect": "warn"
+          }
+        ]
+      }
+    },
+    {
+      "id": "exb4",
+      "by": "derivationB",
+      "title": "Near-miss: the divorce was already pronounced.",
+      "petitionDate": "2026-09-01",
+      "slots": {
+        "marriage_registered": "yes",
+        "spouses_divorced": "yes",
+        "divorce_action_pending": "no",
+        "requests": [
+          "tatliq"
+        ],
+        "tatliq_ground_nonmaintenance": "no",
+        "bed_desertion_ground": "over_four_months"
+      },
+      "expect": {
+        "findings": [
+          {
+            "ref": "n5",
+            "effect": "warn"
+          }
+        ]
+      }
+    },
+    {
+      "id": "exb5",
+      "by": "derivationB",
+      "title": "Unregistered marriage.",
+      "petitionDate": "2026-09-01",
+      "slots": {
+        "marriage_registered": "no",
+        "spouses_divorced": "no",
+        "divorce_action_pending": "no",
+        "requests": [
+          "tatliq"
+        ],
+        "tatliq_ground_nonmaintenance": "no",
+        "bed_desertion_ground": "not_relied"
+      },
+      "expect": {
+        "findings": [
+          {
+            "ref": "p2",
+            "effect": "warn"
+          },
+          {
+            "ref": "p1",
+            "effect": "none"
+          },
+          {
+            "ref": "n1",
+            "effect": "none"
+          }
+        ]
+      }
+    },
+    {
+      "id": "exb6",
+      "by": "derivationB",
+      "title": "Abandonment not yet four months (B's prior step p3, kept as boundary n1).",
+      "petitionDate": "2026-09-01",
+      "slots": {
+        "marriage_registered": "yes",
+        "spouses_divorced": "no",
+        "divorce_action_pending": "no",
+        "requests": [
+          "tatliq"
+        ],
+        "tatliq_ground_nonmaintenance": "no",
+        "bed_desertion_ground": "four_months_or_less"
+      },
+      "expect": {
+        "findings": [
+          {
+            "ref": "n1",
+            "effect": "warn"
+          }
+        ]
+      }
+    },
+    {
+      "id": "exb7",
+      "by": "derivationB",
+      "title": "A divorce action is already pending.",
+      "petitionDate": "2026-09-01",
+      "slots": {
+        "marriage_registered": "yes",
+        "spouses_divorced": "no",
+        "divorce_action_pending": "yes",
+        "requests": [
+          "tatliq"
+        ],
+        "tatliq_ground_nonmaintenance": "no",
+        "bed_desertion_ground": "not_relied"
+      },
+      "expect": {
+        "findings": [
+          {
+            "ref": "n4",
+            "effect": "warn"
+          }
+        ]
+      }
+    },
+    {
+      "id": "exb8",
+      "by": "derivationB",
+      "title": "Wife knew of the husband's insolvency at marriage.",
+      "petitionDate": "2026-09-01",
+      "slots": {
+        "marriage_registered": "yes",
+        "spouses_divorced": "no",
+        "divorce_action_pending": "no",
+        "requests": [
+          "tatliq"
+        ],
+        "tatliq_ground_nonmaintenance": "yes",
+        "maintenance_previously_judged": "yes",
+        "wife_knew_husband_indigence": "yes"
+      },
+      "expect": {
+        "findings": [
+          {
+            "ref": "n9",
+            "effect": "warn"
+          },
+          {
+            "ref": "p1",
+            "effect": "none"
+          }
+        ]
+      }
+    },
+    {
+      "id": "exb9",
+      "by": "derivationB",
+      "title": "Custody asked, well inside the year.",
+      "petitionDate": "2026-09-01",
+      "slots": {
+        "marriage_registered": "yes",
+        "spouses_divorced": "no",
+        "divorce_action_pending": "no",
+        "requests": [
+          "tatliq",
+          "custody"
+        ],
+        "tatliq_ground_nonmaintenance": "no",
+        "custody_entitlement_date": "2026-03-01"
+      },
+      "expect": {
+        "findings": [
+          {
+            "ref": "d2",
+            "effect": "none"
+          }
+        ]
+      }
+    },
+    {
+      "id": "exb10",
+      "by": "derivationB",
+      "title": "Custody asked, a few days after the year.",
+      "petitionDate": "2026-09-05",
+      "slots": {
+        "marriage_registered": "yes",
+        "spouses_divorced": "no",
+        "divorce_action_pending": "no",
+        "requests": [
+          "tatliq",
+          "custody"
+        ],
+        "tatliq_ground_nonmaintenance": "no",
+        "custody_entitlement_date": "2025-09-01"
+      },
+      "expect": {
+        "findings": [
+          {
+            "ref": "d2",
+            "effect": "warn"
+          }
+        ]
+      }
+    },
+    {
+      "id": "exb11",
+      "by": "derivationB",
+      "title": "Custody asked, long after the year: an interpretive forfeiture warns.",
+      "petitionDate": "2026-09-01",
+      "slots": {
+        "marriage_registered": "yes",
+        "spouses_divorced": "no",
+        "divorce_action_pending": "no",
+        "requests": [
+          "tatliq",
+          "custody"
+        ],
+        "tatliq_ground_nonmaintenance": "no",
+        "custody_entitlement_date": "2024-09-01"
+      },
+      "expect": {
+        "findings": [
+          {
+            "ref": "d2",
+            "effect": "warn"
+          }
+        ]
+      }
+    },
+    {
+      "id": "exb12",
+      "by": "derivationB",
+      "title": "Nothing known: the rules ask.",
+      "petitionDate": "2026-09-01",
+      "slots": {},
+      "expect": {
+        "findings": [
+          {
+            "ref": "p1",
+            "effect": "ask"
+          },
+          {
+            "ref": "p2",
+            "effect": "ask"
+          },
+          {
+            "ref": "n1",
+            "effect": "ask"
+          },
+          {
+            "ref": "n5",
+            "effect": "ask"
+          },
+          {
+            "ref": "n4",
+            "effect": "ask"
+          },
+          {
+            "ref": "n9",
+            "effect": "ask"
+          },
+          {
+            "ref": "d2",
+            "effect": "none"
+          }
+        ]
+      }
+    },
+    {
+      "id": "exr1",
+      "by": "reconciler",
+      "title": "Maintenance and custody both asked: arrears older than a year warn under the maintenance bound (A's deadline), custody well inside its year (B's deadline).",
+      "petitionDate": "2026-11-20",
+      "slots": {
+        "court_has_section_for_matter": "yes",
+        "marriage_registered": "yes",
+        "tatliq_ground_nonmaintenance": "no",
+        "bed_desertion_ground": "over_four_months",
+        "absence_ground": "not_relied",
+        "debtor_is_foreign_national": "no",
+        "divorce_action_pending": "no",
+        "spouses_divorced": "no",
+        "criminal_case_on_same_facts": "no",
+        "obligation_is_tort_compensation": "no",
+        "requests": [
+          "tatliq",
+          "maintenance",
+          "custody"
+        ],
+        "maintenance_unpaid_since": "2025-03-01",
+        "custody_entitlement_date": "2026-08-01"
+      },
+      "expect": {
+        "findings": [
+          {
+            "ref": "d1",
+            "effect": "warn"
+          },
+          {
+            "ref": "d2",
+            "effect": "none"
+          }
+        ],
+        "questions": []
+      }
+    },
+    {
+      "id": "exr2",
+      "by": "reconciler",
+      "title": "Custody asked, the date the right arose unknown: the custody deadline asks.",
+      "petitionDate": "2026-11-20",
+      "slots": {
+        "court_has_section_for_matter": "yes",
+        "marriage_registered": "yes",
+        "tatliq_ground_nonmaintenance": "no",
+        "bed_desertion_ground": "over_four_months",
+        "absence_ground": "not_relied",
+        "debtor_is_foreign_national": "no",
+        "divorce_action_pending": "no",
+        "spouses_divorced": "no",
+        "criminal_case_on_same_facts": "no",
+        "obligation_is_tort_compensation": "no",
+        "requests": [
+          "tatliq",
+          "custody"
+        ]
+      },
+      "expect": {
+        "findings": [
+          {
+            "ref": "d2",
+            "effect": "ask"
+          },
+          {
+            "ref": "d1",
+            "effect": "none"
+          }
+        ],
+        "questions": [
+          "custody_entitlement_date"
+        ]
+      }
+    },
+    {
+      "id": "exr3",
+      "by": "reconciler",
+      "title": "Two grounds at once: non-maintenance (judgment exists, but the wife knew of his poverty) and desertion over four months. Only the excluded ground warns.",
+      "petitionDate": "2026-11-20",
+      "slots": {
+        "court_has_section_for_matter": "yes",
+        "marriage_registered": "yes",
+        "tatliq_ground_nonmaintenance": "yes",
+        "bed_desertion_ground": "over_four_months",
+        "absence_ground": "not_relied",
+        "debtor_is_foreign_national": "no",
+        "divorce_action_pending": "no",
+        "spouses_divorced": "no",
+        "criminal_case_on_same_facts": "no",
+        "obligation_is_tort_compensation": "no",
+        "requests": [
+          "tatliq"
+        ],
+        "maintenance_previously_judged": "yes",
+        "wife_knew_husband_indigence": "yes"
+      },
+      "expect": {
+        "findings": [
+          {
+            "ref": "n9",
+            "effect": "warn"
+          },
+          {
+            "ref": "p1",
+            "effect": "none"
+          },
+          {
+            "ref": "n1",
+            "effect": "none"
+          }
+        ],
+        "questions": []
+      }
+    },
+    {
+      "id": "exr4",
+      "by": "reconciler",
+      "title": "Desertion of four months or less, absence met: the desertion boundary warns, the absence one is silent.",
+      "petitionDate": "2026-11-20",
+      "slots": {
+        "court_has_section_for_matter": "yes",
+        "marriage_registered": "yes",
+        "tatliq_ground_nonmaintenance": "no",
+        "bed_desertion_ground": "four_months_or_less",
+        "absence_ground": "met",
+        "debtor_is_foreign_national": "no",
+        "divorce_action_pending": "no",
+        "spouses_divorced": "no",
+        "criminal_case_on_same_facts": "no",
+        "obligation_is_tort_compensation": "no",
+        "requests": [
+          "tatliq"
+        ]
+      },
+      "expect": {
+        "findings": [
+          {
+            "ref": "n1",
+            "effect": "warn"
+          },
+          {
+            "ref": "n2",
+            "effect": "none"
+          }
+        ],
+        "questions": []
+      }
+    },
+    {
+      "id": "exr5",
+      "by": "reconciler",
+      "title": "Non-maintenance ground, maintenance judgment exists, wife's knowledge unknown: the excluded-ground boundary asks.",
+      "petitionDate": "2026-11-20",
+      "slots": {
+        "court_has_section_for_matter": "yes",
+        "marriage_registered": "yes",
+        "tatliq_ground_nonmaintenance": "yes",
+        "bed_desertion_ground": "not_relied",
+        "absence_ground": "not_relied",
+        "debtor_is_foreign_national": "no",
+        "divorce_action_pending": "no",
+        "spouses_divorced": "no",
+        "criminal_case_on_same_facts": "no",
+        "obligation_is_tort_compensation": "no",
+        "requests": [
+          "tatliq"
+        ],
+        "maintenance_previously_judged": "yes"
+      },
+      "expect": {
+        "findings": [
+          {
+            "ref": "p1",
+            "effect": "none"
+          },
+          {
+            "ref": "n9",
+            "effect": "ask"
+          }
+        ],
+        "questions": [
+          "wife_knew_husband_indigence"
+        ]
+      }
+    }
+  ]
+}

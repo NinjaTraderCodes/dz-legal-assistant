@@ -2531,6 +2531,76 @@
       "readFromNote": false,
       "origin": "territorial-jurisdiction",
       "why": "Territory rule t13 and boundaries n4 and n8 read it: cpca 40 ¶3 names «مواد الميراث» and cpca 498 ¶1 «دعاوى التركة», which reach further than a partition (partition_of_estate). Added by the verifier (attacks adv-6, atk-6)."
+    },
+    {
+      "id": "commercial_nonconciliation_record",
+      "type": "yesNoUnknown",
+      "question": {
+        "ar": "هل انتهت محاولة الصلح التي أجراها، قبل قيد الدعوى، القاضي المعين من رئيس المحكمة التجارية المتخصصة بمحضر عدم صلح يوقعه القاضي وأمين الضبط وجميع أطراف النزاع، بعد تبليغ كل مدعى عليه مذكور في العريضة بتاريخ جلسة الصلح، ليرفق بالعريضة؟",
+        "en": "Did the conciliation attempt held, before the claim is entered, by the judge the president of the specialised commercial court designated end in a record of non-conciliation signed by that judge, the clerk and all the parties to the dispute, every defendant named in the petition having been notified of the session date, to be attached to the petition?"
+      },
+      "askedFor": [
+        "*"
+      ],
+      "readFromNote": false,
+      "origin": "conciliation-mediation",
+      "why": "Prior step p1 (its own slot) reads it: the conciliation precedes the entry of the claim, the requesting party notifies the other parties to the dispute of the session date, and the petition before the specialised commercial court is attached, on pain of inadmissibility in form, to the record of non-conciliation that the designated judge, the parties and the clerk sign (cpca 536 مكرر 4 ¶1 to ¶3). The verifier added that every defendant of the petition must have been a party to that conciliation (attack adv-4: ¶1 'باقي أطراف النزاع'). The existing slot nonconciliation_record is the labour conciliation office's record, another document."
+    },
+    {
+      "id": "specialised_commercial_court_installed",
+      "type": "yesNoUnknown",
+      "question": {
+        "ar": "هل توجد، قبل رفع هذه الدعوى، محكمة تجارية متخصصة منصبة مختصة إقليميا بالنزاع، سواء كانت المحكمة المحددة لدائرته أو محكمة منصبة قبلها امتد اختصاصها الإقليمي إلى هذه الدائرة إلى حين تنصيب المحكمة الجديدة؟",
+        "en": "Before this claim is filed, is a specialised commercial court installed that has territorial jurisdiction over the dispute, whether the court named for its area or an earlier-installed court whose territorial jurisdiction extends to that area until the new court is installed?"
+      },
+      "askedFor": [
+        "*"
+      ],
+      "readFromNote": false,
+      "origin": "conciliation-mediation",
+      "why": "The exemption of prior step p1, boundary n7, document doc1 and territory rule t1 read it: the jurisdiction rules of the specialised commercial courts apply from the installation of the new courts, and the commercial sections keep the claims filed before it (law-22-13 13 ¶1 and ¶2). The verifier reworded it (attack adv-1): Executive Decree 26-133 (Official Journal 2026 no. 27, p. 10), amending Executive Decree 23-53, installs the new courts gradually and extends the territorial jurisdiction of the courts installed before it to the areas of the new courts until these are installed; not in the store (open point o13, requested)."
+    },
+    {
+      "id": "commercial_conciliation_agreement",
+      "type": "yesNoUnknown",
+      "question": {
+        "ar": "هل انتهت محاولة الصلح أمام المحكمة التجارية المتخصصة بمحضر صلح يشمل كل ما تطلبه هذه العريضة (أجب بلا إذا كان الصلح جزئيا)؟",
+        "en": "Did the conciliation attempt before the specialised commercial court end in a record of conciliation covering everything this petition claims (answer no for a partial settlement)?"
+      },
+      "askedFor": [
+        "*"
+      ],
+      "readFromNote": false,
+      "origin": "conciliation-mediation",
+      "why": "Boundary n6 and the second exemption of prior step p1 read it: the record of non-conciliation is required when the attempt fails (cpca 536 مكرر 4 ¶3); the conciliation ends in a record governed by the code's rules (¶2), and a filed conciliation record is an executory title (cpca 993 ¶1, cpca 600 ¶10). The verifier narrowed it to a settlement of everything the petition claims (attack atk-2): for the part not settled the attempt failed and ¶3 calls for the record of non-conciliation."
+    },
+    {
+      "id": "commercial_nonconciliation_party_absent",
+      "type": "yesNoUnknown",
+      "question": {
+        "ar": "إذا لم يوقع المحضر من جميع الأطراف: هل حرر القاضي المعين وأمين الضبط محضرا يثبت فشل الصلح وأن مدعى عليه مذكورا في العريضة بلغ بتاريخ جلسة الصلح ولم يحضر؟",
+        "en": "If the record is not signed by every party: did the designated judge and the clerk draw up a record stating that the conciliation failed and that a defendant named in the petition, notified of the session date, did not attend?"
+      },
+      "askedFor": [
+        "*"
+      ],
+      "readFromNote": false,
+      "origin": "conciliation-mediation",
+      "why": "The third exemption of prior step p1 and boundary n10 read it (attack adv-3): cpca 536 مكرر 4 ¶1 makes the requesting party notify the other parties of the session date and ¶2 has the record signed by the judge, the parties and the clerk; no text says which record ends an attempt that a notified party did not attend (open point o15)."
+    },
+    {
+      "id": "specialised_commercial_no_opposing_party",
+      "type": "yesNoUnknown",
+      "question": {
+        "ar": "هل الطلب المرفوع أمام المحكمة التجارية المتخصصة طلب لا خصم فيه، كإقرار المدين بالتوقف عن الدفع لافتتاح التسوية القضائية أو الإفلاس؟",
+        "en": "Is the application to the specialised commercial court one with no opposing party, such as a debtor's own declaration of cessation of payments to open judicial settlement or bankruptcy?"
+      },
+      "askedFor": [
+        "*"
+      ],
+      "readFromNote": false,
+      "origin": "conciliation-mediation",
+      "why": "The fourth exemption of prior step p1 and boundary n11 read it (attack adv-5): cpca 536 مكرر 4 ¶1 has the conciliation requested by one of the adversaries and notified to the other parties to the dispute; the Commercial Code (arts. 215 and 216, Official Journal 1975 no. 101, p. 1328; not in the store, open point o17) opens judicial settlement or bankruptcy on the debtor's own declaration or on a creditor's summons, and lets the court rule of its own motion."
     }
   ]
 }

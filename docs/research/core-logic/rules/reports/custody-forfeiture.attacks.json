@@ -1,0 +1,175 @@
+{
+  "unit": "custody-forfeiture",
+  "attacks": [
+    {
+      "id": "adv-1",
+      "who": "adversary",
+      "target": "n6, n7, e4, k21, k27, k28",
+      "kind": "specialLaw",
+      "claim": "Law 15-12 on child protection gives the juvenile judge (قاضي الأحداث) a separate judicial route for a 'child in danger'. The list of dangers covers neglect, ill-treatment, a carer who fails in upbringing and care, and a crime against the child by his legal representative. The judge is seized by a petition from the child, his legal representative, the prosecutor, the wali, the APC president or child-welfare services, or acts of his own motion. He may hand the child, by order and also as a provisional measure during the inquiry, to 'the father or mother who does not exercise custody, unless custody fell from him by a judgment', or to a relative. The record's boundaries and exits never mention this route. Its urgent-matters boundaries (n6, n7) cover only FC 57 مكرر and CPCA 453 to 460.",
+      "verdict": "fixed",
+      "verifierQuote": "المادة 32: «يختص قاضي الأحداث لمحل إقامة الطفل المعرض للخطر ... بالنظر في العريضة التي ترفع إليه من الطفل أو ممثله الشرعي أو وكيل الجمهورية أو الوالي ...». المادة 37: «لا يمكن أن تتجاوز مدة التدابير المؤقتة، المنصوص عليها في المادتين 35 و36، ستة (6) أشهر». المادة 40: «يتخذ قاضي الأحداث، بموجب أمر، أحد التدابير الآتية: – إبقاء الطفل في أسرته، – تسليم الطفل لوالده أو لوالدته الذي لا يمارس حق الحضانة عليه، ما لم تكن قد سقطت عنه بحكم، – تسليم الطفل إلى أحد أقاربه». المادة 42: «مقررة لمدة سنتين (2) قابلة للتجديد».",
+      "quoteRef": "Law 15-12 of 15 July 2015, JORA 2015 issue 39: art. 2 p. 5, art. 32 p. 9, arts. 35 (start), 37, 40, 42 p. 10; file A2015039.pdf fetched with oj_fetch.py, SHA-256 03d9ce38d9c1fa416324cb283c27f53f78d57168faa1301dad74ebecd42fd7a1",
+      "change": "Law 15-12 is not in the store: request line appended to requests.jsonl; added open point o16 (grade D) on the juvenile-judge route (refs e4, n6) and checklist line k80 (searchedNotFound); worked example vx1."
+    },
+    {
+      "id": "adv-2",
+      "who": "adversary",
+      "target": "r4, bx1, k26",
+      "kind": "misreading",
+      "claim": "FC 72 ¶1 puts the housing duty on the father (الأب) toward the female custodian (الحاضنة). r4 is proposed on one condition only, spouses_divorced = yes, and its text orders 'the defendant (the father)'. The record has no slot for who the plaintiff and the defendant are. The most common transfer case is a father suing a remarried mother (the record's own bx1, with spouses_divorced = yes). There the record proposes an order against the defendant, who is the mother, under a text that binds only the father. It does the same when a grandmother or aunt sues the mother, and the father is not a party.",
+      "verdict": "fixed",
+      "verifierQuote": "«في حالة الطلاق، يجب على الأب أن يوفر، لممارسة الحضانة، سكنا ملائما للحاضنة، وإن تعذر ذلك فعليه دفع بدل الإيجار.»",
+      "quoteRef": "family-code 72 ¶1 (store; court-sections.b58)",
+      "change": "Proposed slots plaintiff_relation and defendant_relation; r4's when is now all of spouses_divorced = yes, defendant_relation = father, plaintiff_relation in the female relations; r4's text names housing for the custodian; k26 note updated; examples ex1 to ex5, bx1, bx2 given the new slots; worked example vx2."
+    },
+    {
+      "id": "adv-3",
+      "who": "adversary",
+      "target": "requests, k26, k50, r4",
+      "kind": "missing",
+      "claim": "When a father obtains a transfer from a former custodian who kept the marital home or receives a rent allowance under FC 72, she loses that housing with custody. The Supreme Court holds that a custodian whose custody falls must vacate the custody home. The record offers no accessory request or warning for this. k26 only says a transfer 'may affect who keeps the marital home'. The record also does not say that the Supreme Court decided the vacating question in its real-estate chamber, on a lease. Eviction may therefore have to be claimed separately, before a section other than the family section.",
+      "verdict": "fixed",
+      "verifierQuote": "المحكمة العليا، الغرفة العقارية، ملف 1110582، 25-06-2018: «تسديد الحاضنة لبدل الإيجار لا يخولها الحق في تحويل حق الإيجار باسمها.» «تلزم الحاضنة بإخلاء مسكن ممارسة الحضانة بسقوط الحضانة عنها.» والمادة 72 ¶1 من قانون الأسرة: «يجب على الأب أن يوفر، لممارسة الحضانة، سكنا ملائما للحاضنة».",
+      "quoteRef": "Supreme Court, real-estate chamber, file 1110582 of 25-06-2018 (coursupreme.dz decision page); family-code 72 ¶1 and ¶2",
+      "change": "Added b46 (family-code 72 ¶2), interpretive b49 (family-code 72 ¶1 read by decision 1110582), boundary n16 (warns when the spouses are divorced and the defendant is a female custodian: check the custody home or rent allowance and where its vacating is asked), open point o17 (grade C: this petition or a separate claim, which section); k26 refs; worked example vx3."
+    },
+    {
+      "id": "adv-4",
+      "who": "adversary",
+      "target": "forfeiture_ground, n1, d1, e5, o1",
+      "kind": "missing",
+      "claim": "A common situation is that the mother custodian dies and the maternal grandmother or aunt keeps the child without any judgment, so the father sues to recover the child. Two Supreme Court decisions hold that custody passes directly to the father on the mother's death. In the second, forfeiting custody from someone first requires that person to exercise it lawfully. The same decision recites that custody falls from the person entitled if that person does not exercise it within the year. That year runs against the father from the death. The record's ground list has no 'custodian died'. Its d1 runs from a custody_ground_date that does not fit a death, so the record gives no warning about the father's own year under FC 68.",
+      "verdict": "fixed",
+      "verifierQuote": "قانون الأسرة 64 ¶1: «الأم أولى بحضانة ولدها، ثم الأب ...»؛ 68 ¶1: «إذا لم يطلب من له الحق في الحضانة مدة تزيد عن سنة بدون عذر سقط حقه فيها.» المحكمة العليا، ملف 1252089، 03-10-2018: «يكون الأب الأحق بحضانة ولده بعد وفاة الأم بدل الخالة، مراعاة لمصلحة المحضون، ما لم يثبت أنه غير أهل لذلك.» و«والحال أن الحضانة عند وفاة الأم تنتقل مباشرة إلى الأب».",
+      "quoteRef": "family-code 64 ¶1, 68 ¶1; Supreme Court, family and inheritance chamber, file 1252089 of 03-10-2018 (coursupreme.dz)",
+      "change": "Death is not a forfeiture ground of family-code 66 to 70, so no new ground; boundary n1 (no earlier judgment to the defendant: an award claim) now names the custodian's death as a telling fact, cites b8 and its message adds article 68's year (check when the plaintiff's right arose and when he claimed it); worked example vx4."
+    },
+    {
+      "id": "adv-5",
+      "who": "adversary",
+      "target": "forfeiture_ground, e2, n3, doc3, k3",
+      "kind": "misreading",
+      "claim": "FC 66 forfeits by marriage only the right of the female custodian (حق الحاضنة), and FC 70 only that of the grandmother or aunt. The record lets a user choose custodian_remarried with no slot for whether the defendant custodian is a woman. If a mother sues a father custodian who remarried, the record raises nothing. Its only check on the marriage ground, n3, tests the mahram condition and nothing else. A father's remarriage is not a ground under these articles.",
+      "verdict": "fixed",
+      "verifierQuote": "قانون الأسرة 66 ¶1: «يسقط حق الحاضنة بالتزوج بغير قريب محرم» (بصيغة المؤنث، في مقابل 62 ¶2: «ويشترط في الحاضن»)؛ 70 ¶1: «تسقط حضانة الجدة أو الخالة إذا سكنت بمحضونها مع أم المحضون المتزوجة بغير قريب محرم.»",
+      "quoteRef": "family-code 66 ¶1, 70 ¶1, 62 ¶2 (store)",
+      "change": "Proposed slot defendant_relation; boundary n14 warns when custodian_remarried is chosen against the father or a male relative, or relative_with_remarried_mother against anyone but a grandmother or the maternal aunt; message points to article 67; worked examples vx5, vx6, vx7."
+    },
+    {
+      "id": "adv-6",
+      "who": "adversary",
+      "target": "e6, doc5, forfeiture_ground.custodian_abroad, k7, k37",
+      "kind": "caseLaw",
+      "claim": "The Supreme Court holds that a mother does not lose custody merely by travelling abroad often. The test is the neglect or loss of the child that results, and she may involve trusted relatives in the child's care. The record's custodian_abroad ground ('settled, or wants to settle') lists travel documents as proof (e6 and doc5). It gives no warning that travel, even repeated, is not settling under FC 69 and is not by itself a ground under FC 67. A lawyer could build a petition on travel alone.",
+      "verdict": "fixed",
+      "verifierQuote": "المحكمة العليا، غرفة شؤون الأسرة والمواريث، ملف 1265504، 06-06-2018: «لا يسقط حق الأم في الحضانة، بمجرد السفر والتردد على الخارج ... وإنما الضياع والإهمال المترتب على ذلك السفر.» وقانون الأسرة 69 ¶1: «إذا أراد الشخص الموكول له حق الحضانة أن يستوطن في بلد أجنبي».",
+      "quoteRef": "Supreme Court, family and inheritance chamber, file 1265504 of 06-06-2018 (references family-code 62, 64, 67; coursupreme.dz); family-code 69 ¶1",
+      "change": "Added interpretive b47 (family-code 67 ¶1 read by decision 1265504); boundary note n15 (travel, work or study abroad without settling is not a ground); e6 proof note and fact, and doc5 why, now say travel documents alone do not prove settling; e6 and doc5 cite b47; worked example vx8."
+    },
+    {
+      "id": "adv-7",
+      "who": "adversary",
+      "target": "e7, k10, k54",
+      "kind": "caseLaw",
+      "claim": "The Supreme Court holds three things. Custody is not taken from the person awarded it unless that person is shown to be unfit. The wish of a child below the age of discernment is not taken into account. The claimant's better material situation is not enough on its own. In e7, the record asks the plaintiff to show his housing and ability to care, and that the transfer serves the child's interest. It never warns that such a comparison, or the young child's preference, cannot replace proof that the defendant is unfit.",
+      "verdict": "fixed",
+      "verifierQuote": "المحكمة العليا، غرفة شؤون الأسرة والمواريث، ملف 1072148، 03-05-2017: «لا يعتد برغبة الطفل غير المميز في اختيار من يحضنه، والحالة الميسورة لطالب إسقاط الحضانة ليست كافية لوحدها لإسنادها له، ما لم يثبت أن الطرف المستفيد من الحضانة غير أهل لممارستها.»",
+      "quoteRef": "Supreme Court, family and inheritance chamber, file 1072148 of 03-05-2017 (reference family-code 64; full decision page opened on coursupreme.dz)",
+      "change": "Added interpretive b48 (family-code 64 ¶1 read by decision 1072148); e7 gains the fact that the plaintiff's better means or a young child's wish are not enough on their own, and cites b48; boundary note n17; open point o18 (grade C: family-code 64 ¶1 and 67 ¶3 weigh the interest in every case); worked example vx9."
+    },
+    {
+      "id": "values-d1",
+      "who": "values",
+      "target": "d1",
+      "kind": "misreading",
+      "claim": "check-values: {\"item\": \"d1\", \"problem\": \"kindNotInText\", \"kind\": \"forfeiture\"}",
+      "verdict": "refuted",
+      "verifierQuote": "«إذا لم يطلب من له الحق في الحضانة مدة تزيد عن سنة بدون عذر سقط حقه فيها.»",
+      "quoteRef": "family-code 68 ¶1"
+    },
+    {
+      "id": "values-d2",
+      "who": "values",
+      "target": "d2",
+      "kind": "misreading",
+      "claim": "check-values: {\"item\": \"d2\", \"problem\": \"kindNotInText\", \"kind\": \"forfeiture\"}",
+      "verdict": "open",
+      "verifierQuote": "«تنقضي مدة حضانة الذكر ببلوغه (10) سنوات»",
+      "quoteRef": "family-code 65 ¶1",
+      "change": "The text says the term ends (تنقضي), with no sanction word; none of forfeiture, limitation, procedural matches it word for word. Searched family-code 62 to 72 for a sanction word on the age: none. d2 stays interpretive and warn-only (o15); interpretiveNote now says the kind is kept on a reading."
+    },
+    {
+      "id": "values-d3",
+      "who": "values",
+      "target": "d3",
+      "kind": "misreading",
+      "claim": "check-values: {\"item\": \"d3\", \"problem\": \"kindNotInText\", \"kind\": \"forfeiture\"}",
+      "verdict": "open",
+      "verifierQuote": "«والأنثى ببلوغها سن الزواج»",
+      "quoteRef": "family-code 65 ¶1",
+      "change": "As values-d2: d3 stays interpretive and warn-only (o3); interpretiveNote now says the kind is kept on a reading."
+    },
+    {
+      "id": "values-b41",
+      "who": "values",
+      "target": "b41",
+      "kind": "misreading",
+      "claim": "check-values: {\"item\": \"b41\", \"problem\": \"numberNotInQuote\", \"lang\": \"en\", \"numbers\": [1]}",
+      "verdict": "refuted",
+      "verifierQuote": "«كما يجوز له أن يسند مؤقتا حضانة القاصر لأحد الأبوين، وإذا تعذر ذلك تسند لأحد الأشخاص المبينين في قانون الأسرة.»",
+      "quoteRef": "cpca 460 ¶2"
+    },
+    {
+      "id": "values-d2-2",
+      "who": "values",
+      "target": "d2",
+      "kind": "misreading",
+      "claim": "check-values: {\"item\": \"d2\", \"problem\": \"messagePeriodDiffers\", \"read\": [{\"value\": 16, \"unit\": \"year\", \"words\": \"16 سنه\", \"conflict\": false}]}",
+      "verdict": "fixed",
+      "verifierQuote": "«وللقاضي أن يمدد الحضانة بالنسبة للذكر إلى (16) سنة إذا كانت الحاضنة أما لم تتزوج ثانية.»",
+      "quoteRef": "family-code 65 ¶1",
+      "change": "The 16 years is the extension's limit, not d2's period; the message now names only the period of 10 years and says the judge may extend it when the custodian is a mother who has not remarried (the number stays in b12's statement); worked example vx10."
+    },
+    {
+      "id": "values-p1",
+      "who": "values",
+      "target": "p1",
+      "kind": "misreading",
+      "claim": "check-values: {\"item\": \"p1\", \"problem\": \"messageArticleNotInBasis\", \"lang\": \"ar\", \"articles\": [\"3 مكرر\"]}",
+      "verdict": "refuted",
+      "verifierQuote": "«تعد النيابة العامة طرفا أصليا في جميع القضايا الرامية إلى تطبيق أحكام هذا القانون.»",
+      "quoteRef": "family-code 3 مكرر ¶1, cited by the imported statement court-sections.b34 in p1's basis"
+    },
+    {
+      "id": "values-p1-2",
+      "who": "values",
+      "target": "p1",
+      "kind": "misreading",
+      "claim": "check-values: {\"item\": \"p1\", \"problem\": \"messageArticleNotInBasis\", \"lang\": \"en\", \"articles\": [\"3 مكرر\"]}",
+      "verdict": "refuted",
+      "verifierQuote": "«تعد النيابة العامة طرفا أصليا في جميع القضايا الرامية إلى تطبيق أحكام هذا القانون.»",
+      "quoteRef": "family-code 3 مكرر ¶1 (court-sections.b34)"
+    },
+    {
+      "id": "values-section",
+      "who": "values",
+      "target": "section",
+      "kind": "misreading",
+      "claim": "check-values: {\"item\": \"section\", \"problem\": \"messageArticleNotInBasis\", \"lang\": \"ar\", \"articles\": [\"32\", \"423\"]}",
+      "verdict": "refuted",
+      "verifierQuote": "cpca 423 ¶1 و¶3: «ينظر قسم شؤون الأسرة، على الخصوص في الدعاوى الآتية: ... 2 - دعاوى النفقة والحضانة وحق الزيارة،» وcpca 32 ¶5: «غير أنه في المحاكم التي لم تنشأ فيها الأقسام، يبقى القسم المدني هو الذي ينظر في جميع النزاعات باستثناء القضايا الاجتماعية.»",
+      "quoteRef": "cpca 423 ¶1, ¶3 (court-sections.b8) and cpca 32 ¶5 (court-sections.b4), both in the section rule's basis"
+    },
+    {
+      "id": "values-section-2",
+      "who": "values",
+      "target": "section",
+      "kind": "misreading",
+      "claim": "check-values: {\"item\": \"section\", \"problem\": \"messageArticleNotInBasis\", \"lang\": \"en\", \"articles\": [\"32\", \"423\"]}",
+      "verdict": "refuted",
+      "verifierQuote": "cpca 423 ¶3: «2 - دعاوى النفقة والحضانة وحق الزيارة،»؛ cpca 32 ¶5: «يبقى القسم المدني هو الذي ينظر في جميع النزاعات باستثناء القضايا الاجتماعية.»",
+      "quoteRef": "cpca 423 ¶3 (court-sections.b8), cpca 32 ¶5 (court-sections.b4)"
+    }
+  ]
+}

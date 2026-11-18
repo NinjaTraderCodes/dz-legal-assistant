@@ -1,0 +1,126 @@
+{
+ "unit": "khul",
+ "attacks": [
+  {
+   "id": "adv-1",
+   "who": "adversary",
+   "target": "e4,r3,k17,k51,k54",
+   "kind": "exception",
+   "claim": "Family Code article 68 makes custody lapse when not claimed for more than a year without excuse; the record has no item on it.",
+   "verdict": "fixed",
+   "verifierQuote": "«إذا لم يطلب من له الحق في الحضانة مدة تزيد عن سنة بدون عذر سقط حقه فيها.»",
+   "quoteRef": "family-code 68 ¶1 (article store, version law-84-11)",
+   "change": "Added statement b59 (family-code 68 ¶1) and deadline d2 (forfeiture, 1 year, from custody_not_claimed_since, when custody is requested and the children are not in the plaintiff's care; interpretive, warn only, two readings incl. that the year does not run before the marriage is dissolved), proposed slots children_in_plaintiff_care and custody_not_claimed_since, open point o15 (grade C); b59 added to e4 and r3; k17, k54 refs; checklist k73. Existing custody examples answer children_in_plaintiff_care = yes. Examples ex27 (warn), ex28 (ask)."
+  },
+  {
+   "id": "adv-2",
+   "who": "adversary",
+   "target": "n1,e1,k14",
+   "kind": "missing",
+   "claim": "A husband declared dead or missing is not covered: the marriage may be dissolved by death, or the route is tatliq for absence (FC 112).",
+   "verdict": "fixed",
+   "verifierQuote": "«تنحل الرابطة الزوجية بالطلاق أو الوفاة.» ؛ «لزوجة المفقود أو الغائب أن تطلب الطلاق بناء على الفقرة الخامسة من المادة 53 من هذا القانون.» ؛ «يجوز الحكم بموت المفقود في الحروب والحالات الاستثنائية بمضي أربع سنوات بعد التحري» ؛ القانون 03-06 المادة 3: «يخول الحكم القاضي بوفاة المفقود المذكور في المادة 2 أعلاه، الحق في كل الآثار القانونية المنصوص عليها في التشريع المعمول به.» ؛ الأمر 06-01 المادة 36 ¶2: «وتترتب عليه مجموع الآثار القانونية المنصوص عليها في التشريع المعمول به.»",
+   "quoteRef": "family-code 47 ¶1, 112 ¶1, 113 ¶1 (store); Law 03-06 art. 3, Official Journal 2003 issue 37 page 9 (A2003037.pdf, sha256 99b059f72018dbe56619966249f885630b311d3ca1eff9a999890e73bce2661f); Ordinance 06-01 art. 36, Official Journal 2006 issue 11 page 6 (A2006011.pdf, sha256 9c829fcf7a2b164c8ded7dc5d8f6f676f562b966904f619c1d01ca823f0a756d)",
+   "change": "Added statements b60 (family-code 112 ¶1), b61 (109 ¶1), b62 (113 ¶1), b63 (53 ¶6); boundary n12 (outside:husband-missing-or-declared-dead) on proposed slot husband_missing_or_declared_dead; open point o16 (grade D: law 03-06 and ordinance 06-01 not in the store, requested); e1 slots, k14 refs and note, k70 note, checklist k74. Every example that checks questions answers the new slot (no); ex8 and ex19 now ask it. Example ex29 (n12 warn)."
+  },
+  {
+   "id": "adv-3",
+   "who": "adversary",
+   "target": "b4,b13,k8,k45,k46,o1",
+   "kind": "exception",
+   "claim": "The record omits the arbitration step of Family Code 56 and CPCA 446 to 449, typical where no harm is proved.",
+   "verdict": "fixed",
+   "verifierQuote": "«إذا اشتد الخصام بين الزوجين ولم يثبت الضرر وجب تعيين حكمين للتوفيق بينهما. يعين القاضي الحكمين، حكما من أهل الزوج وحكما من أهل الزوجة، وعلى هذين الحكمين أن يقدما تقريرا عن مهمتهما في أجل شهرين.» ؛ «إذا لم يثبت أي ضرر أثناء الخصومة، جاز للقاضي أن يعين حكمين اثنين لمحاولة الصلح بينهما حسب مقتضيات قانون الأسرة.»",
+   "quoteRef": "family-code 56 ¶1 (store, law-84-11); cpca 446 ¶1 (store, law-08-09); also cpca 448 ¶1, 449 ¶1",
+   "change": "Added procedure statements b64 (family-code 56 ¶1), b65 (cpca 446 ¶1), b66 (cpca 448 ¶1), b67 (cpca 449 ¶1); open point o17 (grade C: «وجب» against «جاز», neither names khul); k8, k45, k46 refs and notes; checklist k75. No effect on the petition (after filing). Example ex30."
+  },
+  {
+   "id": "adv-4",
+   "who": "adversary",
+   "target": "b23,k24,e3,r2,k16",
+   "kind": "missing",
+   "claim": "The record states only the waiting period of a wife who is not pregnant; Family Code 60 sets a pregnant wife's waiting period until delivery.",
+   "verdict": "fixed",
+   "verifierQuote": "«عدة الحامل وضع حملها، وأقصى مدة الحمل عشرة (10) أشهر من تاريخ الطلاق أو الوفاة.»",
+   "quoteRef": "family-code 60 ¶1 (store, law-84-11)",
+   "change": "Added statement b68 (family-code 60 ¶1) to e3 (with a fact to state: whether the wife is pregnant) and r2; k16 and k24 refs, k24 note; checklist k76. No slot: no rule turns on the amount. Example ex31."
+  },
+  {
+   "id": "adv-5",
+   "who": "adversary",
+   "target": "t1,k11,k42,o9,r5,r7,k20",
+   "kind": "procedure",
+   "claim": "Territory rule t1 ignores CPCA 426 (visitation at the place of custody, household goods at the marital home, dowry at the defendant's domicile).",
+   "verdict": "refuted",
+   "verifierQuote": "«4 - في موضوع الحضانة وحق الزيارة والرخص الإدارية المسلمة للقاصر المحضون بمكان ممارسة الحضانة،» ؛ «6 - في موضوع متاع بيت الزوجية بمكان وجود المسكن الزوجي،» ؛ «8 - في موضوع المنازعة حول الصداق بمكان موطن المدعى عليه،»",
+   "quoteRef": "cpca 426 ¶5, ¶7, ¶9 (store, law-08-09)",
+   "change": "None. The record imports court-sections t4 with its statements b42 (cpca 426 ¶1, ¶4 to ¶6) and b55 (cpca 426 ¶1 to ¶3, ¶7 to ¶10), which give exactly these courts (visitation at the place of custody, household goods at the marital home, dowry at the defendant's domicile); t1 deliberately adds only what the module lacks (cpca 40 and 51), as the guide requires that a claim not restate an imported rule; k11 and k42 already point to court-sections.t4."
+  },
+  {
+   "id": "adv-6",
+   "who": "adversary",
+   "target": "b32,k17",
+   "kind": "exception",
+   "claim": "b32 and k17 present the custody ages as automatic; article 65 ¶2 makes the judgment ending custody weigh the child's interest (and 67 ¶2 to ¶3 on the mother's work).",
+   "verdict": "fixed",
+   "verifierQuote": "«على أن يراعى في الحكم بانتهائها مصلحة المحضون.» ؛ «ولا يمكن لعمل المرأة أن يشكل سببا من أسباب سقوط الحق عنها في ممارسة الحضانة.» «غير أنه يجب في جميع الحالات مراعاة مصلحة المحضون.»",
+   "quoteRef": "family-code 65 ¶2 (store, law-84-11); family-code 67 ¶2 and ¶3 (store, ordinance-05-02)",
+   "change": "Added statements b69 (family-code 65 ¶2, limit) and b70 (67 ¶2 and ¶3); both in e4, b69 in r3; k17 refs and a note that the ages of ¶1 are not automatic. Example ex32."
+  },
+  {
+   "id": "adv-7",
+   "who": "adversary",
+   "target": "r2,r6,k21,k16",
+   "kind": "specialLaw",
+   "claim": "Law 15-01 (alimony fund) pays maintenance awarded provisionally to children during a divorce claim; the record does not mention it.",
+   "verdict": "fixed",
+   "verifierQuote": "المادة 2: «النفقة: النفقة المحكوم بها وفقا لأحكام قانون الأسرة لصالح الطفل أو الأطفال المحضونين بعد طلاق الوالدين، وكذلك النفقة المحكوم بها مؤقتا لصالح الطفل أو الأطفال في حالة رفع دعوى الطلاق والنفقة المحكوم بها للمرأة المطلقة،» ؛ المادة 3: «يتم دفع المستحقات المالية للمستفيد، إذا تعذر التنفيذ الكلي أو الجزئي للأمر أو الحكم القضائي المحدد لمبلغ النفقة، بسبب امتناع المدين بها عن الدفع أو عجزه عن ذلك أو لعدم معرفة محل إقامته.»",
+   "quoteRef": "Law 15-01 of 4 January 2015, arts. 2 and 3, Official Journal 2015 issue 1 pages 7 and 8 (A2015001.pdf, sha256 895b9694ff554cc411dbc8aed11d14cf66c10cc143ea0e4e57ae1784c6dbe1d0)",
+   "change": "The text is not in the store: request appended; added open point o18 (grade D) with refs r2, r6, n8; k21 refs and note; checklist k77 (searchedNotFound). No rule of the petition changes. Example ex33."
+  },
+  {
+   "id": "adv-8",
+   "who": "adversary",
+   "target": "o7,k3,k66",
+   "kind": "amendment",
+   "claim": "The 1984 wording of article 54 is on the Official Journal page and names no condition of the husband's consent; k3 states contested case law as settled history; former article 57 had no custody-appeal paragraph.",
+   "verdict": "fixed",
+   "verifierQuote": "«المادة 54 : يجوز للزوجة أن تخالع نفسها من زوجها على مال يتم الاتفاق عليه فان لم يتفقا على شيء يحكم القاضي بما لا يتجاوز قيمة صداق المثل وقت الحكم.» ؛ «المادة 57 : الاحكام بالطلاق غير قابلة للاستئناف ما عدا فى جوانبها المادية.»",
+   "quoteRef": "Law 84-11 (Family Code) original arts. 54 and 57, Official Journal 1984 issue 24 page 913 (A1984024.pdf, sha256 72a9290493fe6b94b7b4ab6547cfebafb6d4f85c7530a2c80a9fcad8ca378c9b)",
+   "change": "o7 why rewritten with the former wording and its source, and two readings (no consent condition in the words; case law requiring acceptance unconfirmed, Supreme Court decisions not read on the Court's site); grade D kept until the store holds the former wording; k3 note no longer states consent as a fact; k66 note records the former article 57. Requests appended for former articles 54 and 57. Example ex34."
+  },
+  {
+   "id": "values-d1",
+   "who": "values",
+   "target": "d1",
+   "kind": "misreading",
+   "claim": "check-values: d1 kind limitation not in its text (kindNotInText).",
+   "verdict": "open",
+   "verifierQuote": "«تستحق النفقة من تاريخ رفع الدعوى وللقاضي أن يحكم باستحقاقها بناء على بينة لمدة لا تتجاوز سنة قبل رفع الدعوى.»",
+   "quoteRef": "family-code 80 ¶1 (store, law-84-11)",
+   "change": "None needed: the paragraph has no word of limitation or forfeiture and names no kind; it caps the award for the period before filing. Searched family-code 80 and the periods module (civil-code 308 to 322, cpca 405): no text gives this ceiling a kind. d1 is already interpretive and warn-only, with both readings (a ceiling applied by the judge; a time bar raised by the defendant) and open point o4; limitation is kept only as the container that can never block."
+  },
+  {
+   "id": "values-section",
+   "who": "values",
+   "target": "section",
+   "kind": "misreading",
+   "claim": "check-values: section message (ar) names articles 32 and 423 that are not in its basis.",
+   "verdict": "refuted",
+   "verifierQuote": "«ينظر قسم شؤون الأسرة، على الخصوص في الدعاوى الآتية:» «1 - الدعاوى المتعلقة بالخطبة والزواج والرجوع إلى بيت الزوجية وانحلال الرابطة الزوجية وتوابعها» «2 - دعاوى النفقة والحضانة وحق الزيارة،» ؛ «غير أنه في المحاكم التي لم تنشأ فيها الأقسام، يبقى القسم المدني هو الذي ينظر في جميع النزاعات باستثناء القضايا الاجتماعية.»",
+   "quoteRef": "cpca 423 ¶1 to ¶3; cpca 32 ¶5 (store, law-08-09)",
+   "change": "None. The message names exactly the articles of the section rule's basis: cpca 423 through the imported court-sections.b7 (423 ¶1, ¶2) and b8 (423 ¶1, ¶3), cpca 32 through court-sections.b3 (32 ¶4) and, in the civil alternative, court-sections.b4 (32 ¶5). The value check does not resolve imported statements."
+  },
+  {
+   "id": "values-section-2",
+   "who": "values",
+   "target": "section",
+   "kind": "misreading",
+   "claim": "check-values: section message (en) names articles 32 and 423 that are not in its basis.",
+   "verdict": "refuted",
+   "verifierQuote": "«ينظر قسم شؤون الأسرة، على الخصوص في الدعاوى الآتية:» «2 - دعاوى النفقة والحضانة وحق الزيارة،» ؛ «غير أنه في المحاكم التي لم تنشأ فيها الأقسام، يبقى القسم المدني هو الذي ينظر في جميع النزاعات باستثناء القضايا الاجتماعية.»",
+   "quoteRef": "cpca 423 ¶1, ¶3; cpca 32 ¶5 (store, law-08-09)",
+   "change": "None: same as values-section, for the English message."
+  }
+ ]
+}

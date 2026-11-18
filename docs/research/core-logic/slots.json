@@ -1327,6 +1327,748 @@
       "readFromNote": false,
       "origin": "nafaqa",
       "why": "Boundary n13 reads it (verifier, attack adv-4): CPCA 442 lets the divorce judge order provisional measures, and CPCA 55 and 56 let a connected case be handed over."
+    },
+    {
+      "id": "minor_children",
+      "type": "yesNoUnknown",
+      "question": {
+        "ar": "هل للزوجين من هذا الزواج أولاد لم تنقض مدة حضانتهم؟",
+        "en": "Do the spouses have children of this marriage still within the age of custody?"
+      },
+      "askedFor": [
+        "divorce-by-husband"
+      ],
+      "readFromNote": false,
+      "origin": "divorce-by-husband",
+      "why": "Request r2 (visitation), element e3 and document doc4 read it: family-code 64 makes the judge rule on visitation when he awards custody, and family-code 65 sets when custody ends. Merges derivation A's minor_children and derivation B's minor_children_of_marriage, which ask the same fact."
+    },
+    {
+      "id": "husband_is_foreign_national",
+      "type": "yesNoUnknown",
+      "question": {
+        "ar": "هل الزوج المدعي أجنبي الجنسية وقت رفع الدعوى، دون أن يحمل الجنسية الجزائرية أيضا؟",
+        "en": "Is the plaintiff husband of foreign nationality when the claim is filed, without also holding Algerian nationality?"
+      },
+      "askedFor": [
+        "divorce-by-husband"
+      ],
+      "readFromNote": false,
+      "origin": "divorce-by-husband",
+      "why": "Boundary n8 reads it: civil-code 12 paragraph 2 submits the dissolution of marriage to the husband's national law at the time the claim is filed, civil-code 13 makes Algerian law apply alone when one spouse was Algerian when the marriage was made, and civil-code 22 paragraph 2 applies Algerian law to a person who also holds Algerian nationality, so a dual national answers no. The existing slot debtor_is_foreign_national asks about the defendant, who here is the wife."
+    },
+    {
+      "id": "either_spouse_algerian_at_marriage",
+      "type": "yesNoUnknown",
+      "question": {
+        "ar": "هل كان أحد الزوجين على الأقل جزائري الجنسية وقت انعقاد الزواج؟",
+        "en": "Was at least one of the spouses an Algerian national when the marriage was made?"
+      },
+      "askedFor": [
+        "tatliq"
+      ],
+      "readFromNote": false,
+      "origin": "tatliq",
+      "why": "Boundary n3 reads it: Civil Code article 13 applies Algerian law alone to the dissolution when either spouse was Algerian at the marriage, so the husband's foreign nationality at filing (article 12) sends the case abroad only when neither spouse was Algerian then (verifier, attack adv-4)."
+    },
+    {
+      "id": "plaintiff_lacks_full_capacity",
+      "type": "yesNoUnknown",
+      "question": {
+        "ar": "هل المدعية ناقصة الأهلية (لم تبلغ 19 سنة أو محجور عليها)؟",
+        "en": "Does the plaintiff lack full capacity (under 19, or under interdiction)?"
+      },
+      "askedFor": [
+        "tatliq"
+      ],
+      "readFromNote": false,
+      "origin": "tatliq",
+      "why": "Boundary n12 reads it: CPCA article 437 has the request of a spouse lacking full capacity filed in her name by her guardian or curator, and articles 64 and 65 make lack of capacity a ground of nullity the judge raises of his own motion (verifier, attack adv-1)."
+    },
+    {
+      "id": "marital_home_in_algeria",
+      "type": "yesNoUnknown",
+      "question": {
+        "ar": "هل يقع مسكن الزوجية في الجزائر؟",
+        "en": "Is the marital home in Algeria?"
+      },
+      "askedFor": [
+        "tatliq"
+      ],
+      "readFromNote": false,
+      "origin": "tatliq",
+      "why": "Boundary n13 reads it: CPCA articles 40 and 426 send a divorce claim to the court of the marital home, and no text in the store names the court when that home is abroad (verifier, attack adv-7)."
+    },
+    {
+      "id": "tatliq_ground_nonmaintenance",
+      "type": "yesNoUnknown",
+      "question": {
+        "ar": "هل تؤسس الزوجة طلب التطليق على امتناع الزوج عن الإنفاق عليها؟",
+        "en": "Does the wife base the tatliq claim on the husband's failure to maintain her?"
+      },
+      "askedFor": [
+        "tatliq"
+      ],
+      "readFromNote": false,
+      "origin": "tatliq",
+      "why": "Prior step p1, boundary n9 and document doc2 read it: the Family Code ground of non-maintenance applies only after a judgment ordering maintenance and fails if the wife knew of his poverty at the marriage. Same fact as derivation B's tatliq_ground = maintenance_default; kept as a yes/no because a wife may rely on several grounds at once."
+    },
+    {
+      "id": "bed_desertion_ground",
+      "type": "choice",
+      "question": {
+        "ar": "هل تؤسس الزوجة طلبها على الهجر في المضجع، وما مدته في تاريخ العريضة؟",
+        "en": "Does the wife rely on desertion of the marital bed, and how long has it lasted at the petition's date?"
+      },
+      "choices": [
+        {
+          "id": "not_relied",
+          "label": {
+            "ar": "لا تؤسس الطلب على الهجر في المضجع",
+            "en": "The claim does not rely on desertion of the bed"
+          }
+        },
+        {
+          "id": "over_four_months",
+          "label": {
+            "ar": "هجر في المضجع لأكثر من أربعة أشهر",
+            "en": "Desertion of the bed for more than four months"
+          }
+        },
+        {
+          "id": "four_months_or_less",
+          "label": {
+            "ar": "هجر في المضجع لا يتجاوز أربعة أشهر",
+            "en": "Desertion of the bed for four months or less"
+          }
+        }
+      ],
+      "askedFor": [
+        "tatliq"
+      ],
+      "readFromNote": false,
+      "origin": "tatliq",
+      "why": "Boundary n1 and element e2 read it: the Family Code ground of desertion of the bed requires more than four months. Holds derivation B's tatliq_ground = abandonment together with B's abandonment_over_four_months."
+    },
+    {
+      "id": "absence_ground",
+      "type": "choice",
+      "question": {
+        "ar": "هل تؤسس الزوجة طلبها على غيبة الزوج، وهل مضت سنة على الغيبة بدون عذر ولا نفقة في تاريخ العريضة؟",
+        "en": "Does the wife rely on the husband's absence, and has the absence lasted a year, without excuse and without maintenance, at the petition's date?"
+      },
+      "choices": [
+        {
+          "id": "not_relied",
+          "label": {
+            "ar": "لا تؤسس الطلب على الغيبة",
+            "en": "The claim does not rely on absence"
+          }
+        },
+        {
+          "id": "met",
+          "label": {
+            "ar": "غيبة مضت عليها سنة بدون عذر ولا نفقة",
+            "en": "Absence that has lasted a year, without excuse and without maintenance"
+          }
+        },
+        {
+          "id": "not_met",
+          "label": {
+            "ar": "غيبة لم تمض عليها سنة، أو لها عذر، أو مع إنفاق",
+            "en": "Absence of less than a year, or with an excuse, or with maintenance paid"
+          }
+        }
+      ],
+      "askedFor": [
+        "tatliq"
+      ],
+      "readFromNote": false,
+      "origin": "tatliq",
+      "why": "Boundary n2 and element e2 read it: the Family Code ground of absence requires a year to have passed without excuse and without maintenance. Holds derivation B's tatliq_ground = absence."
+    },
+    {
+      "id": "wife_knew_husband_indigence",
+      "type": "yesNoUnknown",
+      "question": {
+        "ar": "هل كانت الزوجة عالمة بإعسار زوجها وقت الزواج؟",
+        "en": "Did the wife know of her husband's insolvency when she married?"
+      },
+      "askedFor": [
+        "tatliq"
+      ],
+      "readFromNote": false,
+      "origin": "tatliq",
+      "why": "Boundary n9 reads it: the Family Code excludes the non-maintenance ground when the wife knew of his insolvency at the marriage (derivation B)."
+    },
+    {
+      "id": "custody_entitlement_date",
+      "type": "date",
+      "question": {
+        "ar": "ما تاريخ نشوء حق المدعية في حضانة الأولاد وإمكان مطالبتها بها (غالبا الافتراق)؟",
+        "en": "On what date did the plaintiff's right to custody of the children arise, so that she could claim it (usually the separation)?"
+      },
+      "askedFor": [
+        "tatliq"
+      ],
+      "readFromNote": false,
+      "origin": "tatliq",
+      "why": "Deadline d2 starts from it; the Family Code makes the right to custody fall after more than a year without a request and without excuse (derivation B)."
+    },
+    {
+      "id": "marriage_proven_by_judgment",
+      "type": "yesNoUnknown",
+      "question": {
+        "ar": "إذا لم يكن الزواج مسجلا في الحالة المدنية، هل صدر حكم قضائي بإثباته؟",
+        "en": "If the marriage is not registered in the civil-status register, has a court judgment proved it?"
+      },
+      "askedFor": [
+        "khul"
+      ],
+      "readFromNote": false,
+      "origin": "khul",
+      "why": "Prior step p1 reads it as its exemption: Family Code article 22 proves a marriage by an extract of the civil-status register and, when it is not registered, by a court judgment; the slot marriage_registered does not say whether such a judgment exists."
+    },
+    {
+      "id": "wife_relies_on_husband_fault",
+      "type": "yesNoUnknown",
+      "question": {
+        "ar": "هل تستند الزوجة إلى خطأ الزوج أو ضرر لحقها وتطلب التعويض عنه؟",
+        "en": "Does the wife rely on the husband's fault or on harm to her, and ask compensation for it?"
+      },
+      "askedFor": [
+        "khul"
+      ],
+      "readFromNote": false,
+      "origin": "khul",
+      "why": "Boundary n3 reads it: family-code 48 ¶1 separates the wife's request under article 53 (judicial divorce for a listed cause, with compensation under 53 مكرر) from khul under article 54 (a consideration, no cause)."
+    },
+    {
+      "id": "spouses_agree_on_divorce_terms",
+      "type": "yesNoUnknown",
+      "question": {
+        "ar": "هل يتفق الزوجان على الطلاق وعلى توابعه؟",
+        "en": "Do the spouses agree on the divorce and on its consequences?"
+      },
+      "askedFor": [
+        "khul"
+      ],
+      "readFromNote": false,
+      "origin": "khul",
+      "why": "Boundary n4 reads it: cpca 427 ¶1 and 428 ¶1 make divorce by mutual consent a procedure of the spouses' joint will, asked by a single joint petition."
+    },
+    {
+      "id": "husband_missing_or_declared_dead",
+      "type": "yesNoUnknown",
+      "question": {
+        "ar": "هل صدر حكم بفقد الزوج أو بموته، أو هل هو غائب لا يعرف مكانه ولا حياته أو موته؟",
+        "en": "Has a judgment declared the husband missing or dead, or is he absent with his whereabouts, life or death unknown?"
+      },
+      "askedFor": [
+        "khul"
+      ],
+      "readFromNote": false,
+      "origin": "khul",
+      "why": "Boundary n12 reads it: family-code 47 ¶1 dissolves the marriage by death, 113 ¶1 allows a judgment declaring a missing person dead, and 112 ¶1 gives the wife of a missing or absent husband the divorce route of 53 item 5."
+    },
+    {
+      "id": "children_in_plaintiff_care",
+      "type": "yesNoUnknown",
+      "question": {
+        "ar": "هل الأولاد الذين تطلب المدعية حضانتهم في رعايتها حاليا؟",
+        "en": "Are the children whose custody the plaintiff asks for in her care now?"
+      },
+      "askedFor": [
+        "khul"
+      ],
+      "readFromNote": false,
+      "origin": "khul",
+      "why": "Deadline d2 reads it: family-code 68 ¶1 makes the custody right lapse when it is not claimed for more than a year without excuse."
+    },
+    {
+      "id": "custody_not_claimed_since",
+      "type": "date",
+      "question": {
+        "ar": "منذ أي تاريخ لم يعد الأولاد في رعاية المدعية؟",
+        "en": "Since what date have the children no longer been in the plaintiff's care?"
+      },
+      "askedFor": [
+        "khul"
+      ],
+      "readFromNote": false,
+      "origin": "khul",
+      "why": "Deadline d2 starts from it (family-code 68 ¶1, the year without claiming custody)."
+    },
+    {
+      "id": "divorce_judgment_date",
+      "type": "date",
+      "question": {
+        "ar": "ما تاريخ صدور حكم الطلاق بين الطرفين؟",
+        "en": "On what date was the divorce between the parties pronounced by judgment?"
+      },
+      "askedFor": [
+        "custody"
+      ],
+      "readFromNote": false,
+      "origin": "custody",
+      "why": "Deadline d1 starts from it: family-code 68 ¶1 makes the right to custody lapse when it is not claimed for more than a year without excuse and names no starting day; the record counts from the divorce judgment, the earliest day a divorced parent's right can arise (family-code 72 ¶1 and 87 ¶3 speak of the case of divorce), as the protective reading. spouses_divorced says whether there was a divorce, not when. Derivation A's slot; derivation B's custody_unclaimed_since (a different fact) is kept as a reading of d1, not as a slot."
+    },
+    {
+      "id": "custody_claim_delay_excused",
+      "type": "yesNoUnknown",
+      "question": {
+        "ar": "هل كان للمدعي عذر منعه من طلب الحضانة خلال السنة الموالية لنشوء حقه فيها؟",
+        "en": "Did the plaintiff have an excuse that kept him or her from claiming custody during the year after the right arose?"
+      },
+      "askedFor": [
+        "custody"
+      ],
+      "readFromNote": false,
+      "origin": "custody",
+      "why": "Deadline d1 reads it: family-code 68 ¶1 makes the right lapse only when the claim was not made for more than a year 'without excuse'. Same fact as derivation B's custody_delay_excused."
+    },
+    {
+      "id": "custody_already_decided",
+      "type": "yesNoUnknown",
+      "question": {
+        "ar": "هل سبق أن فصل حكم (حكم الطلاق أو غيره) في حضانة الأبناء المعنيين؟",
+        "en": "Has an earlier judgment (the divorce judgment or another) already ruled on the custody of these children?"
+      },
+      "askedFor": [
+        "custody"
+      ],
+      "readFromNote": false,
+      "origin": "custody",
+      "why": "Boundary n1 reads it: family-code 66 ¶1, 67 ¶1, 69 ¶1 and 71 ¶1 govern the loss, removal and return of a custody already held, which is another claim than its first award. Same fact as derivation B's custody_previously_judged."
+    },
+    {
+      "id": "child_past_custody_age",
+      "type": "yesNoUnknown",
+      "question": {
+        "ar": "هل بلغ أحد الأبناء المطالب بحضانتهم نهاية مدة الحضانة (الذكر عشر سنوات، والأنثى سن الزواج)؟",
+        "en": "Has any child whose custody is claimed reached the end of the custody period (a boy ten years, a girl the age of marriage)?"
+      },
+      "askedFor": [
+        "custody"
+      ],
+      "readFromNote": false,
+      "origin": "custody",
+      "why": "Boundary n4 reads it: family-code 65 ¶1 ends custody of a boy at 10 (extendable to 16 when the custodian is a mother who has not remarried) and of a girl at the age of marriage. Same fact as derivation B's child_past_custody_term."
+    },
+    {
+      "id": "plaintiff_parent",
+      "type": "choice",
+      "question": {
+        "ar": "من هو المدعي؟",
+        "en": "Who is the plaintiff?"
+      },
+      "choices": [
+        {
+          "id": "mother",
+          "label": {
+            "ar": "الأم",
+            "en": "The mother"
+          }
+        },
+        {
+          "id": "father",
+          "label": {
+            "ar": "الأب",
+            "en": "The father"
+          }
+        }
+      ],
+      "askedFor": [
+        "custody"
+      ],
+      "readFromNote": false,
+      "origin": "custody",
+      "why": "Boundary n8 and request r3 read it: family-code 64 ¶1 puts the mother before the father, and family-code 72 ¶1 puts the housing duty on the father towards the female custodian. Derivation A only."
+    },
+    {
+      "id": "plaintiff_remarried_non_mahram",
+      "type": "yesNoUnknown",
+      "question": {
+        "ar": "إذا كانت المدعية امرأة: هل تزوجت بغير قريب محرم من الأبناء؟",
+        "en": "If the plaintiff is a woman: has she married a man who is not a close relative of the children within the forbidden degrees?"
+      },
+      "askedFor": [
+        "custody"
+      ],
+      "readFromNote": false,
+      "origin": "custody",
+      "why": "Boundary n10 reads it: family-code 66 ¶1 makes a woman custodian's right fall by her marriage to a man who is not a mahram relative. Derivation B only."
+    },
+    {
+      "id": "mother_deceased",
+      "type": "yesNoUnknown",
+      "question": {
+        "ar": "هل توفيت أم الأبناء؟",
+        "en": "Has the children's mother died?"
+      },
+      "askedFor": [
+        "custody"
+      ],
+      "readFromNote": false,
+      "origin": "custody",
+      "why": "Boundaries n1, n8 and n11 read it: family-code 64 ¶1 puts the father right after the mother in the order of custody, so once she has died the mother's priority (n8) no longer stands; Supreme Court decision 1177332 of 07-03-2018 (read on coursupreme.dz) holds that custody then passes to the father without a judgment (n11). Verifier, attack adv-1."
+    },
+    {
+      "id": "boy_custody_extension_case",
+      "type": "yesNoUnknown",
+      "question": {
+        "ar": "هل كل ولد بلغ نهاية مدة الحضانة ذكر لم يبلغ 16 سنة، والمدعية أمه التي لم تتزوج ثانية؟",
+        "en": "Is every child past the custody period a boy under 16, and is the plaintiff his mother who has not remarried?"
+      },
+      "askedFor": [
+        "custody"
+      ],
+      "readFromNote": false,
+      "origin": "custody",
+      "why": "Boundary n4 and request r6 read it: family-code 65 ¶1 lets the judge extend a boy's custody to 16 when the custodian is a mother who has not remarried. Verifier, attack adv-3."
+    },
+    {
+      "id": "custody_claimed_for_some_children_only",
+      "type": "yesNoUnknown",
+      "question": {
+        "ar": "هل يطلب المدعي حضانة بعض الأبناء دون بعض؟",
+        "en": "Does the plaintiff claim custody of some of the children and not the others?"
+      },
+      "askedFor": [
+        "custody"
+      ],
+      "readFromNote": false,
+      "origin": "custody",
+      "why": "Boundary n12 reads it: family-code 64 ¶1 awards custody in the child's interest, and Supreme Court decision 1053458 of 01-02-2017 (read on coursupreme.dz) states that custody is in principle not divided. Verifier, attack adv-9."
+    },
+    {
+      "id": "prior_custody_judgment",
+      "type": "yesNoUnknown",
+      "question": {
+        "ar": "هل صدر حكم سابق أسند حضانة المحضون إلى المدعى عليه؟",
+        "en": "Has an earlier judgment awarded custody of the child to the defendant?"
+      },
+      "askedFor": [
+        "custody-forfeiture"
+      ],
+      "readFromNote": false,
+      "origin": "custody-forfeiture",
+      "why": "Boundaries n1 and n2 read it: family-code 64 ¶1 makes the judge award custody; without an earlier award the claim is one to award custody, not to forfeit and transfer it. Same fact as derivation B's prior_custody_judgment_exists."
+    },
+    {
+      "id": "custody_judgment_date",
+      "type": "date",
+      "question": {
+        "ar": "ما تاريخ الحكم السابق الذي أسند الحضانة إلى المدعى عليه؟",
+        "en": "On what date was the earlier judgment awarding custody to the defendant given?"
+      },
+      "askedFor": [
+        "custody-forfeiture"
+      ],
+      "readFromNote": false,
+      "origin": "custody-forfeiture",
+      "why": "Boundary n2 compares it with custody_ground_date: civil-code 338 ¶1 gives a final judgment its force only on the same object and cause. With custody_ground_date it holds derivation B's cause_predates_custody_judgment."
+    },
+    {
+      "id": "forfeiture_ground",
+      "type": "choice",
+      "question": {
+        "ar": "ما السبب الذي تستند إليه الدعوى لإسقاط الحضانة (إن تعددت الأسباب فاختر الأساسي منها)؟",
+        "en": "Which ground does the claim rely on to forfeit custody (if several, the main one)?"
+      },
+      "choices": [
+        {
+          "id": "custodian_remarried",
+          "label": {
+            "ar": "زواج الحاضنة بغير قريب محرم للمحضون",
+            "en": "The custodian married a man who is not a mahram relative of the child"
+          }
+        },
+        {
+          "id": "relative_with_remarried_mother",
+          "label": {
+            "ar": "سكن الجدة أو الخالة الحاضنة بالمحضون مع أمه المتزوجة بغير قريب محرم",
+            "en": "The custodian grandmother or aunt lives with the child at the home of the mother married to a non-mahram"
+          }
+        },
+        {
+          "id": "custody_renounced",
+          "label": {
+            "ar": "تنازل الحاضن عن الحضانة",
+            "en": "The custodian renounced custody"
+          }
+        },
+        {
+          "id": "custodian_unfit",
+          "label": {
+            "ar": "اختلال شرط من شروط الحضانة لدى الحاضن",
+            "en": "The custodian no longer meets a condition of custody"
+          }
+        },
+        {
+          "id": "custody_unclaimed",
+          "label": {
+            "ar": "عدم مطالبة صاحب الحق بالحضانة أكثر من سنة دون عذر",
+            "en": "The person entitled did not claim custody for more than a year without excuse"
+          }
+        },
+        {
+          "id": "custodian_abroad",
+          "label": {
+            "ar": "استيطان الحاضن أو إرادته الاستيطان في بلد أجنبي",
+            "en": "The custodian settled, or wants to settle, in a foreign country"
+          }
+        }
+      ],
+      "askedFor": [
+        "custody-forfeiture"
+      ],
+      "readFromNote": false,
+      "origin": "custody-forfeiture",
+      "why": "Boundary n3 and documents doc3 to doc6 read it: family-code articles 66 to 70 set distinct grounds, and the mahram condition of 66 ¶1 and 70 ¶1 concerns the marriage grounds only."
+    },
+    {
+      "id": "custody_ground_date",
+      "type": "date",
+      "question": {
+        "ar": "ما تاريخ نشوء سبب الإسقاط المعتمد عليه (تاريخ زواج الحاضنة، أو التنازل، أو الاستيطان في الخارج، أو ظهور الإخلال)؟",
+        "en": "On what date did the ground relied on arise (the custodian's marriage, the renunciation, the settling abroad, or the failing)?"
+      },
+      "askedFor": [
+        "custody-forfeiture"
+      ],
+      "readFromNote": false,
+      "origin": "custody-forfeiture",
+      "why": "Deadline d1 runs from it (family-code 68 ¶1, read protectively); boundary n2 compares it with the earlier judgment's date (civil-code 338 ¶1)."
+    },
+    {
+      "id": "new_spouse_is_mahram",
+      "type": "yesNoUnknown",
+      "question": {
+        "ar": "هل الزوج الجديد للحاضنة قريب محرم للمحضون؟",
+        "en": "Is the custodian's new husband a mahram relative of the child?"
+      },
+      "askedFor": [
+        "custody-forfeiture"
+      ],
+      "readFromNote": false,
+      "origin": "custody-forfeiture",
+      "why": "Boundary n3 reads it: family-code 66 ¶1 and 70 ¶1 forfeit custody only for marriage to a man who is not a mahram relative."
+    },
+    {
+      "id": "child_birth_date",
+      "type": "date",
+      "question": {
+        "ar": "ما تاريخ ميلاد المحضون (إن تعدد المحضونون فأكبرهم سنا)؟",
+        "en": "What is the child's date of birth (if several children, the eldest's)?"
+      },
+      "askedFor": [
+        "custody-forfeiture"
+      ],
+      "readFromNote": false,
+      "origin": "custody-forfeiture",
+      "why": "Deadlines d2 and d3 run from it: family-code 65 ¶1 ends custody of a boy at ten years and of a girl at the age of marriage."
+    },
+    {
+      "id": "child_sex",
+      "type": "choice",
+      "question": {
+        "ar": "هل المحضون ذكر أم أنثى (إن تعدد المحضونون فأكبرهم سنا)؟",
+        "en": "Is the child a boy or a girl (if several children, the eldest)?"
+      },
+      "choices": [
+        {
+          "id": "male",
+          "label": {
+            "ar": "ذكر",
+            "en": "A boy"
+          }
+        },
+        {
+          "id": "female",
+          "label": {
+            "ar": "أنثى",
+            "en": "A girl"
+          }
+        }
+      ],
+      "askedFor": [
+        "custody-forfeiture"
+      ],
+      "readFromNote": false,
+      "origin": "custody-forfeiture",
+      "why": "Deadlines d2 and d3 read it: family-code 65 ¶1 sets different ends of custody for a boy and a girl."
+    },
+    {
+      "id": "public_prosecutor_joined",
+      "type": "yesNoUnknown",
+      "question": {
+        "ar": "هل أدخلت النيابة العامة في الدعوى بصفتها طرفا أصليا (ذكرها في العريضة وإبلاغها بها)؟",
+        "en": "Has the public prosecutor been made a party to the claim as a principal party (named in the petition and informed of it)?"
+      },
+      "askedFor": [
+        "custody-forfeiture"
+      ],
+      "readFromNote": false,
+      "origin": "custody-forfeiture",
+      "why": "Prior step p1 reads it: family-code 3 مكرر ¶1 makes the public prosecutor a principal party in every case applying the Family Code."
+    },
+    {
+      "id": "forfeiture_cause_ceased",
+      "type": "yesNoUnknown",
+      "question": {
+        "ar": "هل زال سبب سقوط الحضانة غير الاختياري (كانتهاء زواج الحاضنة) قبل رفع الدعوى؟",
+        "en": "Has the involuntary cause of the loss of custody (for instance the end of the custodian's remarriage) ceased before the claim is filed?"
+      },
+      "askedFor": [
+        "custody-forfeiture"
+      ],
+      "readFromNote": false,
+      "origin": "custody-forfeiture",
+      "why": "Boundary n12 reads it: family-code 71 ¶1 returns the right to custody when the involuntary cause of its loss has ceased."
+    },
+    {
+      "id": "plaintiff_relation",
+      "type": "choice",
+      "question": {
+        "ar": "ما صفة المدعي(ة) بالنسبة للمحضون؟",
+        "en": "What is the plaintiff's relation to the child?"
+      },
+      "choices": [
+        {
+          "id": "mother",
+          "label": {
+            "ar": "الأم",
+            "en": "The mother"
+          }
+        },
+        {
+          "id": "father",
+          "label": {
+            "ar": "الأب",
+            "en": "The father"
+          }
+        },
+        {
+          "id": "maternal_grandmother",
+          "label": {
+            "ar": "الجدة لأم",
+            "en": "The maternal grandmother"
+          }
+        },
+        {
+          "id": "paternal_grandmother",
+          "label": {
+            "ar": "الجدة لأب",
+            "en": "The paternal grandmother"
+          }
+        },
+        {
+          "id": "maternal_aunt",
+          "label": {
+            "ar": "الخالة",
+            "en": "The maternal aunt"
+          }
+        },
+        {
+          "id": "paternal_aunt",
+          "label": {
+            "ar": "العمة",
+            "en": "The paternal aunt"
+          }
+        },
+        {
+          "id": "other_female_relative",
+          "label": {
+            "ar": "قريبة أخرى",
+            "en": "Another female relative"
+          }
+        },
+        {
+          "id": "other_male_relative",
+          "label": {
+            "ar": "قريب آخر",
+            "en": "Another male relative"
+          }
+        }
+      ],
+      "askedFor": [
+        "custody-forfeiture"
+      ],
+      "readFromNote": false,
+      "origin": "custody-forfeiture",
+      "why": "Request r4 reads it: family-code 72 ¶1 puts the housing duty on the father toward the female custodian (للحاضنة), so the housing request is proposed only when the plaintiff is a woman who will hold custody (verifier, adv-2)."
+    },
+    {
+      "id": "defendant_relation",
+      "type": "choice",
+      "question": {
+        "ar": "ما صفة المدعى عليه(ا) الحاضن بالنسبة للمحضون؟",
+        "en": "What is the defendant custodian's relation to the child?"
+      },
+      "choices": [
+        {
+          "id": "mother",
+          "label": {
+            "ar": "الأم",
+            "en": "The mother"
+          }
+        },
+        {
+          "id": "father",
+          "label": {
+            "ar": "الأب",
+            "en": "The father"
+          }
+        },
+        {
+          "id": "maternal_grandmother",
+          "label": {
+            "ar": "الجدة لأم",
+            "en": "The maternal grandmother"
+          }
+        },
+        {
+          "id": "paternal_grandmother",
+          "label": {
+            "ar": "الجدة لأب",
+            "en": "The paternal grandmother"
+          }
+        },
+        {
+          "id": "maternal_aunt",
+          "label": {
+            "ar": "الخالة",
+            "en": "The maternal aunt"
+          }
+        },
+        {
+          "id": "paternal_aunt",
+          "label": {
+            "ar": "العمة",
+            "en": "The paternal aunt"
+          }
+        },
+        {
+          "id": "other_female_relative",
+          "label": {
+            "ar": "قريبة أخرى",
+            "en": "Another female relative"
+          }
+        },
+        {
+          "id": "other_male_relative",
+          "label": {
+            "ar": "قريب آخر",
+            "en": "Another male relative"
+          }
+        }
+      ],
+      "askedFor": [
+        "custody-forfeiture"
+      ],
+      "readFromNote": false,
+      "origin": "custody-forfeiture",
+      "why": "Request r4 and boundaries n14 and n16 read it: family-code 72 ¶1 binds the father; family-code 66 ¶1 forfeits by marriage the right of the female custodian (الحاضنة) and 70 ¶1 that of the grandmother or maternal aunt (verifier, adv-2, adv-3, adv-5)."
     }
   ]
 }

@@ -1,0 +1,148 @@
+{
+  "unit": "custody",
+  "attacks": [
+    {
+      "id": "adv-1",
+      "who": "adversary",
+      "target": "n8, n1, d1, r3, r2, e3, slots",
+      "kind": "missing",
+      "claim": "The case of the custodian mother's death is not handled: n8 (mother's priority), n1 (transfer) and d1 (year from the divorce) all fire wrongly when the father claims the children from the relative who keeps them.",
+      "verdict": "fixed",
+      "verifierQuote": "«الأم أولى بحضانة ولدها، ثم الأب، ثم الجدة لأم...» (family-code 64 ¶1). Supreme Court, family and inheritance chamber, decision 1177332 of 07-03-2018, read on coursupreme.dz (headnote and reasoning): «تنتقل الحضانة بعد وفاة الام للاب تلقائيا» ; «وبعد وفاة أحدهما ينتقل هذا الحق والعبء تلقائياً إلى الطرف الآخر ودون حاجة إلى الحكم بها» ; «ومنه فإنه بوفاة الأم يكون الأب الأحق بالحضانة ... وفقاً لنص المادة 64 من قانون الأسرة».",
+      "quoteRef": "family-code 64 ¶1; Supreme Court decision 1177332 of 07-03-2018 (coursupreme.dz, read 2026-11-18 through a page fetch; the same principle in decision 1053458 of 01-02-2017: «تسند الحضانة للأب بوفاة الأم الحاضنة»)",
+      "change": "New proposed slot mother_deceased. n8 and n1 now fire only while the mother's death is not confirmed (any[mother_deceased unknown, no]), so existing cases keep their warnings. New boundary n11 (father claims, mother_deceased yes) warns, citing 64 ¶1, 62 ¶2 and 68 ¶1 and the decision, and tells the lawyer to check the defendant, the year's start and whether a claim is needed. d1 and o1 gain a reading counting the year from the mother's death; o9 gains the reading; new open point o15 (case law, grade C); checklist k87. r3 already requires plaintiff_parent = mother, so it does not reach a father or a grandmother; r2 is unchanged (87 ¶1 makes the father guardian). Examples vf1, vf2."
+    },
+    {
+      "id": "adv-2",
+      "who": "adversary",
+      "target": "n3, o3, n2",
+      "kind": "procedure",
+      "claim": "The CPCA gives a route to provisional custody between spouses who are not divorced: the urgent action to end or withdraw the exercise of guardianship (453, 460 ¶2), with its own court and chambers hearing (458), 30-day service on pain of lapse (455) and 15-day appeal (456); the record mentions none.",
+      "verdict": "fixed",
+      "verifierQuote": "«يقدم طلب إنهاء ممارسة الولاية على القاصر أو سحبها المؤقت، من قبل أحد الوالدين أو ممثل النيابة العامة أو من قبل كل من يهمه الأمر بدعوى استعجالية.» (cpca 453 ¶1); «كما يجوز له أن يسند مؤقتا حضانة القاصر لأحد الأبوين، وإذا تعذر ذلك تسند لأحد الأشخاص المبينين في قانون الأسرة.» (cpca 460 ¶2); «... أمام محكمة مقر ممارسة الولاية.» (458 ¶1); «... خلال ثلاثين (30) يوما من تاريخ النطق به، تحت طائلة سقوط الأمر.» (455 ¶1); «من قبل الخصوم في أجل خمسة عشر (15) يوما من تاريخ التبليغ الرسمي» (456 ¶2).",
+      "quoteRef": "cpca 453 ¶1, 455 ¶1, 456 ¶2, 458 ¶1-2, 460 ¶2 (store, version law-08-09; the amendment ledger lists no later change to them)",
+      "change": "New statements b38 (cpca 453 ¶1), b39 (460 ¶2), b40 (458 ¶1-2), b41 (455 ¶1), b42 (456 ¶1-2). n3's message now points to the urgent guardianship route, its court, chambers hearing, the 30-day service and the 15-day appeal, and its basis carries b38 to b42. o3's why and readings now name the route (provisional custody, not an award on the merits). Checklist k90. These periods run after an order in another procedure, so they are not deadlines of this petition. Example vf3."
+    },
+    {
+      "id": "adv-3",
+      "who": "adversary",
+      "target": "n4, r1, slot child_past_custody_age, e4",
+      "kind": "missing",
+      "claim": "Family Code 65 ¶1 lets the judge extend a boy's custody to 16 when the custodian is a mother who has not remarried; the record sends that case 'outside' through n4 and has no request for the extension.",
+      "verdict": "fixed",
+      "verifierQuote": "«تنقضي مدة حضانة الذكر ببلوغه (10) سنوات، والأنثى ببلوغها سن الزواج، وللقاضي أن يمدد الحضانة بالنسبة للذكر إلى (16) سنة إذا كانت الحاضنة أما لم تتزوج ثانية.» (family-code 65 ¶1); «على أن يراعى في الحكم بانتهائها مصلحة المحضون.» (65 ¶2)",
+      "quoteRef": "family-code 65 ¶1-2 (store, version law-84-11)",
+      "change": "New proposed slot boy_custody_extension_case (every child past the period is a boy under 16 and the plaintiff is his mother who has not remarried; 65 says «لم تتزوج ثانية», any remarriage, which plaintiff_remarried_non_mahram does not hold). n4 is silent when it is yes and still warns when it is no or unknown. New accessory request r6 (kind custody, extension to sixteen, basis b4, b5) when it is yes; e4 and n4's message name the extension and the child's interest. Checklist k88. Examples vf4, vf5."
+    },
+    {
+      "id": "adv-4",
+      "who": "adversary",
+      "target": "r3, b15, e5, o8, k12",
+      "kind": "caseLaw",
+      "claim": "The Supreme Court reads art. 72 narrowly: allocating the marital home needs the husband's consent, art. 72 gives no right to stay in it, and rent falls if suitable housing is offered; r3 presents the stay as settled and e5 never asks whether the father offered housing.",
+      "verdict": "fixed",
+      "verifierQuote": "«في حالة الطلاق، يجب على الأب أن يوفر، لممارسة الحضانة، سكنا ملائما للحاضنة، وإن تعذر ذلك فعليه دفع بدل الإيجار.» (family-code 72 ¶1); «وتبقى الحاضنة في بيت الزوجية حتى تنفيذ الأب للحكم القضائي المتعلق بالسكن.» (72 ¶2). Supreme Court decision 0973124 of 04-05-2016, read on coursupreme.dz: «يحكم للحاضنة ببدل الإيجار لأن طلب تخصيص مسكن الزوجية لممارسة الحضانة يتوقف على موافقة الزوج.»",
+      "quoteRef": "family-code 72 ¶1-2 (store, version ordinance-05-02); Supreme Court decision 0973124 of 04-05-2016 (coursupreme.dz, read 2026-11-18). Decisions 1365731 and 0937015 were not fetched.",
+      "change": "r3 kept: its stay in the marital home until execution is the words of 72 ¶2, which the decision does not address (it concerns allocating the marital home as the custody housing). e5 fixed by 72 ¶1 (rent only «وإن تعذر ذلك»): its toProve and a new fact to state ask whether the father offered housing, whether it is suitable, or whether he cannot provide it. New open point o16 (grade C) keeps both readings on allocating the marital home, the decision named; o8 refers to it. The claim that rent falls whenever suitable housing is offered rests on decision 1365731, not fetched: kept only as a fact to state. Example vf6."
+    },
+    {
+      "id": "adv-5",
+      "who": "adversary",
+      "target": "d1, rc1, n1, o1",
+      "kind": "caseLaw",
+      "claim": "Supreme Court 1453870 let a mother claim custody again after waiving it where the children were in fact with her; d1 should not warn while the children live with the plaintiff, and n1 should treat her claim as a renewed claim.",
+      "verdict": "open",
+      "verifierQuote": "«إذا لم يطلب من له الحق في الحضانة مدة تزيد عن سنة بدون عذر سقط حقه فيها.» (family-code 68 ¶1, no starting day); Supreme Court decision 1453870 of 06-10-2021, read on coursupreme.dz, cites arts. 64 and 71 only: «يحق للأم المطالبة بالحضانة من جديد، بعد تنازلها عنها أثناء الطلاق بالتراضي، متى برّرت طلبها وكانت الحضانة الفعلية عندها.»",
+      "quoteRef": "family-code 68 ¶1; Supreme Court decision 1453870 of 06-10-2021 (coursupreme.dz, read 2026-11-18)",
+      "change": "No change to the rule: 68 ¶1 names no starting day, so the texts allow both readings, and d1 already is interpretive with the protective start (the divorce judgment), the actual-custody reading (reading 3) and open point o1; the decision does not apply art. 68. Added the decision as a reading in o1 and as a reading in o9 (a renewed claim by a plaintiff who waived and has the children); n1 still warns, which is the protective reading."
+    },
+    {
+      "id": "adv-6",
+      "who": "adversary",
+      "target": "d1 (reading 5), b3, b5, b10, e3, k4, o7",
+      "kind": "specialLaw",
+      "claim": "Law 15-12 on the protection of the child makes the child's best interest the aim of every judicial decision and lists the factors weighed; the record relies only on the Family Code.",
+      "verdict": "fixed",
+      "verifierQuote": "«يجب أن تكون المصلحة الفضلى للطفل الغاية من كل إجراء أو تدبير أو حكم أو قرار قضائي أو إداري يتخذ بشأنه. يؤخذ بعين الاعتبار، في تقدير المصلحة الفضلى للطفل، لا سيما جنسه وسنه وصحته واحتياجاته المعنوية والفكرية والعاطفية والبدنية و وسطه العائلي وجميع الجوانب المرتبطة بوضعه.» (law 15-12 art. 7); «لا يجوز فصل الطفل عن أسرته إلا إذا استدعت مصلحته الفضلى ذلك، ولا يتم ذلك إلا بأمر أو حكم أو قرار من السلطة القضائية» (art. 4)",
+      "quoteRef": "Official Journal 2015 issue 39 (19 July 2015), page 6, arts. 4 and 7 of law 15-12 of 15 July 2015; file A2015039.pdf, sha256 03d9ce38d9c1fa416324cb283c27f53f78d57168faa1301dad74ebecd42fd7a1, read from the page image (the PDF's Arabic text layer does not extract)",
+      "change": "The text is not in the store, so it is not cited: a request line was appended to law/requests.jsonl (law-15-12, arts. 4 and 7, askedBy verifier), new open point o13 of grade D (both readings; protective: state the art. 7 factors in the facts), refs b3, b5, b10, e3, d1, o7; checklist k86 (searchedNotFound in the store). No rule changed until step 2 has read the text twice."
+    },
+    {
+      "id": "adv-7",
+      "who": "adversary",
+      "target": "k26, k58, e3",
+      "kind": "procedure",
+      "claim": "k26 and k58 say no stored text lets the child be heard in a custody claim; CPCA 153 ¶5 lets a minor of discernment be heard for information, and 153 ¶4 lets relatives other than descendants be heard in personal-status cases.",
+      "verdict": "fixed",
+      "verifierQuote": "«غير أن الأشخاص المذكورين في هذه المادة، باستثناء الفروع، يجوز سماعهم في القضايا الخاصة بحالة الأشخاص والطلاق.» (cpca 153 ¶4); «يجوز سماع القصر الذين بلغوا سن التمييز على سبيل الاستدلال.» (cpca 153 ¶5)",
+      "quoteRef": "cpca 153 ¶4-5 (store, version law-08-09; book I, common rules, chapter on witness proof)",
+      "change": "New statements b43 (153 ¶4) and b44 (153 ¶5); e3 gains a 'witnesses' proof route on them; k26 and k58 notes and refs corrected. The Supreme Court decision 1072148 (non-discerning child's wish) was not fetched and changes nothing. Example vf7."
+    },
+    {
+      "id": "adv-8",
+      "who": "adversary",
+      "target": "k19, k47, court-sections.b34",
+      "kind": "procedure",
+      "claim": "k19 says no stored text says how the custody file reaches the prosecutor; CPCA 260 requires communication ten days before the hearing in cases on the protection of persons lacking capacity and lets the judge order it in any case.",
+      "verdict": "fixed",
+      "verifierQuote": "«يجب إبلاغ النيابة العامة عشرة (10) أيام على الأقل قبل تاريخ الجلسة بالقضايا الآتية:» (cpca 260 ¶1); «5 - حماية ناقصي الأهلية،» (¶6); «يمكن أيضا للقاضي تلقائيا، أن يأمر بإبلاغ ممثل النيابة العامة بأية قضية أخرى.» (¶11)",
+      "quoteRef": "cpca 260 ¶1, ¶6, ¶11 (store, version law-08-09)",
+      "change": "New statements b45 (260 ¶1, ¶6; interpretive: that custody is 'protection of persons lacking capacity' is a reading) and b46 (260 ¶11); k19's note and refs now cite them and tell the lawyer to check communication; k47 keeps 'no prior step' (the duty runs before the hearing, after filing) and now cites 260. New open point o14 (grade C) on whether 260 ¶6 covers custody. Example vf7."
+    },
+    {
+      "id": "adv-9",
+      "who": "adversary",
+      "target": "r1, e2",
+      "kind": "caseLaw",
+      "claim": "The Supreme Court holds custody in principle not divided between siblings (1053458); r1 and e2 let the lawyer claim some children only with no warning.",
+      "verdict": "fixed",
+      "verifierQuote": "Supreme Court decision 1053458 of 01-02-2017 (Family Code arts. 62 and 64), read on coursupreme.dz, reasoning: «كما أن الأصل في الحضانة أن لا تتجزأ»; statute read: «... مع مراعاة مصلحة المحضون في كل ذلك» (family-code 64 ¶1)",
+      "quoteRef": "Supreme Court decision 1053458 of 01-02-2017 (coursupreme.dz, read 2026-11-18); family-code 64 ¶1",
+      "change": "New proposed slot custody_claimed_for_some_children_only; new boundary n12 (warns when yes, asks when unknown) citing 64 ¶1 and the decision; new open point o17 (case law, grade C, both readings); checklist k89. Existing examples with an empty question list got the value no for the new slot (and mother_deceased no where the father claims), and ex5's questions now include the two slots the new rules ask. Example vf8."
+    },
+    {
+      "id": "values-d1",
+      "who": "values",
+      "target": "d1",
+      "kind": "misreading",
+      "claim": "check-values: {\"item\": \"d1\", \"problem\": \"kindNotInText\", \"kind\": \"forfeiture\"}",
+      "verdict": "refuted",
+      "verifierQuote": "«إذا لم يطلب من له الحق في الحضانة مدة تزيد عن سنة بدون عذر سقط حقه فيها.» (family-code 68 ¶1): the sanction is the loss (سقوط) of the right itself, the word of a forfeiture, not a time bar of the action; d1's extract.sanction already copies «سقط حقه فيها», and d1 is interpretive and warns only.",
+      "quoteRef": "family-code 68 ¶1",
+      "change": ""
+    },
+    {
+      "id": "values-b3",
+      "who": "values",
+      "target": "b3",
+      "kind": "misreading",
+      "claim": "check-values: {\"item\": \"b3\", \"problem\": \"numberNotInQuote\", \"lang\": \"en\", \"numbers\": [2]}",
+      "verdict": "fixed",
+      "verifierQuote": "«الأم أولى بحضانة ولدها، ثم الأب، ثم الجدة لأم، ثم الجدة لأب، ثم الخالة، ثم العمة، ثم الأقربون درجة ...» (family-code 64 ¶1): the text names each grandmother, it has no number two.",
+      "quoteRef": "family-code 64 ¶1",
+      "change": "b3's says (ar and en) now lists the maternal and the paternal grandmother instead of 'the two grandmothers' (الجدتين). Example vf9."
+    },
+    {
+      "id": "values-section",
+      "who": "values",
+      "target": "section",
+      "kind": "misreading",
+      "claim": "check-values: {\"item\": \"section\", \"problem\": \"messageArticleNotInBasis\", \"lang\": \"ar\", \"articles\": [\"32\", \"423\"]}",
+      "verdict": "refuted",
+      "verifierQuote": "«2 - دعاوى النفقة والحضانة وحق الزيارة،» (cpca 423 ¶3, imported as court-sections.b8, in the section's basis) and «غير أنه في المحاكم التي لم تنشأ فيها الأقسام، يبقى القسم المدني هو الذي ينظر في جميع النزاعات باستثناء القضايا الاجتماعية.» (cpca 32 ¶5, imported as court-sections.b4, in the alternative's basis; court-sections.b1 is cpca 32 ¶1).",
+      "quoteRef": "cpca 423 ¶1, ¶3; cpca 32 ¶1, ¶5 (court-sections.b1, b4, b7, b8, b10)",
+      "change": ""
+    },
+    {
+      "id": "values-section-2",
+      "who": "values",
+      "target": "section",
+      "kind": "misreading",
+      "claim": "check-values: {\"item\": \"section\", \"problem\": \"messageArticleNotInBasis\", \"lang\": \"en\", \"articles\": [\"32\", \"423\"]}",
+      "verdict": "refuted",
+      "verifierQuote": "«2 - دعاوى النفقة والحضانة وحق الزيارة،» (cpca 423 ¶3, court-sections.b8) and «غير أنه في المحاكم التي لم تنشأ فيها الأقسام، يبقى القسم المدني هو الذي ينظر في جميع النزاعات باستثناء القضايا الاجتماعية.» (cpca 32 ¶5, court-sections.b4): both articles are statements of the section rule's basis, through the import.",
+      "quoteRef": "cpca 423 ¶1, ¶3; cpca 32 ¶1, ¶5 (court-sections.b1, b4, b7, b8, b10)",
+      "change": ""
+    }
+  ]
+}

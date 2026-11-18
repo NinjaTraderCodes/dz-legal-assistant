@@ -1,0 +1,137 @@
+{
+  "unit": "tatliq",
+  "attacks": [
+    {
+      "id": "adv-1",
+      "who": "adversary",
+      "target": "b48,e1,k34,doc1",
+      "kind": "procedure",
+      "claim": "The record cites only Family Code art. 7 para. 2 and has no item on the plaintiff's capacity; it leaves out CPCA art. 437 (a spouse lacking full capacity files through her guardian or curator) and arts. 64-65 (lack of capacity voids the proceedings and is raised by the judge of his own motion).",
+      "verdict": "fixed",
+      "verifierQuote": "[cpca 437 ¶1] عندما يكون الزوج ناقص الأهلية، يقدم الطلب باسمه، من قبل وليه أو مقدمه، حسب الحالة. / [cpca 64 ¶1-¶2] حالات بطلان العقود غير القضائية والإجراءات من حيث موضوعها محددة على سبيل الحصر فيما يأتي : 1 - انعدام الأهلية للخصوم، / [cpca 65 ¶1] يثير القاضي تلقائيا انعدام الأهلية / [family-code 7 ¶2] يكتسب الزوج القاصر أهلية التقاضي فيما يتعلق بآثار عقد الزواج من حقوق والتزامات.",
+      "quoteRef": "cpca 437 ¶1; cpca 64 ¶1-¶3; cpca 65 ¶1; family-code 7 ¶1-¶2 (store, version law-08-09 / family code)",
+      "change": "Added statements b82 (cpca 437 ¶1), b83 (cpca 64 ¶1-3), b84 (cpca 65 ¶1), b85 (family-code 7 ¶1); proposed slot plaintiff_lacks_full_capacity; boundary n12 (warns when the plaintiff lacks full capacity, message also asks to check the defendant's capacity and representation); open point o13 (grade C) keeping both readings for a minor wife (family-code 7 ¶2 against cpca 437), the protective reading as the rule; checklist k34 answered with n12 and o13; example exv1, and ex8 extended."
+    },
+    {
+      "id": "adv-2",
+      "who": "adversary",
+      "target": "doc7,o10,k60,b67",
+      "kind": "specialLaw",
+      "claim": "Ordinance 71-57 art. 28 as replaced by law 09-02 grants legal aid by operation of law to the plaintiff in a maintenance matter and to the mother in a custody matter; doc7 presents fee payment as the only way to register, and o10 says no legal-aid text exists.",
+      "verdict": "fixed",
+      "verifierQuote": "المادة 28 : تمنح المساعدة القضائية بقوة القانون إلى : ... 3 - القصر الأطراف في الخصومة، 4 - المدعي في مادة النفقة، 5 - الأم في مادة الحضانة، / [cpca 17 ¶1] لا تقيد العريضة إلا بعد دفع الرسوم المحددة قانونا، ما لم ينص القانون على خلاف ذلك.",
+      "quoteRef": "Law 09-02 art. 4 (ordinance 71-57 art. 28 as replaced), Official Journal 2009 no. 15, Arabic p. 11 (art. 4 heading on p. 10), file A2009015.pdf SHA-256 fe1439da73d31e85a472b0688c82809967fb8f46334fae4394397f74ea1ed4b4; cpca 17 ¶1 (store)",
+      "change": "doc7 now names the fee receipt or the legal-aid decision and says registration follows payment unless the law provides otherwise, with legal aid as of right for maintenance and the mother's custody; o10 rewritten (still grade D: the ordinance is not in the store) with the Official Journal reference and two readings on whether aid for the accessory request covers the tatliq request; k60 note updated; request line appended (ordinance-71-57 art. 28). Later amendments of ordinance 71-57 not searched. Example exv2."
+    },
+    {
+      "id": "adv-3",
+      "who": "adversary",
+      "target": "b18,e5,k11,k54",
+      "kind": "procedure",
+      "claim": "b18 and k11 present the appointment of two arbitrators as compulsory (Family Code art. 56 'وجب') and ignore CPCA arts. 446-449, which make it discretionary, let the judge end the mission and make the arbitrators' reconciliation binding by an order open to no appeal.",
+      "verdict": "fixed",
+      "verifierQuote": "[cpca 446 ¶1] إذا لم يثبت أي ضرر أثناء الخصومة، جاز للقاضي أن يعين حكمين اثنين لمحاولة الصلح بينهما حسب مقتضيات قانون الأسرة. / [cpca 448 ¶1] إذا تم الصلح من طرف الحكمين، يثبت ذلك في محضر، يصادق عليه القاضي بموجب أمر غير قابل لأي طعن. / [cpca 449 ¶1] يجوز للقاضي إنهاء مهام الحكمين تلقائيا ... / [family-code 56 ¶1] إذا اشتد الخصام بين الزوجين ولم يثبت الضرر وجب تعيين حكمين للتوفيق بينهما.",
+      "quoteRef": "cpca 446 ¶1, 448 ¶1, 449 ¶1; family-code 56 ¶1 (store)",
+      "change": "Added statements b79 (cpca 446 ¶1), b80 (cpca 448 ¶1), b81 (cpca 449 ¶1); e5's arbitrator proof now cites b18, b79-b81 with a note giving both wordings; e5 basis adds b79; open point o14 (grade C) keeps both readings (compulsory under family-code 56, discretionary under cpca 446), no effect either way; k11 refs and note updated. b18 is unchanged: it says what family-code 56 says. The record never stated the must as settled elsewhere; the conflict is now recorded. Example exv3."
+    },
+    {
+      "id": "adv-4",
+      "who": "adversary",
+      "target": "n3,k29,k64,k65",
+      "kind": "misreading",
+      "claim": "Boundary n3 fires on debtor_is_foreign_national = yes alone, but its own telling facts and Civil Code art. 13 require that neither spouse was Algerian at the marriage; with an Algerian wife at the marriage Algerian law alone governs the dissolution.",
+      "verdict": "fixed",
+      "verifierQuote": "[civil-code 13 ¶1] يسرى القانون الجزائرى وحده فى الاحوال المنصوص عليها فى المادتين 11 و 12 اذا كان احد الزوجين جزائريا وقت انعقاد الزواج، الا فيما يخص أهلية الزواج. / [civil-code 12 ¶2] ويسري على انحلال الزواج والانفصال الجسماني القانون الوطني الذي ينتمي إليه الزوج وقت رفع الدعوى.",
+      "quoteRef": "civil-code 13 ¶1; civil-code 12 ¶2 (store; the store's note on temporal applicability stands, k64/k65)",
+      "change": "Proposed slot either_spouse_algerian_at_marriage; n3's when is now all(debtor_is_foreign_national = yes, either_spouse_algerian_at_marriage = no) and its slots list both; the slot id debtor_is_foreign_national is kept from the slot list (it holds the husband's nationality at filing). ex7 asks the new slot, ex8 states it as no; examples exv4 (Algerian wife at the marriage: none) and exv4b (unknown: ask)."
+    },
+    {
+      "id": "adv-5",
+      "who": "adversary",
+      "target": "b14,n2,k6,k27",
+      "kind": "specialLaw",
+      "claim": "For husbands missing after the 21 May 2003 earthquake (law 03-06) or in the national tragedy (ordinance 06-01 arts. 27-37), special laws, notwithstanding the Family Code, provide a judgment declaring death on a police record; the record's only route is tatliq for absence and k6 promises a distinction no item makes.",
+      "verdict": "fixed",
+      "verifierQuote": "المادة 29 : بغض النظر عن الأحكام المنصوص عليها في قانون الأسرة، تطبق الأحكام الواردة في هذا القسم على المفقودين المذكورين في المادة 28 أعلاه. / المادة 31 : يجب على الأشخاص المذكورين في المادة 30 أعلاه رفع دعوى أمام الجهة القضائية المختصة في أجل لا يتجاوز ستة (6) أشهر ابتداء من تاريخ تسليم محضر معاينة الفقدان. / المادة 36 : ... وتترتب عليه مجموع الآثار القانونية المنصوص عليها في التشريع المعمول به. / (القانون 03-06) المادة 2 : بغض النظر عن أحكام قانون الأسرة، تسري الأحكام الواردة أدناه على مفقودي الزلزال المذكور في المادة الأولى أعلاه",
+      "quoteRef": "Ordinance 06-01 arts. 29, 31, 36, Official Journal 2006 no. 11, Arabic p. 6, file A2006011.pdf SHA-256 9c829fcf7a2b164c8ded7dc5d8f6f676f562b966904f619c1d01ca823f0a756d; Law 03-06 art. 2, Official Journal 2003 no. 37, Arabic p. 9, file A2003037.pdf SHA-256 99b059f72018dbe56619966249f885630b311d3ca1eff9a999890e73bce2661f",
+      "change": "The texts are not in the store: added open point o15 (grade D) on the special death-declaration route and its short windows (record within one year of the ordinance's publication, action within six months; record within eight months of the earthquake), refs b14, n2, e2; k6 note and refs updated; two request lines appended (ordinance-06-01 arts. 27-37, law-03-06 arts. 2-3). No boundary added until step 2 has read the texts into the store. Amendments of both texts not searched. Example exv5."
+    },
+    {
+      "id": "adv-6",
+      "who": "adversary",
+      "target": "e2,o5,k58,k66,ordinary-court-exits.x6",
+      "kind": "specialLaw",
+      "claim": "Penal Code art. 330 (2) as replaced by law 15-19 makes it an offence for a husband to leave his wife wilfully for more than two months without serious cause, so the desertion and absence grounds (e2) also overlap a criminal case; o5 leaves this open and the criminal-case slot is attached only to e4.",
+      "verdict": "fixed",
+      "verifierQuote": "المادة 330 : يعاقب بالحبس من ستة (6) أشهر إلى سنتين (2) وبغرامة من 50.000 دج إلى 200.000 دج : ... 2 – الزوج الذي يتخلى عمدا ولمدة تتجاوز شهرين (2) عن زوجته وذلك لغير سبب جدي.",
+      "quoteRef": "Law 15-19 art. 3 (Penal Code art. 330 as replaced), Official Journal 2015 no. 71, Arabic p. 4, file A2015071.pdf SHA-256 79f21d463ebc0b65e6778a11712cf015d9feb9ab3071045096c35c02f58fb225",
+      "change": "e2 now reads criminal_case_on_same_facts; doc4 lists a criminal complaint or judgment, including one for abandonment of the wife, and adds b7 to its basis; o5 rewritten as partly answered from the Official Journal (still grade D: the Penal Code is not in the store), refs add e2 and doc4; k66 note updated; request line appended (penal-code 330). The imported exit ordinary-court-exits.x6 is unchanged (module record; it already fires on its own slots). Articles 266 bis and 266 bis 1, cited by the attack, were not read (they are not on p. 4) and are not relied on. Penal Code amendments after 2015 not searched. Example exv6."
+    },
+    {
+      "id": "adv-7",
+      "who": "adversary",
+      "target": "t1,o8,k14,k39",
+      "kind": "missing",
+      "claim": "t1 sends tatliq only to the court of the marital home; when the couple's last marital home was abroad no Algerian court has it in its area and the record gives no answer.",
+      "verdict": "fixed",
+      "verifierQuote": "[cpca 426 ¶4] 3 - في موضوع الطلاق أو الرجوع بمكان وجود المسكن الزوجي ... / [cpca 40 ¶1] ... ترفع الدعاوى أمام الجهات القضائية المبينة أدناه دون سواها / [cpca 37 ¶1] يؤول الاختصاص الإقليمي للجهة القضائية التي يقع في دائرة اختصاصها موطن المدعى عليه، وإن لم يكن له موطن معروف، فيعود الاختصاص للجهة القضائية التي يقع فيها آخر موطن له ... ما لم ينص القانون على خلاف ذلك.",
+      "quoteRef": "cpca 426 ¶4; cpca 40 ¶1, ¶3; cpca 37 ¶1 (store)",
+      "change": "Added statement b86 (cpca 37 ¶1); proposed slot marital_home_in_algeria; boundary n13 warns when the marital home was outside Algeria (basis b42, court-sections.b42, b86); open point o16 (grade C) with the readings (defendant's domicile or last domicile under art. 37; plaintiff's domicile, with no text) and the protective reading (warn, ask, check before filing); k14 refs updated. The texts name no court for a home abroad, so no court is proposed. No Supreme Court decision was fetched. Example exv7; ex7 asks the new slot, ex8 states it."
+    },
+    {
+      "id": "adv-8",
+      "who": "adversary",
+      "target": "doc1,doc4,k29,k55",
+      "kind": "procedure",
+      "claim": "The documents list omits CPCA art. 8 para. 2: documents must be in Arabic or come with an official translation, on pain of inadmissibility, which bites on marriage certificates, medical certificates and judgments from abroad.",
+      "verdict": "fixed",
+      "verifierQuote": "[cpca 8 ¶2] يجب أن تقدم الوثائق والمستندات باللغة العربية أو مصحوبة بترجمة رسمية إلى هذه اللغة، تحت طائلة عدم القبول.",
+      "quoteRef": "cpca 8 ¶2 (store)",
+      "change": "Added statement b78 (cpca 8 ¶2); doc1 and doc4 now carry the condition 'in Arabic or with an official translation' in their names and reasons, and cite b78. The attack's further advice on transcribing a foreign marriage in the Algerian civil-status registers rests on a text not in the store and was not added. Example exv8."
+    },
+    {
+      "id": "values-d1",
+      "who": "values",
+      "target": "d1",
+      "kind": "misreading",
+      "claim": "check-values: {\"item\": \"d1\", \"problem\": \"kindNotInText\", \"kind\": \"limitation\"}",
+      "verdict": "open",
+      "verifierQuote": "[family-code 80 ¶1] تستحق النفقة من تاريخ رفع الدعوى وللقاضي أن يحكم باستحقاقها بناء على بينة لمدة لا تتجاوز سنة قبل رفع الدعوى.",
+      "quoteRef": "family-code 80 ¶1 (store)",
+      "change": "No change: the text names no kind (no word of limitation, forfeiture or procedure); it bounds what may be awarded. d1 is already interpretive, declares warn (the kind that only warns, the protective choice), keeps both readings (cap, or discretion on evidence) and open point o1 (grade C) asks whether it is a limitation or a cap."
+    },
+    {
+      "id": "values-d2",
+      "who": "values",
+      "target": "d2",
+      "kind": "misreading",
+      "claim": "check-values: {\"item\": \"d2\", \"problem\": \"kindNotInText\", \"kind\": \"forfeiture\"}",
+      "verdict": "refuted",
+      "verifierQuote": "[family-code 68 ¶1] إذا لم يطلب من له الحق في الحضانة مدة تزيد عن سنة بدون عذر سقط حقه فيها.",
+      "quoteRef": "family-code 68 ¶1 (store)",
+      "change": ""
+    },
+    {
+      "id": "values-section",
+      "who": "values",
+      "target": "section",
+      "kind": "misreading",
+      "claim": "check-values: {\"item\": \"section\", \"problem\": \"messageArticleNotInBasis\", \"lang\": \"ar\", \"articles\": [\"32\", \"423\"]}",
+      "verdict": "refuted",
+      "verifierQuote": "[cpca 32 ¶5] غير أنه في المحاكم التي لم تنشأ فيها الأقسام، يبقى القسم المدني هو الذي ينظر في جميع النزاعات باستثناء القضايا الاجتماعية. / [cpca 423 ¶2] 1 - الدعاوى المتعلقة بالخطبة والزواج والرجوع إلى بيت الزوجية وانحلال الرابطة الزوجية وتوابعها حسب الحالات والشروط المذكورة في قانون الأسرة،",
+      "quoteRef": "cpca 32 ¶4-¶5 and cpca 423 ¶2-¶3, cited by the imported statements court-sections.b3, b4, b7, b8 in the section's basis and alternative (store)",
+      "change": ""
+    },
+    {
+      "id": "values-section-2",
+      "who": "values",
+      "target": "section",
+      "kind": "misreading",
+      "claim": "check-values: {\"item\": \"section\", \"problem\": \"messageArticleNotInBasis\", \"lang\": \"en\", \"articles\": [\"32\", \"423\"]}",
+      "verdict": "refuted",
+      "verifierQuote": "[cpca 32 ¶5] غير أنه في المحاكم التي لم تنشأ فيها الأقسام، يبقى القسم المدني هو الذي ينظر في جميع النزاعات باستثناء القضايا الاجتماعية. / [cpca 423 ¶3] 2 - دعاوى النفقة والحضانة وحق الزيارة،",
+      "quoteRef": "cpca 32 ¶4-¶5 and cpca 423 ¶2-¶3, cited by the imported statements court-sections.b3, b4, b7, b8 (store)",
+      "change": ""
+    }
+  ]
+}

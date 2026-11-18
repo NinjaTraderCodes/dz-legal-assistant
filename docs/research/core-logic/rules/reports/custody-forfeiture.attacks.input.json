@@ -1,0 +1,176 @@
+{
+ "unit": "custody-forfeiture",
+ "attacks": [
+  {
+   "id": "adv-1",
+   "target": "n6, n7, e4, k21, k27, k28",
+   "kind": "specialLaw",
+   "claim": "Law 15-12 on child protection gives the juvenile judge (قاضي الأحداث) a separate judicial route for a 'child in danger'. The list of dangers covers neglect, ill-treatment, a carer who fails in upbringing and care, and a crime against the child by his legal representative. The judge is seized by a petition from the child, his legal representative, the prosecutor, the wali, the APC president or child-welfare services, or acts of his own motion. He may hand the child, by order and also as a provisional measure during the inquiry, to 'the father or mother who does not exercise custody, unless custody fell from him by a judgment', or to a relative. The record's boundaries and exits never mention this route. Its urgent-matters boundaries (n6, n7) cover only FC 57 مكرر and CPCA 453 to 460.",
+   "source": {
+    "tier": 1,
+    "url": "https://www.joradp.dz/FTP/jo-arabe/2015/A2015039.pdf",
+    "what": "Law 15-12 of 15 July 2015 on child protection, JORA 2015 issue 39 (19 July 2015): art. 2 (definition of child in danger) p. 5; art. 32 (who seizes the juvenile judge) and art. 35 (provisional measures during the inquiry) p. 9; art. 35 list and art. 40 (final measures) p. 10.",
+    "retrievedOn": "2026-11-18"
+   },
+   "quoteArabic": "المادة 2: «الطفل في خطر»: الطفل الذي تكون صحته أو أخلاقه أو تربيته أو أمنه في خطر أو عرضة له ... – تعريض الطفل للإهمال أو التشرد ... – التقصير البين والمتواصل في التربية والرعاية ... – إذا كان الطفل ضحية جريمة من ممثله الشرعي. المادة 32: يختص قاضي الأحداث لمحل إقامة الطفل المعرض للخطر ... بالنظر في العريضة التي ترفع إليه من الطفل أو ممثله الشرعي أو وكيل الجمهورية أو الوالي ... كما يجوز لقاضي الأحداث أن يتدخل تلقائيا. المادة 40: يتخذ قاضي الأحداث، بموجب أمر، أحد التدابير الآتية: – إبقاء الطفل في أسرته، – تسليم الطفل لوالده أو لوالدته الذي لا يمارس حق الحضانة عليه، ما لم تكن قد سقطت عنه بحكم، – تسليم الطفل إلى أحد أقاربه.",
+   "consequence": "When the forfeiture ground is custodian_unfit and the facts show danger, such as abuse, neglect or a crime against the child, the record should warn that the juvenile judge's protection procedure under law 15-12 is a distinct and faster route. It is open to the non-custodial parent unless a judgment took custody from that parent. The record should not present the family-section forfeiture claim and FC 57 مكرر as the only paths. The time limits of that route should also be noted: provisional measures last at most 6 months (art. 37), and final measures 2 years, renewable (art. 42).",
+   "who": "adversary"
+  },
+  {
+   "id": "adv-2",
+   "target": "r4, bx1, k26",
+   "kind": "misreading",
+   "claim": "FC 72 ¶1 puts the housing duty on the father (الأب) toward the female custodian (الحاضنة). r4 is proposed on one condition only, spouses_divorced = yes, and its text orders 'the defendant (the father)'. The record has no slot for who the plaintiff and the defendant are. The most common transfer case is a father suing a remarried mother (the record's own bx1, with spouses_divorced = yes). There the record proposes an order against the defendant, who is the mother, under a text that binds only the father. It does the same when a grandmother or aunt sues the mother, and the father is not a party.",
+   "source": {
+    "tier": 1,
+    "url": "https://www.joradp.dz/FTP/jo-arabe/2005/A2005015.pdf",
+    "what": "Ordinance 05-02 of 27 Feb 2005, art. 16 (new wording of Family Code art. 72), JORA 2005 issue 15, p. 22",
+    "retrievedOn": "2026-11-18"
+   },
+   "quoteArabic": "المادة 72: في حالة الطلاق، يجب على الأب أن يوفر، لممارسة الحضانة، سكنا ملائما للحاضنة، وإن تعذر ذلك فعليه دفع بدل الإيجار. وتبقى الحاضنة في بيت الزوجية حتى تنفيذ الأب للحكم القضائي المتعلق بالسكن.",
+   "consequence": "r4 should be proposed only when the plaintiff is a woman who will hold custody and the father is the defendant. That needs a slot for the plaintiff's relation to the child, or for the defendant being the father. The request must never be proposed against a mother or a female relative.",
+   "who": "adversary"
+  },
+  {
+   "id": "adv-3",
+   "target": "requests, k26, k50, r4",
+   "kind": "missing",
+   "claim": "When a father obtains a transfer from a former custodian who kept the marital home or receives a rent allowance under FC 72, she loses that housing with custody. The Supreme Court holds that a custodian whose custody falls must vacate the custody home. The record offers no accessory request or warning for this. k26 only says a transfer 'may affect who keeps the marital home'. The record also does not say that the Supreme Court decided the vacating question in its real-estate chamber, on a lease. Eviction may therefore have to be claimed separately, before a section other than the family section.",
+   "source": {
+    "tier": 2,
+    "url": "https://coursupreme.dz/decision/%D8%A7%D9%84%D9%82%D8%B1%D8%A7%D8%B1%D8%B1%D9%82%D9%85-1110582-%D8%A7%D9%84%D8%B5%D8%A7%D8%AF%D8%B1-%D8%A8%D8%AA%D8%A7%D8%B1%D9%8A%D8%AE-25-06-2018/",
+    "what": "Supreme Court, real-estate chamber, file 1110582, decision of 25-06-2018 (subject: lease; key words: custody, transfer of the lease right; reference: Civil Code art. 467 ¶2)",
+    "retrievedOn": "2026-11-18"
+   },
+   "quoteArabic": "تسديد الحاضنة لبدل الإيجار لا يخولها الحق في تحويل حق الإيجار باسمها. تلزم الحاضنة بإخلاء مسكن ممارسة الحضانة بسقوط الحضانة عنها.",
+   "consequence": "When the father is the plaintiff and the defendant mother holds the marital or custody home, or receives a rent allowance under FC 72, the record should raise the consequence: she must vacate, and the allowance ends. It should say whether this belongs in this petition or in a separate eviction claim, and before which section.",
+   "who": "adversary"
+  },
+  {
+   "id": "adv-4",
+   "target": "forfeiture_ground, n1, d1, e5, o1",
+   "kind": "missing",
+   "claim": "A common situation is that the mother custodian dies and the maternal grandmother or aunt keeps the child without any judgment, so the father sues to recover the child. Two Supreme Court decisions hold that custody passes directly to the father on the mother's death. In the second, forfeiting custody from someone first requires that person to exercise it lawfully. The same decision recites that custody falls from the person entitled if that person does not exercise it within the year. That year runs against the father from the death. The record's ground list has no 'custodian died'. Its d1 runs from a custody_ground_date that does not fit a death, so the record gives no warning about the father's own year under FC 68.",
+   "source": {
+    "tier": 2,
+    "url": "https://coursupreme.dz/decision/%D8%A7%D9%84%D9%82%D8%B1%D8%A7%D8%B1-%D8%B1%D9%82%D9%85-1252089-%D8%A7%D9%84%D9%85%D8%A4%D8%B1%D8%AE-%D9%81%D9%8A-03-10-2018/",
+    "what": "Supreme Court, family and inheritance chamber, file 1252089, decision of 03-10-2018 (subject: custody; reference: FC art. 64; appellant: maternal aunt; respondent: father; appeal rejected). Also file 1248029 of 07-11-2018 (same chamber, FC 64): https://coursupreme.dz/decision/%D8%A7%D9%84%D9%82%D8%B1%D8%A7%D8%B1-%D8%B1%D9%82%D9%85-1248029-%D8%A7%D9%84%D9%85%D8%A4%D8%B1%D8%AE-%D9%81%D9%8A-07-11-2018/",
+    "retrievedOn": "2026-11-18"
+   },
+   "quoteArabic": "يكون الأب الأحق بحضانة ولده بعد وفاة الأم بدل الخالة، مراعاة لمصلحة المحضون، ما لم يثبت أنه غير أهل لذلك. ... وأن الحضانة تسقط عن مستحقها إذا لم يمارس ذلك الحق في خلال السنة ... لإسقاط الحضانة عن أحد يجب أولا أن يكون يمارسها وفقاً للقانون. (1248029: ينتقل حق الحضانة للأب بعد وفاة الأم حسب ترتيب المادة 64 من قانون الأسرة)",
+   "consequence": "The record should recognise the death of the custodian as a situation of its own. It is not a forfeiture against the relative who holds the child; it is the father's right passing directly to him. The record should warn under FC 68, from the date of death, that the plaintiff must claim within the year. n1 should say that this case is the father recovering his own right, not a fresh award by order of entitlement.",
+   "who": "adversary"
+  },
+  {
+   "id": "adv-5",
+   "target": "forfeiture_ground, e2, n3, doc3, k3",
+   "kind": "misreading",
+   "claim": "FC 66 forfeits by marriage only the right of the female custodian (حق الحاضنة), and FC 70 only that of the grandmother or aunt. The record lets a user choose custodian_remarried with no slot for whether the defendant custodian is a woman. If a mother sues a father custodian who remarried, the record raises nothing. Its only check on the marriage ground, n3, tests the mahram condition and nothing else. A father's remarriage is not a ground under these articles.",
+   "source": {
+    "tier": 1,
+    "url": "https://www.joradp.dz/FTP/jo-arabe/1984/A1984024.pdf",
+    "what": "Law 84-11 of 9 June 1984 (Family Code), arts. 66 and 70, JORA 1984 issue 24 (12 June 1984), p. 914",
+    "retrievedOn": "2026-11-18"
+   },
+   "quoteArabic": "المادة 66: يسقط حق الحاضنة بالتزوج بغير قريب محرم، وبالتنازل ما لم يضر بمصلحة المحضون. المادة 70: تسقط حضانة الجدة أو الخالة إذا سكنت بمحضونها مع أم المحضون المتزوجة بغير قريب محرم.",
+   "consequence": "The record needs a slot for the defendant custodian's sex or relation. It should warn, as it does for a mahram husband in n3, when custodian_remarried is chosen against a male custodian. In that case the claim must rest on FC 67 (unfitness) or another ground.",
+   "who": "adversary"
+  },
+  {
+   "id": "adv-6",
+   "target": "e6, doc5, forfeiture_ground.custodian_abroad, k7, k37",
+   "kind": "caseLaw",
+   "claim": "The Supreme Court holds that a mother does not lose custody merely by travelling abroad often. The test is the neglect or loss of the child that results, and she may involve trusted relatives in the child's care. The record's custodian_abroad ground ('settled, or wants to settle') lists travel documents as proof (e6 and doc5). It gives no warning that travel, even repeated, is not settling under FC 69 and is not by itself a ground under FC 67. A lawyer could build a petition on travel alone.",
+   "source": {
+    "tier": 2,
+    "url": "https://coursupreme.dz/decision/%D9%85%D9%84%D9%81-%D8%B1%D9%82%D9%851265504-%D9%82%D8%B1%D8%A7%D8%B1-%D8%A8%D8%AA%D8%A7%D8%B1%D9%8A%D8%AE-2018-06-06/",
+    "what": "Supreme Court, family and inheritance chamber, file 1265504, decision of 06-06-2018 (subject: custody; key words: mother, repeated travel, forfeiture, involving relatives; reference: FC arts. 62, 64 and 67)",
+    "retrievedOn": "2026-11-18"
+   },
+   "quoteArabic": "لا يسقط حق الأم في الحضانة، بمجرد السفر والتردد على الخارج، لأن مناط السقوط ليس العمل أو الدراسة أو السفر المشروع المتكرر وإنما الضياع والإهمال المترتب على ذلك السفر.",
+   "consequence": "Under e6 and n4, the record should warn that travel, work or study abroad without settling is not a ground. Only settling (FC 69, decided by the judge) or proven neglect (FC 67) counts. doc5 should not present travel documents alone as proof of the ground.",
+   "who": "adversary"
+  },
+  {
+   "id": "adv-7",
+   "target": "e7, k10, k54",
+   "kind": "caseLaw",
+   "claim": "The Supreme Court holds three things. Custody is not taken from the person awarded it unless that person is shown to be unfit. The wish of a child below the age of discernment is not taken into account. The claimant's better material situation is not enough on its own. In e7, the record asks the plaintiff to show his housing and ability to care, and that the transfer serves the child's interest. It never warns that such a comparison, or the young child's preference, cannot replace proof that the defendant is unfit.",
+   "source": {
+    "tier": 2,
+    "url": "https://www.coursupreme.dz/%D9%85%D9%84%D9%81-%D8%B1%D9%82%D9%851072148-%D9%82%D8%B1%D8%A7%D8%B1-%D8%A8%D8%AA%D8%A7%D8%B1%D9%8A%D8%AE-20170503/%D8%A7%D9%84%D8%BA%D8%B1%D9%81-%D8%A7%D9%84%D9%85%D8%AF%D9%86%D9%8A%D8%A9/%D9%85%D9%86-%D9%82%D8%B1%D8%A7%D8%B1%D8%A7%D8%AA-%D8%A7%D9%84%D9%85%D8%AD%D9%83%D9%85%D8%A9-%D8%A7%D9%84%D8%B9%D9%84%D9%8A%D8%A7",
+    "what": "Supreme Court, file 1072148, decision of 03-05-2017. The principle was read in the court site's search listing; the full page was not opened.",
+    "retrievedOn": "2026-11-18"
+   },
+   "quoteArabic": "لا يعتد برغبة الطفل غير المميز في اختيار من يحضنه، والحالة الميسورة لطالب إسقاط الحضانة ليست كافية لوحدها لإسنادها له، ما لم يثبت أن الطرف المستفيد من الحضانة غير أهل لممارستها.",
+   "consequence": "e7 and k10 should state that the plaintiff's better circumstances, or a young child's preference, do not establish a ground. The petition must prove one of the grounds of FC 66 to 70 against the defendant.",
+   "who": "adversary"
+  },
+  {
+   "id": "values-d1",
+   "who": "values",
+   "target": "d1",
+   "kind": "misreading",
+   "claim": "check-values: {\"item\": \"d1\", \"problem\": \"kindNotInText\", \"kind\": \"forfeiture\"}"
+  },
+  {
+   "id": "values-d2",
+   "who": "values",
+   "target": "d2",
+   "kind": "misreading",
+   "claim": "check-values: {\"item\": \"d2\", \"problem\": \"kindNotInText\", \"kind\": \"forfeiture\"}"
+  },
+  {
+   "id": "values-d3",
+   "who": "values",
+   "target": "d3",
+   "kind": "misreading",
+   "claim": "check-values: {\"item\": \"d3\", \"problem\": \"kindNotInText\", \"kind\": \"forfeiture\"}"
+  },
+  {
+   "id": "values-b41",
+   "who": "values",
+   "target": "b41",
+   "kind": "misreading",
+   "claim": "check-values: {\"item\": \"b41\", \"problem\": \"numberNotInQuote\", \"lang\": \"en\", \"numbers\": [1]}"
+  },
+  {
+   "id": "values-d2-2",
+   "who": "values",
+   "target": "d2",
+   "kind": "misreading",
+   "claim": "check-values: {\"item\": \"d2\", \"problem\": \"messagePeriodDiffers\", \"read\": [{\"value\": 16, \"unit\": \"year\", \"words\": \"16 سنه\", \"conflict\": false}]}"
+  },
+  {
+   "id": "values-p1",
+   "who": "values",
+   "target": "p1",
+   "kind": "misreading",
+   "claim": "check-values: {\"item\": \"p1\", \"problem\": \"messageArticleNotInBasis\", \"lang\": \"ar\", \"articles\": [\"3 مكرر\"]}"
+  },
+  {
+   "id": "values-p1-2",
+   "who": "values",
+   "target": "p1",
+   "kind": "misreading",
+   "claim": "check-values: {\"item\": \"p1\", \"problem\": \"messageArticleNotInBasis\", \"lang\": \"en\", \"articles\": [\"3 مكرر\"]}"
+  },
+  {
+   "id": "values-section",
+   "who": "values",
+   "target": "section",
+   "kind": "misreading",
+   "claim": "check-values: {\"item\": \"section\", \"problem\": \"messageArticleNotInBasis\", \"lang\": \"ar\", \"articles\": [\"32\", \"423\"]}"
+  },
+  {
+   "id": "values-section-2",
+   "who": "values",
+   "target": "section",
+   "kind": "misreading",
+   "claim": "check-values: {\"item\": \"section\", \"problem\": \"messageArticleNotInBasis\", \"lang\": \"en\", \"articles\": [\"32\", \"423\"]}"
+  }
+ ],
+ "pending": [
+  "supportCheck"
+ ]
+}

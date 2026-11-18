@@ -42,6 +42,24 @@ public sealed class CueEngine
 
     public CueEngine(IReadOnlyDictionary<string, KindCues> kinds) => this.kinds = kinds;
 
+    // The word lists, normalised, for the challenge set's code checks (specs/scenario-sampler.md, the recipes): the reader
+    // and the checks share one list of negation, restriction, dispute and refusal words, never two.
+
+    /// <summary>The negation particles («لم», «لا», «غير», «عدم», «دون» …).</summary>
+    public static IReadOnlyList<string> NegationCues => Negations;
+
+    /// <summary>Phrases that hold a negation particle but negate nothing («ما زال», «لا يزال» …).</summary>
+    public static IReadOnlyList<string> NotNegationCues => NotNegations;
+
+    /// <summary>The restriction words that follow a negation («الا», «سوي»).</summary>
+    public static IReadOnlyList<string> RestrictionCues => Restrictions;
+
+    /// <summary>The verbs by which a party contests («ينكر», «ينفي», «ينازع» …).</summary>
+    public static IReadOnlyList<string> DisputeCues => Disputes;
+
+    /// <summary>The verbs of refusal («امتنع», «رفض», «تخلف» …).</summary>
+    public static IReadOnlyList<string> RefusalCues => Refusals;
+
     /// <summary>The table shipped beside the reader (src/DzLegal.CoreLogic.Reader/cues.json).</summary>
     public static CueEngine Load(string path)
     {

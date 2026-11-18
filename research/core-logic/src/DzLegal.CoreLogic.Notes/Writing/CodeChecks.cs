@@ -11,7 +11,8 @@ namespace DzLegal.CoreLogic.Notes.Writing;
 /// The code checks on every written note, before any model reads it (specs/notes-pipeline.md, section 3): quotes found
 /// and every fact quoted (1); every value parses to the scenario's form, and the note holds no other value (2); formal
 /// Arabic only (3); length within the style card's range (4); no 6-word window copied from the guide or the prompt (5);
-/// no person's name drawn for another scenario of the set (6). Each failure is a reason; a note with one is invalid.
+/// no person's name drawn for another scenario of the set (6); for a challenge note, its difficulty's check
+/// (<see cref="ChallengeChecks"/>). Each failure is a reason; a note with one is invalid.
 /// Check 6 compares full names drawn by the sampler, not the cast lists' words: a given name alone is an ordinary word
 /// often enough (and level 2 makes «على» read «علي»), so the lists themselves would raise false alarms.
 /// </summary>
@@ -98,6 +99,8 @@ public sealed partial class CodeChecks
             reasons.Add("names: a person of another scenario: " + string.Join("، ", foreign));
         }
 
+        // A challenge note: its difficulty's own check (sampler 1.4).
+        reasons.AddRange(ChallengeChecks.Run(scenario, note, pointed));
         return reasons;
     }
 

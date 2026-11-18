@@ -127,6 +127,8 @@ One row per difficulty. The sampler sets the scenario's `difficulty` (copied int
 | `twoClaims` | a two-claim scenario | – | a `claim` quote for each |
 | `nearMiss` | an `outside` near-miss | – | the quote of the telling fact |
 
+**Implemented: four rows (sampler 1.4, 18 November 2026).** The owner kept the challenge set "for polarity only (negation, restriction, partial admission, contested facts): about 100 kept notes, written and relabelled like the dev set". One row per word: `doubleNegation` (negation), `restriction` (restriction), `contestOfAmount` (partial admission), `documentAgainstContest` (contested facts); `notes sample --set challenge --difficulty <id>` refuses the other eight by name. `doubleNegation` and `documentAgainstContest` filter base draws (the document's event is one a paper records); `restriction` and `contestOfAmount` force their element in the draw (a defendant's part payment beside a larger stated sum of the debt; a stated amount with its contest). The scenario names its event (`target`) and its forced style (`styleForced`, which takes the card's own value and sentence in the writer's view); the code check (`ChallengeChecks`) takes its words from the reader's cue table and its figures from the parsers. The base sets draw the same bytes as with sampler 1.3 (a test holds their hashes).
+
 ## Tests
 
 - Every scenario passes the evaluator without contradiction; rejected draws are counted, by reason.

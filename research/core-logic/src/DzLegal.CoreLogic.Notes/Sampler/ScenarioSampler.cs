@@ -8,7 +8,8 @@ namespace DzLegal.CoreLogic.Notes.Sampler;
 
 /// <summary>What one <c>notes sample</c> draws: <paramref name="Groups"/> polarity groups of 3 to 4 count inside <paramref name="Count"/>.</summary>
 /// <param name="Tag">The ids' tag: the set's name, or «dev-b2» for a later batch of a set (ids never collide).</param>
-public sealed record SampleRequest(string Set, int Count, int Seed, int Groups = 0, string? Tag = null);
+/// <param name="Difficulty">A challenge recipe's id (<see cref="ChallengeRecipes"/>); null for every other set.</param>
+public sealed record SampleRequest(string Set, int Count, int Seed, int Groups = 0, string? Tag = null, string? Difficulty = null);
 
 /// <summary>
 /// The scenario sampler, version 1 (specs/scenario-sampler.md): code decides the case, the writer only words it. Every draw
@@ -17,7 +18,7 @@ public sealed record SampleRequest(string Set, int Count, int Seed, int Groups =
 /// </summary>
 public sealed class ScenarioSampler
 {
-    public const string Version = "1.3";  // 1.1 (16 November 2026): a later claim's role keeps the plaintiff's sex; 1.2 (17 November): style cards version 2; 1.3 (17 November): no dissolution beside an earlier divorce
+    public const string Version = "1.4";  // 1.1 (16 November 2026): a later claim's role keeps the plaintiff's sex; 1.2 (17 November): style cards version 2; 1.3 (17 November): no dissolution beside an earlier divorce; 1.4 (18 November): four challenge recipes (--difficulty), the base sets' draws unchanged
 
     private static readonly string[] Polarities = ["stated", "denied", "disputed", "notMentioned"];
     private readonly SamplerData data;
@@ -46,7 +47,12 @@ public sealed class ScenarioSampler
         var output = new List<JsonObject>();
         var groupsMade = 0;
         var draw = 0;
-        var tag = (request.Tag ?? request.Set).ToLowerInvariant();
+        var tag = (request.Tag ?? (request.Difficulty is null ? request.Set : $"{request.Set}-{request.Difficulty}")).ToLowerInvariant();
+        if (request.Difficulty is not null)
+        {
+            return DrawChallenge(request, ChallengeRecipes.Get(request.Difficulty), tag);
+        }
+
         while (output.Count < request.Count)
         {
             var family = $"f-{tag}-{output.Count + 1:00000}";
@@ -79,8 +85,14 @@ public sealed class ScenarioSampler
 
     // --- one scenario ------------------------------------------------------------------------------------------------
 
-    /// <summary>A forced element: the polarity group's element and the polarity of this member.</summary>
-    private sealed record Force(string Claim, string Kind, string Polarity);
+    /// <summary>
+    /// A forced element: the polarity group's element and the polarity of this member; for a challenge recipe, also its
+    /// amount (always given) and its contest ("amount": always one of its amount; "none": never one).
+    /// </summary>
+    private sealed record Force(string Claim, string Kind, string Polarity, bool WithAmount = false, string? Contest = null)
+    {
+        public bool On(EventDraft ev) => ev.Element.Claim == Claim && ev.Element.Kind == Kind;
+    }
 
     private JsonObject DrawCoherent(int seed, Force? force)
     {
@@ -127,6 +139,155 @@ public sealed class ScenarioSampler
         }
 
         return members;
+    }
+
+    // --- the challenge set (sampler 1.4) ------------------------------------------------------------------------------
+
+    /// <summary>
+    /// A challenge set's scenarios for one recipe: no polarity group (a group would change the very element the recipe
+    /// fixes). Draw k comes from the substream (seed, recipe, k), so that two recipes drawn with one seed share no cast and
+    /// no style, and nothing here moves a base set's draws.
+    /// </summary>
+    private List<JsonObject> DrawChallenge(SampleRequest request, ChallengeRecipe recipe, string tag)
+    {
+        if (request.Groups > 0)
+        {
+            throw new ArgumentException("a challenge recipe draws no polarity group: leave --groups out with --difficulty");
+        }
+
+        var output = new List<JsonObject>();
+        for (var draw = 0; output.Count < request.Count; draw++)
+        {
+            var salt = 3_000_000 + 1_000 * ChallengeRecipes.Implemented.ToList().IndexOf(recipe);
+            var scenario = DrawFor(recipe, Rng.Derive(request.Seed, salt, draw));
+            scenario["id"] = $"s-{tag}-{output.Count + 1:00000}";
+            scenario["family"] = $"f-{tag}-{output.Count + 1:00000}";
+            output.Add(Ordered(scenario, request.Set));
+        }
+
+        return output;
+    }
+
+    /// <summary>
+    /// One scenario that has the recipe's constraint: a base draw filtered when the constraint is common in the base recipe
+    /// (a stated event; a disputed event a paper records), the constraint forced in the draw when it is rare (a part payment
+    /// with both sums; a contest of an amount). A draw that fails is counted by reason, «&lt;recipe&gt;: &lt;reason&gt;».
+    /// </summary>
+    private JsonObject DrawFor(ChallengeRecipe recipe, int seed)
+    {
+        for (var attempt = 0; ; attempt++)
+        {
+            var s = Rng.Derive(seed, attempt);
+            var force = ForceFor(recipe, s);
+            var (scenario, problem) = DrawOne(s, force);
+            string? target = null;
+            if (problem is null)
+            {
+                (target, problem) = Target(recipe, scenario, s);
+            }
+
+            if (problem is null)
+            {
+                scenario["difficulty"] = recipe.Id;
+                scenario["target"] = target;
+                if (recipe.StyleParameter is not null)
+                {
+                    scenario["styleForced"] = new JsonObject { [recipe.StyleParameter] = recipe.StyleValue };
+                }
+
+                if (recipe.Id == "documentAgainstContest")
+                {
+                    Event(scenario, target!)["document"] = ChallengeRecipes.DocumentLine;
+                }
+
+                return scenario;
+            }
+
+            var reason = recipe.Id + ": " + problem;
+            Rejected[reason] = Rejected.GetValueOrDefault(reason) + 1;
+            if (attempt > 200)
+            {
+                throw new InvalidOperationException($"the sampler cannot draw a {recipe.Id} scenario: {problem}");
+            }
+        }
+    }
+
+    /// <summary>The element a recipe forces, or null when the recipe filters base draws.</summary>
+    private Force? ForceFor(ChallengeRecipe recipe, int s)
+    {
+        var rng = new Rng(Rng.Derive(s, 12));
+        switch (recipe.Id)
+        {
+            case "restriction":
+            {
+                // A part payment by the debtor: the claim types where the defendant pays (loan, sale price, commercial debt).
+                var claims = data.Claims.Where(c => c.Elements.Any(e => e.Kind == "payment_made" && e.Actor == "defendant")).ToList();
+                return new Force(rng.Pick(claims).Id, "payment_made", "stated", WithAmount: true, Contest: "none");
+            }
+
+            case "contestOfAmount":
+            {
+                var element = rng.Pick(data.Claims.SelectMany(c => c.Elements).Where(e => e.HasAmount).ToList());
+                return new Force(element.Claim, element.Kind, "stated", WithAmount: true, Contest: "amount");
+            }
+
+            default:
+                return null;
+        }
+    }
+
+    /// <summary>The event the recipe is about ("claim/kind"), or why the scenario does not have the constraint.</summary>
+    private static (string? Target, string? Problem) Target(ChallengeRecipe recipe, JsonObject scenario, int s)
+    {
+        var events = scenario["events"]?.AsArray().Select(e => e!.AsObject()).ToList() ?? [];
+        static string Key(JsonObject e) => $"{e["claim"]}/{e["kind"]}";
+        static string Polarity(JsonObject e) => (string)e["polarity"]!;
+        var rng = new Rng(Rng.Derive(s, 11));
+        switch (recipe.Id)
+        {
+            case "doubleNegation":
+            {
+                var stated = events.Where(e => Polarity(e) == "stated" && e["contest"] is null).ToList();
+                return stated.Count == 0 ? (null, "no stated event without a contest") : (Key(rng.Pick(stated)), null);
+            }
+
+            case "restriction":
+            {
+                var payment = events.Single(e => (string)e["kind"]! == "payment_made");
+                var paid = (long)payment["amount"]!;
+                return events.Any(e => e != payment && Polarity(e) == "stated" && e["amount"] is JsonNode a && (long)a! > paid)
+                    ? (Key(payment), null)
+                    : (null, "no larger sum of the debt stated beside the part payment");
+            }
+
+            case "contestOfAmount":
+            {
+                var contested = events.Where(e => (string?)e["contest"]?["of"] == "amount" && e["contest"]?["amount"] is not null).ToList();
+                return contested.Count == 0 ? (null, "no contest of an amount") : (Key(rng.Pick(contested)), null);
+            }
+
+            case "documentAgainstContest":
+            {
+                if (!events.Any(e => Polarity(e) == "disputed"))
+                {
+                    return (null, "no disputed event");
+                }
+
+                var papered = events.Where(e => Polarity(e) == "disputed" && ChallengeRecipes.DocumentKinds.Contains((string)e["kind"]!)).ToList();
+                return papered.Count == 0 ? (null, "no disputed event that a paper records") : (Key(rng.Pick(papered)), null);
+            }
+
+            default:
+                throw new ArgumentException($"difficulty {recipe.Id} has no drawing rule; the implemented ones are {ChallengeRecipes.Ids}");
+        }
+    }
+
+    /// <summary>A scenario's event by its "claim/kind".</summary>
+    public static JsonObject Event(JsonObject scenario, string target)
+    {
+        ArgumentNullException.ThrowIfNull(scenario);
+        ArgumentNullException.ThrowIfNull(target);
+        return scenario["events"]!.AsArray().Select(e => e!.AsObject()).Single(e => $"{e["claim"]}/{e["kind"]}" == target);
     }
 
     private string[] DrawnPolarities(ElementDef e) =>
@@ -281,9 +442,9 @@ public sealed class ScenarioSampler
         }
 
         Dates(events, petition, s);
-        var amounts = Amounts(claims, events, s);
+        var amounts = Amounts(claims, events, s, force);
         var slots = Slots(claims, events, s, petition);
-        Contests(events);
+        Contests(events, force);
         var requests = Requests(claims, amounts, s);
         var extras = Extras(claims, amounts, s);
         var cast = Cast(claims, chosen, slots, s);
@@ -376,7 +537,7 @@ public sealed class ScenarioSampler
     /// The sums of the case, drawn in a fixed order whatever the polarities (so that a group's members share them), then
     /// set on the events and kept by role for the requests: paid + owed = total when a part payment is stated.
     /// </summary>
-    private Dictionary<string, long> Amounts(IReadOnlyList<string> claims, List<EventDraft> events, int s)
+    private Dictionary<string, long> Amounts(IReadOnlyList<string> claims, List<EventDraft> events, int s, Force? force)
     {
         var rng = new Rng(Rng.Derive(s, 3));
         (long, long) Range(string name)
@@ -448,7 +609,8 @@ public sealed class ScenarioSampler
         a["khul"] = khul;
         foreach (var ev in events)
         {
-            if (ev.Element.HasAmount && ev.Mentioned && ev.U[5] < 0.85 && a.TryGetValue(ev.Element.Kind, out var value))
+            if (ev.Element.HasAmount && ev.Mentioned && (ev.U[5] < 0.85 || (force is { WithAmount: true } && force.On(ev))) &&
+                a.TryGetValue(ev.Element.Kind, out var value))
             {
                 ev.Amount = value;
             }
@@ -463,14 +625,19 @@ public sealed class ScenarioSampler
         return Math.Max(step, (long)x / step * step);
     }
 
-    /// <summary>A contest of a stated event (the guide's cases 5 and 31): of its amount, or of its cause; about one in twelve.</summary>
-    private void Contests(List<EventDraft> events)
+    /// <summary>
+    /// A contest of a stated event (the guide's cases 5 and 31): of its amount, or of its cause; about one in twelve. A
+    /// challenge recipe's forced element always takes a contest of its amount, or never any contest.
+    /// </summary>
+    private void Contests(List<EventDraft> events, Force? force)
     {
-        foreach (var ev in events.Where(ev => ev.Polarity == "stated" && ev.U[6] < 0.08 && ev.Form is null))
+        bool Forced(EventDraft ev, string contest) => force is not null && force.Contest == contest && force.On(ev);
+        foreach (var ev in events.Where(ev => ev.Polarity == "stated" && !Forced(ev, "none") &&
+                                              ((ev.U[6] < 0.08 && ev.Form is null) || Forced(ev, "amount"))))
         {
             var seeds = data.Seeds(ev.Element.Claim, ev.Element.Kind);
             var by = DisputedBy(seeds.DisputedBy, ev.Actor);
-            if (ev.Amount is long amount && (seeds.Cause.Count == 0 || ev.U[7] < 0.5))
+            if (ev.Amount is long amount && (seeds.Cause.Count == 0 || ev.U[7] < 0.5 || Forced(ev, "amount")))
             {
                 ev.Contest = new JsonObject
                 {
@@ -1027,6 +1194,7 @@ public sealed class ScenarioSampler
         {
             "id", "set", "family", "group", "claims", "outsideKind", "resembles", "outsideFact", "story", "roles", "events",
             "slots", "requests", "extraValues", "cast", "distractors", "petitionDate", "outcome", "style", "difficulty",
+            "target", "styleForced",
         };
         o["set"] = set;
         o["difficulty"] ??= null;

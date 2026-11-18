@@ -16,6 +16,8 @@ using DzLegal.CoreLogic.Notes;
 //   notes ingest --call <id> [--reply <file>] [--rejected] [--work <folder>]
 //   notes filter-sheet --note <id> --set <set>; notes filter --set <set> --model <ollama tag> [--limit <n>]
 //   notes sample --set <set> --count <n> --seed <n> --half codex,sonnet   (dev and challenge: the two writers' halves)
+//   notes sample --set challenge --difficulty <id> --count <n> --seed <n> --half codex,sonnet   (one challenge recipe:
+//                doubleNegation, restriction, contestOfAmount or documentAgainstContest)
 //   notes noise --from pilot|train --seed <n> [--sample 100] --prepare | --run <id> --ingest <reply> | --compare
 //   notes refill --set <set> --defect role-sex [--dry-run]   (a sampler defect: drop by script, draw again, queue)
 //   notes accept --set pilot|train   (the owner's route of 16 November: kept on the code checks)

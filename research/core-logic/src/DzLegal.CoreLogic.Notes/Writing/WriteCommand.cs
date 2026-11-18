@@ -192,21 +192,26 @@ public static class WriteCommand
     {
         ArgumentNullException.ThrowIfNull(scenario);
         ArgumentNullException.ThrowIfNull(cards);
-        var hidden = new HashSet<string>(StringComparer.Ordinal) { "id", "set", "family", "group", "outcome", "petitionDate", "difficulty", "style" };
+        var hidden = new HashSet<string>(StringComparer.Ordinal)
+        {
+            "id", "set", "family", "group", "outcome", "petitionDate", "difficulty", "style", "target", "styleForced",
+        };
         var view = new JsonObject { ["n"] = n };
         foreach (var (key, value) in scenario.Where(kv => !hidden.Contains(kv.Key) && kv.Value is not null))
         {
             view[key] = value!.DeepClone();
         }
 
-        var card = cards[(string)scenario["style"]!];
+        // A challenge recipe's forced style value (sampler 1.4) reaches the writer as the card's own values do.
+        var forced = (scenario["styleForced"]?.AsObject() ?? []).ToDictionary(kv => kv.Key, kv => (string)kv.Value!, StringComparer.Ordinal);
+        var (values, text) = StyleCards.Effective(cards[(string)scenario["style"]!], forced, (string?)scenario["target"]);
         var parameters = new JsonObject();
-        foreach (var (name, value) in card.Parameters)
+        foreach (var (name, value) in values)
         {
             parameters[name] = value;
         }
 
-        view["style"] = new JsonObject { ["text"] = card.Text, ["parameters"] = parameters };
+        view["style"] = new JsonObject { ["text"] = text, ["parameters"] = parameters };
         view["factsToPointAt"] = new JsonArray([.. Refs(scenario).Select(r => (JsonNode)(r.Optional ? r.Ref + " (optional)" : r.Ref))]);
         return view;
     }

@@ -28,15 +28,30 @@ public static class SampleCommand
             throw new ArgumentException("--batch is 2 or more (1 is the set's first draw)");
         }
 
-        var request = new SampleRequest(set, Int("--count", 0), Int("--seed", -1), Int("--groups", 0), batch > 1 ? $"{set}-b{batch}" : null);
+        // --difficulty <id> (sampler 1.4) draws one challenge recipe into set challenge: its ids carry «challenge-<id>», its
+        // record is sets\challenge.<id>.sample.json, and its scenarios join the set's file.
+        var difficulty = options.GetValueOrDefault("--difficulty");
+        if (difficulty is not null)
+        {
+            ChallengeRecipes.Get(difficulty);
+        }
+
+        if ((set == "challenge") != (difficulty is not null))
+        {
+            throw new ArgumentException($"--difficulty <id> goes with --set challenge, and set challenge needs it (the implemented ones are {ChallengeRecipes.Ids})");
+        }
+
+        var tag = (difficulty is null ? set : $"{set}-{difficulty}") + (batch > 1 ? $"-b{batch}" : "");
+        var request = new SampleRequest(set, Int("--count", 0), Int("--seed", -1), Int("--groups", 0),
+            difficulty is null && batch == 1 ? null : tag, difficulty);
         if (request.Count <= 0 || request.Seed < 0)
         {
             throw new ArgumentException("notes sample needs --count <n> and --seed <n>");
         }
 
-        if (options.ContainsKey("--difficulty") || options.ContainsKey("--pack"))
+        if (options.ContainsKey("--pack"))
         {
-            throw new ArgumentException("--difficulty and --pack are not in sampler version 1 yet (phase B)");
+            throw new ArgumentException("--pack is not in the sampler yet (phase B)");
         }
 
         if (options.ContainsKey("--half") && options.ContainsKey("--writer"))
@@ -66,20 +81,22 @@ public static class SampleCommand
         var work = options.GetValueOrDefault("--work") ?? @"C:\Users\TheShadow\dz-core-research\notes-work";
         NotesLoader.Guard(work);
         var path = Path.Combine(work, "scenarios", set + ".jsonl");
-        var manifest = Path.Combine(work, "sets", set + (batch > 1 ? $".sample-b{batch}.json" : ".sample.json"));
-        if (batch == 1 && (File.Exists(path) || File.Exists(manifest)))
+        var stem = difficulty is null ? set : $"{set}.{difficulty}";
+        var manifest = Path.Combine(work, "sets", stem + (batch > 1 ? $".sample-b{batch}.json" : ".sample.json"));
+        var first = Path.Combine(work, "sets", stem + ".sample.json");
+        if (batch == 1 && ((difficulty is null && File.Exists(path)) || File.Exists(manifest)))
         {
-            throw new InvalidOperationException($"set {set} is already drawn ({path}): sets are never redrawn (a later batch: --batch <k>)");
+            throw new InvalidOperationException($"{stem} is already drawn ({manifest}): sets are never redrawn (a later batch: --batch <k>)");
         }
 
-        if (batch > 1 && (!File.Exists(path) || File.Exists(manifest)))
+        if (batch > 1 && (!File.Exists(path) || !File.Exists(first) || File.Exists(manifest)))
         {
-            throw new InvalidOperationException($"batch {batch} of set {set}: the set must exist and the batch must be new ({manifest})");
+            throw new InvalidOperationException($"batch {batch} of {stem}: its first draw must exist and the batch must be new ({manifest})");
         }
 
         Directory.CreateDirectory(Path.GetDirectoryName(path)!);
         Directory.CreateDirectory(Path.GetDirectoryName(manifest)!);
-        if (batch > 1)
+        if (batch > 1 || File.Exists(path))
         {
             File.AppendAllText(path, lines);
         }
@@ -96,6 +113,7 @@ public static class SampleCommand
         var record = new JsonObject
         {
             ["set"] = set, ["batch"] = batch, ["count"] = scenarios.Count, ["seed"] = request.Seed, ["groups"] = request.Groups,
+            ["difficulty"] = difficulty,
             ["writers"] = new JsonObject([.. writerOf.Values.GroupBy(w => w, StringComparer.Ordinal).OrderBy(g => g.Key, StringComparer.Ordinal)
                 .Select(g => new KeyValuePair<string, JsonNode?>(g.Key, scenarios.Count(s => writerOf[(string)s["family"]!] == g.Key)))]),
             ["sampler"] = new JsonObject { ["version"] = ScenarioSampler.Version, ["commit"] = commit },

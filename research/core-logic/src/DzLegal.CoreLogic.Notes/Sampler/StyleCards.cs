@@ -127,6 +127,34 @@ public static class StyleCards
     /// <summary>Every parameter name a card carries.</summary>
     public static IReadOnlyList<string> Names => [.. Parameters.Select(p => p.Name), .. Added.Select(a => a.Name)];
 
+    /// <summary>The sentence a card's value adds to its text.</summary>
+    public static string Sentence(string parameter, string value) =>
+        Parameters.Where(p => p.Name == parameter).SelectMany(p => p.Values)
+            .Concat(Added.Where(a => a.Name == parameter).SelectMany(a => a.Values))
+            .Where(v => v.Value == value).Select(v => v.Sentence).FirstOrDefault()
+        ?? throw new KeyNotFoundException($"no style value {parameter}={value}");
+
+    /// <summary>
+    /// The card as the writer sees it for one scenario: a value the scenario forces (a challenge recipe, sampler 1.4) takes
+    /// the place of the card's own value, in the parameters and in the text, sentence for sentence.
+    /// </summary>
+    public static (IReadOnlyDictionary<string, string> Parameters, string Text) Effective(StyleCard card, IReadOnlyDictionary<string, string> forced, string? target)
+    {
+        ArgumentNullException.ThrowIfNull(card);
+        ArgumentNullException.ThrowIfNull(forced);
+        var parameters = new Dictionary<string, string>(card.Parameters, StringComparer.Ordinal);
+        var text = card.Text;
+        foreach (var (name, value) in forced)
+        {
+            var own = Sentence(name, card.Parameters[name]);
+            var sentence = ChallengeRecipes.ForcedSentence(name, value, target ?? "");
+            text = text.Contains(own, StringComparison.Ordinal) ? text.Replace(own, sentence, StringComparison.Ordinal) : text + " " + sentence;
+            parameters[name] = value;
+        }
+
+        return (parameters, text);
+    }
+
     /// <summary>The 120 cards: version 1 (as built on 15 November) and version 2, by the fixed seed.</summary>
     public static IReadOnlyList<StyleCard> Build(int seed = 20261115)
     {

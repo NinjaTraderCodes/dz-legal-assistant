@@ -76,8 +76,20 @@ public static class IngestCommand
             .Where(p => (string?)p?["kind"] == "person").Select(p => (string)p!["name"]!);
         var checks = new CodeChecks(data, [File.ReadAllText(files.Guide), File.ReadAllText(Path.Combine(files.Prompts, "notes-write.md")),
             .. data.Claims.SelectMany(c => c.Elements.Select(e => e.Label))], people);
-        var manifest = Path.Combine(work, "sets", set + ".sample.json");
-        var sampled = File.Exists(manifest) ? NotesJson.Load(manifest) : null;
+        // A challenge recipe's draw has its own record (sets\<set>.<difficulty>.sample.json, sampler 1.4).
+        var records = new Dictionary<string, JsonNode?>(StringComparer.Ordinal);
+        JsonNode? Sampled(JsonObject scenario)
+        {
+            var name = (string?)scenario["difficulty"] is string d ? $"{set}.{d}.sample.json" : set + ".sample.json";
+            if (!records.TryGetValue(name, out var record))
+            {
+                var path = Path.Combine(work, "sets", name);
+                records[name] = record = File.Exists(path) ? NotesJson.Load(path) : null;
+            }
+
+            return record;
+        }
+
         var written = new List<string>();
         var invalid = new List<string>();
         var reasons = new Dictionary<string, int>(StringComparer.Ordinal);
@@ -146,7 +158,7 @@ public static class IngestCommand
                 provenance["polarityFamily"] = group;
             }
 
-            if (sampled is not null)
+            if (Sampled(scenario) is JsonNode sampled)
             {
                 provenance["samplerCommit"] = (string?)sampled["sampler"]?["commit"];
                 provenance["seed"] = ((int?)sampled["seed"])?.ToString(CultureInfo.InvariantCulture);

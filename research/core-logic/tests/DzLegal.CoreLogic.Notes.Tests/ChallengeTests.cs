@@ -29,19 +29,29 @@ public sealed partial class ChallengeTests
 
     private static string Lines(IEnumerable<JsonObject> draws) => string.Concat(draws.Select(s => s.ToJsonString(NotesJson.Compact) + "\n"));
 
+    private static JsonObject WithoutOutcome(JsonObject s)
+    {
+        var copy = (JsonObject)s.DeepClone();
+        copy.Remove("outcome");
+        return copy;
+    }
+
     private static JsonObject Target(JsonObject s) => ScenarioSampler.Event(s, (string)s["target"]!);
 
     /// <summary>
     /// The bytes `notes sample` writes for three base sets, recorded with sampler 1.3 before the recipes were added: a
     /// base set (no --difficulty) draws exactly what it drew before. The hashes move only if the seed files change.
+    /// Hashed without each scenario's `outcome`, which the rule evaluator computes from whichever final records exist
+    /// (18 November 2026: the land-registry-publication final moved it; the draws themselves did not change). The
+    /// hashes were recomputed that day with the sampler code unchanged since this test last passed (9809f7a).
     /// </summary>
     [Theory]
-    [InlineData("train", 400, 20261117, 8, "56abdc01b4e3407bb02a41e0d38cb995e4e2778b7d3637a81e89d8c05925eada")]
-    [InlineData("dev", 300, 1612, 5, "0748ad4c63c51173855907286db737f87ed0a2f108368c6b9f90f6741a975d7c")]
-    [InlineData("pilot", 200, 500, 0, "7c9043e69e7a56f44be7a3dcc83bb224e964117929f7c3976b92d7e7ae3aa0f1")]
+    [InlineData("train", 400, 20261117, 8, "49a74f8ea7d8a199a0eb76ec1815c2a75134b173d40968d48afec24da3cc1e26")]
+    [InlineData("dev", 300, 1612, 5, "8235131445196894ee62b0de9058854ddbe96fa2064b886142897e213d3b2368")]
+    [InlineData("pilot", 200, 500, 0, "f673e6086d95c0c3547303eb3a26ab2bc54da6c95a0160c42c7296ab3c8c8adc")]
     public void TheBaseSetsDrawTheSameBytesAsSampler13(string set, int count, int seed, int groups, string sha256)
     {
-        var lines = Lines(Sampler().Draw(new SampleRequest(set, count, seed, groups)));
+        var lines = Lines(Sampler().Draw(new SampleRequest(set, count, seed, groups)).Select(WithoutOutcome));
         Assert.Equal(sha256, Convert.ToHexString(SHA256.HashData(Encoding.UTF8.GetBytes(lines))).ToLowerInvariant());
     }
 

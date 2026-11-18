@@ -46,6 +46,11 @@ def test_the_rules_role_runs_the_published_rules_tool_only():
     assert g.check("rules", bash(f"{RULES.replace(chr(92), '/')} examples x.json && rm y"))
     assert g.check("rules", bash(r"C:\Users\TheShadow\dz-fable-core\research\core-logic\src\DzLegal.CoreLogic.Rules.Tool\bin\Release\net10.0\rules.exe x"))
     assert g.check("rules", bash(f'{PY} {OJ} --out {RUN} https://www.joradp.dz/x.pdf'))
+    # the prompts' first step, refused for sale-non-delivery on 18 November 2026; nothing else rides on it
+    assert g.check("rules", bash("unset OPENROUTER_API_KEY GOOGLE_API_KEY")) is None
+    assert g.check("checker", bash("unset OPENROUTER_API_KEY")) is None
+    assert g.check("rules", bash("unset OPENROUTER_API_KEY GOOGLE_API_KEY; sed x"))
+    assert g.check("rules", bash("unset PATH"))
 
 
 def test_the_checker_may_also_fetch_and_convert_journal_pages_in_the_run_folder():

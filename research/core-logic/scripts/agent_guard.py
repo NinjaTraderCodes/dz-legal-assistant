@@ -36,6 +36,7 @@ WRITE_ROOTS = {
 }
 RULES_TOOL = re.compile(r"^" + re.escape(RESEARCH) + r"tools/rules/[0-9a-f]{7,40}/rules\.exe$")
 OJ_FETCH = WORKTREE + "research/core-logic/scripts/oj_fetch.py"
+KEY_UNSET = re.compile(r"^unset( (OPENROUTER_API_KEY|GOOGLE_API_KEY)){1,2}$")
 SHELL_CONSTRUCT = re.compile(r"[;&|<>`\n]|\$\(")
 GIT_CHANGES = re.compile(r"\bgit\b[^|;&]*\b(commit|push|reset|checkout|switch|stash|rebase|merge|cherry-pick|revert|"
                          r"clean|branch\s+-[dD]|worktree|tag|config|update-ref|gc|filter-branch)\b")
@@ -68,6 +69,8 @@ def check_command(role: str, command: str) -> str | None:
     if role == "builder":
         if GIT_CHANGES.search(command):
             return "this agent may not run a git command that changes the repository"
+        return None
+    if KEY_UNSET.match(command.strip()):  # the prompts' first step (the keys are absent when the gate is clean)
         return None
     if SHELL_CONSTRUCT.search(command):
         return "one plain command only: no ;, &, |, >, <, backquote, $( or line break"

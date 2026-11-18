@@ -92,7 +92,7 @@ try
         }
 
         var summary = table.ToDictionary(kv => kv.Key, kv => new { events = kv.Value[0], votes = kv.Value[1], right = kv.Value[2], wrong = kv.Value[3] });
-        File.WriteAllText(Need("--out"), JsonSerializer.Serialize(new { notes = notes.Count, classes = summary, wrong = wrongVotes }, new JsonSerializerOptions { WriteIndented = true }));
+        File.WriteAllText(Need("--out"), JsonSerializer.Serialize(new { notes = notes.Count, classes = summary, wrong = wrongVotes }));
         foreach (var (gold, row) in table)
         {
             Console.WriteLine($"{gold,-13} events {row[0],4}  votes {row[1],4}  right {row[2],4}  wrong {row[3],4}");

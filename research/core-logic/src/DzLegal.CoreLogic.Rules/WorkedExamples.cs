@@ -29,6 +29,9 @@ public sealed record CaseResult(string RecordId, string CaseId, string Title, IR
 /// items included, since that is what the lawyer gets; questions are checked strictly for the claim's own items (every
 /// question one of them asks must be expected, every expected question must be asked), and a question only imported items
 /// ask is listed in the case's notes without failing it.
+/// One exception to "unlisted findings are free" (the owner, 18 November 2026: "a surprise block is the one finding that
+/// hurts a lawyer"): a finding that blocks the clean export, declared or shown, and that the example does not list fails
+/// it, imported items included.
 /// </summary>
 public static class WorkedExamples
 {
@@ -74,7 +77,7 @@ public static class WorkedExamples
             {
                 var outcome = evaluator.Evaluate([record], CaseSlotsOf(example.Slots), Dates.Parse(example.PetitionDate, $"{example.Id}.petitionDate"));
                 var notes = new List<string>();
-                return new CaseResult(record.Id, example.Id, example.Title, Compare(outcome, record.Id, example.Expect, compareShown, id => id, Imported(record), notes))
+                return new CaseResult(record.Id, example.Id, example.Title, Compare(outcome, record.Id, example.Expect, compareShown, id => id, Imported(record), notes, unlistedBlockFails: true))
                 {
                     Notes = notes,
                 };
@@ -158,7 +161,7 @@ public static class WorkedExamples
     /// <param name="imported">On a merged record, whether an item id is imported; questions asked only by imported items
     /// are then not required, and those the example does not list go to <paramref name="notes"/>.</param>
     public static IReadOnlyList<string> Compare(RuleOutcome outcome, string recordId, Expectation expect, bool compareShown, Func<string, string?> mapRef,
-                                                Func<string, bool>? imported = null, List<string>? notes = null)
+                                                Func<string, bool>? imported = null, List<string>? notes = null, bool unlistedBlockFails = false)
     {
         ArgumentNullException.ThrowIfNull(outcome);
         ArgumentNullException.ThrowIfNull(expect);
@@ -193,6 +196,19 @@ public static class WorkedExamples
             if (compareShown && expected.ToCheck is { } toCheck && finding.ToCheck != toCheck)
             {
                 differences.Add($"{label}: toCheck {finding.ToCheck}, the example says {toCheck}");
+            }
+        }
+
+        if (unlistedBlockFails)
+        {
+            var listed = expect.Findings.Select(expected => mapRef(expected.Ref)).OfType<string>().ToHashSet(StringComparer.Ordinal);
+            foreach (var finding in outcome.Findings.Where(f => f.RecordId == recordId && !listed.Contains(f.Ref)))
+            {
+                if (finding.DeclaredEffect == FindingEffect.BlockCleanExport || (compareShown && finding.Effect == FindingEffect.BlockCleanExport))
+                {
+                    differences.Add($"{finding.Ref}: blocks the clean export (declared {RuleEvaluator.Name(finding.DeclaredEffect)}, shown "
+                                    + $"{RuleEvaluator.Name(finding.Effect)}) and the example does not list it ({finding.Trace})");
+                }
             }
         }
 

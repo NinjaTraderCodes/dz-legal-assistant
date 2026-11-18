@@ -1,4 +1,5 @@
 using DzLegal.CoreLogic.Contracts;
+using DzLegal.Domain;
 
 namespace DzLegal.CoreLogic.Rules.Tests;
 
@@ -50,5 +51,45 @@ public sealed class MergedExampleTests
     {
         var outcome = Outcome(("own_slot", ["d1"]), ("other_slot", ["d2"]));
         Assert.Single(WorkedExamples.Compare(outcome, "c", Expect("own_slot"), false, id => id));
+    }
+
+    private static RuleFinding Finding(string id, FindingEffect declared, FindingEffect shown) => new()
+    {
+        Ref = id,
+        RecordId = "c",
+        Kind = FindingKind.PriorStep,
+        DeclaredEffect = declared,
+        Effect = shown,
+        Grade = "B",
+        ToCheck = false,
+        Message = new LocalizedText("رسالة.", "Message."),
+        Basis = [],
+    };
+
+    private static RuleOutcome WithFindings(params RuleFinding[] findings) => new() { Findings = findings, Questions = [] };
+
+    private static ExpectedFinding Listed(string id, FindingEffect effect) => new() { Ref = id, Effect = effect };
+
+    // The owner, 18 November 2026: "Any block that an example does not list fails it, on the merged record."
+    [Fact]
+    public void AnUnlistedBlockFailsTheExampleImportedOrNot()
+    {
+        var outcome = WithFindings(Finding("d1", FindingEffect.Warn, FindingEffect.Warn), Finding("court-sections.p1", FindingEffect.BlockCleanExport, FindingEffect.Warn));
+        var expect = new Expectation { Findings = [Listed("d1", FindingEffect.Warn)] };
+        var differences = WorkedExamples.Compare(outcome, "c", expect, true, id => id, Imported, [], unlistedBlockFails: true);
+        Assert.Contains("court-sections.p1: blocks the clean export", Assert.Single(differences), StringComparison.Ordinal);
+        var listed = new Expectation { Findings = [Listed("d1", FindingEffect.Warn), Listed("court-sections.p1", FindingEffect.BlockCleanExport)] };
+        Assert.Empty(WorkedExamples.Compare(outcome, "c", listed, true, id => id, Imported, [], unlistedBlockFails: true));
+    }
+
+    [Fact]
+    public void AnUnlistedShownBlockFailsAndUnlistedWarningsStayFree()
+    {
+        var shown = WithFindings(Finding("p2", FindingEffect.Warn, FindingEffect.BlockCleanExport), Finding("n1", FindingEffect.Warn, FindingEffect.Warn));
+        var expect = new Expectation { Findings = [] };
+        Assert.Single(WorkedExamples.Compare(shown, "c", expect, true, id => id, null, [], unlistedBlockFails: true));
+        Assert.Empty(WorkedExamples.Compare(WithFindings(Finding("n1", FindingEffect.Warn, FindingEffect.Warn)), "c", expect, true, id => id, null, [], unlistedBlockFails: true));
+        // Off (the --against comparison): an unlisted block stays free there.
+        Assert.Empty(WorkedExamples.Compare(shown, "c", expect, true, id => id));
     }
 }

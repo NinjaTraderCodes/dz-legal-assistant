@@ -1,0 +1,114 @@
+[
+  {
+    "id": "adv-1",
+    "target": "n3, b30, k28, lease_term_expired",
+    "kind": "exception",
+    "claim": "For a commercial lease made before Law 05-02 (whose renewal 187 مكرر 1 keeps under the earlier law), the lease does not end when its term runs out: under Commercial Code 173 ¶1 it ends only by a notice to quit served at least six months ahead, and without one a written lease continues by tacit extension (173 ¶2). Under 187 ¶1, a tenant entitled to eviction compensation may also stay on the terms of the expired lease until he is paid. Boundary n3 fires on lease_term_expired = yes for every lease. It classifies the claim as 'outside: holding-over-after-term' and tells the lawyer that 'a lease ends when its term runs out, with no notice to quit' and that only Civil Code 502 compensation is owed. For these leases that statement is false: the rent after the agreed term is still rent under a continuing lease.",
+    "source": {
+      "tier": 2,
+      "url": "C:\\Users\\TheShadow\\dz-core-research\\store\\text\\commercial-code.txt (store sha256 d4180db9ac0f2a89; headings from the official consolidated edition)",
+      "what": "Ordinance 75-59 (Commercial Code), art. 173 ¶1, ¶2 and ¶5 and art. 187 ¶1 (version ordinance-75-59, not amended in the store); read with art. 187 مكرر 1 (law 05-02). The commercial code is not covered by the amendment ledger. I checked Law 22-09 (JO 32/2022 pp. 12-13): it amends only art. 544 and adds 715 مكرر 133-143.",
+      "retrievedOn": "2026-11-18"
+    },
+    "quoteArabic": "لا ينتهي إيجار المحلات الخاصة بهذه الأحكام إلا بأثر تنبيه بالإخلاء حسبما جرت عليه العادات المحلية وفي مدة ستة أشهر قبل الأجل على الأقل. وفي حالة عدم التنبيه بالإخلاء يتواصل الإيجار المنعقد كتابة بالتمديد الضمني إلى ما بعد الأجل المحدد في العقد (173) / لا يجوز الزام أى مستأجر يمكنه المطالبة بتعويض الاخلاء بمغادرة الاماكن قبل قبض التعويض. وله الحق فى البقاء فى هذه الاماكن أن يدفع له هذا التعويض طبقا لشروط وبنود عقد الايجار الذى انقضى أجله (187 ¶1)",
+    "consequence": "n3 should not state, for a commercial lease made before 05-02, that the lease ended at its term without notice. In that case it should ask whether a notice to quit under 173 was served. Without one, the post-term periods are rent under a tacitly extended lease (and an eviction needs the 173 notice or a rescission), not Civil Code 502 compensation. The record cites 173 nowhere."
+  },
+  {
+    "id": "adv-2",
+    "target": "n1, n2, k29, k34, lease_form",
+    "kind": "missing",
+    "claim": "Civil Code 324 مكرر 1 ¶1 (b21, quoted by the record itself) requires the official form, on pain of nullity, for agricultural leases and for management contracts of a business (عقود تسيير محلات تجارية), as well as for commercial leases. The record checks the official form only when commercial_lease = yes (n2), and n1 checks only writing with a fixed date. So an agricultural lease, or a business-management (location-gérance) contract, on a private paper with a fixed date passes with no warning, although it is void for form. The record's slots never ask the property's nature to keep these out (k29 only says the claim 'covers dwellings, professional and business premises'). Meanwhile the section rule sends an agricultural lease to the real-estate section (512 ¶12) as if it were in scope.",
+    "source": {
+      "tier": 2,
+      "url": "C:\\Users\\TheShadow\\dz-core-research\\store\\text\\civil-code.txt; C:\\Users\\TheShadow\\dz-core-research\\store\\text\\cpca.txt",
+      "what": "Civil Code art. 324 مكرر 1 ¶1 (law 88-14, JO 18/1988 pp. 749-751 per the ledger); CPCA art. 512 ¶12 (law 08-09).",
+      "retrievedOn": "2026-11-18"
+    },
+    "quoteArabic": "يجب، تحت طائلة البطلان، تحرير العقود التي تتضمن ... عقود إيجار زراعية أو تجارية أو عقود تسيير محلات تجارية أو مؤسسات صناعية في شكل رسمي / 11 - في الإيجارات الفلاحية.",
+    "consequence": "Either add a boundary, or extend n2's condition, so that the official-form warning fires for agricultural leases and business-management contracts. Or add a slot on the nature of the leased thing and send these cases out of the unit explicitly. As written, the record is silent on a void contract."
+  },
+  {
+    "id": "adv-3",
+    "target": "court.section, k13, k14, k45, k46",
+    "kind": "missing",
+    "claim": "The label and slots cover any 'unpaid rent', but the section rule proposes the real-estate section for every lease that is not commercial, and the territorial rule follows CPCA 40 ¶2 (court where the property is). CPCA 512 ¶11 gives the real-estate section only leases of dwellings and professional premises (and 512 ¶12 agricultural leases). CPCA 40 ¶2 reaches only lease actions 'relating to immovables'. Common case: a lessor claims unpaid rent for a vehicle, machinery or equipment rented to an individual under a written lease with a fixed date. The record would propose the real-estate section and the court of the 'property's' location. The answer the texts give is the civil section (32 ¶4, ¶5) and, absent a special rule, the defendant's domicile (37).",
+    "source": {
+      "tier": 2,
+      "url": "C:\\Users\\TheShadow\\dz-core-research\\store\\text\\cpca.txt",
+      "what": "Law 08-09 (CPCA) art. 512 ¶11-¶12, art. 40 ¶2, art. 37 ¶1, art. 32 ¶4-¶5 (art. 32 in the law 22-13 version); civil code 467 ¶1 (a lease is of 'شيء', movables included).",
+      "retrievedOn": "2026-11-18"
+    },
+    "quoteArabic": "10 - في إيجار السكنات والمحلات المهنية، (512 ¶11) / في المواد العقارية، أو الأشغال المتعلقة بالعقار، أو دعاوى الإيجارات بما فيها التجارية المتعلقة بالعقارات ... أمام المحكمة التي يقع في دائرة اختصاصها العقار (40 ¶2) / يؤول الاختصاص الإقليمي للجهة القضائية التي يقع في دائرة اختصاصها موطن المدعى عليه (37)",
+    "consequence": "Add a slot on what is leased (dwelling, professional premises, commercial premises, agricultural land, other immovable, movable). For a movable, propose the civil section and the defendant's domicile. For an immovable outside 512 ¶11-¶12, warn that the section is a reading, instead of proposing realEstate as settled."
+  },
+  {
+    "id": "adv-4",
+    "target": "court.section (commercial alternative), k13, k44, o6",
+    "kind": "procedure",
+    "claim": "When the record proposes the commercial section for a commercial lease, it says nothing of CPCA 534 as replaced by Law 22-13. Under it, the president of the commercial section must first refer the dispute to mediation, and that mediation does not need the parties' consent, unlike art. 994. This mandatory step applies to every claim listed before the commercial section, and the record's checklist and court note omit it.",
+    "source": {
+      "tier": 1,
+      "url": "https://www.joradp.dz/FTP/JO-ARABE/2022/A2022048.pdf",
+      "what": "Law 22-13 of 12 July 2022 amending the CPCA, art. 3 (new CPCA art. 534), JO no. 48 of 17 July 2022, pp. 3-4 (¶2 and ¶3 read on p. 4; ¶1 from the store's law-22-13 version of cpca 534). Art. 13 of the law defers only the specialised courts' jurisdiction rules to their installation.",
+      "retrievedOn": "2026-11-18"
+    },
+    "quoteArabic": "يجب على رئيس القسم التجاري عرض النزاع مسبقا على الوساطة. لا تخضع الوساطة أمام القسم التجاري إلى قبول الأطراف، خلافا لأحكام المادة 994 من هذا القانون.",
+    "consequence": "When the section proposed is commercial, the record should tell the lawyer that the case will first go to compulsory mediation (CPCA 534 ¶1-¶2). A note is enough: the step is not an admissibility condition of the petition."
+  },
+  {
+    "id": "adv-5",
+    "target": "k62, p1, b25, r2",
+    "kind": "exception",
+    "claim": "k62 puts the tenant's bankruptcy or judicial liquidation outside the unit. Yet Commercial Code 201, in the same commercial-lease title the record cites, says that bankruptcy or judicial liquidation does not by law rescind the lease of premises used for trade or industry, and voids any contrary clause. The record's rescission request (r2) and rescission-clause step (p1) take no account of this. Further, bankruptcy and judicial settlement belong to the specialised commercial court (CPCA 536 مكرر ¶4). Lead only: individual creditors' actions are said to be suspended after the opening judgment (Commercial Code art. 245, not in the store).",
+    "source": {
+      "tier": 2,
+      "url": "C:\\Users\\TheShadow\\dz-core-research\\store\\text\\commercial-code.txt; C:\\Users\\TheShadow\\dz-core-research\\store\\text\\cpca.txt",
+      "what": "Ordinance 75-59, art. 201 ¶1; CPCA art. 536 مكرر ¶4 (law 22-13, JO 48/2022 p. 4). The suspension of individual actions (Commercial Code 245) is tier 3, from memory, unchecked.",
+      "retrievedOn": "2026-11-18"
+    },
+    "quoteArabic": "لا يترتب بحكم القانون على الافلاس أو التصفية القضائية، فسخ ايجار العمارات المخصصة للصناعة أو التجارة أو الصناعة التقليدية التابعة للمدين ... ويعتبر لاغيا كل شرط يخالف ذلك.",
+    "consequence": "Add a slot and a warning for a tenant in bankruptcy or judicial settlement. A clause rescinding the lease on insolvency is void (201). The claim may have to be lodged in the collective procedure, and that procedure belongs to the specialised commercial court, so k62's 'doesNotApply' is wrong."
+  },
+  {
+    "id": "adv-6",
+    "target": "n3, lease_term_expired",
+    "kind": "missing",
+    "claim": "n3's condition is only lease_term_expired = yes. It does not compare the periods claimed with the end of the term. In the most common case, the tenant left arrears during the term, the term then ended, and the lessor claims those arrears together with eviction. n3 still labels the whole claim 'outside: holding-over-after-term', although rent that fell due during the term is unpaid rent under 498 ¶1. Only the post-term part is 502 compensation.",
+    "source": {
+      "tier": 2,
+      "url": "C:\\Users\\TheShadow\\dz-core-research\\store\\text\\civil-code.txt",
+      "what": "Civil Code art. 498 ¶1 and 502 ¶1 (law 07-05 versions), compared with the record's n3 'when'.",
+      "retrievedOn": "2026-11-18"
+    },
+    "quoteArabic": "يجب على المستأجر أن يقوم بدفع بدل الإيجار في المواعيد المتفق عليها (498) / يجب على المستأجر أن يرد العين المؤجرة عند انتهاء مدة الإيجار فإذا أبقاها تحت يده دون حق وجب عليه أن يدفع للمؤجر تعويضا (502)",
+    "consequence": "n3 should fire only when the periods claimed (or debt_due_date) fall after the term's end. Otherwise it should split the claim: arrears as rent (r1), and occupation compensation from the term's end (r5). It should not class the whole claim as outside."
+  },
+  {
+    "id": "adv-7",
+    "target": "o7",
+    "kind": "misreading",
+    "claim": "Open point o7's first reading ('the lessee's domicile') gives b5 (Civil Code 499 ¶1, the presumption that later payment covers earlier instalments) as its basis. That paragraph says nothing about where rent is paid. The place of payment is in 498 ¶2 (b4).",
+    "source": {
+      "tier": 2,
+      "url": "C:\\Users\\TheShadow\\dz-core-research\\store\\text\\civil-code.txt",
+      "what": "Civil Code art. 498 ¶2 and 499 ¶1 (law 07-05).",
+      "retrievedOn": "2026-11-18"
+    },
+    "quoteArabic": "ويكون دفع بدل الإيجار في موطن المستأجر ما لم يكن اتفاق أو عرف يقضي بخلاف ذلك. (498 ¶2) / الوفاء بقسط من بدل الإيجار يعتبر قرينة على الوفاء بالأقساط السابقة (499 ¶1)",
+    "consequence": "o7's reading should rest on b4, not b5."
+  },
+  {
+    "id": "adv-8",
+    "target": "k27, n1, b2",
+    "kind": "specialLaw",
+    "claim": "Lead only. According to the record's own ledger, Law 07-05 art. 8 repealed only art. 20, art. 21 ¶2-¶3 and art. 22 of Legislative Decree 93-03 on real-estate activity, so art. 21 ¶1 survived in 2007. As I remember it, that paragraph requires residential leases to follow a model contract set by regulation (Executive Decree 94-69). Whether Law 11-04 (real-estate promotion, 2011) later repealed 93-03 entirely is not checked. If the paragraph is still in force, it is a special form rule for residential leases that k27 marks 'searchedNotFound' and that n1 does not reflect.",
+    "source": {
+      "tier": 3,
+      "url": "C:\\Users\\TheShadow\\dz-fable-core\\docs\\research\\core-logic\\law\\amendment-ledger.json (law-07-05 'transitional' field); content of 93-03 art. 21 ¶1 from memory",
+      "what": "Law 07-05 art. 8 (JO 31/2007, pp. 3-6 per the ledger); Legislative Decree 93-03 of 1 March 1993, art. 21 ¶1; Executive Decree 94-69; Law 11-04. None read on joradp.dz.",
+      "retrievedOn": "2026-11-18"
+    },
+    "quoteArabic": "",
+    "consequence": "Check on joradp.dz whether 93-03 art. 21 ¶1 is still in force after Law 11-04. If it is, add its model-contract requirement to the residential-lease form check, as a warning."
+  }
+]

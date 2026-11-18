@@ -1,0 +1,125 @@
+{
+ "attacks": [
+  {
+   "target": "n1",
+   "kind": "wrongCondition",
+   "claim": "The regime tests use only 'before 2005-02-09' (d1, p1, p2, p4, p5, n4, n5) and 'after 2005-02-09' (n1, n2, n3, n6, n7). A lease made exactly on 2005-02-09 matches neither, so no regime rule fires. The text puts leases made 'from the date of publication' in the new regime, so that date belongs on the new side (at least with a caution).",
+   "evidenceWords": "المبرمة ابتداء من تاريخ نشر هذا القانون في الجريدة الرسمية",
+   "fromMemory": false,
+   "id": "atk-1"
+  },
+  {
+   "target": "n4",
+   "kind": "wrongCondition",
+   "claim": "n4 fires on 'renewal_request_unanswered_three_months' alone and never checks that the renewal request was valid. A request without the required wording is void, so it starts no three-month period and creates no deemed acceptance. The same applies to a refusal that omits article 194, which is void.",
+   "evidenceWords": "ويجب ان يشمل الطلب مضمون الفقرة المدرجة بعده والا كان باطلا",
+   "fromMemory": false,
+   "id": "atk-2"
+  },
+  {
+   "target": "d1",
+   "kind": "wrongCondition",
+   "claim": "d1 starts the three months from the service of any refusal, including the answer to a renewal request and the notice to quit. The texts make a refusal answer void unless it restates article 194, and make a notice to quit void unless it states its reasons and restates article 194. A void act should not start the period, but d1 has no validity condition.",
+   "evidenceWords": "ويجب ان يذكر فى التبليغ المنصوص عليه فى الفقرة السابقة مضمون المادة 194 والا كان باطلا",
+   "fromMemory": false,
+   "id": "atk-3"
+  },
+  {
+   "target": "d1",
+   "kind": "misreading",
+   "claim": "Article 197 ¶3 requires the summons to be served (تبليغ التكليف بالحضور) within three months. d1 is a procedural period with no counting method and no basis for month counting or weekend and holiday extension (d2 does carry a counting block), and it does not say that the measured event is service of the summons rather than filing the petition. A drafting tool that compares the petition date will misjudge the deadline.",
+   "evidenceWords": "ويجب في هذه الحالة تبليغ التكليف بالحضور في الثلاثة أشهر من تاريخ تبليغ رفض التجديد",
+   "fromMemory": false,
+   "id": "atk-4"
+  },
+  {
+   "target": "n5",
+   "kind": "wrongCondition",
+   "claim": "n5 fires on 'lessee_operated_business_required_period = no' alone. Article 172 ¶2 lets a lessee who shows a legitimate reason, or who let the business under a management lease, still rely on the operation, so that case must not fire. The English message also says 'under a written lease' for the two-year case, but the Arabic does not say written there.",
+   "evidenceWords": "غير انه يجوز للمستأجر الذى يثبت بسبب مشروع او الذى اجر متجره ضمن الشروط المنصوص عليها فى الاحكام القانونية المتعلقة، بايجار التسيير فانه يجوز له ان يتمسك بالاستغلال",
+   "fromMemory": false,
+   "id": "atk-5"
+  },
+  {
+   "target": "b22",
+   "kind": "misreading",
+   "claim": "b22 drops the qualifier 'without a serious and legitimate reason' on cessation of operation. As written, any cessation needs a prior warning, while the text covers only non-performance or cessation without a serious and legitimate reason. A cessation with a legitimate reason is a different case.",
+   "evidenceWords": "بالتوقف عن استغلال المحل التجارى دون سبب جدي ومشروع",
+   "fromMemory": false,
+   "id": "atk-6"
+  },
+  {
+   "target": "court",
+   "kind": "misreading",
+   "claim": "Exit x1 says a rent-revision dispute goes to the president of the court under the summary procedure, citing article 192. Article 192 ¶3 says only 'the competent court' and refers to articles 195 and 196. The reference to the summary procedure is therefore indirect, and the message presents it as stated by 192.",
+   "evidenceWords": "يرفع الطلب من الطرف الذى يهمه الاستعجال لدى الجهة القضائية المختصة",
+   "fromMemory": false,
+   "id": "atk-7"
+  },
+  {
+   "target": "n3",
+   "kind": "wrongCondition",
+   "claim": "The window 'before 2005-03-10' is a 30-day period that no cited text states. Article 4 ¶2 fixes effect by arrival of the Official Journal at each daira's seat, which varies by place. The window also excludes a lease on 2005-02-09 itself. n1 and n2 still fire for leases inside the window, so one case receives both a firm 'outside' warning and an 'unsettled' warning.",
+   "evidenceWords": "وفى النواحى الاخرى فى نطاق كل دائرة بعد مضى يوم كامل من تاريخ وصول الجريدة الرسمية الى مقر الدائرة",
+   "fromMemory": false,
+   "id": "atk-8"
+  },
+  {
+   "target": "b47",
+   "kind": "missing",
+   "claim": "Article 194 ¶1 makes the dispute go to court only after three months from the notification without agreement. No prior-step or premature-filing rule models this wait. d1 treats the same three months as a time limit, so a lessee who files before the three months run, or who files late, receives no clear warning.",
+   "evidenceWords": "في حالة عدم اتفاق الطرفين عند انتهاء مهلة ثلاثة أشهر من تاريخ التبليغ",
+   "fromMemory": false,
+   "id": "atk-9"
+  },
+  {
+   "target": "n13",
+   "kind": "missing",
+   "claim": "The module has no slot separating the date of the original lease from the date of a renewal or new contract. n1, n2, p1 and d1 test only 'contract_date'. For a pre-2005 lease renewed by a contract signed after 2005, a lawyer who enters the later date triggers n1 and n2 ('no compensation', 'void for form'). Article 187 مكرر 1 says renewal of the earlier lease stays under the old law. n13 has no 'when' and never fires.",
+   "evidenceWords": "يبقى تجديد عقود الإيجار المبرمة قبل النشر المذكور في المادة 187 مكرر أعلاه، خاضعا للتشريع الساري المفعول بتاريخ إبرام عقد الإيجار",
+   "fromMemory": false,
+   "id": "atk-10"
+  },
+  {
+   "target": "b43",
+   "kind": "missing",
+   "claim": "Rent revision has no prior-step rule. Article 192 requires a request by extrajudicial act or registered letter stating the rent, void if the rent is not stated. Article 193 allows the request only after three years. n14 only warns 'check the subject' and the p-rules cover only the notice to quit, refusal, rent demand and priority notice.",
+   "evidenceWords": "ويجب تحت طائلة البطلان، أن يحدد بدل الإيجار المطلوب أو المعروض",
+   "fromMemory": false,
+   "id": "atk-11"
+  },
+  {
+   "target": "b54",
+   "kind": "misreading",
+   "claim": "b54 merges the two start points of the fifteen days. The text runs them from the day the judgment becomes final for a first-instance judgment, and from the day the judgment is given for the appeal court. Dropping this distinction gives a wrong start date.",
+   "evidenceWords": "ابتداء من يوم صدور الحكم اذا كان الامر يتعلق بالمجلس القضائي",
+   "fromMemory": false,
+   "id": "atk-12"
+  },
+  {
+   "target": "b31",
+   "kind": "misreading",
+   "claim": "b31 states the six-month and six-year occupation duty without the exception for a legitimate reason. The text excepts a legitimate reason, and the compensation is proportional to the premises recovered, not the full compensation.",
+   "evidenceWords": "باستثناء السبب المشروع، اذا لم يوجد أن يشغل بنفسه الاماكن",
+   "fromMemory": false,
+   "id": "atk-13"
+  },
+  {
+   "target": "b4",
+   "kind": "misreading",
+   "claim": "b4 says the provisions extend to leases granted to communes for municipal operating services. It drops the condition that the owner consented, expressly or tacitly, when the lease was made or afterwards.",
+   "evidenceWords": "وبالموافقة الصريحة أو الضمنية من المالك",
+   "fromMemory": false,
+   "id": "atk-14"
+  },
+  {
+   "target": "b63",
+   "kind": "exception",
+   "claim": "b63 says a Civil Code lease ends at its term with no need for notice, and n8 relies on it. The uncited paragraph 2 lets the lessee end the lease early for a family or professional reason, with two months' notice by a non-judicial document. The rule is stated without this exception.",
+   "evidenceWords": "غير أنه يجوز للمستأجر إنهاء عقد الإيجار قبل ذلك لسبب عائلي أو مهني",
+   "fromMemory": false,
+   "id": "atk-15"
+  }
+ ],
+ "nothingFound": false
+}

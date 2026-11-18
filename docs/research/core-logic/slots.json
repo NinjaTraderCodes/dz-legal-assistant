@@ -2083,6 +2083,454 @@
       "readFromNote": false,
       "origin": "land-registry-publication",
       "why": "Prior step p1 reads it as its own slot (was the step done?). CPCA article 17 paragraph 3 requires a petition about a property and/or real right published under the law to be published at the land registry and produced at the first hearing, on pain of inadmissibility in form, unless its deposit for publication is proven; the question covers both accepted means (m1 publication, m2 proven deposit). Merges derivation A's petition_published_at_land_registry and derivation B's petition_deposited_for_publication."
+    },
+    {
+      "id": "petition_names_court",
+      "type": "yesNoUnknown",
+      "question": {
+        "ar": "هل تبين العريضة الجهة القضائية التي ترفع أمامها الدعوى؟",
+        "en": "Does the petition name the court before which the claim is brought?"
+      },
+      "askedFor": [
+        "*"
+      ],
+      "readFromNote": false,
+      "origin": "petition-formal-elements",
+      "why": "Prior step p1 (its own slot); article 15 lists the court among the particulars."
+    },
+    {
+      "id": "petition_gives_plaintiff_identity",
+      "type": "yesNoUnknown",
+      "question": {
+        "ar": "هل تتضمن العريضة اسم المدعي ولقبه وموطنه؟",
+        "en": "Does the petition give the plaintiff's first name, surname and domicile?"
+      },
+      "askedFor": [
+        "*"
+      ],
+      "readFromNote": false,
+      "origin": "petition-formal-elements",
+      "why": "Prior step p2 (its own slot); article 15."
+    },
+    {
+      "id": "petition_gives_defendant_identity",
+      "type": "yesNoUnknown",
+      "question": {
+        "ar": "هل تتضمن العريضة اسم المدعى عليه ولقبه وموطنه، أو آخر موطن له إن لم يكن له موطن معلوم؟",
+        "en": "Does the petition give the defendant's first name, surname and domicile, or his last domicile when none is known?"
+      },
+      "askedFor": [
+        "*"
+      ],
+      "readFromNote": false,
+      "origin": "petition-formal-elements",
+      "why": "Prior step p3 (its own slot); article 15."
+    },
+    {
+      "id": "party_is_legal_person",
+      "type": "yesNoUnknown",
+      "question": {
+        "ar": "هل أحد أطراف الدعوى (مدع أو مدعى عليه) شخص معنوي: شركة أو جمعية أو مؤسسة أو الدولة أو ولاية أو بلدية أو هيئة عمومية؟",
+        "en": "Is a party (plaintiff or defendant) a legal person: a company, an association, an institution, the State, a wilaya, a commune or a public body?"
+      },
+      "askedFor": [
+        "*"
+      ],
+      "readFromNote": false,
+      "origin": "petition-formal-elements",
+      "why": "Prior step p4 and document doc7 read it: article 15 asks for a legal person's name, nature, seat and representative. The existing slot public_body_party covers public bodies only."
+    },
+    {
+      "id": "petition_gives_legal_person_details",
+      "type": "yesNoUnknown",
+      "question": {
+        "ar": "هل تتضمن العريضة، لكل شخص معنوي طرف في الدعوى، تسميته وطبيعته ومقره الاجتماعي وصفة ممثله القانوني أو الاتفاقي؟",
+        "en": "Does the petition state, for each legal person that is a party, its name, its nature, its registered seat and the capacity of its legal or contractual representative?"
+      },
+      "askedFor": [
+        "*"
+      ],
+      "readFromNote": false,
+      "origin": "petition-formal-elements",
+      "why": "Prior step p4 (its own slot); article 15."
+    },
+    {
+      "id": "petition_states_facts_claims_grounds",
+      "type": "yesNoUnknown",
+      "question": {
+        "ar": "هل تتضمن العريضة عرضا موجزا للوقائع والطلبات والوسائل التي تؤسس عليها الدعوى؟",
+        "en": "Does the petition contain a brief statement of the facts, the requests and the grounds on which the claim rests?"
+      },
+      "askedFor": [
+        "*"
+      ],
+      "readFromNote": false,
+      "origin": "petition-formal-elements",
+      "why": "Prior step p5 (its own slot); article 15."
+    },
+    {
+      "id": "petition_lists_documents",
+      "type": "yesNoUnknown",
+      "question": {
+        "ar": "هل تشير العريضة إلى المستندات والوثائق المؤيدة للدعوى؟",
+        "en": "Does the petition refer to the documents that support the claim?"
+      },
+      "askedFor": [
+        "*"
+      ],
+      "readFromNote": false,
+      "origin": "petition-formal-elements",
+      "why": "Prior step p6 (its own slot); article 15 asks for this reference where needed."
+    },
+    {
+      "id": "petition_signed_dated",
+      "type": "yesNoUnknown",
+      "question": {
+        "ar": "هل العريضة مكتوبة وموقعة ومؤرخة؟",
+        "en": "Is the petition in writing, signed and dated?"
+      },
+      "askedFor": [
+        "*"
+      ],
+      "readFromNote": false,
+      "origin": "petition-formal-elements",
+      "why": "Prior step p7 (its own slot); article 14."
+    },
+    {
+      "id": "petition_copies_for_each_party",
+      "type": "yesNoUnknown",
+      "question": {
+        "ar": "هل أعدت نسخ من العريضة بعدد الأطراف؟",
+        "en": "Are there copies of the petition for each party?"
+      },
+      "askedFor": [
+        "*"
+      ],
+      "readFromNote": false,
+      "origin": "petition-formal-elements",
+      "why": "Prior step p8 (its own slot); article 14."
+    },
+    {
+      "id": "petition_in_arabic",
+      "type": "yesNoUnknown",
+      "question": {
+        "ar": "هل العريضة محررة كلها باللغة العربية؟",
+        "en": "Is the whole petition written in Arabic?"
+      },
+      "askedFor": [
+        "*"
+      ],
+      "readFromNote": false,
+      "origin": "petition-formal-elements",
+      "why": "Prior step p19 (its own slot): article 8 paragraph 1 requires petitions in Arabic on pain of inadmissibility. Added by the verifier (attack atk-8)."
+    },
+    {
+      "id": "court_fees_paid",
+      "type": "yesNoUnknown",
+      "question": {
+        "ar": "هل دفعت الرسوم القضائية المحددة قانونا عند إيداع العريضة؟",
+        "en": "Have the judicial fees fixed by law been paid at the filing of the petition?"
+      },
+      "askedFor": [
+        "*"
+      ],
+      "readFromNote": false,
+      "origin": "petition-formal-elements",
+      "why": "Prior step p9 (its own slot); article 17 registers a petition only after the fees are paid."
+    },
+    {
+      "id": "fee_exemption_applies",
+      "type": "yesNoUnknown",
+      "question": {
+        "ar": "هل ينص القانون على إعفاء المدعي من الرسوم في هذه القضية، كالاستفادة من المساعدة القضائية، بما فيها المساعدة الممنوحة بقوة القانون لبعض الفئات (مثل القصر الأطراف في الخصومة، والمدعي في مادة النفقة، والأم في مادة الحضانة، والعمال في مادة حوادث العمل أو الأمراض المهنية)؟",
+        "en": "Does the law exempt the plaintiff from the fees in this case, for example through legal aid, including legal aid granted as of right to some categories (such as minors who are parties, the plaintiff in a maintenance claim, the mother in a custody claim, workers in work-accident or occupational-disease claims)?"
+      },
+      "askedFor": [
+        "*"
+      ],
+      "readFromNote": false,
+      "origin": "petition-formal-elements",
+      "why": "Exemption of prior step p9: article 17 reserves the cases where the law provides otherwise; article 417 exempts legal-aid beneficiaries. The categories named are those of the legal-aid ordinance's article 28 as printed in the Official Journal of 2009, not yet in the store (open point o14)."
+    },
+    {
+      "id": "party_lacks_capacity",
+      "type": "yesNoUnknown",
+      "question": {
+        "ar": "هل أحد أطراف الدعوى (مدع أو مدعى عليه) قاصر، أو بالغ فاقد الأهلية أو ناقصها (جنون أو عته أو سفه أو حجر)؟",
+        "en": "Is a party (plaintiff or defendant) a minor, or an adult who lacks or has diminished capacity (insanity, imbecility, prodigality, interdiction)?"
+      },
+      "askedFor": [
+        "*"
+      ],
+      "readFromNote": false,
+      "origin": "petition-formal-elements",
+      "why": "Prior step p10 and document doc7 read it: article 64 makes lack of capacity of the parties a ground of nullity the judge raises of his own motion (article 65)."
+    },
+    {
+      "id": "incapable_party_represented",
+      "type": "yesNoUnknown",
+      "question": {
+        "ar": "هل يتقاضى كل طرف فاقد الأهلية أو ناقصها بواسطة نائبه القانوني (الولي أو الوصي أو المقدم)، مع ذكره بهذه الصفة في العريضة؟",
+        "en": "Does every party lacking capacity sue or is sued through his legal representative (guardian, tutor or curator), named in that capacity in the petition?"
+      },
+      "askedFor": [
+        "*"
+      ],
+      "readFromNote": false,
+      "origin": "petition-formal-elements",
+      "why": "Prior step p10 (its own slot); Family Code article 81."
+    },
+    {
+      "id": "plaintiff_acts_through_representative",
+      "type": "yesNoUnknown",
+      "question": {
+        "ar": "هل يتقدم المدعي بالدعوى بواسطة وكيل أو بواسطة ممثل قانوني أو اتفاقي لشخص معنوي (غير الولي أو الوصي أو المقدم)؟",
+        "en": "Does the plaintiff act through an agent, or through the legal or contractual representative of a legal person (other than a guardian, tutor or curator)?"
+      },
+      "askedFor": [
+        "*"
+      ],
+      "readFromNote": false,
+      "origin": "petition-formal-elements",
+      "why": "Prior step p11 and document doc7 read it: article 64 makes a representative's lack of authority a ground of nullity."
+    },
+    {
+      "id": "representative_has_authority",
+      "type": "yesNoUnknown",
+      "question": {
+        "ar": "هل للممثل أهلية وتفويض (توكيل) صحيح لتمثيل المدعي؟",
+        "en": "Does the representative have capacity and a valid authority to act for the plaintiff?"
+      },
+      "askedFor": [
+        "*"
+      ],
+      "readFromNote": false,
+      "origin": "petition-formal-elements",
+      "why": "Prior step p11 (its own slot); article 64."
+    },
+    {
+      "id": "plaintiff_has_standing",
+      "type": "yesNoUnknown",
+      "question": {
+        "ar": "هل للمدعي صفة في رفع هذه الدعوى ضد هذا المدعى عليه؟",
+        "en": "Does the plaintiff have standing to bring this claim against this defendant?"
+      },
+      "askedFor": [
+        "*"
+      ],
+      "readFromNote": false,
+      "origin": "petition-formal-elements",
+      "why": "Prior step p12 (its own slot); article 13."
+    },
+    {
+      "id": "plaintiff_has_interest",
+      "type": "yesNoUnknown",
+      "question": {
+        "ar": "هل للمدعي مصلحة قائمة أو محتملة يقرها القانون؟",
+        "en": "Does the plaintiff have a present or potential interest recognised by law?"
+      },
+      "askedFor": [
+        "*"
+      ],
+      "readFromNote": false,
+      "origin": "petition-formal-elements",
+      "why": "Prior step p13 (its own slot); article 13."
+    },
+    {
+      "id": "suit_authorisation_required",
+      "type": "yesNoUnknown",
+      "question": {
+        "ar": "هل يشترط القانون إذنا لرفع هذه الدعوى (كإذن القاضي للولي أو الوصي في بعض التصرفات المتعلقة بأموال القاصر)؟",
+        "en": "Does a law require an authorisation to bring this claim (for example the judge's permission a guardian or tutor needs for certain acts on a minor's property)?"
+      },
+      "askedFor": [
+        "*"
+      ],
+      "readFromNote": false,
+      "origin": "petition-formal-elements",
+      "why": "Prior step p14 and document doc6 read it: article 13 makes the judge raise of his own motion the absence of an authorisation the law requires."
+    },
+    {
+      "id": "suit_authorisation_obtained",
+      "type": "yesNoUnknown",
+      "question": {
+        "ar": "هل حصل المدعي على الإذن الذي يشترطه القانون لرفع الدعوى؟",
+        "en": "Has the plaintiff obtained the authorisation the law requires to bring the claim?"
+      },
+      "askedFor": [
+        "*"
+      ],
+      "readFromNote": false,
+      "origin": "petition-formal-elements",
+      "why": "Prior step p14 (its own slot)."
+    },
+    {
+      "id": "foreign_language_documents",
+      "type": "yesNoUnknown",
+      "question": {
+        "ar": "هل من بين الوثائق والمستندات المقدمة دعما للدعوى وثيقة محررة بلغة غير العربية؟",
+        "en": "Is any of the documents filed in support of the claim written in a language other than Arabic?"
+      },
+      "askedFor": [
+        "*"
+      ],
+      "readFromNote": false,
+      "origin": "petition-formal-elements",
+      "why": "Prior step p15 and document doc3 read it: article 8 requires documents in Arabic or with an official translation."
+    },
+    {
+      "id": "foreign_documents_officially_translated",
+      "type": "yesNoUnknown",
+      "question": {
+        "ar": "هل أرفقت كل وثيقة محررة بلغة أجنبية بترجمة رسمية إلى اللغة العربية؟",
+        "en": "Is every document in a foreign language accompanied by an official translation into Arabic?"
+      },
+      "askedFor": [
+        "*"
+      ],
+      "readFromNote": false,
+      "origin": "petition-formal-elements",
+      "why": "Prior step p15 (its own slot); article 8."
+    },
+    {
+      "id": "petition_published_land_registry",
+      "type": "yesNoUnknown",
+      "question": {
+        "ar": "هل أشهرت عريضة الدعوى لدى المحافظة العقارية، أو أودعت لديها للإشهار؟",
+        "en": "Has the petition been published at the land registry, or deposited there for publication?"
+      },
+      "askedFor": [
+        "*"
+      ],
+      "readFromNote": false,
+      "origin": "petition-formal-elements",
+      "why": "Prior step p17 (its own slot): article 17 paragraph 3 requires publication of a petition concerning real property, unless its deposit for publication is proved."
+    },
+    {
+      "id": "claim_before_specialised_commercial_court",
+      "type": "yesNoUnknown",
+      "question": {
+        "ar": "هل ترفع الدعوى أمام محكمة تجارية متخصصة منصبة (منازعات الملكية الفكرية، أو الشركات التجارية، أو التسوية القضائية والإفلاس، أو البنوك والمؤسسات المالية مع التجار، أو المنازعات البحرية والنقل الجوي والتأمينات المتعلقة بالنشاط التجاري، أو التجارة الدولية)؟",
+        "en": "Is the claim brought before an installed specialised commercial court (intellectual property, commercial companies, judicial settlement and bankruptcy, banks and financial institutions against merchants, maritime and air transport and insurance linked to commercial activity, or international trade)?"
+      },
+      "askedFor": [
+        "*"
+      ],
+      "readFromNote": false,
+      "origin": "petition-formal-elements",
+      "why": "Prior step p18 and document doc9 read it: article 536 bis 4 paragraph 3 requires the petition before that court to be accompanied by the record of non-conciliation, on pain of inadmissibility in form; article 536 bis lists its disputes and Law 22-13 article 13 ties its jurisdiction to its installation. Added by the verifier (attack adv-1)."
+    },
+    {
+      "id": "non_conciliation_record_attached",
+      "type": "yesNoUnknown",
+      "question": {
+        "ar": "هل جرت محاولة الصلح أمام القاضي المعين من رئيس المحكمة التجارية المتخصصة، وأرفق محضر عدم الصلح بالعريضة؟",
+        "en": "Was the conciliation held before the judge appointed by the president of the specialised commercial court, and is the record of non-conciliation attached to the petition?"
+      },
+      "askedFor": [
+        "*"
+      ],
+      "readFromNote": false,
+      "origin": "petition-formal-elements",
+      "why": "Prior step p18 (its own slot); article 536 bis 4 paragraphs 1 and 3."
+    },
+    {
+      "id": "divorce_by_mutual_consent",
+      "type": "yesNoUnknown",
+      "question": {
+        "ar": "هل الطلاق المطلوب طلاق بالتراضي بعريضة مشتركة من الزوجين؟",
+        "en": "Is the divorce asked for a divorce by mutual consent, by a joint petition of both spouses?"
+      },
+      "askedFor": [
+        "*"
+      ],
+      "readFromNote": false,
+      "origin": "petition-formal-elements",
+      "why": "Document doc5 and boundaries n2 and n3 read it: articles 428, 429 and 432."
+    },
+    {
+      "id": "spouse_under_curatorship_or_impaired",
+      "type": "yesNoUnknown",
+      "question": {
+        "ar": "هل أحد الزوجين تحت التقديم، أو ظهر عليه اختلال في قدراته الذهنية يمنعه من التعبير عن إرادته (ويجب أن يثبت هذا الاختلال طبيب مختص)؟",
+        "en": "Is a spouse under curatorship, or does he show a mental impairment that prevents him from expressing his will (an impairment a specialist doctor must establish)?"
+      },
+      "askedFor": [
+        "*"
+      ],
+      "readFromNote": false,
+      "origin": "petition-formal-elements",
+      "why": "Boundary n3 reads it: article 432 bars a petition for divorce by mutual consent in either case, and its second paragraph requires a specialist doctor to establish the impairment."
+    },
+    {
+      "id": "jurisdiction_clause_relied_on",
+      "type": "yesNoUnknown",
+      "question": {
+        "ar": "هل اختيرت المحكمة التي سترفع أمامها الدعوى بناء على شرط في العقد يمنحها الاختصاص الإقليمي؟",
+        "en": "Was the court where the claim will be filed chosen because a clause of the contract gives it territorial jurisdiction?"
+      },
+      "askedFor": [
+        "*"
+      ],
+      "readFromNote": false,
+      "origin": "territorial-jurisdiction",
+      "why": "Boundaries n1 and n4 read it: cpca 45 voids a clause giving territorial jurisdiction to a court that is not competent unless made between traders, and cpca 40 names some courts to the exclusion of others. Same fact as derivation B's jurisdiction_clause_in_contract."
+    },
+    {
+      "id": "clause_parties_all_merchants",
+      "type": "yesNoUnknown",
+      "question": {
+        "ar": "هل أبرم شرط الاختصاص بين تجار (كل أطرافه تجار)؟",
+        "en": "Was the jurisdiction clause made between traders (all of its parties traders)?"
+      },
+      "askedFor": [
+        "*"
+      ],
+      "readFromNote": false,
+      "origin": "territorial-jurisdiction",
+      "why": "Boundary n1 reads it: cpca 45 saves a jurisdiction clause only when it was made between traders. dispute_is_commercial also covers a commercial act between non-traders, so it does not hold this fact. Same fact as derivation B's parties_are_merchants."
+    },
+    {
+      "id": "party_is_serving_judge",
+      "type": "yesNoUnknown",
+      "question": {
+        "ar": "هل أحد أطراف الدعوى قاض يمارس وظائفه (حدد المجلس القضائي الذي يمارس فيه)؟",
+        "en": "Is one of the parties a serving judge (note the judicial council where he serves)?"
+      },
+      "askedFor": [
+        "*"
+      ],
+      "readFromNote": false,
+      "origin": "territorial-jurisdiction",
+      "why": "Boundary n5 and territory rule t27 read it: cpca 43 and 44 move the claim to a court of the nearest neighbouring council when a judge is plaintiff (must) or defendant (may). Same fact as derivation A's party_is_judge."
+    },
+    {
+      "id": "defendant_domicile_known",
+      "type": "yesNoUnknown",
+      "question": {
+        "ar": "هل موطن المدعى عليه معروف؟",
+        "en": "Is the defendant's domicile known?"
+      },
+      "askedFor": [
+        "*"
+      ],
+      "readFromNote": false,
+      "origin": "territorial-jurisdiction",
+      "why": "Boundary n11 reads it: cpca 37 falls back on the last domicile and cpca 15 requires the petition to state it."
+    },
+    {
+      "id": "estate_claim",
+      "type": "yesNoUnknown",
+      "question": {
+        "ar": "هل الدعوى من دعاوى الميراث أو التركة (حقوق الورثة، أموال التركة أو ديونها، قسمتها)؟",
+        "en": "Is the claim an inheritance or estate claim (heirs' rights, the estate's assets or debts, its partition)?"
+      },
+      "askedFor": [
+        "*"
+      ],
+      "readFromNote": false,
+      "origin": "territorial-jurisdiction",
+      "why": "Territory rule t13 and boundaries n4 and n8 read it: cpca 40 ¶3 names «مواد الميراث» and cpca 498 ¶1 «دعاوى التركة», which reach further than a partition (partition_of_estate). Added by the verifier (attacks adv-6, atk-6)."
     }
   ]
 }

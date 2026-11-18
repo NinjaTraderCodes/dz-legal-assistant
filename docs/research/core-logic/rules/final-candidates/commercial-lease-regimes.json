@@ -1089,8 +1089,8 @@
         ]
       },
       "says": {
-        "ar": "يجوز للمالك الخاسر التملص من التعويض بقبول التجديد وتحمل المصاريف خلال خمسة عشر يوما، تسري من يوم صيرورة الحكم نهائيا إذا كان حكما ابتدائيا، ومن يوم صدوره إذا كان صادرا عن المجلس القضائي؛ وتنص الفقرة السابعة على أنه لا يجوز ممارسة هذا الحق ما دام المستأجر في الأمكنة ولم يؤجر أو يشتر عمارة أخرى، والنص الفرنسي يجعل ذلك شرطا لممارسته (قراءتان).",
-        "en": "The losing owner may escape the compensation by accepting renewal and bearing the costs within fifteen days, running from the day a first-instance judgment becomes final, or from the day the judgment is given where it is the appeal court's; paragraph 7 in Arabic says the right may not be exercised as long as the lessee is still in the premises and has not leased or bought another building, while the French text makes that situation the condition for exercising it (two readings)."
+        "ar": "يجوز للمالك الخاسر التملص من التعويض بقبول التجديد وتحمل المصاريف خلال خمسة عشر يوما، تسري من يوم صيرورة الحكم نهائيا إذا كان حكما ابتدائيا، ومن يوم صدوره إذا كان صادرا عن المجلس القضائي؛ وتنص الفقرة السابعة على أنه لا يجوز ممارسة هذا الحق ما دام المستأجر في الأمكنة ولم يؤجر أو يشتر عمارة أخرى، والنص الفرنسي يجعل ذلك شرطا لممارسته (يختلف النص العربي عن النص الفرنسي، والقراءة مفتوحة).",
+        "en": "The losing owner may escape the compensation by accepting renewal and bearing the costs within fifteen days, running from the day a first-instance judgment becomes final, or from the day the judgment is given where it is the appeal court's; paragraph 7 in Arabic says the right may not be exercised as long as the lessee is still in the premises and has not leased or bought another building, while the French text makes that situation the condition for exercising it (the Arabic and French wordings differ; the reading is open)."
       }
     },
     {
@@ -7519,6 +7519,26 @@
         "findings": [
           {
             "ref": "p2",
+            "effect": "none"
+          }
+        ]
+      }
+    },
+    {
+      "id": "exV25",
+      "by": "verifier",
+      "title": "values-b54: the losing owner relies on his fifteen days (197 ¶6-¶7, b54 reworded: no count of readings, the Arabic and French wordings named); the lessee's claim is inside the 197 period: d1 silent.",
+      "petitionDate": "2024-02-15",
+      "slots": {
+        "commercial_lease": "yes",
+        "contract_date": "2001-05-01",
+        "lessee_contests_refusal_or_claims_eviction_compensation": "yes",
+        "renewal_refusal_notified_on": "2024-01-10"
+      },
+      "expect": {
+        "findings": [
+          {
+            "ref": "d1",
             "effect": "none"
           }
         ]

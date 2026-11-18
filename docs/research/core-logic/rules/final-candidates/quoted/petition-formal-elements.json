@@ -341,7 +341,8 @@
         "b52",
         "p14",
         "doc6",
-        "o2"
+        "o2",
+        "o15"
       ],
       "note": "Paragraph 3 confirmed. No text in the store lists the laws that require an authorisation; Family Code article 88 is the nearest instance (judge's permission for a guardian's partition or settlement)."
     },
@@ -2414,8 +2415,8 @@
         ]
       },
       "says": {
-        "ar": "ينوب قانونا عن فاقد الأهلية أو ناقصها ولي أو وصي أو مقدم.",
-        "en": "A person who lacks or has diminished capacity is represented by law by a guardian, a tutor or a curator."
+        "ar": "ينوب قانونا عن فاقد الأهلية أو ناقصها لصغر السن أو جنون أو عته أو سفه ولي أو وصي أو مقدم.",
+        "en": "A person who lacks or has diminished capacity because of minority, insanity, imbecility or prodigality is represented by law by a guardian, a tutor or a curator."
       },
       "quote": [
         {
@@ -2708,8 +2709,8 @@
         ]
       },
       "says": {
-        "ar": "تتضمن العريضة الوحيدة الجهة القضائية وبيانات الزوجين وتاريخ ومكان الزواج وعدد الأولاد القصر وعرضا موجزا لاتفاقهما على توابع الطلاق.",
-        "en": "The single petition gives the court, the spouses' particulars, the date and place of the marriage, the number of minor children and a brief statement of their agreement on the consequences of divorce."
+        "ar": "تتضمن العريضة الوحيدة الجهة القضائية وبيانات الزوجين وتاريخ ومكان الزواج، وعند الاقتضاء عدد الأولاد القصر، وعرضا موجزا يتضمن جميع شروط اتفاقهما على توابع الطلاق.",
+        "en": "The single petition gives the court, the spouses' particulars, the date and place of the marriage, where applicable the number of minor children, and a brief statement of all the terms of their agreement on the consequences of divorce."
       },
       "quote": [
         {
@@ -3709,8 +3710,8 @@
       "effectWhenMissing": "blockCleanExport",
       "effectWhenUnknown": "ask",
       "message": {
-        "ar": "المادتان 64 و65 من قانون الإجراءات المدنية والإدارية والمادة 81 من قانون الأسرة: انعدام أهلية الخصوم سبب لبطلان الإجراءات يثيره القاضي تلقائيا، وينوب عن فاقد الأهلية أو ناقصها وليه أو وصيه أو مقدمه. تحقق من أن كل طرف معني، مدعيا كان أو مدعى عليه، يتقاضى بواسطة نائبه القانوني المذكور بصفته في العريضة.",
-        "en": "Articles 64 and 65 of the Code of Civil and Administrative Procedure and article 81 of the Family Code: a party's lack of capacity makes the procedure null and the judge raises it of his own motion; a person lacking capacity is represented by his guardian, tutor or curator. Check that every such party, plaintiff or defendant, sues or is sued through that representative, named in that capacity in the petition."
+        "ar": "المادتان 64 و65 من قانون الإجراءات المدنية والإدارية والمادة 81 من قانون الأسرة: انعدام أهلية الخصوم سبب لبطلان الإجراءات يثيره القاضي تلقائيا، وينوب عن فاقد الأهلية أو ناقصها لصغر السن أو جنون أو عته أو سفه وليه أو وصيه أو مقدمه. تحقق من أن كل طرف معني، مدعيا كان أو مدعى عليه، يتقاضى بواسطة نائبه القانوني المذكور بصفته في العريضة.",
+        "en": "Articles 64 and 65 of the Code of Civil and Administrative Procedure and article 81 of the Family Code: a party's lack of capacity makes the procedure null and the judge raises it of his own motion; a person lacking capacity, or of diminished capacity, because of minority, insanity, imbecility or prodigality is represented by his guardian, tutor or curator. Check that every such party, plaintiff or defendant, sues or is sued through that representative, named in that capacity in the petition."
       },
       "basis": [
         "b21",
@@ -3805,7 +3806,7 @@
         "b27"
       ],
       "interpretive": true,
-      "interpretiveNote": "The paragraph tells the judge to raise the missing authorisation and states no sanction; that the sanction is inadmissibility rests on the chapter heading (conditions of admissibility) and on the open list of pleas of inadmissibility. Which laws require an authorisation is not listed in the code."
+      "interpretiveNote": "The paragraph tells the judge to raise the missing authorisation and states no sanction; that the sanction is inadmissibility rests on the chapter heading (conditions of admissibility) and on the open list of pleas of inadmissibility. Which laws require an authorisation is not listed in the code. Nor does the paragraph say when the authorisation must exist: at the filing, or only by the time the judge rules (open point o15); the message follows the protective reading, obtaining it before filing."
     },
     {
       "id": "p15",
@@ -5686,6 +5687,101 @@
         ],
         "questions": []
       }
+    },
+    {
+      "id": "ex37",
+      "by": "verifier",
+      "title": "The defendant is an adult of unsound mind (imbecility, one of the causes Family Code article 81 names) and the petition names no curator for him: the representation step blocks (sup-42).",
+      "petitionDate": "2026-11-18",
+      "slots": {
+        "petition_names_court": "yes",
+        "petition_gives_plaintiff_identity": "yes",
+        "petition_gives_defendant_identity": "yes",
+        "party_is_legal_person": "no",
+        "petition_states_facts_claims_grounds": "yes",
+        "petition_lists_documents": "yes",
+        "petition_signed_dated": "yes",
+        "petition_copies_for_each_party": "yes",
+        "petition_in_arabic": "yes",
+        "court_fees_paid": "yes",
+        "party_lacks_capacity": "yes",
+        "incapable_party_represented": "no",
+        "plaintiff_acts_through_representative": "no",
+        "plaintiff_has_standing": "yes",
+        "plaintiff_has_interest": "yes",
+        "suit_authorisation_required": "no",
+        "foreign_language_documents": "no",
+        "dispute_concerns_real_property": "no",
+        "claim_before_specialised_commercial_court": "no",
+        "claim_challenges_administrative_decision": "no",
+        "divorce_by_mutual_consent": "no",
+        "requests": [
+          "payment"
+        ]
+      },
+      "expect": {
+        "findings": [
+          {
+            "ref": "p10",
+            "effect": "blockCleanExport"
+          },
+          {
+            "ref": "p11",
+            "effect": "none"
+          }
+        ],
+        "questions": []
+      }
+    },
+    {
+      "id": "ex38",
+      "by": "verifier",
+      "title": "A childless couple drafts one spouse's divorce petition although both consent: the joint single petition is flagged, its number of minor children being required only where applicable, and the family certificate and marriage extract are listed (sup-81).",
+      "petitionDate": "2026-11-18",
+      "slots": {
+        "petition_names_court": "yes",
+        "petition_gives_plaintiff_identity": "yes",
+        "petition_gives_defendant_identity": "yes",
+        "party_is_legal_person": "no",
+        "petition_states_facts_claims_grounds": "yes",
+        "petition_lists_documents": "yes",
+        "petition_signed_dated": "yes",
+        "petition_copies_for_each_party": "yes",
+        "petition_in_arabic": "yes",
+        "court_fees_paid": "yes",
+        "party_lacks_capacity": "no",
+        "plaintiff_acts_through_representative": "no",
+        "plaintiff_has_standing": "yes",
+        "plaintiff_has_interest": "yes",
+        "suit_authorisation_required": "no",
+        "foreign_language_documents": "no",
+        "dispute_concerns_real_property": "no",
+        "claim_before_specialised_commercial_court": "no",
+        "claim_challenges_administrative_decision": "no",
+        "dispute_is_family": "yes",
+        "divorce_by_mutual_consent": "yes",
+        "spouse_under_curatorship_or_impaired": "no",
+        "requests": [
+          "divorce"
+        ]
+      },
+      "expect": {
+        "findings": [
+          {
+            "ref": "n2",
+            "effect": "warn"
+          },
+          {
+            "ref": "n3",
+            "effect": "none"
+          },
+          {
+            "ref": "doc5",
+            "effect": "none"
+          }
+        ],
+        "questions": []
+      }
     }
   ],
   "openPoints": [
@@ -6207,6 +6303,47 @@
         "doc4",
         "b30",
         "b32"
+      ]
+    },
+    {
+      "id": "o15",
+      "question": {
+        "ar": "هل يجب أن يكون الإذن الذي يشترطه القانون قائما عند رفع الدعوى، أم يكفي تقديمه قبل أن يفصل القاضي؟",
+        "en": "Must the authorisation the law requires exist when the claim is brought, or is it enough to produce it before the judge rules?"
+      },
+      "why": {
+        "ar": "الفقرة الثالثة من المادة 13 تأمر القاضي بأن يثير تلقائيا انعدام الإذن إذا اشترطه القانون، ولا تحدد اللحظة التي يجب أن يكون فيها الإذن قائما؛ والمادة واردة في الفصل المتعلق بشروط قبول الدعوى، ولا يتضمن القانون نصا على تدارك عدم القبول، بينما تتعلق المادتان 62 و66 بالبطلان.",
+        "en": "The third paragraph of article 13 tells the judge to raise of his own motion the absence of an authorisation the law requires, and does not say at what moment the authorisation must exist; the article sits in the chapter on the conditions of admissibility, the code has no text on curing inadmissibility, and articles 62 and 66 concern nullity."
+      },
+      "readings": [
+        {
+          "reading": {
+            "ar": "الإذن شرط لقبول الدعوى يجب أن يكون قائما عند رفعها.",
+            "en": "The authorisation is a condition of admissibility that must exist when the claim is brought."
+          },
+          "basis": [
+            "b3",
+            "b27"
+          ]
+        },
+        {
+          "reading": {
+            "ar": "يكفي أن يكون الإذن قائما حين يفصل القاضي، لأن النص يتعلق بانعدامه عند إثارته.",
+            "en": "It is enough that the authorisation exists when the judge rules, since the text speaks of its absence when he raises it."
+          },
+          "basis": [
+            "b3"
+          ]
+        }
+      ],
+      "protectiveReading": {
+        "ar": "الحصول على الإذن قبل رفع الدعوى، والتنبيه دون منع التصدير عند غيابه.",
+        "en": "Obtain the authorisation before filing, and warn without blocking when it is missing."
+      },
+      "grade": "C",
+      "refs": [
+        "p14",
+        "doc6"
       ]
     }
   ]

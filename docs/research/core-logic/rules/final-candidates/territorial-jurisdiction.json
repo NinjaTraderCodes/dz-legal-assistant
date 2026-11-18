@@ -66,8 +66,8 @@
       "id": "party_is_serving_judge",
       "type": "yesNoUnknown",
       "question": {
-        "ar": "هل أحد أطراف الدعوى قاض يمارس وظائفه؟ (حدد المجلس القضائي الذي يمارس فيه)",
-        "en": "Is one of the parties a serving judge? (Note the judicial council where he serves.)"
+        "ar": "هل أحد أطراف الدعوى قاض يمارس وظائفه (حدد المجلس القضائي الذي يمارس فيه)؟",
+        "en": "Is one of the parties a serving judge (note the judicial council where he serves)?"
       },
       "why": "Boundary n5 and territory rule t27 read it: cpca 43 and 44 move the claim to a court of the nearest neighbouring council when a judge is plaintiff (must) or defendant (may). Same fact as derivation A's party_is_judge."
     },
@@ -1958,8 +1958,8 @@
         ]
       },
       "says": {
-        "ar": "ترفع دعوى الاعتراف بالنسب أو إنكار الأبوة أمام محكمة موطن المدعى عليه.",
-        "en": "Claims to recognise filiation or to deny paternity are brought before the court of the defendant's domicile."
+        "ar": "ترفع دعوى الاعتراف بالنسب، بالبنوة أو بالأبوة أو بالأمومة، لشخص مجهول النسب، أو دعوى إنكار الأبوة، أمام محكمة موطن المدعى عليه.",
+        "en": "A claim to recognise the filiation (as child, father or mother) of a person of unknown filiation, or to deny paternity, is brought before the court of the defendant's domicile."
       }
     },
     {
@@ -2576,8 +2576,8 @@
         ]
       },
       "says": {
-        "ar": "تلغى الفقرات المتعلقة بالأقطاب المتخصصة من المادة الخاصة بتشكيل المحكمة في قانون الإجراءات المدنية والإدارية.",
-        "en": "The paragraphs of the code's article on the composition of the court that created the specialised poles are repealed."
+        "ar": "تلغى من مادة قانون الإجراءات المدنية والإدارية الخاصة بالمحكمة وأقسامها الفقرات التي تحدد ما تختص به الأقطاب المتخصصة دون سواها ومقراتها وتشكيلتها وكيفيات تطبيقها؛ ولا تشمل الفقرة التي تجيز أن تتشكل المحكمة من أقطاب متخصصة.",
+        "en": "The paragraphs of the code's article on the court and its sections that set the specialised poles' exclusive matters, their seats, their bench and the implementing rules are repealed; the paragraph allowing a court to include specialised poles is not among them."
       }
     },
     {
@@ -3064,14 +3064,15 @@
       {
         "id": "t17",
         "rule": {
-          "ar": "العدول عن الخطبة وإثبات الزواج والمنازعة حول الصداق ودعاوى النسب: محكمة موطن المدعى عليه (المادتان 426 و490).",
-          "en": "Breaking off an engagement, proof of marriage, dowry disputes and filiation claims: the court of the defendant's domicile (articles 426 and 490)."
+          "ar": "العدول عن الخطبة وإثبات الزواج والمنازعة حول الصداق، ودعوى الاعتراف بنسب شخص مجهول النسب أو إنكار الأبوة: محكمة موطن المدعى عليه (المادتان 426 و490)؛ وما سواها من دعاوى النسب لا تعين له المادة 490 محكمة، فتطبق القاعدة العامة للمادة 37 (محكمة موطن المدعى عليه، ما لم ينص القانون على خلاف ذلك).",
+          "en": "Breaking off an engagement, proof of marriage, dowry disputes, and a claim to recognise the filiation of a person of unknown filiation or to deny paternity: the court of the defendant's domicile (articles 426 and 490); article 490 names no court for other filiation claims, so the general rule of article 37 applies (the court of the defendant's domicile, unless the law provides otherwise)."
         },
         "basis": [
           "b36",
           "b37",
           "b43",
-          "b46"
+          "b46",
+          "b1"
         ],
         "when": {
           "slot": "dispute_is_family",
@@ -3717,8 +3718,8 @@
         "dispute_is_family"
       ],
       "message": {
-        "ar": "المواد 40 و426 و464 و490 و492: في مسائل الأسرة تتوقف المحكمة على نوع المسألة: موطن المدعى عليه (الخطبة، إثبات الزواج، الصداق، النسب)، مكان المسكن الزوجي (الطلاق، الرجوع، المتاع؛ وفي الطلاق بالتراضي مكان إقامة أحد الزوجين حسب اختيارهما)، مكان ممارسة الحضانة، موطن الدائن بالنفقة، مكان أو موطن الطالب (الترخيص بالزواج، الكفالة)، مكان ممارسة الولاية؛ ولا تعين المادة 426 مكانا للحجر والغياب والفقدان والتقديم، فتطبق القاعدة العامة للمادة 37. تحقق من نوع المسألة ومن المكان الذي تعينه المادة لها.",
-        "en": "Articles 40, 426, 464, 490 and 492: in family matters the court depends on the matter: the defendant's domicile (engagement, proof of marriage, dowry, filiation), the marital home (divorce, return, household goods; for divorce by mutual consent, the residence of either spouse as they choose), the place custody is exercised, the maintenance creditor's domicile, the applicant's place or domicile (authorisation to marry, kafala), the place guardianship is exercised; article 426 names no place for interdiction, absence, disappearance and curatorship, so the general rule of article 37 applies. Check the kind of matter and the place the article gives for it."
+        "ar": "المواد 40 و426 و464 و490 و492: في مسائل الأسرة تتوقف المحكمة على نوع المسألة: موطن المدعى عليه (الخطبة، إثبات الزواج، الصداق، الاعتراف بنسب شخص مجهول النسب، إنكار الأبوة)، مكان المسكن الزوجي (الطلاق، الرجوع، المتاع؛ وفي الطلاق بالتراضي مكان إقامة أحد الزوجين حسب اختيارهما)، مكان ممارسة الحضانة، موطن الدائن بالنفقة، مكان أو موطن الطالب (الترخيص بالزواج، الكفالة)، مكان ممارسة الولاية؛ ولا تعين المادة 426 مكانا للحجر والغياب والفقدان والتقديم، فتطبق القاعدة العامة للمادة 37. تحقق من نوع المسألة ومن المكان الذي تعينه المادة لها.",
+        "en": "Articles 40, 426, 464, 490 and 492: in family matters the court depends on the matter: the defendant's domicile (engagement, proof of marriage, dowry, recognition of the filiation of a person of unknown filiation, denial of paternity), the marital home (divorce, return, household goods; for divorce by mutual consent, the residence of either spouse as they choose), the place custody is exercised, the maintenance creditor's domicile, the applicant's place or domicile (authorisation to marry, kafala), the place guardianship is exercised; article 426 names no place for interdiction, absence, disappearance and curatorship, so the general rule of article 37 applies. Check the kind of matter and the place the article gives for it."
       },
       "basis": [
         "b1",
@@ -5305,6 +5306,22 @@
         "defendant_domicile_known": "yes"
       },
       "expect": { "findings": [ { "ref": "n7", "effect": "warn" }, { "ref": "n4", "effect": "none" } ], "questions": [] }
+    },
+    {
+      "id": "ex43",
+      "by": "verifier",
+      "title": "Attack sup-101: claim to recognise the paternity of a child of unknown filiation: the court of the defendant's domicile (490 ¶1, now stated with its words «لشخص مجهول النسب»; other filiation claims fall to article 37, t17); the family warning.",
+      "petitionDate": "2026-11-18",
+      "slots": { "estate_claim": "no", "claim_challenges_administrative_decision": "no", "jurisdiction_clause_relied_on": "no", "defendant_resides_abroad": "no", "public_body_party": "no", "national_public_body_party": "no", "public_vehicle_damage": "no", "dispute_concerns_real_property": "no", "commercial_lease": "no", "partition_of_estate": "no", "dispute_is_family": "yes", "dispute_is_social": "no", "party_is_serving_judge": "no", "specialised_commercial_subject": "no", "specialised_commercial_matter": "none", "defendant_domicile_known": "yes", "requests": [] },
+      "expect": { "findings": [ { "ref": "n9", "effect": "warn" }, { "ref": "n15", "effect": "none" }, { "ref": "n12", "effect": "none" } ], "questions": [] }
+    },
+    {
+      "id": "ex44",
+      "by": "verifier",
+      "title": "Attack sup-54: intellectual-property dispute: the article 40 rule kept by article 1063 (t11); law 22-13 article 14 repealed article 32's paragraphs on the poles' exclusive matters, seats, bench and implementing rules, not the paragraph allowing poles (b86); the specialised-commercial-court warning, no company warning.",
+      "petitionDate": "2026-11-18",
+      "slots": { "estate_claim": "no", "claim_challenges_administrative_decision": "no", "jurisdiction_clause_relied_on": "no", "defendant_resides_abroad": "no", "public_body_party": "no", "national_public_body_party": "no", "public_vehicle_damage": "no", "dispute_concerns_real_property": "no", "commercial_lease": "no", "partition_of_estate": "no", "dispute_is_family": "no", "dispute_is_social": "no", "party_is_serving_judge": "no", "specialised_commercial_subject": "yes", "specialised_commercial_matter": "intellectual_property", "defendant_domicile_known": "yes" },
+      "expect": { "findings": [ { "ref": "n10", "effect": "warn" }, { "ref": "n12", "effect": "none" } ], "questions": [] }
     }
   ],
   "openPoints": [

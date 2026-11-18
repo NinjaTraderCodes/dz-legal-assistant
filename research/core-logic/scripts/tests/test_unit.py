@@ -434,6 +434,21 @@ def test_on_the_light_route_a_flag_recorded_open_passes_the_final_checklist_chec
     assert not unit.grade(u)  # an unanswered checklist line still fails
 
 
+def test_a_failing_worked_example_on_the_final_record_stops_the_grading(root, monkeypatch, capsys):
+    # The owner, 18 November 2026: abusive-dismissal's examples failed on its merged record unseen since 4cd97f5.
+    u = claim_through_stage_2(root)
+    dump(u.r("grades.json"), {"items": []})
+    monkeypatch.setattr(unit, "_flat", lambda *a, **k: u.candidate_q)
+    monkeypatch.setattr(unit, "file_sha", lambda *a, **k: "x")
+    monkeypatch.setattr(unit, "tool", lambda: "rules.exe")
+    monkeypatch.setattr(unit, "py", lambda *a, **k: (0, ""))
+    monkeypatch.setattr(unit, "run", lambda argv, **k: (1, "FAIL ex3") if argv[1] == "examples" else (0, ""))
+    assert not unit.grade(u)
+    assert "STOP: worked examples fail on the final record" in capsys.readouterr().out
+    monkeypatch.setattr(unit, "run", lambda argv, **k: (0, ""))
+    assert unit.grade(u)
+
+
 # --- the catalogue route (the owner, 18 November 2026) ----------------------------------------------------------------
 CAT_RECORD = {
     "id": "loan-repayment", "kind": "claim", "stage": "derivationA", "verified": False,

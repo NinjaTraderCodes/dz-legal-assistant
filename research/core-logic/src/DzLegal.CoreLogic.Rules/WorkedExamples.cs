@@ -13,12 +13,22 @@ public sealed record CaseResult(string RecordId, string CaseId, string Title, IR
     /// order whose condition the matched items meet, or "none" (specs/unit-driver.md, stage 8b). Null otherwise.
     /// </summary>
     public string? Actual { get; init; }
+
+    /// <summary>
+    /// What the example does not check but the report shows (the owner, 18 November 2026): on a record with imports, the
+    /// questions only imported items asked that the example does not list.
+    /// </summary>
+    public IReadOnlyList<string> Notes { get; init; } = [];
 }
 
 /// <summary>
 /// Runs the worked examples of a record (specs/rule-evaluator.md, "How a worked example is checked"): findings are partial,
 /// each listed one is checked on its declared effect (and, in a final record, on the shown effect and the mark); questions
 /// are a set, checked when the example states them; the section, when stated, must be the proposal.
+/// On a record whose imports are merged in (the owner, 18 November 2026): findings are checked on the merged record, imported
+/// items included, since that is what the lawyer gets; questions are checked strictly for the claim's own items (every
+/// question one of them asks must be expected, every expected question must be asked), and a question only imported items
+/// ask is listed in the case's notes without failing it.
 /// </summary>
 public static class WorkedExamples
 {
@@ -63,7 +73,11 @@ public static class WorkedExamples
             .. record.Examples.Select(example =>
             {
                 var outcome = evaluator.Evaluate([record], CaseSlotsOf(example.Slots), Dates.Parse(example.PetitionDate, $"{example.Id}.petitionDate"));
-                return new CaseResult(record.Id, example.Id, example.Title, Compare(outcome, record.Id, example.Expect, compareShown, id => id));
+                var notes = new List<string>();
+                return new CaseResult(record.Id, example.Id, example.Title, Compare(outcome, record.Id, example.Expect, compareShown, id => id, Imported(record), notes))
+                {
+                    Notes = notes,
+                };
             }),
         ];
     }
@@ -129,8 +143,22 @@ public static class WorkedExamples
         return results;
     }
 
+    /// <summary>
+    /// Whether an item id belongs to an imported block: a merged record's imported items carry the prefix
+    /// <c>&lt;module&gt;.</c> (records.py flatten). Null when the record has no imports.
+    /// </summary>
+    public static Func<string, bool>? Imported(RuleRecord record)
+    {
+        ArgumentNullException.ThrowIfNull(record);
+        var prefixes = record.Imports.Select(import => import.Module + ".").ToArray();
+        return prefixes.Length == 0 ? null : id => prefixes.Any(prefix => id.StartsWith(prefix, StringComparison.Ordinal));
+    }
+
     /// <param name="mapRef">Maps an item id of the example to the id in the record run; null when it has no counterpart.</param>
-    public static IReadOnlyList<string> Compare(RuleOutcome outcome, string recordId, Expectation expect, bool compareShown, Func<string, string?> mapRef)
+    /// <param name="imported">On a merged record, whether an item id is imported; questions asked only by imported items
+    /// are then not required, and those the example does not list go to <paramref name="notes"/>.</param>
+    public static IReadOnlyList<string> Compare(RuleOutcome outcome, string recordId, Expectation expect, bool compareShown, Func<string, string?> mapRef,
+                                                Func<string, bool>? imported = null, List<string>? notes = null)
     {
         ArgumentNullException.ThrowIfNull(outcome);
         ArgumentNullException.ThrowIfNull(expect);
@@ -172,9 +200,31 @@ public static class WorkedExamples
         {
             var wanted = questions.ToHashSet(StringComparer.Ordinal);
             var asked = outcome.Questions.Select(question => question.Slot).ToHashSet(StringComparer.Ordinal);
-            if (!wanted.SetEquals(asked))
+            if (imported is null)
             {
-                differences.Add($"questions: asked {Set(asked)}, expected {Set(wanted)}");
+                if (!wanted.SetEquals(asked))
+                {
+                    differences.Add($"questions: asked {Set(asked)}, expected {Set(wanted)}");
+                }
+            }
+            else
+            {
+                var own = outcome.Questions.Where(question => question.NeededBy.Any(id => !imported(id)))
+                    .Select(question => question.Slot).ToHashSet(StringComparer.Ordinal);
+                var ownMissing = own.Except(wanted).ToList();
+                var neverAsked = wanted.Except(asked).ToList();
+                if (ownMissing.Count > 0 || neverAsked.Count > 0)
+                {
+                    differences.Add($"questions of the claim's own items: asked {Set(own)}, expected {Set(wanted)}"
+                                    + (ownMissing.Count > 0 ? $"; not expected: {Set(ownMissing)}" : "")
+                                    + (neverAsked.Count > 0 ? $"; expected and never asked: {Set(neverAsked)}" : ""));
+                }
+
+                var extra = asked.Except(own).Except(wanted).ToList();
+                if (extra.Count > 0)
+                {
+                    notes?.Add($"questions asked only by imported items, not listed: {Set(extra)}");
+                }
             }
         }
 

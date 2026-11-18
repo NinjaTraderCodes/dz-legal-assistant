@@ -133,6 +133,11 @@ internal static class Program
                 {
                     Console.WriteLine($"      {difference}");
                 }
+
+                foreach (var note in result.Notes)
+                {
+                    Console.WriteLine($"      note: {note}");
+                }
             }
 
             Console.WriteLine($"rules examples: {results.Count} cases, {failed} with differences");

@@ -1186,6 +1186,13 @@ def grade(u: Unit, planted: str | None = None) -> bool:
     t = tool()
     code, out = run([t, "check", "--store", STORE, u.final])
     say("rules check final", code, out)
+    # The owner, 18 November 2026: a failing worked example stops the grading (abusive-dismissal's examples had failed on
+    # its merged record since 4cd97f5 unseen). Run on the final record itself: merged and graded, what the lawyer gets.
+    code, out = run([t, "examples", u.final])
+    say("examples on the final record", code, out)
+    if code:
+        print(f"STOP: worked examples fail on the final record of {u.id}: the grading stops here")
+        return False
     code, out = py("records.py", "check-checklist", u.final, "--checklist", u.r("checklist.json"),
                    "--flags", u.r("flags.final.json"), "--report", u.r("checklist-check.json"))
     say("check-checklist final", code, out)

@@ -7,13 +7,14 @@ using DzLegal.CoreLogic.Reader.Front;
 // reader ids    --notes <notes.jsonl> --vocab <vocab.txt> --out <ids.jsonl>
 // reader encode --notes <notes.jsonl> --vocab <vocab.txt> --model <encoder.int8.onnx> --cache <folder>
 // reader triggers --notes <notes.jsonl> --cues <cues.json> --out <triggers.jsonl>   (where each kind's trigger words occur)
+// reader cue-votes --notes <notes.jsonl> --cues <cues.json> --out <summary.json>   (the cue table's polarity votes against the gold, per class)
 // reader values --notes <notes.jsonl> --out <values.jsonl>   (rung 2's dates and amounts, with their spans: the roles head's candidates)
 // The notes file is the one `notes export` writes (the loader's only door): one note per line with its id and its text
 // fields. ids writes, per note, the .NET pieces (the reference: training uses these ids, never Python's own).
 Console.OutputEncoding = System.Text.Encoding.UTF8;
-if (args.Length < 1 || args[0] is not ("ids" or "encode" or "values" or "triggers"))
+if (args.Length < 1 || args[0] is not ("ids" or "encode" or "values" or "triggers" or "cue-votes"))
 {
-    Console.Error.WriteLine("usage: reader ids|encode|values|triggers --notes <file> [--vocab <file>] [--out <file>] [--model <file> --cache <folder>]");
+    Console.Error.WriteLine("usage: reader ids|encode|values|triggers|cue-votes --notes <file> [--vocab <file>] [--out <file>] [--model <file> --cache <folder>]");
     return 2;
 }
 
@@ -55,6 +56,48 @@ try
         }
 
         Console.WriteLine($"{notes.Count.ToString(CultureInfo.InvariantCulture)} notes -> {Need("--out")}");
+        return 0;
+    }
+
+    if (args[0] == "cue-votes")
+    {
+        // The cue table's own measure (rung 2, specs/reader.md): for every gold event of every note, the table's vote over
+        // the four fields (no vote when the fields disagree), against the gold polarity. Counted per gold class: events,
+        // votes, right votes, wrong votes. A vote on a notMentioned event is wrong.
+        var cues = DzLegal.CoreLogic.Reader.Cues.CueEngine.Load(Need("--cues"));
+        var table = new SortedDictionary<string, int[]>(StringComparer.Ordinal);
+        var wrongVotes = new List<object>();
+        foreach (var note in notes)
+        {
+            var input = Input(note);
+            foreach (var e in note["gold"]?["events"]?.AsArray() ?? [])
+            {
+                var kind = e!["kind"]!.GetValue<string>();
+                var gold = e["polarity"]!.GetValue<string>();
+                var votes = new[] { (NoteField.Subject, input.Subject), (NoteField.Facts, input.Facts), (NoteField.Requests, input.Requests), (NoteField.Documents, input.Documents) }
+                    .Select(f => cues.Vote(f.Item2, kind, f.Item1)).OfType<DzLegal.CoreLogic.Reader.Cues.CueVote>().Select(v => v.Polarity).Distinct().ToList();
+                var row = table.TryGetValue(gold, out var r) ? r : table[gold] = new int[4];
+                row[0]++;
+                if (votes.Count == 1)
+                {
+                    row[1]++;
+                    var said = votes[0] switch { Polarity.Stated => "stated", Polarity.Denied => "denied", Polarity.Disputed => "disputed", _ => "notMentioned" };
+                    row[said == gold ? 2 : 3]++;
+                    if (said != gold)
+                    {
+                        wrongVotes.Add(new { id = note["id"]!.GetValue<string>(), kind, gold, vote = said });
+                    }
+                }
+            }
+        }
+
+        var summary = table.ToDictionary(kv => kv.Key, kv => new { events = kv.Value[0], votes = kv.Value[1], right = kv.Value[2], wrong = kv.Value[3] });
+        File.WriteAllText(Need("--out"), JsonSerializer.Serialize(new { notes = notes.Count, classes = summary, wrong = wrongVotes }, new JsonSerializerOptions { WriteIndented = true }));
+        foreach (var (gold, row) in table)
+        {
+            Console.WriteLine($"{gold,-13} events {row[0],4}  votes {row[1],4}  right {row[2],4}  wrong {row[3],4}");
+        }
+
         return 0;
     }
 

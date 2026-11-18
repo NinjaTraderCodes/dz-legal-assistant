@@ -1,0 +1,2096 @@
+{
+  "schemaVersion": "1.0",
+  "kind": "claim",
+  "id": "visitation",
+  "label": {
+    "ar": "حق الزيارة",
+    "en": "Visitation rights"
+  },
+  "verified": false,
+  "stage": "derivationA",
+  "derivedBy": {
+    "role": "derivationA",
+    "model": "claude-opus-5-5",
+    "date": "2026-11-18"
+  },
+  "area": "family",
+  "imports": [
+    {
+      "module": "court-sections",
+      "blocks": [
+        "b2",
+        "b3",
+        "b4",
+        "b5",
+        "b8",
+        "b28",
+        "b30",
+        "b34",
+        "b42",
+        "t4",
+        "n2",
+        "n5"
+      ],
+      "how": {
+        "ar": "دعوى حق الزيارة من اختصاص قسم شؤون الأسرة، وإقليميا من اختصاص محكمة مكان ممارسة الحضانة، وتبقى أمام القسم المدني في المحاكم التي لم تنشأ فيها الأقسام؛ والنيابة العامة طرف أصلي في قضايا الأسرة؛ ولرئيس قسم شؤون الأسرة صلاحيات قاضي الاستعجال.",
+        "en": "A visitation claim belongs to the family section and, by territory, to the court of the place where custody is exercised; in courts without sections it stays with the civil section; the public prosecutor is a principal party in family cases; the president of the family section has the powers of the urgent-matters judge."
+      }
+    },
+    {
+      "module": "ordinary-court-exits",
+      "blocks": [
+        "b51",
+        "b52",
+        "n5"
+      ],
+      "how": {
+        "ar": "الأمر الاستعجالي والأمر على عريضة في الزيارة تدبير مؤقت لا يمس أصل الحق ولا يغني عن دعوى الموضوع.",
+        "en": "An urgent order or an order on petition on visitation is a provisional measure that does not touch the substance of the right and does not replace the claim on the merits."
+      }
+    },
+    {
+      "module": "periods",
+      "blocks": [
+        "b42"
+      ],
+      "how": {
+        "ar": "يقع على المدعي إثبات ما يدعيه من وقائع: الطلاق، والحكم السابق، وامتناع المدعى عليه.",
+        "en": "The plaintiff proves the facts he relies on: the divorce, the earlier judgment and the defendant's refusal."
+      }
+    }
+  ],
+  "basis": [
+    {
+      "id": "b1",
+      "role": "basis",
+      "required": true,
+      "cite": {
+        "code": "family-code",
+        "article": "64",
+        "paragraphs": [
+          1
+        ]
+      },
+      "says": {
+        "ar": "يرتب النص أصحاب الحق في الحضانة مع مراعاة مصلحة المحضون، ويلزم القاضي عند إسناد الحضانة بأن يحكم بحق الزيارة.",
+        "en": "The text ranks those entitled to custody, subject to the child's interest, and obliges the judge who awards custody to rule on the right of visitation."
+      },
+      "quote": [
+        {
+          "paragraph": 1,
+          "text": "الأم أولى بحضانة ولدها، ثم الأب، ثم الجدة لأم، ثم الجدة لأب، ثم الخالة، ثم العمة، ثم الأقربون درجة مع مراعاة مصلحة المحضون في كل ذلك، وعلى القاضي عندما يحكم بإسناد الحضانة أن يحكم بحق الزيارة.",
+          "sha256": "bdb48582d9d6eedbb784b5179d93ce66ce633218eff9c32bafc2719aee2a72b2"
+        }
+      ],
+      "source": {
+        "tier": 1,
+        "store": "library",
+        "textAsOf": "2026-11-10",
+        "ledgerRefs": [],
+        "ledgerClean": false
+      }
+    },
+    {
+      "id": "b2",
+      "role": "basis",
+      "cite": {
+        "code": "family-code",
+        "article": "62",
+        "paragraphs": [
+          1
+        ]
+      },
+      "says": {
+        "ar": "الحضانة رعاية الولد وتعليمه وتربيته والسهر على حمايته وحفظه صحة وخلقا.",
+        "en": "Custody is the care, education and upbringing of the child and watching over his protection, health and morals."
+      },
+      "quote": [
+        {
+          "paragraph": 1,
+          "text": "الحضانة هي رعاية الولد وتعليمه والقيام بتربيته على دين أبيه والسهر على حمايته وحفظه صحة وخلقا.",
+          "sha256": "63da512ec01601312329c2c21c934154644945734cff9a2446417d5cae502803"
+        }
+      ],
+      "source": {
+        "tier": 1,
+        "store": "library",
+        "textAsOf": "2026-11-10",
+        "ledgerRefs": [],
+        "ledgerClean": false
+      }
+    },
+    {
+      "id": "b3",
+      "role": "procedure",
+      "cite": {
+        "code": "family-code",
+        "article": "57 مكرر",
+        "paragraphs": [
+          1
+        ]
+      },
+      "says": {
+        "ar": "يجوز للقاضي أن يفصل استعجالا بأمر على عريضة في التدابير المؤقتة ومنها الزيارة.",
+        "en": "The judge may rule urgently, by order on petition, on provisional measures, visitation among them."
+      },
+      "quote": [
+        {
+          "paragraph": 1,
+          "text": "يجوز للقاضي الفصل على وجه الاستعجال بموجب أمر على عريضة في جميع التدابير المؤقتة ولا سيما ما تعلق منها بالنفقة والحضانة والزيارة والمسكن.",
+          "sha256": "a5cddde3c58c6534be04eeb2df32de8ebbfefc17888c1ab5094c7dddd7d16c2d"
+        }
+      ],
+      "source": {
+        "tier": 1,
+        "store": "library",
+        "textAsOf": "2026-11-10",
+        "ledgerRefs": [],
+        "ledgerClean": false
+      }
+    },
+    {
+      "id": "b4",
+      "role": "procedure",
+      "cite": {
+        "code": "family-code",
+        "article": "57",
+        "paragraphs": [
+          2
+        ]
+      },
+      "says": {
+        "ar": "الأحكام المتعلقة بالحضانة قابلة للاستئناف.",
+        "en": "Judgments on custody are open to appeal."
+      },
+      "quote": [
+        {
+          "paragraph": 2,
+          "text": "تكون الأحكام المتعلقة بالحضانة قابلة للاستئناف.",
+          "sha256": "c811a07ba5c2c5f521e24dc8cbff7770a7001f44ab841c15684310b96423cc7c"
+        }
+      ],
+      "source": {
+        "tier": 1,
+        "store": "library",
+        "textAsOf": "2026-11-10",
+        "ledgerRefs": [],
+        "ledgerClean": false
+      }
+    },
+    {
+      "id": "b5",
+      "role": "limit",
+      "cite": {
+        "code": "family-code",
+        "article": "65",
+        "paragraphs": [
+          1
+        ]
+      },
+      "says": {
+        "ar": "تنقضي حضانة الذكر ببلوغه 10 سنوات ويجوز تمديدها إلى 16 سنة إذا كانت الحاضنة أما لم تتزوج ثانية، وتنقضي حضانة الأنثى ببلوغها سن الزواج.",
+        "en": "Custody of a boy ends at 10 and may be extended to 16 when the custodian is a mother who has not remarried; custody of a girl ends when she reaches marriageable age."
+      },
+      "quote": [
+        {
+          "paragraph": 1,
+          "text": "تنقضي مدة حضانة الذكر ببلوغه (10) سنوات، والأنثى ببلوغها سن الزواج، وللقاضي أن يمدد الحضانة بالنسبة للذكر إلى (16) سنة إذا كانت الحاضنة أما لم تتزوج ثانية.",
+          "sha256": "d82453407b87bd0c74ef4fd222d09e64a27557045e062180d4021af12e50cea0"
+        }
+      ],
+      "source": {
+        "tier": 1,
+        "store": "library",
+        "textAsOf": "2026-11-10",
+        "ledgerRefs": [],
+        "ledgerClean": false
+      }
+    },
+    {
+      "id": "b6",
+      "role": "limit",
+      "cite": {
+        "code": "family-code",
+        "article": "65",
+        "paragraphs": [
+          2
+        ]
+      },
+      "says": {
+        "ar": "يراعى في الحكم بانتهاء الحضانة مصلحة المحضون.",
+        "en": "The child's interest is taken into account when ruling that custody has ended."
+      },
+      "quote": [
+        {
+          "paragraph": 2,
+          "text": "على أن يراعى في الحكم بانتهائها مصلحة المحضون.",
+          "sha256": "1495c6e5a8ac12e2f4dad48b278b46728badc624bba965f71e6aeba615d44522"
+        }
+      ],
+      "source": {
+        "tier": 1,
+        "store": "library",
+        "textAsOf": "2026-11-10",
+        "ledgerRefs": [],
+        "ledgerClean": false
+      }
+    },
+    {
+      "id": "b7",
+      "role": "limit",
+      "cite": {
+        "code": "family-code",
+        "article": "69",
+        "paragraphs": [
+          1
+        ]
+      },
+      "says": {
+        "ar": "إذا أراد الحاضن الاستيطان في بلد أجنبي رجع الأمر للقاضي في إثبات الحضانة له أو إسقاطها عنه مراعاة لمصلحة المحضون.",
+        "en": "If the custodian wishes to settle in a foreign country, the judge decides whether to confirm or remove custody, in the child's interest."
+      },
+      "quote": [
+        {
+          "paragraph": 1,
+          "text": "إذا أراد الشخص الموكول له حق الحضانة أن يستوطن في بلد أجنبي رجع الأمر للقاضي في إثبات الحضانة له أو إسقاطها عنه، مع مراعاة مصلحة المحضون.",
+          "sha256": "221b098e16d8c8a4d39bdc085d64b8480aa1f49a67ede5a2344d820daa0674b1"
+        }
+      ],
+      "source": {
+        "tier": 1,
+        "store": "library",
+        "textAsOf": "2026-11-10",
+        "ledgerRefs": [],
+        "ledgerClean": false
+      }
+    },
+    {
+      "id": "b8",
+      "role": "limit",
+      "cite": {
+        "code": "family-code",
+        "article": "66",
+        "paragraphs": [
+          1
+        ]
+      },
+      "says": {
+        "ar": "يسقط حق الحاضنة بزواجها بغير قريب محرم وبالتنازل ما لم يضر بمصلحة المحضون.",
+        "en": "The custodian loses custody by marrying a man who is not a close forbidden relative, and by renouncing it unless that harms the child."
+      },
+      "quote": [
+        {
+          "paragraph": 1,
+          "text": "يسقط حق الحاضنة بالتزوج بغير قريب محرم، وبالتنازل ما لم يضر بمصلحة المحضون.",
+          "sha256": "05ab0828b9f90226332f2e56970ed517eb114d8c4409621832134b4ba8b8ca5c"
+        }
+      ],
+      "source": {
+        "tier": 1,
+        "store": "library",
+        "textAsOf": "2026-11-10",
+        "ledgerRefs": [],
+        "ledgerClean": false
+      }
+    },
+    {
+      "id": "b9",
+      "role": "limit",
+      "cite": {
+        "code": "family-code",
+        "article": "67",
+        "paragraphs": [
+          1
+        ]
+      },
+      "says": {
+        "ar": "تسقط الحضانة باختلال شروط أهلية الحاضن.",
+        "en": "Custody is lost when the custodian no longer meets the conditions of fitness."
+      },
+      "quote": [
+        {
+          "paragraph": 1,
+          "text": "تسقط الحضانة باختلال أحد الشروط المنصوص عليها في المادة 62 أعلاه.",
+          "sha256": "1f497a99c2852e8b78eeae4d76849d585e2babcaee7182d62e80b9359b0d888a"
+        }
+      ],
+      "source": {
+        "tier": 1,
+        "store": "library",
+        "textAsOf": "2026-11-10",
+        "ledgerRefs": [],
+        "ledgerClean": false
+      }
+    },
+    {
+      "id": "b10",
+      "role": "procedure",
+      "cite": {
+        "code": "family-code",
+        "article": "49",
+        "paragraphs": [
+          1
+        ]
+      },
+      "says": {
+        "ar": "لا يثبت الطلاق إلا بحكم بعد محاولات صلح يجريها القاضي.",
+        "en": "A divorce is established only by a judgment, after conciliation attempts by the judge."
+      },
+      "quote": [
+        {
+          "paragraph": 1,
+          "text": "لا يثبت الطلاق إلا بحكم بعد عدة محاولات صلح يجريها القاضي دون أن تتجاوز مدته ثلاثة (3) أشهر ابتداء من تاريخ رفع الدعوى.",
+          "sha256": "d6019c5c67f78b680f234970b71404fbc6525ce34733cd9079679aa10a15a3e6"
+        }
+      ],
+      "source": {
+        "tier": 1,
+        "store": "library",
+        "textAsOf": "2026-11-10",
+        "ledgerRefs": [],
+        "ledgerClean": false
+      }
+    },
+    {
+      "id": "b11",
+      "role": "procedure",
+      "cite": {
+        "code": "cpca",
+        "article": "426",
+        "paragraphs": [
+          1,
+          5
+        ]
+      },
+      "says": {
+        "ar": "تختص إقليميا في الحضانة وحق الزيارة والرخص الإدارية المسلمة للقاصر المحضون محكمة مكان ممارسة الحضانة.",
+        "en": "For custody, visitation and administrative permits issued to the minor in custody, the court of the place where custody is exercised has territorial jurisdiction."
+      },
+      "quote": [
+        {
+          "paragraph": 1,
+          "text": "تكون المحكمة مختصة إقليميا :",
+          "sha256": "f6dfdc9e707a44f69bb7ebb39734904ab917e5286f1bd938ae645bdc6411499c"
+        },
+        {
+          "paragraph": 5,
+          "text": "4 - في موضوع الحضانة وحق الزيارة والرخص الإدارية المسلمة للقاصر المحضون بمكان ممارسة الحضانة،",
+          "sha256": "6dbbe86ce392baec63c81b7e2d595211c9fd04858119cae078b8c33cb30eb17a"
+        }
+      ],
+      "source": {
+        "tier": 1,
+        "store": "library",
+        "textAsOf": "2026-11-10",
+        "ledgerRefs": [],
+        "ledgerClean": true
+      }
+    },
+    {
+      "id": "b12",
+      "role": "procedure",
+      "cite": {
+        "code": "cpca",
+        "article": "40",
+        "paragraphs": [
+          1,
+          3
+        ]
+      },
+      "says": {
+        "ar": "ترفع دعاوى الحضانة دون سواها أمام المحكمة التي يقع في دائرتها مكان ممارسة الحضانة.",
+        "en": "Custody actions go only to the court in whose area custody is exercised."
+      },
+      "quote": [
+        {
+          "paragraph": 1,
+          "text": "فضلا عما ورد في المواد 37 و38 و46 من هذا القانون، ترفع الدعاوى أمام الجهات القضائية المبينة أدناه دون سواها :",
+          "sha256": "d1d3cfc6318041605707b19b98dfdc39a081a85d440e9ce268c413b1899e6fc0"
+        },
+        {
+          "paragraph": 3,
+          "text": "2 - في مواد الميراث، دعاوى الطلاق أو الرجوع، الحضانة، النفقة الغذائية والسكن، على التوالي، أمام المحكمة التي يقع في دائرة اختصاصها موطن المتوفى، مسكن الزوجية، مكان ممارسة الحضانة، موطن الدائن بالنفقة، مكان وجود السكن.",
+          "sha256": "8ef7dd9a44053fce927e9f0916d2518605f7ff6be761cd398a526a0bf9f71e1c"
+        }
+      ],
+      "source": {
+        "tier": 1,
+        "store": "library",
+        "textAsOf": "2026-11-10",
+        "ledgerRefs": [],
+        "ledgerClean": true
+      }
+    },
+    {
+      "id": "b13",
+      "role": "procedure",
+      "cite": {
+        "code": "cpca",
+        "article": "47",
+        "paragraphs": [
+          1
+        ]
+      },
+      "says": {
+        "ar": "يجب إثارة الدفع بعدم الاختصاص الإقليمي قبل أي دفاع في الموضوع أو دفع بعدم القبول.",
+        "en": "A plea of lack of territorial jurisdiction must be raised before any defence on the merits or plea of inadmissibility."
+      },
+      "quote": [
+        {
+          "paragraph": 1,
+          "text": "يجب إثارة الدفع بعدم الاختصاص الإقليمي، قبل أي دفاع في الموضوع أو دفع بعدم القبول",
+          "sha256": "1a85b9edfdac12029100bfa042088db5e7bb10e5f7f85b7f8a330ad6d371a1ab"
+        }
+      ],
+      "source": {
+        "tier": 1,
+        "store": "library",
+        "textAsOf": "2026-11-10",
+        "ledgerRefs": [],
+        "ledgerClean": true
+      }
+    },
+    {
+      "id": "b14",
+      "role": "procedure",
+      "cite": {
+        "code": "cpca",
+        "article": "600",
+        "paragraphs": [
+          1,
+          2,
+          3
+        ]
+      },
+      "says": {
+        "ar": "لا تنفيذ جبري إلا بسند تنفيذي، ومن السندات التنفيذية الأحكام التي استنفدت طرق الطعن العادية والأحكام المشمولة بالنفاذ المعجل.",
+        "en": "Forced execution requires an executory title; judgments that have exhausted ordinary remedies and judgments with provisional execution are executory titles."
+      },
+      "quote": [
+        {
+          "paragraph": 1,
+          "text": "لا يجوز التنفيذ الجبري إلا بسند تنفيذي.",
+          "sha256": "ae757e3ffe9c6643e84fd85a79274bcce758a8223c7c6b64666b07509b4de94c"
+        },
+        {
+          "paragraph": 2,
+          "text": "والسندات التنفيذية هي:",
+          "sha256": "b5aa35fc7fe978b79907e8434d0e7aa30a863f7e38455eddc9d87a84f8ff3e7c"
+        },
+        {
+          "paragraph": 3,
+          "text": "1 - أحكام المحاكم التي استنفذت طرق الطعن العادية والأحكام المشمولة بالنفاذ المعجل.",
+          "sha256": "8ba3bf80aa85fc19e9ff6b703b678b1a9422ed1f996c572ccf750cec4ee5eaea"
+        }
+      ],
+      "source": {
+        "tier": 1,
+        "store": "library",
+        "textAsOf": "2026-11-10",
+        "ledgerRefs": [
+          "cpca/law-22-13"
+        ],
+        "ledgerClean": true
+      }
+    },
+    {
+      "id": "b15",
+      "role": "procedure",
+      "cite": {
+        "code": "cpca",
+        "article": "600",
+        "paragraphs": [
+          2,
+          4,
+          6
+        ]
+      },
+      "says": {
+        "ar": "الأوامر الاستعجالية والأوامر على العرائض سندات تنفيذية.",
+        "en": "Urgent orders and orders on petition are executory titles."
+      },
+      "quote": [
+        {
+          "paragraph": 2,
+          "text": "والسندات التنفيذية هي:",
+          "sha256": "b5aa35fc7fe978b79907e8434d0e7aa30a863f7e38455eddc9d87a84f8ff3e7c"
+        },
+        {
+          "paragraph": 4,
+          "text": "2 - الأوامر الاستعجالية،",
+          "sha256": "dc6adb983af8a349bfeb1017d09d372f7e512a0fdcd71733992b3593c713e4c5"
+        },
+        {
+          "paragraph": 6,
+          "text": "4 - الأوامر على العرائض،",
+          "sha256": "5d3bc4480c6f5f040d73009b657134ddb8507c6645721763aa7c77948c23b937"
+        }
+      ],
+      "source": {
+        "tier": 1,
+        "store": "library",
+        "textAsOf": "2026-11-10",
+        "ledgerRefs": [
+          "cpca/law-22-13"
+        ],
+        "ledgerClean": true
+      }
+    },
+    {
+      "id": "b16",
+      "role": "procedure",
+      "cite": {
+        "code": "cpca",
+        "article": "625",
+        "paragraphs": [
+          1
+        ]
+      },
+      "says": {
+        "ar": "إذا رفض المنفذ عليه تنفيذ التزام بعمل حرر المحضر القضائي محضر امتناع عن التنفيذ وأحال صاحب المصلحة إلى المحكمة للمطالبة بالتعويضات أو الغرامات التهديدية ما لم يكن قضي بها من قبل.",
+        "en": "If the person bound refuses to perform an obligation to act, the bailiff draws up a record of refusal and refers the interested party to the court to claim damages or penalty payments, unless these were already ordered."
+      },
+      "quote": [
+        {
+          "paragraph": 1,
+          "text": "دون الإخلال بأحكام التنفيذ الجبري، إذا رفض المنفذ عليه تنفيذ التزام بعمل، أو خالف التزاما بالامتناع عن عمل، يحرر المحضر القضائي محضر امتناع عن التنفيذ، ويحيل صاحب المصلحة إلى المحكمة للمطالبة بالتعويضات، أو المطالبة بالغرامات التهديدية ما لم يكن قد قضي بها من قبل.",
+          "sha256": "2207e94ab554898356bf2d391f1258d1965ee9d3416e26769cbedb47d12e8559"
+        }
+      ],
+      "source": {
+        "tier": 1,
+        "store": "library",
+        "textAsOf": "2026-11-10",
+        "ledgerRefs": [],
+        "ledgerClean": true
+      }
+    },
+    {
+      "id": "b17",
+      "role": "damages",
+      "interpretive": true,
+      "interpretiveNote": "The article sits in the Civil Code chapter on performance of obligations; whether it reaches the duty to let the non-custodial parent see the child is a reading, not the words.",
+      "cite": {
+        "code": "civil-code",
+        "article": "174",
+        "paragraphs": [
+          1
+        ]
+      },
+      "says": {
+        "ar": "إذا كان التنفيذ العيني لا يتم إلا بفعل المدين نفسه جاز الحكم بإلزامه به وبغرامة إجبارية إن امتنع.",
+        "en": "Where performance in kind is possible only through the debtor himself, the court may order him to perform it and to pay a penalty if he refuses."
+      },
+      "quote": [
+        {
+          "paragraph": 1,
+          "text": "إذا كان تنفيذ الالتزام عينا غير ممكن أو غير ملائم الا إذا قام به المدين نفسه، جاز للدائن أن يحصل على حكم بالزام المدين بهذا التنفيذ وبدفع غرامة اجبارية إن امتنع عن ذلك.",
+          "sha256": "dfe94eddb79fa0c637b166f69f272cb7a758f9879700a8ff64cb12d545ef16a1"
+        }
+      ],
+      "source": {
+        "tier": 2,
+        "store": "library",
+        "textAsOf": "2026-11-10",
+        "ledgerRefs": [],
+        "ledgerClean": true
+      }
+    },
+    {
+      "id": "b18",
+      "role": "procedure",
+      "cite": {
+        "code": "cpca",
+        "article": "323",
+        "paragraphs": [
+          3
+        ]
+      },
+      "says": {
+        "ar": "يجوز للقاضي في غير الحالات الوجوبية أن يأمر بالنفاذ المعجل عند الاستعجال بكفالة أو بدونها.",
+        "en": "In cases other than the mandatory ones, the judge may order provisional execution in urgency, with or without security."
+      },
+      "quote": [
+        {
+          "paragraph": 3,
+          "text": "يجوز للقاضي في جميع الأحوال الأخرى، أن يأمر في حالة الاستعجال بالنفاذ المعجل بكفالة أو بدون كفالة.",
+          "sha256": "70a204fd42f6ac4088047179b89f5396bf562d76973fee8fcb753014037abba4"
+        }
+      ],
+      "source": {
+        "tier": 1,
+        "store": "library",
+        "textAsOf": "2026-11-10",
+        "ledgerRefs": [],
+        "ledgerClean": true
+      }
+    },
+    {
+      "id": "b19",
+      "role": "limit",
+      "cite": {
+        "code": "cpca",
+        "article": "323",
+        "paragraphs": [
+          2
+        ]
+      },
+      "says": {
+        "ar": "يؤمر بالنفاذ المعجل وجوبا عند طلبه في حالات منها النفقة ومنح مسكن الزوجية لمن أسندت له الحضانة، ولا تذكر الزيارة بينها.",
+        "en": "Provisional execution must be ordered on request in listed cases, among them maintenance and granting the marital home to the custodian; visitation is not named among them."
+      },
+      "quote": [
+        {
+          "paragraph": 2,
+          "text": "باستثناء الأحكام الواجبة التنفيذ بقوة القانون، يؤمر بالنفاذ المعجل، رغم المعارضة أو الاستئناف، عند طلبه في جميع الحالات التي يحكم فيها بناء على عقد رسمي أو وعد معترف به أو حكم سابق حاز قوة الشيء المقضي به، أوفي مادة النفقة أو منح مسكن الزوجية لمن أسندت له الحضانة.",
+          "sha256": "945949c650753d1bca3bfda5951cd6076cab8b362e631e7a1d71cf4229b2114f"
+        }
+      ],
+      "source": {
+        "tier": 1,
+        "store": "library",
+        "textAsOf": "2026-11-10",
+        "ledgerRefs": [],
+        "ledgerClean": true
+      }
+    },
+    {
+      "id": "b20",
+      "role": "procedure",
+      "cite": {
+        "code": "cpca",
+        "article": "419",
+        "paragraphs": [
+          1
+        ]
+      },
+      "says": {
+        "ar": "يتحمل الخصم الخاسر المصاريف ما لم يقرر القاضي غير ذلك مسببا.",
+        "en": "The losing party bears the costs unless the judge, giving reasons, decides otherwise."
+      },
+      "quote": [
+        {
+          "paragraph": 1,
+          "text": "يتحمل الخصم الذي خسر الدعوى المصاريف المترتبة عليها، ما لم يقرر القاضي تحميلها كليا أو جزئيا لخصم آخر مع تسبيب ذلك.",
+          "sha256": "a58e0d6566bf1ea9eac92343c5b19bb937aa405099dbc9eb4b2fd442debc6b74"
+        }
+      ],
+      "source": {
+        "tier": 1,
+        "store": "library",
+        "textAsOf": "2026-11-10",
+        "ledgerRefs": [],
+        "ledgerClean": true
+      }
+    },
+    {
+      "id": "b21",
+      "role": "procedure",
+      "cite": {
+        "code": "cpca",
+        "article": "994",
+        "paragraphs": [
+          1
+        ]
+      },
+      "says": {
+        "ar": "يعرض القاضي الوساطة في جميع المواد باستثناء قضايا شؤون الأسرة والقضايا العمالية وما يمس النظام العام.",
+        "en": "The judge offers mediation in every matter except family cases, labour cases and anything touching public order."
+      },
+      "quote": [
+        {
+          "paragraph": 1,
+          "text": "يجب على القاضي عرض إجراء الوساطة على الخصوم في جميع المواد، باستثناء قضايا شؤون الأسرة والقضايا العمالية و كل ما من شأنه أن يمس بالنظام العام.",
+          "sha256": "d3ce5d785e5874643253eafbd2b2ebce4cfe2a2b8f47d6723d8371db5f4fc32a"
+        }
+      ],
+      "source": {
+        "tier": 1,
+        "store": "library",
+        "textAsOf": "2026-11-10",
+        "ledgerRefs": [],
+        "ledgerClean": true
+      }
+    },
+    {
+      "id": "b22",
+      "role": "procedure",
+      "cite": {
+        "code": "cpca",
+        "article": "439",
+        "paragraphs": [
+          1
+        ]
+      },
+      "says": {
+        "ar": "محاولات الصلح وجوبية وتتم في جلسة سرية، في إطار إجراءات الطلاق.",
+        "en": "Conciliation attempts are compulsory and held in private, within the divorce procedure."
+      },
+      "quote": [
+        {
+          "paragraph": 1,
+          "text": "محاولات الصلح وجوبية، وتتم في جلسة سرية.",
+          "sha256": "fbbfdc07b439c339b65086ebfbdfd0490c5c763554e47ab5bf604625dcfa71ee"
+        }
+      ],
+      "source": {
+        "tier": 1,
+        "store": "library",
+        "textAsOf": "2026-11-10",
+        "ledgerRefs": [],
+        "ledgerClean": true
+      }
+    },
+    {
+      "id": "b23",
+      "role": "procedure",
+      "cite": {
+        "code": "cpca",
+        "article": "442",
+        "paragraphs": [
+          1
+        ]
+      },
+      "says": {
+        "ar": "يجوز لقاضي الطلاق أثناء الصلح اتخاذ ما يراه لازما من التدابير المؤقتة بأمر غير قابل لأي طعن.",
+        "en": "During conciliation the divorce judge may take the provisional measures he deems necessary by an order open to no remedy."
+      },
+      "quote": [
+        {
+          "paragraph": 1,
+          "text": "يمكن للقاضي منح الزوجين مهلة تفكير لإجراء محاولة صلح جديدة، كما يجوز له اتخاذ ما يراه لازما من التدابير المؤقتة بموجب أمر غير قابل لأي طعن.",
+          "sha256": "af5434f0eaf2b44037a8c26e009a2aab42a19e0346240c0bf82896a359819e4f"
+        }
+      ],
+      "source": {
+        "tier": 1,
+        "store": "library",
+        "textAsOf": "2026-11-10",
+        "ledgerRefs": [],
+        "ledgerClean": true
+      }
+    },
+    {
+      "id": "b24",
+      "role": "procedure",
+      "cite": {
+        "code": "cpca",
+        "article": "445",
+        "paragraphs": [
+          1
+        ]
+      },
+      "says": {
+        "ar": "يجوز للقاضي عند ظهور واقعة جديدة أن يلغي التدابير المؤقتة أو يعدلها أو يتممها ما لم يفصل في الموضوع.",
+        "en": "On a new fact the judge may cancel, amend or complete the provisional measures until the merits are decided."
+      },
+      "quote": [
+        {
+          "paragraph": 1,
+          "text": "يجوز للقاضي في حالة ظهور واقعة جديدة، وحسب الظروف، أن يلغي أو يعدل أو يتمم التدابير المؤقتة التي أمر بها، ما لم يتم الفصل في الموضوع.",
+          "sha256": "45371f870065855e71f74990c01c3c9bd01d8f8af9327c602ac429a4f0b46cc9"
+        }
+      ],
+      "source": {
+        "tier": 1,
+        "store": "library",
+        "textAsOf": "2026-11-10",
+        "ledgerRefs": [],
+        "ledgerClean": true
+      }
+    },
+    {
+      "id": "b25",
+      "role": "procedure",
+      "cite": {
+        "code": "cpca",
+        "article": "460",
+        "paragraphs": [
+          2
+        ]
+      },
+      "says": {
+        "ar": "يجوز لقاضي الولاية أن يسند مؤقتا حضانة القاصر لأحد الأبوين.",
+        "en": "In guardianship proceedings the judge may provisionally award custody of the minor to one parent."
+      },
+      "quote": [
+        {
+          "paragraph": 2,
+          "text": "كما يجوز له أن يسند مؤقتا حضانة القاصر لأحد الأبوين، وإذا تعذر ذلك تسند لأحد الأشخاص المبينين في قانون الأسرة.",
+          "sha256": "fc2104809e733efb4be958967124a8aacff6a5a8fc44ba6eeb33a1ccf419a7f2"
+        }
+      ],
+      "source": {
+        "tier": 1,
+        "store": "library",
+        "textAsOf": "2026-11-10",
+        "ledgerRefs": [],
+        "ledgerClean": true
+      }
+    },
+    {
+      "id": "b26",
+      "role": "procedure",
+      "cite": {
+        "code": "cpca",
+        "article": "425",
+        "paragraphs": [
+          1
+        ]
+      },
+      "says": {
+        "ar": "يجوز لرئيس قسم شؤون الأسرة في إطار التحقيق تعيين مساعدة اجتماعية أو طبيب خبير أو استشارة مصلحة مختصة.",
+        "en": "The president of the family section may, as part of the inquiry, appoint a social worker or a medical expert or consult a competent service."
+      },
+      "quote": [
+        {
+          "paragraph": 1,
+          "text": "يمارس رئيس قسم شؤون الأسرة الصلاحيات المخولة لقاضي الاستعجال، ويجوز له بالإضافة للصلاحيات المخولة له في هذا القانون، أن يأمر في إطار التحقيق بتعيين مساعدة اجتماعية أو طبيب خبير أو اللجوء إلى أية مصلحة مختصة في الموضوع بغرض الاستشارة.",
+          "sha256": "2c80f30ea6401ec1562366b687ef8e7ceb5295a2cd6c5ef276f83d554ea3c548"
+        }
+      ],
+      "source": {
+        "tier": 1,
+        "store": "library",
+        "textAsOf": "2026-11-10",
+        "ledgerRefs": [],
+        "ledgerClean": true
+      }
+    }
+  ],
+  "elements": [
+    {
+      "id": "e1",
+      "toProve": {
+        "ar": "انحلال الزواج بين الطرفين بحكم طلاق.",
+        "en": "The marriage between the parties was dissolved by a divorce judgment."
+      },
+      "factsToState": [
+        {
+          "ar": "تاريخ حكم الطلاق والجهة التي أصدرته.",
+          "en": "The date of the divorce judgment and the court that gave it."
+        },
+        {
+          "ar": "أسماء الأبناء المشتركين وتواريخ ميلادهم.",
+          "en": "The names and dates of birth of the children of the marriage."
+        }
+      ],
+      "events": [
+        "marriage",
+        "divorce"
+      ],
+      "slots": [
+        "spouses_divorced"
+      ],
+      "burden": "plaintiff",
+      "proof": [
+        {
+          "means": "officialCopyOfJudgment",
+          "basis": [
+            "b10",
+            "periods.b42"
+          ],
+          "note": {
+            "ar": "نسخة من حكم الطلاق.",
+            "en": "A copy of the divorce judgment."
+          }
+        }
+      ],
+      "basis": [
+        "b10",
+        "b1"
+      ]
+    },
+    {
+      "id": "e2",
+      "toProve": {
+        "ar": "إسناد الحضانة إلى المدعى عليه، وما إذا كان حكم سابق قد حدد حق الزيارة.",
+        "en": "Custody is held by the defendant, and whether an earlier judgment fixed the right of visitation."
+      },
+      "factsToState": [
+        {
+          "ar": "الحكم الذي أسند الحضانة وتاريخه، وهل حدد أوقات الزيارة وأماكنها.",
+          "en": "The judgment that awarded custody and its date, and whether it fixed the times and places of visitation."
+        },
+        {
+          "ar": "مكان ممارسة الحضانة.",
+          "en": "The place where custody is exercised."
+        },
+        {
+          "ar": "إن كانت الزيارة محددة سابقا: الظروف الجديدة التي تبرر تعديلها.",
+          "en": "If visitation was fixed earlier: the new circumstances that justify changing it."
+        }
+      ],
+      "events": [
+        "custody_judgment",
+        "custody_held"
+      ],
+      "slots": [
+        "visitation_fixed_by_prior_judgment",
+        "visitation_modification_sought"
+      ],
+      "burden": "plaintiff",
+      "proof": [
+        {
+          "means": "officialCopyOfJudgment",
+          "basis": [
+            "b1",
+            "periods.b42"
+          ],
+          "note": {
+            "ar": "نسخة من الحكم الذي أسند الحضانة.",
+            "en": "A copy of the judgment awarding custody."
+          }
+        }
+      ],
+      "basis": [
+        "b1",
+        "b11"
+      ]
+    },
+    {
+      "id": "e3",
+      "toProve": {
+        "ar": "حرمان المدعي من رؤية أبنائه أو تعذر ممارسته الزيارة، ومصلحة المحضون في تنظيمها.",
+        "en": "The plaintiff is kept from seeing his children or cannot exercise visitation, and organising it is in the child's interest."
+      },
+      "factsToState": [
+        {
+          "ar": "وقائع المنع وتواريخها.",
+          "en": "The acts of refusal and their dates."
+        },
+        {
+          "ar": "الأوقات والأماكن المقترحة للزيارة بما يلائم سن الأبناء ودراستهم.",
+          "en": "The times and places proposed for visitation, suited to the children's age and schooling."
+        }
+      ],
+      "events": [
+        "visitation_refused"
+      ],
+      "slots": [],
+      "burden": "plaintiff",
+      "proof": [
+        {
+          "means": "anyMeans",
+          "basis": [
+            "periods.b42"
+          ],
+          "note": {
+            "ar": "تثبت وقائع المنع بكل الوسائل، ومنها محضر امتناع يحرره المحضر القضائي.",
+            "en": "The refusal is proved by any means, among them a bailiff's record of refusal."
+          }
+        },
+        {
+          "means": "bailiffRecordOfRefusal",
+          "basis": [
+            "b16"
+          ]
+        }
+      ],
+      "basis": [
+        "b1",
+        "b2",
+        "b26"
+      ]
+    }
+  ],
+  "requests": [
+    {
+      "id": "r1",
+      "kind": "visitation",
+      "accessory": false,
+      "text": {
+        "ar": "الحكم بتمكين المدعي من حق زيارة أبنائه (...) يوم (...) من كل أسبوع من الساعة (...) إلى الساعة (...)، وخلال الأعياد الدينية والعطل المدرسية (...)، بمكان (...).",
+        "en": "Grant the plaintiff the right to visit his children (...) on (...) of each week from (...) to (...), and during religious feasts and school holidays (...), at (...)."
+      },
+      "amount": false,
+      "basis": [
+        "b1",
+        "court-sections.b8"
+      ]
+    },
+    {
+      "id": "r2",
+      "kind": "provisional_execution",
+      "accessory": true,
+      "text": {
+        "ar": "شمول الحكم بالنفاذ المعجل.",
+        "en": "Order provisional execution of the judgment."
+      },
+      "amount": false,
+      "basis": [
+        "b18",
+        "b19"
+      ]
+    },
+    {
+      "id": "r3",
+      "kind": "other",
+      "accessory": true,
+      "text": {
+        "ar": "إلزام المدعى عليه بغرامة تهديدية قدرها (...) دج عن كل امتناع عن تمكين المدعي من الزيارة.",
+        "en": "Order the defendant to pay a penalty of (...) DZD for each refusal to allow visitation."
+      },
+      "amount": true,
+      "basis": [
+        "b17",
+        "b16"
+      ]
+    },
+    {
+      "id": "r4",
+      "kind": "other",
+      "accessory": true,
+      "text": {
+        "ar": "تحميل المدعى عليه المصاريف القضائية.",
+        "en": "Order the defendant to pay the costs."
+      },
+      "amount": false,
+      "basis": [
+        "b20"
+      ]
+    }
+  ],
+  "court": {
+    "section": {
+      "value": "family",
+      "basis": [
+        "court-sections.b8",
+        "court-sections.b2",
+        "court-sections.b3"
+      ],
+      "alternatives": [
+        {
+          "when": {
+            "slot": "court_has_section_for_matter",
+            "is": "no"
+          },
+          "value": "civil",
+          "basis": [
+            "court-sections.b4"
+          ]
+        }
+      ],
+      "message": {
+        "ar": "المادة 423 من قانون الإجراءات المدنية والإدارية: ينظر قسم شؤون الأسرة في دعاوى حق الزيارة، والمادة 32: في المحاكم التي لم تنشأ فيها الأقسام يبقى القسم المدني مختصا. تحقق من القسم.",
+        "en": "CPCA article 423: the family section hears visitation claims; article 32: in courts without sections the civil section hears the case. Check the section."
+      }
+    }
+  },
+  "boundaries": [
+    {
+      "id": "n1",
+      "looksLike": {
+        "ar": "دعوى حق الزيارة ضد حاضن يمتنع عن تنفيذ حكم سابق حدد الزيارة.",
+        "en": "A visitation claim against a custodian who refuses to comply with an earlier judgment that fixed visitation."
+      },
+      "isActually": "outside:enforcement",
+      "tellingFacts": [
+        {
+          "ar": "حكم سابق حدد الزيارة، والعريضة لا تطلب تعديلها بل تشكو عدم تنفيذها.",
+          "en": "An earlier judgment fixed visitation, and the petition does not seek to change it but complains that it is not complied with."
+        }
+      ],
+      "when": {
+        "all": [
+          {
+            "slot": "visitation_fixed_by_prior_judgment",
+            "is": "yes"
+          },
+          {
+            "slot": "visitation_modification_sought",
+            "is": "no"
+          }
+        ]
+      },
+      "slots": [
+        "visitation_fixed_by_prior_judgment",
+        "visitation_modification_sought"
+      ],
+      "message": {
+        "ar": "المادتان 600 و625 من قانون الإجراءات المدنية والإدارية: الحكم الذي حدد الزيارة سند تنفيذي ينفذ بواسطة المحضر القضائي، الذي يحرر محضر امتناع عند الرفض ويحيل إلى المحكمة للمطالبة بالتعويض أو الغرامة التهديدية. تحقق مما إذا كانت العريضة تطلب أمرا غير ما قضي به.",
+        "en": "CPCA articles 600 and 625: the judgment that fixed visitation is an executory title enforced through a bailiff, who records a refusal and refers the party to the court for damages or a penalty payment. Check whether the petition asks for something other than what was already decided."
+      },
+      "basis": [
+        "b14",
+        "b15",
+        "b16"
+      ]
+    },
+    {
+      "id": "n2",
+      "looksLike": {
+        "ar": "دعوى مستقلة لحق الزيارة أثناء قيام دعوى طلاق بين الوالدين.",
+        "en": "A separate visitation claim while a divorce case between the parents is pending."
+      },
+      "isActually": "outside:pending-divorce-case",
+      "tellingFacts": [
+        {
+          "ar": "دعوى طلاق أو تطليق أو خلع قائمة لم يفصل فيها.",
+          "en": "A divorce, judicial-divorce or khul case is pending and undecided."
+        }
+      ],
+      "when": {
+        "slot": "divorce_action_pending",
+        "is": "yes"
+      },
+      "slots": [
+        "divorce_action_pending"
+      ],
+      "message": {
+        "ar": "المادة 64 من قانون الأسرة: يحكم القاضي بحق الزيارة عند إسناد الحضانة، والمادتان 442 و445 من قانون الإجراءات المدنية والإدارية تجيزان لقاضي الطلاق التدابير المؤقتة وتعديلها. تحقق من إمكان طلب الزيارة في دعوى الطلاق القائمة.",
+        "en": "Family Code article 64: the judge rules on visitation when awarding custody, and CPCA articles 442 and 445 let the divorce judge order and amend provisional measures. Check whether visitation can be sought in the pending divorce case."
+      },
+      "basis": [
+        "b1",
+        "b23",
+        "b24"
+      ]
+    },
+    {
+      "id": "n3",
+      "looksLike": {
+        "ar": "دعوى حق الزيارة بين والدين لم يفصل بينهما بطلاق.",
+        "en": "A visitation claim between parents whose marriage has not been dissolved."
+      },
+      "isActually": "outside:guardianship-provisional-custody",
+      "tellingFacts": [
+        {
+          "ar": "لا حكم بالطلاق ولا دعوى طلاق قائمة.",
+          "en": "No divorce judgment and no pending divorce case."
+        }
+      ],
+      "when": {
+        "all": [
+          {
+            "slot": "spouses_divorced",
+            "is": "no"
+          },
+          {
+            "slot": "divorce_action_pending",
+            "is": "no"
+          }
+        ]
+      },
+      "slots": [
+        "spouses_divorced",
+        "divorce_action_pending"
+      ],
+      "message": {
+        "ar": "المادة 64 من قانون الأسرة تربط الحكم بحق الزيارة بإسناد الحضانة، والمادة 460 من قانون الإجراءات المدنية والإدارية تجيز إسناد الحضانة مؤقتا لأحد الأبوين في إجراءات الولاية. تحقق من الأساس الذي تقوم عليه الدعوى ما دام الزواج قائما.",
+        "en": "Family Code article 64 ties the ruling on visitation to the award of custody, and CPCA article 460 allows custody to be awarded provisionally to one parent in guardianship proceedings. Check the ground of the claim while the marriage subsists."
+      },
+      "basis": [
+        "b1",
+        "b25"
+      ]
+    },
+    {
+      "id": "n4",
+      "looksLike": {
+        "ar": "طلب الزيارة المقرون بالطعن في أهلية الحاضن أو زواجه أو استيطانه في الخارج.",
+        "en": "A visitation request combined with a challenge to the custodian's fitness, remarriage or settling abroad."
+      },
+      "isActually": "claim:custody",
+      "tellingFacts": [
+        {
+          "ar": "الطلب يرمي إلى إسقاط الحضانة أو نقلها لا إلى تنظيم الزيارة.",
+          "en": "The request seeks to remove or transfer custody, not to organise visitation."
+        }
+      ],
+      "message": {
+        "ar": "المواد 66 و67 و69 من قانون الأسرة: إسقاط الحضانة أو نقلها دعوى مختلفة عن تنظيم الزيارة.",
+        "en": "Family Code articles 66, 67 and 69: removing or transferring custody is a different claim from organising visitation."
+      },
+      "basis": [
+        "b8",
+        "b9",
+        "b7"
+      ]
+    },
+    {
+      "id": "n5",
+      "looksLike": {
+        "ar": "طلب استعجالي أو أمر على عريضة لتنظيم الزيارة مؤقتا.",
+        "en": "An urgent request or an order on petition to organise visitation provisionally."
+      },
+      "isActually": "outside:interim-order",
+      "tellingFacts": [
+        {
+          "ar": "المطلوب تدبير مؤقت عاجل لا الفصل في أصل الحق.",
+          "en": "What is sought is an urgent provisional measure, not a ruling on the substance."
+        }
+      ],
+      "message": {
+        "ar": "المادة 57 مكرر من قانون الأسرة: يجوز الفصل استعجالا بأمر على عريضة في التدابير المؤقتة ومنها الزيارة؛ ولا يغني ذلك عن دعوى الموضوع.",
+        "en": "Family Code article 57 bis: provisional measures, visitation included, may be ordered urgently on petition; that does not replace the claim on the merits."
+      },
+      "basis": [
+        "b3",
+        "ordinary-court-exits.b51",
+        "ordinary-court-exits.b52"
+      ]
+    }
+  ],
+  "documents": [
+    {
+      "id": "doc1",
+      "name": {
+        "ar": "نسخة من حكم الطلاق",
+        "en": "A copy of the divorce judgment"
+      },
+      "requiredWhen": {
+        "slot": "spouses_divorced",
+        "is": "yes"
+      },
+      "why": {
+        "ar": "لإثبات انحلال الزواج، إذ لا يثبت الطلاق إلا بحكم.",
+        "en": "To prove the dissolution of the marriage, since a divorce is established only by judgment."
+      },
+      "basis": [
+        "b10"
+      ]
+    },
+    {
+      "id": "doc2",
+      "name": {
+        "ar": "نسخة من الحكم الذي أسند الحضانة أو حدد الزيارة",
+        "en": "A copy of the judgment that awarded custody or fixed visitation"
+      },
+      "why": {
+        "ar": "لإثبات صفة الحاضن ومضمون ما قضي به في الزيارة.",
+        "en": "To prove who holds custody and what was decided on visitation."
+      },
+      "basis": [
+        "b1"
+      ]
+    },
+    {
+      "id": "doc3",
+      "name": {
+        "ar": "محضر امتناع عن التنفيذ يحرره المحضر القضائي",
+        "en": "A bailiff's record of refusal to comply"
+      },
+      "requiredWhen": {
+        "slot": "visitation_fixed_by_prior_judgment",
+        "is": "yes"
+      },
+      "why": {
+        "ar": "لإثبات امتناع الحاضن عن تنفيذ ما قضي به في الزيارة.",
+        "en": "To prove the custodian's refusal to comply with the visitation ruling."
+      },
+      "basis": [
+        "b16"
+      ]
+    },
+    {
+      "id": "doc4",
+      "name": {
+        "ar": "شهادات ميلاد الأبناء",
+        "en": "The children's birth certificates"
+      },
+      "why": {
+        "ar": "لتحديد الأبناء وسنهم، إذ تنقضي الحضانة بسن معينة.",
+        "en": "To identify the children and their ages, since custody ends at a given age."
+      },
+      "basis": [
+        "b5"
+      ]
+    }
+  ],
+  "slots": [
+    "spouses_divorced",
+    "divorce_action_pending",
+    "court_has_section_for_matter",
+    "visitation_fixed_by_prior_judgment",
+    "visitation_modification_sought"
+  ],
+  "proposedSlots": [
+    {
+      "id": "visitation_fixed_by_prior_judgment",
+      "type": "yesNoUnknown",
+      "question": {
+        "ar": "هل سبق أن صدر حكم أو أمر (ومنه حكم الطلاق) حدد حق زيارة المدعي لهؤلاء الأبناء؟",
+        "en": "Has an earlier judgment or order (the divorce judgment included) already fixed the plaintiff's right to visit these children?"
+      },
+      "why": "Boundary n1 and document doc3 read it: CPCA articles 600 and 625 make a judgment that fixed visitation an executory title, enforced through a bailiff, not the object of a new claim."
+    },
+    {
+      "id": "visitation_modification_sought",
+      "type": "yesNoUnknown",
+      "question": {
+        "ar": "هل تطلب العريضة تعديل أوقات الزيارة أو أماكنها المحددة سابقا لتغير الظروف، لا مجرد تنفيذها؟",
+        "en": "Does the petition ask to change the times or places of visitation fixed earlier because circumstances have changed, rather than only to enforce them?"
+      },
+      "why": "Boundary n1 reads it: a claim that only seeks compliance with an earlier visitation ruling is a matter of enforcement (CPCA articles 600 and 625), while a request to change it is a claim on the merits (Family Code article 64)."
+    }
+  ],
+  "openPoints": [
+    {
+      "id": "o1",
+      "question": {
+        "ar": "هل تقبل دعوى مستقلة لتعديل أوقات الزيارة وأماكنها بعد حكم حددها، وبأي معيار؟",
+        "en": "Is a separate claim to change the times and places of visitation admissible after a judgment fixed them, and on what standard?"
+      },
+      "why": {
+        "ar": "المادة 64 من قانون الأسرة تلزم القاضي بالحكم بالزيارة عند إسناد الحضانة، والمادتان 423 و426 من قانون الإجراءات المدنية والإدارية تفترضان دعاوى الزيارة، ولا نص على شروط تعديلها.",
+        "en": "Family Code article 64 obliges the judge to rule on visitation when awarding custody, and CPCA articles 423 and 426 presuppose visitation claims; no text sets the conditions for changing a ruling."
+      },
+      "readings": [
+        {
+          "reading": {
+            "ar": "تقبل دعوى التعديل متى تغيرت الظروف ومصلحة المحضون.",
+            "en": "A claim to change visitation is admissible when circumstances and the child's interest have changed."
+          },
+          "basis": [
+            "b1",
+            "b11"
+          ]
+        },
+        {
+          "reading": {
+            "ar": "ما قضي به يحوز الحجية، والطريق هو التنفيذ.",
+            "en": "What was decided is res judicata, and the route is enforcement."
+          },
+          "basis": [
+            "b14",
+            "b16"
+          ]
+        }
+      ],
+      "protectiveReading": {
+        "ar": "التنبيه حين حكم سابق حدد الزيارة والعريضة لا تطلب تعديلها، دون منع.",
+        "en": "Warn when an earlier judgment fixed visitation and the petition does not seek to change it; never block."
+      },
+      "grade": "C",
+      "refs": [
+        "n1",
+        "e2"
+      ]
+    },
+    {
+      "id": "o2",
+      "question": {
+        "ar": "هل قاعدة الاختصاص الإقليمي بمكان ممارسة الحضانة تشمل الزيارة على وجه الحصر، وهل هي من النظام العام؟",
+        "en": "Does the rule giving territorial jurisdiction to the place where custody is exercised cover visitation exclusively, and is it of public order?"
+      },
+      "why": {
+        "ar": "المادة 40 تذكر الحضانة دون الزيارة بعبارة «دون سواها»، والمادة 426 تذكر الزيارة، والمادة 47 توجب إثارة الدفع قبل أي دفاع في الموضوع.",
+        "en": "Article 40 names custody, not visitation, with the words 'and no other', article 426 names visitation, and article 47 requires the plea before any defence on the merits."
+      },
+      "readings": [
+        {
+          "reading": {
+            "ar": "الاختصاص حصري لمحكمة مكان ممارسة الحضانة.",
+            "en": "Jurisdiction lies exclusively with the court of the place where custody is exercised."
+          },
+          "basis": [
+            "b12",
+            "b11"
+          ]
+        },
+        {
+          "reading": {
+            "ar": "قاعدة خاصة يجب التمسك بها بدفع يثار قبل أي دفاع في الموضوع.",
+            "en": "A special rule that must be invoked by a plea raised before any defence on the merits."
+          },
+          "basis": [
+            "b13",
+            "b11"
+          ]
+        }
+      ],
+      "protectiveReading": {
+        "ar": "رفع الدعوى أمام محكمة مكان ممارسة الحضانة.",
+        "en": "File before the court of the place where custody is exercised."
+      },
+      "grade": "C",
+      "refs": [
+        "court-sections.t4"
+      ]
+    },
+    {
+      "id": "o3",
+      "question": {
+        "ar": "ما الجزاء الجزائي لامتناع الحاضن عن تسليم الطفل لمن له حق الزيارة؟",
+        "en": "What criminal sanction applies to a custodian who refuses to hand the child to the parent entitled to visitation?"
+      },
+      "why": {
+        "ar": "قانون العقوبات ليس في مخزن النصوص؛ يعتقد من الذاكرة أن نصا فيه يعاقب على عدم تسليم الطفل لمن له الحق في المطالبة به بموجب حكم.",
+        "en": "The Penal Code is not in the article store; from memory, one of its articles punishes failure to hand over a child to a person entitled to claim it under a judgment."
+      },
+      "protectiveReading": {
+        "ar": "لا قاعدة تبنى على ذلك؛ يكتفى بالحد n1 الذي يوجه إلى التنفيذ.",
+        "en": "No rule is built on it; boundary n1, which points to enforcement, is enough."
+      },
+      "grade": "D",
+      "refs": [
+        "n1"
+      ]
+    },
+    {
+      "id": "o4",
+      "question": {
+        "ar": "هل تجوز الغرامة التهديدية لضمان تمكين المدعي من الزيارة؟",
+        "en": "May a penalty payment be ordered to secure the plaintiff's visitation?"
+      },
+      "why": {
+        "ar": "المادة 174 من القانون المدني تخص الالتزامات التي لا تنفذ إلا بفعل المدين، والمادة 625 من قانون الإجراءات المدنية والإدارية تحيل إلى المحكمة للمطالبة بالغرامات التهديدية عند الامتناع عن عمل؛ ولا نص يذكر الزيارة.",
+        "en": "Civil Code article 174 concerns obligations that only the debtor can perform, and CPCA article 625 refers to the court for penalty payments on refusal to act; no text names visitation."
+      },
+      "protectiveReading": {
+        "ar": "اقتراح الطلب مع بيان أساسه، دون جزم بقبوله.",
+        "en": "Propose the request with its basis, without asserting it will be granted."
+      },
+      "grade": "C",
+      "refs": [
+        "r3",
+        "b17"
+      ]
+    },
+    {
+      "id": "o5",
+      "question": {
+        "ar": "هل يجب تبليغ العريضة إلى النيابة العامة في دعوى الزيارة؟",
+        "en": "Must the petition in a visitation claim be served on the public prosecutor?"
+      },
+      "why": {
+        "ar": "المادة 3 مكرر من قانون الأسرة تجعل النيابة العامة طرفا أصليا، ولا نص في الملف يفرض على المدعي تبليغها إلا في دعوى الطلاق.",
+        "en": "Family Code article 3 bis makes the public prosecutor a principal party, but the texts read impose service on the prosecutor by the plaintiff only in a divorce case."
+      },
+      "protectiveReading": {
+        "ar": "التحقق من ممارسة أمانة الضبط في إبلاغ النيابة العامة؛ لا خطوة إلزامية في السجل.",
+        "en": "Check how the registry informs the prosecutor; no compulsory step is recorded."
+      },
+      "grade": "C",
+      "refs": [
+        "court-sections.b34"
+      ]
+    },
+    {
+      "id": "o6",
+      "question": {
+        "ar": "هل يبقى حق الزيارة بعد انقضاء مدة الحضانة، وهل لغير الوالدين المطالبة به؟",
+        "en": "Does the right of visitation survive the end of custody, and may persons other than the parents claim it?"
+      },
+      "why": {
+        "ar": "المادة 64 تربط الزيارة بإسناد الحضانة، والمادة 65 تحدد انقضاءها، ولا نص في المخزن على الزيارة بعد ذلك أو لغير الوالدين.",
+        "en": "Article 64 ties visitation to the award of custody and article 65 sets when custody ends; no text in the store deals with visitation after that or by other relatives."
+      },
+      "protectiveReading": {
+        "ar": "التحقق من سن الأبناء ومن صفة المدعي.",
+        "en": "Check the children's ages and the plaintiff's standing."
+      },
+      "grade": "C",
+      "refs": [
+        "doc4",
+        "e1"
+      ]
+    },
+    {
+      "id": "o7",
+      "question": {
+        "ar": "هل يجوز للوالد رفع دعوى زيارة مستقلة والزواج قائم؟",
+        "en": "May a parent bring a separate visitation claim while the marriage subsists?"
+      },
+      "why": {
+        "ar": "المادة 64 تربط الزيارة بإسناد الحضانة، والحضانة في قانون الأسرة من آثار الطلاق، والمادة 460 تجيز إسناد الحضانة مؤقتا في إجراءات الولاية.",
+        "en": "Article 64 ties visitation to the award of custody, custody sits among the effects of divorce in the Family Code, and article 460 allows provisional custody in guardianship proceedings."
+      },
+      "protectiveReading": {
+        "ar": "التنبيه دون منع.",
+        "en": "Warn; never block."
+      },
+      "grade": "C",
+      "refs": [
+        "n3"
+      ]
+    }
+  ],
+  "checklist": [
+    {
+      "id": "k1",
+      "item": "Basis: Family Code article on custody (art. 64) obliges the judge, when awarding custody, to rule on the right of visitation; find the exact paragraph and whether it is the ground of an autonomous visitation claim.",
+      "from": [
+        "derivationA"
+      ],
+      "answer": "applies",
+      "refs": [
+        "b1",
+        "court-sections.b8",
+        "b11",
+        "o1"
+      ],
+      "note": "Family Code 64 has one paragraph; CPCA 423 and 426 name visitation claims as such."
+    },
+    {
+      "id": "k2",
+      "item": "Basis: the definition and purpose of custody (Family Code art. 62) and the child's interest as the governing criterion for setting visitation times and places.",
+      "from": [
+        "derivationA"
+      ],
+      "answer": "applies",
+      "refs": [
+        "b2",
+        "b1",
+        "b26"
+      ]
+    },
+    {
+      "id": "k3",
+      "item": "Element: a dissolved marriage (divorce judgment) or separation between the parents; state the date and the court of the divorce judgment.",
+      "from": [
+        "derivationA"
+      ],
+      "answer": "applies",
+      "refs": [
+        "e1",
+        "b10",
+        "doc1",
+        "n3"
+      ]
+    },
+    {
+      "id": "k4",
+      "item": "Element: the plaintiff is the non-custodial parent (father or mother); the custodial parent is the defendant; state who holds custody and under which judgment.",
+      "from": [
+        "derivationA"
+      ],
+      "answer": "applies",
+      "refs": [
+        "e2",
+        "doc2"
+      ]
+    },
+    {
+      "id": "k5",
+      "item": "Element: whether a prior judgment already fixed visitation: if it did and the custodian merely refuses to comply, the remedy is enforcement of the executory title through a bailiff (and possibly a criminal complaint), not a new claim; a new claim is admissible only to modify times/places because circumstances changed.",
+      "from": [
+        "derivationA"
+      ],
+      "answer": "applies",
+      "refs": [
+        "n1",
+        "b14",
+        "b16",
+        "o1",
+        "o3"
+      ]
+    },
+    {
+      "id": "k6",
+      "item": "Element: the refusal or obstruction by the custodian, or the change of circumstances (child's age, schooling, move of residence) justifying modification; who proves it (the plaintiff, by all means since facts).",
+      "from": [
+        "derivationA"
+      ],
+      "answer": "applies",
+      "refs": [
+        "e3",
+        "periods.b42",
+        "b16"
+      ]
+    },
+    {
+      "id": "k7",
+      "item": "Children concerned: names, dates of birth, residence; visitation only for minors still under custody (custody of boy ends at 10, extendable to 16; girl until marriage age).",
+      "from": [
+        "derivationA"
+      ],
+      "answer": "applies",
+      "refs": [
+        "b5",
+        "b6",
+        "doc4",
+        "o6"
+      ]
+    },
+    {
+      "id": "k8",
+      "item": "Section: family affairs section (قسم شؤون الأسرة) of the tribunal (CPC art. 423); if the court has no section, the ordinary court hears it (court-sections module).",
+      "from": [
+        "derivationA"
+      ],
+      "answer": "applies",
+      "refs": [
+        "court-sections.b8",
+        "court-sections.b4",
+        "court-sections.b5"
+      ]
+    },
+    {
+      "id": "k9",
+      "item": "Territory: for custody, visitation and permits granted, the court of the place where custody is exercised (CPC art. 426); check whether this rule is of public order.",
+      "from": [
+        "derivationA"
+      ],
+      "answer": "applies",
+      "refs": [
+        "court-sections.t4",
+        "b11",
+        "b12",
+        "b13",
+        "o2"
+      ]
+    },
+    {
+      "id": "k10",
+      "item": "Interim relief: the judge may rule urgently by order on petition on interim measures including visitation (Family Code art. 57 bis); and the family-section judge in urgent matters (CPC family chapter).",
+      "from": [
+        "derivationA"
+      ],
+      "answer": "applies",
+      "refs": [
+        "b3",
+        "court-sections.b30",
+        "n5",
+        "ordinary-court-exits.n5"
+      ]
+    },
+    {
+      "id": "k11",
+      "item": "Public prosecutor is a principal party in family cases (Family Code art. 3 bis); check whether the petition must be communicated to the prosecution.",
+      "from": [
+        "derivationA"
+      ],
+      "answer": "applies",
+      "refs": [
+        "court-sections.b34",
+        "o5"
+      ],
+      "note": "CPCA 438 requires service on the prosecutor only in divorce; no compulsory step recorded."
+    },
+    {
+      "id": "k12",
+      "item": "Appeal: whether judgments on custody/visitation are subject to appeal (Family Code art. 57: divorce judgments not appealable except material aspects and custody) - check whether visitation counts as custody aspect.",
+      "from": [
+        "derivationA"
+      ],
+      "answer": "applies",
+      "refs": [
+        "b4"
+      ],
+      "note": "Family Code 57 ¶2 makes custody judgments appealable; whether a standalone visitation judgment falls under it is not a filing check."
+    },
+    {
+      "id": "k13",
+      "item": "No limitation or forfeiture period for claiming visitation: it is a continuing right tied to the child's interest; check that no text sets one and record none rather than invent one.",
+      "from": [
+        "derivationA"
+      ],
+      "answer": "doesNotApply",
+      "note": "Searched Family Code 62 to 72 and 57 bis, CPCA 423 to 463: no period for a visitation claim. Family Code 68 (loss of custody after a year without claiming) concerns custody, not visitation; the periods module's limitations concern debts and torts. No deadline recorded."
+    },
+    {
+      "id": "k14",
+      "item": "Prior steps: no compulsory formal notice; no compulsory conciliation for a standalone visitation claim (reconciliation attempts are for divorce); check conciliation-mediation module.",
+      "from": [
+        "derivationA"
+      ],
+      "answer": "doesNotApply",
+      "refs": [
+        "b21",
+        "b22"
+      ],
+      "note": "CPCA 439 places compulsory conciliation within the divorce procedure; CPCA 994 excludes family cases from mediation. No formal notice text concerns visitation. No prior step recorded."
+    },
+    {
+      "id": "k15",
+      "item": "Documents: divorce judgment, custody judgment (and its notification and enforcement record if refusal), birth certificates of the children, family record book, bailiff report of refusal if any.",
+      "from": [
+        "derivationA"
+      ],
+      "answer": "applies",
+      "refs": [
+        "doc1",
+        "doc2",
+        "doc3",
+        "doc4"
+      ],
+      "note": "The family record book has no text in the store; not listed."
+    },
+    {
+      "id": "k16",
+      "item": "Boundary: refusal to execute a judgment that fixed visitation is a matter of execution (bailiff, executory formula) and a criminal offence (Penal Code art. 328 non-representation of child), not a new civil claim.",
+      "from": [
+        "derivationA"
+      ],
+      "answer": "applies",
+      "refs": [
+        "n1",
+        "b14",
+        "b16",
+        "o3"
+      ]
+    },
+    {
+      "id": "k17",
+      "item": "Boundary: claim for custody itself or transfer of custody (forfeiture of custody under Family Code arts. 66-70) is a different claim (custody / custody_transfer).",
+      "from": [
+        "derivationA"
+      ],
+      "answer": "applies",
+      "refs": [
+        "n4",
+        "b8",
+        "b9"
+      ]
+    },
+    {
+      "id": "k18",
+      "item": "Boundary: custodian moving abroad with the child: Family Code art. 69 allows the judge to confirm or cancel custody; visitation abroad issues; check whether a dedicated rule applies.",
+      "from": [
+        "derivationA"
+      ],
+      "answer": "applies",
+      "refs": [
+        "n4",
+        "b7"
+      ]
+    },
+    {
+      "id": "k19",
+      "item": "Boundary: visitation by grandparents or other relatives - not covered by the text expressly; the claim is limited to the non-custodial parent unless texts say otherwise.",
+      "from": [
+        "derivationA"
+      ],
+      "answer": "applies",
+      "refs": [
+        "o6"
+      ]
+    },
+    {
+      "id": "k20",
+      "item": "Boundary: visitation asked as an accessory inside a divorce claim is decided within that divorce judgment, not as a separate claim.",
+      "from": [
+        "derivationA"
+      ],
+      "answer": "applies",
+      "refs": [
+        "n2",
+        "b1",
+        "b23",
+        "b24"
+      ]
+    },
+    {
+      "id": "k21",
+      "item": "Requests: fix visitation times and places (weekends, holidays, religious feasts), possibly at the plaintiff's home or a neutral place; penalty payment (astreinte) to secure compliance; provisional execution (family judgments on custody/visitation may be provisionally enforceable - check CPC).",
+      "from": [
+        "derivationA"
+      ],
+      "answer": "applies",
+      "refs": [
+        "r1",
+        "r2",
+        "r3",
+        "b18",
+        "b19",
+        "o4"
+      ]
+    },
+    {
+      "id": "k22",
+      "item": "Accessory: costs against the defendant; penalty payment (CPC arts. 980-985 / Civil Code art. 174) - via accessory-requests module.",
+      "from": [
+        "derivationA"
+      ],
+      "answer": "applies",
+      "refs": [
+        "r3",
+        "r4",
+        "b17",
+        "b20"
+      ],
+      "note": "CPCA 980 to 985 belong to the administrative-court chapter; the accessory-requests module has no final record, so the claim states its own lines."
+    },
+    {
+      "id": "k23",
+      "item": "Proof: facts of refusal proved by any means; judgments proved by official copies (proof module).",
+      "from": [
+        "derivationA"
+      ],
+      "answer": "applies",
+      "refs": [
+        "periods.b42",
+        "e3"
+      ],
+      "note": "The proof module has no final record; the burden statement is imported from periods."
+    },
+    {
+      "id": "k24",
+      "item": "Petition formal elements: names, addresses, the children, the court, lawyer, fees (petition-formal-elements module).",
+      "from": [
+        "derivationA"
+      ],
+      "answer": "searchedNotFound",
+      "note": "The petition-formal-elements module has no final record to import; only the court-sections statements were available. Not restated here."
+    },
+    {
+      "id": "k25",
+      "item": "Amendments: 2005 Family Code amendment (ordinance 05-02) added art. 57 bis and changed custody order; CPC of 2008 (law 08-09) created family section rules; 2022 amendments to CPC (law 22-13) - check whether family provisions changed.",
+      "from": [
+        "derivationA"
+      ],
+      "answer": "applies",
+      "refs": [
+        "b1",
+        "b3",
+        "b14"
+      ],
+      "note": "The store gives Family Code 64 and 57 bis in the ordinance 05-02 wording and CPCA 423, 426, 625 in the law 08-09 wording; law 22-13 changed CPCA 600 (its administrative-court item only)."
+    },
+    {
+      "id": "k26",
+      "item": "Exit: no administrative or commercial exit; criminal judge only for the non-representation offence; the civil claim remains with the family section.",
+      "from": [
+        "derivationA"
+      ],
+      "answer": "doesNotApply",
+      "note": "No exit recorded: a visitation claim between parents involves no public body or commercial matter, and the criminal route rests on a text not in the store (o3)."
+    },
+    {
+      "id": "k27",
+      "item": "Foreign element: defendant or child residing abroad - territorial jurisdiction and international conventions (e.g. Algeria-France 1988 convention on children of mixed couples) - not in the store likely; note only.",
+      "from": [
+        "derivationA"
+      ],
+      "answer": "searchedNotFound",
+      "note": "No convention in the store; searched the CPCA chapter on claims against or by foreigners (41, 42), which concerns contractual obligations only. Requested for context."
+    },
+    {
+      "id": "k28",
+      "item": "Store note: the Family Code articles carry a note that the text is the current snapshot and does not certify applicability to an earlier case; does a visitation claim depend on an earlier wording?",
+      "from": [
+        "derivationA"
+      ],
+      "answer": "applies",
+      "refs": [
+        "b1",
+        "b3",
+        "b5"
+      ],
+      "note": "Visitation is decided on the law at the time of the claim; the note matters only if a former wording of articles 64 or 57 bis were relied on."
+    },
+    {
+      "id": "k29",
+      "item": "Store note: CPCA 600 carries a note that the commencement of law 22-13 is unsettled; does the cited paragraph differ between the two versions?",
+      "from": [
+        "derivationA"
+      ],
+      "answer": "applies",
+      "refs": [
+        "b14",
+        "b15"
+      ],
+      "note": "The cited paragraphs are the same in both versions; only the item on administrative judgments changed."
+    }
+  ],
+  "examples": [
+    {
+      "id": "ex1",
+      "by": "derivationA",
+      "title": "Clean case: divorced parents, no earlier visitation ruling, family section exists.",
+      "petitionDate": "2026-11-18",
+      "slots": {
+        "spouses_divorced": "yes",
+        "divorce_action_pending": "no",
+        "visitation_fixed_by_prior_judgment": "no",
+        "court_has_section_for_matter": "yes"
+      },
+      "expect": {
+        "section": "family",
+        "findings": [
+          {
+            "ref": "n1",
+            "effect": "none"
+          },
+          {
+            "ref": "n2",
+            "effect": "none"
+          },
+          {
+            "ref": "n3",
+            "effect": "none"
+          }
+        ],
+        "questions": []
+      }
+    },
+    {
+      "id": "ex2",
+      "by": "derivationA",
+      "title": "Earlier judgment fixed visitation and the petition only complains of non-compliance: enforcement.",
+      "petitionDate": "2026-11-18",
+      "slots": {
+        "spouses_divorced": "yes",
+        "divorce_action_pending": "no",
+        "visitation_fixed_by_prior_judgment": "yes",
+        "visitation_modification_sought": "no",
+        "court_has_section_for_matter": "yes"
+      },
+      "expect": {
+        "section": "family",
+        "findings": [
+          {
+            "ref": "n1",
+            "effect": "warn"
+          },
+          {
+            "ref": "n2",
+            "effect": "none"
+          },
+          {
+            "ref": "n3",
+            "effect": "none"
+          }
+        ],
+        "questions": []
+      }
+    },
+    {
+      "id": "ex3",
+      "by": "derivationA",
+      "title": "Earlier judgment fixed visitation and the petition asks to change it: a claim on the merits.",
+      "petitionDate": "2026-11-18",
+      "slots": {
+        "spouses_divorced": "yes",
+        "divorce_action_pending": "no",
+        "visitation_fixed_by_prior_judgment": "yes",
+        "visitation_modification_sought": "yes"
+      },
+      "expect": {
+        "findings": [
+          {
+            "ref": "n1",
+            "effect": "none"
+          }
+        ]
+      }
+    },
+    {
+      "id": "ex4",
+      "by": "derivationA",
+      "title": "Unknown whether an earlier judgment fixed visitation: ask.",
+      "petitionDate": "2026-11-18",
+      "slots": {
+        "spouses_divorced": "yes",
+        "divorce_action_pending": "no"
+      },
+      "expect": {
+        "findings": [
+          {
+            "ref": "n1",
+            "effect": "ask"
+          },
+          {
+            "ref": "n3",
+            "effect": "none"
+          }
+        ]
+      }
+    },
+    {
+      "id": "ex5",
+      "by": "derivationA",
+      "title": "Divorce case still pending: visitation belongs in that case.",
+      "petitionDate": "2026-11-18",
+      "slots": {
+        "spouses_divorced": "no",
+        "divorce_action_pending": "yes",
+        "visitation_fixed_by_prior_judgment": "no",
+        "court_has_section_for_matter": "yes"
+      },
+      "expect": {
+        "findings": [
+          {
+            "ref": "n2",
+            "effect": "warn"
+          },
+          {
+            "ref": "n3",
+            "effect": "none"
+          },
+          {
+            "ref": "n1",
+            "effect": "none"
+          }
+        ],
+        "questions": []
+      }
+    },
+    {
+      "id": "ex6",
+      "by": "derivationA",
+      "title": "Parents still married, no divorce case: warning on the ground of the claim.",
+      "petitionDate": "2026-11-18",
+      "slots": {
+        "spouses_divorced": "no",
+        "divorce_action_pending": "no",
+        "visitation_fixed_by_prior_judgment": "no",
+        "court_has_section_for_matter": "yes"
+      },
+      "expect": {
+        "findings": [
+          {
+            "ref": "n3",
+            "effect": "warn"
+          },
+          {
+            "ref": "n2",
+            "effect": "none"
+          },
+          {
+            "ref": "n1",
+            "effect": "none"
+          }
+        ],
+        "questions": []
+      }
+    },
+    {
+      "id": "ex7",
+      "by": "derivationA",
+      "title": "Court without a family section: the civil section is proposed.",
+      "petitionDate": "2026-11-18",
+      "slots": {
+        "spouses_divorced": "yes",
+        "divorce_action_pending": "no",
+        "visitation_fixed_by_prior_judgment": "no",
+        "court_has_section_for_matter": "no"
+      },
+      "expect": {
+        "section": "civil",
+        "findings": [
+          {
+            "ref": "n1",
+            "effect": "none"
+          }
+        ]
+      }
+    },
+    {
+      "id": "ex8",
+      "by": "derivationA",
+      "title": "Nothing known: the boundaries ask.",
+      "petitionDate": "2026-11-18",
+      "slots": {},
+      "expect": {
+        "section": "family",
+        "findings": [
+          {
+            "ref": "n1",
+            "effect": "ask"
+          },
+          {
+            "ref": "n2",
+            "effect": "ask"
+          },
+          {
+            "ref": "n3",
+            "effect": "ask"
+          }
+        ]
+      }
+    }
+  ]
+}

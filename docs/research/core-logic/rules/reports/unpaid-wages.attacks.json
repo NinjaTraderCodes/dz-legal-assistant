@@ -1,0 +1,124 @@
+{
+ "unit": "unpaid-wages",
+ "attacks": [
+  {
+   "id": "adv-1",
+   "who": "adversary",
+   "target": "b10, e1, doc1, o8, k2, k55",
+   "kind": "exception",
+   "claim": "Law 90-11 article 10 lets the employment contract or relationship be proved by any means (and article 8 ¶2 makes the relationship exist by the mere fact of working), which is the 'text providing otherwise' that Civil Code 333 reserves; the record keeps 333 as a limit and advises written documents.",
+   "verdict": "fixed",
+   "verifierQuote": "المادة 10 : يمكن اثبات عقد العمل أو علاقته بأية وسيلة كانت. — [المادة 8 ف 2] وتقوم هذه العلاقة، على أية حال، بمجرد العمل لحساب مستخدم ما. — [القانون المدني 333 ف 1] ... فلا يجوز الإثبات بالشهود في وجوده أو انقضائه ما لم يوجد نص يقضي بغير ذلك.",
+   "quoteRef": "Law 90-11 articles 8 ¶2 and 10, OJ 1990 no. 17, page 564 (PDF sha256 9999c31323eb0f484a3038a4d892e40d563e644e1b5a1ec3b201d4bd337efbf1); civil-code 333 ¶1 (store)",
+   "change": "e1 proof means renamed anyMeansIncludingWitnesses with a note that the published article 10 allows any means (witnesses, attendance records) beside written documents; doc1 name and why rewritten; b10 interpretiveNote quotes article 10 and says 333 is not used as a limit on proving the relationship; o8 why, readings and protective reading rewritten from the official text (grade D kept until the store holds articles 8 and 10); k2 and k55 notes updated; requests appended for labour-relations 8 and 10; example vex1."
+  },
+  {
+   "id": "adv-2",
+   "who": "adversary",
+   "target": "o1, k6, k26, k35, k56, k57, k65, r1, e2",
+   "kind": "missing",
+   "claim": "Law 90-11 articles 81 (wage items), 83 (expense refunds), 86 (payslip), 89 (priority of wages) and 90 (no opposition, seizure or deduction) exist in the Official Journal, while the record says they were not found and answers o1 from memory.",
+   "verdict": "fixed",
+   "verifierQuote": "المادة 81 : يفهم من عبارة مرتب، حسب هذا القانون، مايلي : – الأجر الأساسي الناجم عن التصنيف المهني في الهيئة المستخدمة، – التعويضات المدفوعة بحكم أقدمية العامل أو مقابل الساعات الاضافية بحكم ظروف عمل خاصة ... – العلاوات المرتبطة بانتاجية العمل ونتائجه. — المادة 86 : يدرج مبلغ الاجر وجميع عناصره بالتسمية في قسيمة الاجور الدوري التي يعدها المستخدم. ولايطبق هذا الحكم على تسديد المصاريف. — المادة 89 : تمنح الافضلية لدفع الاجور وتسبيقاتها على جميع الديون الأخرى بما فيها ديون الخزينة والضمان الاجتماعي، مهما كانت طبيعة علاقة العمل وصحتها وشكلها. — المادة 90 : لا يمكن الاعتراض على الأجور المترتبة على المستخدم كما لا يمكن حجزها أو اقتطاعها مهما كان السبب حتى لا يتضرر العمال الذين يستحقونها.",
+   "quoteRef": "Law 90-11 articles 81 and 83, OJ 1990 no. 17, page 569; articles 86, 89 and 90, page 570 (PDF sha256 9999c31323eb0f484a3038a4d892e40d563e644e1b5a1ec3b201d4bd337efbf1)",
+   "change": "o1 why, reading (now the published text, not memory) and protective reading rewritten (items split as article 81 does, expense refunds apart, articles 89 and 90 named); grade D kept because the articles are not in the store, so k26 and the other checklist lines keep searchedNotFound with notes naming the Official Journal pages; e2 factsToState now asks each item apart with expense refunds stated separately; requests appended for labour-relations 81, 83, 86, 89, 90; example vex2."
+  },
+  {
+   "id": "adv-3",
+   "who": "adversary",
+   "target": "ordinary-court-exits.x5, k27, employer_in_bankruptcy_or_settlement",
+   "kind": "exception",
+   "claim": "The import says a wage claim 'leaves the social section' when the employer is in bankruptcy or judicial settlement, while CPCA 500 gives the social section exclusive jurisdiction and Law 90-04 19 ¶2 only makes conciliation optional for that employer.",
+   "verdict": "fixed",
+   "verifierQuote": "[قانون الإجراءات المدنية والإدارية 500] يختص القسم الاجتماعي اختصاصا مانعا في المواد الآتية : ... 2 - تنفيذ وتعليق وإنهاء عقود العمل والتكوين والتمهين، — [القانون 90-04 المادة 19 ف 2] يعتبر إجراء المصالحة المنصوص عليه في الفقرة السابقة اختياريا عندما يقيم المدعى عليه خارج التراب الوطني أو حالة الإفلاس أو تسوية قضائية من قبل صاحب العمل. — [536 مكرر ف 4] – التسوية القضائية والإفلاس،",
+   "quoteRef": "cpca 500 ¶1 and ¶3; labour-disputes 19 ¶2; cpca 536 مكرر ¶1 and ¶4 (store)",
+   "change": "The record's section proposal never followed x5 (it stays social; checked with rules eval). The ordinary-court-exits import 'how' no longer says the claim leaves the social section: x5 is imported as a warning only, the bankruptcy text only makes conciliation optional. Imported ordinary-court-exits.b57 (cpca 536 مكرر) for the readings; new open point o12 (grade D: the Commercial Code texts on suspension of individual actions and declaration of claims, and Law 90-11 article 89, are not in the store) with the social-section reading as the protective rule; k27 note and refs updated; example vex3. The module's x5 itself is not edited (module record)."
+  },
+  {
+   "id": "adv-4",
+   "who": "adversary",
+   "target": "r5, b19, o9",
+   "kind": "exception",
+   "claim": "A penalty payment exists only for an obligation to do or not to do (Civil Code 174, CPCA 625) and, in the social section, for a conciliation agreement or collective agreement (CPCA 508, 509; Law 90-04 34, 35, 39); a money judgment for wages is enforced by forced execution, so r5 should not be offered for the wage sum.",
+   "verdict": "open",
+   "verifierQuote": "[القانون 90-04 المادة 39 ف 1] في حالة اكتساب الحكم الصيغة التنفيذية يحدد القاضي الغرامة التهديدية اليومية المنصوص عليها في المادتين 34 – 35 من هذا القانون. — [القانون المدني 174 ف 1] إذا كان تنفيذ الالتزام عينا غير ممكن أو غير ملائم الا إذا قام به المدين نفسه، جاز للدائن أن يحصل على حكم بالزام المدين بهذا التنفيذ وبدفع غرامة اجبارية إن امتنع عن ذلك. — [ق إ م إ 625 ف 1] ... إذا رفض المنفذ عليه تنفيذ التزام بعمل، أو خالف التزاما بالامتناع عن عمل، ... أو المطالبة بالغرامات التهديدية",
+   "quoteRef": "labour-disputes 39 ¶1, 34 ¶1, 35 ¶1; civil-code 174 ¶1; cpca 625 ¶1, 508, 509 ¶1 (store)",
+   "change": "Article 39 speaks of 'the judgment' (الحكم) having the enforcement formula and fixes 'the penalty provided in articles 34-35'; its words allow both a reading confined to the 34-35 cases and a reading that reaches social judgments with the 34 measure. Civil Code 174 and CPCA 625 are the general rule and do not say whether the special labour text departs from them. No official text decides it, so r5 stays an optional accessory resting on the interpretive b19. Added statements b33 (civil-code 174 ¶1) and b34 (cpca 625 ¶1), both interpretive, as the basis of a third reading of o9 (a penalty attends only an obligation to do, such as r4); o9 why and protective reading now name them. Searched the store for every 'غرامة تهديدية' in the CPCA and Law 90-04; no Supreme Court decision fetched."
+  },
+  {
+   "id": "adv-5",
+   "who": "adversary",
+   "target": "o4, k64, k21, ordinary-court-exits.x6",
+   "kind": "missing",
+   "claim": "Law 90-11 article 150 punishes each breach of the duty to pay the wage when due (148 payslip, 149 minimum wage, 155 settlement fine); o4 answers from memory.",
+   "verdict": "fixed",
+   "verifierQuote": "المادة 150 : يعاقب بغرامة مالية تتراوح من 1000 دج الى 2000 دج على كل مخالفة لوجوب دفع المرتب عند حلول أجل استحقاقه، وتضاعف العقوبة حسب عدد المخالفات. وفي حالة العود، تتراوح الغرامة من 2000 دج الى 4000 دج، وتطبق حسب عدد المخالفات وبالحبس من ثلاثة (3) أشهر أو باحدى هاتين العقوبتين فقط.",
+   "quoteRef": "Law 90-11 articles 148, 149, 150 and 155, OJ 1990 no. 17, page 575 (PDF sha256 9999c31323eb0f484a3038a4d892e40d563e644e1b5a1ec3b201d4bd337efbf1)",
+   "change": "o4 why, reading (the published article 150, not memory) and protective reading rewritten; grade D kept (not in the store; later changes to the fine amounts not checked); k64 and k21 notes updated; the imported exit x6 is unchanged; requests appended for labour-relations 148, 149, 150, 155; example vex4."
+  },
+  {
+   "id": "adv-6",
+   "who": "adversary",
+   "target": "n1, wages_claimed_after_dismissal",
+   "kind": "misreading",
+   "claim": "n1 classes pay claimed after a suspension or after the employer stopped the worker from working as an abusive-dismissal claim under 73-4, which concerns dismissal only; Law 90-11 articles 64 and 65 treat a disciplinary suspension and detention without final conviction as a legal suspension followed by reinstatement, and CPCA 500 ¶3 lists suspension among the social section's matters.",
+   "verdict": "fixed",
+   "verifierQuote": "[73-4 ف 1] إذا وقع تسريح العامل مخالفة للإجراءات القانونية و/أو الاتفاقية الملزمة ... — المادة 64 : تعلق علاقة العمل قانونا للأسباب التالية : ... – حرمان العامل من الحرية ما لم يصدر ضده حكم قضائي نهائي، – صدور قرار تأديبي يعلق ممارسة الوظيفة، ... المادة 65 : يعاد ادراج العمال، المشار اليهم في المادة 64 أعلاه، قانونا في مناصب عملهم أو في مناصب ذات أجر مماثل، بعد انقضاء الفترات التي تسببت في تعليق علاقة العمل. — [ق إ م إ 500 ف 3] 2 - تنفيذ وتعليق وإنهاء عقود العمل",
+   "quoteRef": "labour-relations 73-4 ¶1 (store); Law 90-11 articles 64 and 65, OJ 1990 no. 17, page 568 (PDF sha256 9999c31323eb0f484a3038a4d892e40d563e644e1b5a1ec3b201d4bd337efbf1); cpca 500 ¶3 (store)",
+   "change": "n1 looksLike and first telling fact now name a dismissal only (suspension removed); proposed slot wages_claimed_after_dismissal now asks only about a period after the dismissal, its why says a suspension without dismissal is not covered; new open point o13 (grade D: articles 64 and 65 not in the store) on pay for a suspension period, with readings on court-sections.b11/b14 and b1; requests appended for labour-relations 64 and 65; example vex5."
+  },
+  {
+   "id": "adv-7",
+   "who": "adversary",
+   "target": "periods.d3, periods.d4, o7, k13, k14, k15, k46",
+   "kind": "exception",
+   "claim": "Civil Code 313 ¶2 bars a right of article 309 recorded in a written instrument only after fifteen years, and 319 ¶2 sets fifteen years after a one-year debt is interrupted by the debtor's acknowledgement; the record warns only on one or five years from the oldest due date.",
+   "verdict": "fixed",
+   "verifierQuote": "[313 ف 2] واذا حرر سند بحق من هذه الحقوق فلا يتقادم الحق الا بانقضاء خمسة عشرة سنة . — [319 ف 2] غير أنه اذا حكم بالدين وحاز الحكم قوة الشىء المقضى بــه أو اذا كان الدين يتقادم بسنة وانقطع تقادمه باقرار المدين، كانت مدة التقادم الجديد خمسة عشرة سنة",
+   "quoteRef": "civil-code 313 ¶2 and 319 ¶2 (store, version ordinance-75-58; the amendment ledger lists no instrument touching either)",
+   "change": "Added statements b35 (civil-code 313 ¶2) and b36 (civil-code 319 ¶2); new document doc5 (any writing or acknowledgement of the arrears by the employer) citing them; new open point o14 (grade C) on which writing is an instrument and on the imported deadlines that do not read these paragraphs, protective reading: the deadlines keep warning, never block, and the writing is listed; k13, k14, k15, k46 refs and notes updated. The imported periods.d3 and d4 are not edited (module records). Example vex6."
+  },
+  {
+   "id": "adv-8",
+   "who": "adversary",
+   "target": "k32, b3, e1",
+   "kind": "missing",
+   "claim": "Law 90-11 article 4 lets regulations set a specific regime for company managers, navigation staff, ship crews, home workers, journalists, artists, commercial representatives, elite athletes and domestic staff, notwithstanding the law; the record never asks about it.",
+   "verdict": "fixed",
+   "verifierQuote": "المادة 4 : تحدد، عند الاقتضاء، أحكام خاصة، تتخذ عن طريق التنظيم، النظام النوعي لعلاقات العمل التي تعني مسيري المؤسسات ومستخدمي الملاحة الجوية والبحرية ومستخدمي السفن التجارية والصيد البحري والعمال في المنزل و الصحفيين والفنانين والمسرحيين والممثلين التجاريين ورياضي النخبة ومستخدمي البيوت، وذلك بغض النظر عن أحكام هذا القانون، وفي اطار التشريع المعمول به.",
+   "quoteRef": "Law 90-11 article 4, OJ 1990 no. 17, page 563 (PDF sha256 9999c31323eb0f484a3038a4d892e40d563e644e1b5a1ec3b201d4bd337efbf1)",
+   "change": "New checklist line k75 (from adversary, searchedNotFound: article 4 not in the store) and open point o15 (grade D) asking whether a special regulation governs the worker's pay; request appended for labour-relations 4; example vex7."
+  },
+  {
+   "id": "adv-9",
+   "who": "adversary",
+   "target": "k28, worker_pay_below_twice_snmg, doc3",
+   "kind": "amendment",
+   "claim": "Law 90-11 article 87 مكرر (items counted in the guaranteed minimum wage) was repealed by the Finance Law for 2015 (Law 14-10, said to be article 80), which changes how a minimum-wage difference is measured and possibly the legal-aid comparison.",
+   "verdict": "fixed",
+   "verifierQuote": "المادة 89 : تعدّل وتتمّم المادة 87 من القانون رقم 90–11 ... \"المادة 87 : ... تحدد العناصر المشكلة للأجر الوطني الأدنى المضمون ومبلغه بموجب مرسوم\". — المادة 90 : تلغى أحكام المادة 87 مكرر من القانون رقم 90–11 المؤرخ في 26 رمضان عام 1410 الموافق 21 أبريل سنة 1990 والمتعلق بعلاقات العمل، المعدل والمتمم.",
+   "quoteRef": "Law 14-10 of 30 December 2014 (Finance Law for 2015) articles 89 and 90, OJ 2014 no. 78, page 32 (PDF sha256 a8b96b9b60ac05da25615c38b6d6f6ebb52d3cce792e90209fbd7c12d4f3990b); the repealing article is 90, not 80",
+   "change": "New open point o16 (grade D) on which wording of article 87 and 87 مكرر governs a minimum-wage difference before the repeal and whether it bears on the legal-aid comparison of doc3; k28 refs and note updated. The wording of the repealed 87 مكرر and the repeal's date of effect were not read. Requests appended for labour-relations 87 and 87 مكرر and law-14-10 89 and 90; example vex8."
+  },
+  {
+   "id": "values-section",
+   "who": "values",
+   "target": "section",
+   "kind": "misreading",
+   "claim": "check-values: {\"item\": \"section\", \"problem\": \"messageArticleNotInBasis\", \"lang\": \"ar\", \"articles\": [\"20\", \"32\", \"500\"]}",
+   "verdict": "refuted",
+   "verifierQuote": "[ق إ م إ 500 ف 1، court-sections.b11] يختص القسم الاجتماعي اختصاصا مانعا في المواد الآتية : — [القانون 90-04 المادة 20 ف 1 و2، court-sections.b14] تنظر المحاكم الفاصلة في المسائل الاجتماعية فيما يلي : – الخلافات الفردية للعمل والناجمة عن تنفيذ او توقيف او قطع علاقة عمل — [ق إ م إ 32 ف 4، court-sections.b3] تتم جدولة القضايا أمام الأقسام حسب طبيعة النزاع.",
+   "quoteRef": "court.section.basis holds court-sections.b11 (cpca 500 ¶1-¶3), court-sections.b14 (labour-disputes 20 ¶1-¶2) and court-sections.b3 (cpca 32 ¶4), read in rules/final/court-sections.json"
+  },
+  {
+   "id": "values-section-2",
+   "who": "values",
+   "target": "section",
+   "kind": "misreading",
+   "claim": "check-values: {\"item\": \"section\", \"problem\": \"messageArticleNotInBasis\", \"lang\": \"en\", \"articles\": [\"20\", \"32\", \"500\"]}",
+   "verdict": "refuted",
+   "verifierQuote": "[ق إ م إ 500 ف 1، court-sections.b11] يختص القسم الاجتماعي اختصاصا مانعا في المواد الآتية : — [القانون 90-04 المادة 20 ف 1 و2، court-sections.b14] تنظر المحاكم الفاصلة في المسائل الاجتماعية فيما يلي : – الخلافات الفردية للعمل والناجمة عن تنفيذ او توقيف او قطع علاقة عمل — [ق إ م إ 32 ف 4، court-sections.b3] تتم جدولة القضايا أمام الأقسام حسب طبيعة النزاع.",
+   "quoteRef": "court.section.basis holds court-sections.b11 (cpca 500 ¶1-¶3), court-sections.b14 (labour-disputes 20 ¶1-¶2) and court-sections.b3 (cpca 32 ¶4), read in rules/final/court-sections.json"
+  }
+ ]
+}

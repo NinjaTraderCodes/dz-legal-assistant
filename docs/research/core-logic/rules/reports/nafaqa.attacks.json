@@ -1,0 +1,115 @@
+{
+  "unit": "nafaqa",
+  "attacks": [
+    {
+      "id": "adv-1",
+      "who": "adversary",
+      "target": "k22, k31, k21, o5",
+      "kind": "specialLaw",
+      "claim": "Law 15-01 (maintenance fund), named by k22 and k31, was repealed by Law 24-01 of 11 February 2024, which also covers the divorced woman's maintenance and the children's provisional maintenance during a divorce action, and whose article 6 has the judge notify the public prosecutor of a fund request so that prosecution for non-payment is opened.",
+      "verdict": "fixed",
+      "verifierQuote": "المادة 22 : تلغى أحكام القانون رقم 15-01 المؤرخ في 13 ربيع الأول عام 1436 الموافق 4 يناير سنة 2015 والمتضمن إنشاء صندوق النفقة، وكذا كل الأحكام المخالفة لهذا القانون. — المادة 2 : ... النفقة : المبلغ المالي المحكوم به قضاء وفقا لأحكام قانون الأسرة لصالح الطفل أو الأطفال المحضونين بعد طلاق الوالدين وكذا النفقة المحكوم بها مؤقتا لصالح الطفل أو الأطفال في حالة رفع دعوى الطلاق. وتشمل أيضا النفقة المحكوم بها للمرأة المطلقة. — المادة 6 : ... يخطر القاضي المختص وكيل الجمهورية بالطلب، قصد تحريك الدعوى العمومية تلقائيا ضد المدين من أجل جنحة عدم دفع النفقة.",
+      "quoteRef": "Law 24-01 of 11 February 2024, Official Journal 2024 issue 10: art. 2 page 4, art. 6 page 5, art. 22 page 6 (Arabic edition https://www.joradp.dz/FTP/jo-arabe/2024/A2024010.pdf, fetched by oj_fetch, SHA-256 94d871b632d28e6f01384632483c917fccd464b43497cff33f537c29b3de214d; pages read as images)",
+      "change": "k22, k31 and k21 notes now name Law 24-01 (OJ 10/2024) as the text in force, record the repeal of Law 15-01, the law's scope (art. 2) and the prosecutor's notification (art. 5, 6); o5's why points to it; new open point o11 (grade D) since the law is not in the store; requests.jsonl gains law-24-01 arts. 2, 3, 5, 6 and 22. No rule built on it. r1 and r3 already state a separate amount per creditor, so the requests are unchanged. Example ex29."
+    },
+    {
+      "id": "adv-2",
+      "who": "adversary",
+      "target": "r3, n5, k46, consummation_or_invitation",
+      "kind": "exception",
+      "claim": "The waiting period, and so idda maintenance, binds only a divorced wife whose marriage was consummated (art. 58) or a pregnant woman (art. 60); the merged slot lets a wife only called to consummation get r3 without a warning naming this, and k46 wrongly says no cited text states the length of the period.",
+      "verdict": "fixed",
+      "verifierQuote": "تعتد المطلقة المدخول بها غير الحامل بثلاثة قروء، واليائس من المحيض بثلاثة أشهر من تاريخ التصريح بالطلاق. — عدة الحامل وضع حملها، وأقصى مدة الحمل عشرة (10) أشهر من تاريخ الطلاق أو الوفاة. — ولها الحق في النفقة في عدة الطلاق.",
+      "quoteRef": "family-code 58 ¶1, 60 ¶1, 61 ¶1 (store, law-84-11 wording)",
+      "change": "Added statements b42 (family-code 58 ¶1) and b43 (family-code 60 ¶1); r3 and n5 rest on them; n5's message now names articles 58, 60 and 61 and asks to check consummation or pregnancy, the divorce date and the period claimed (n5 already warns for every divorced wife's own claim, so the called-only wife is warned); k46 note corrected. The period is not computed (it runs in menstrual cycles, and no divorce-date slot exists). Example ex30."
+    },
+    {
+      "id": "adv-3",
+      "who": "adversary",
+      "target": "n3, n9, n10, k11, maintenance_for, e4",
+      "kind": "missing",
+      "claim": "A child of full age who is still studying keeps the father's maintenance under art. 75 (not art. 77), but the custodian's guardianship covers minor children only, so the adult child must sue in his own name and lack of standing is raised by the court; the record misroutes or ignores this case.",
+      "verdict": "fixed",
+      "verifierQuote": "يكون الأب وليا على أولاده القصر ... وفي حالة الطلاق، يمنح القاضي الولاية لمن أسندت له حضانة الأولاد. — من بلغ سن الرشد ولم يحجر عليه يعتبر كامل الأهلية — يثير القاضي تلقائيا انعدام الصفة في المدعي أو في المدعى عليه. — وتستمر في حالة ما إذا كان الولد عاجزا لآفة عقلية أو بدنية أو مزاولا للدراسة",
+      "quoteRef": "family-code 87 ¶1 and ¶3, 86 ¶1, 75 ¶1; cpca 13 ¶2 (store)",
+      "change": "Added statement b44 (family-code 86 ¶1), proposed slot adult_child_claimed, boundary n12 (warns when the children's maintenance is claimed and a child has reached majority; cites b2, b13, b15, b44, b23, b24), checklist k78; k11 note corrected; the ascendant_or_descendant choice label and n3's telling facts now exclude a studying or disabled adult child (art. 75, not art. 77). Examples ex4, ex5, ex10, ex11 now state adult_child_claimed; example ex31."
+    },
+    {
+      "id": "adv-4",
+      "who": "adversary",
+      "target": "k23, n8, slots",
+      "kind": "procedure",
+      "claim": "The record has no fact for a divorce action already pending between the spouses, where the divorce judge orders provisional measures (CPCA 442, FC 57 bis) and a separate maintenance action is connected and may be handed over (CPCA 55, 56); it would draft a stand-alone petition without warning.",
+      "verdict": "fixed",
+      "verifierQuote": "يمكن للقاضي منح الزوجين مهلة تفكير لإجراء محاولة صلح جديدة، كما يجوز له اتخاذ ما يراه لازما من التدابير المؤقتة بموجب أمر غير قابل لأي طعن. — تقوم حالة الارتباط عند وجود علاقة بين قضايا مرفوعة أمام تشكيلات مختلفة لنفس الجهة القضائية، أو أمام جهات قضائية مختلفة، والتي تستلزم لحسن سير العدالة أن ينظر ويفصل فيها معا. — التخلي عن النزاع بسبب الارتباط بين القضايا، يؤمر به من طرف آخر جهة قضائية أو آخر تشكيلة طرح عليها النزاع، لصالح جهة قضائية أو تشكيلة أخرى، بموجب حكم مسبب بناء على طلب أحد الخصوم أو تلقائيا.",
+      "quoteRef": "cpca 442 ¶1, 55 ¶1, 56 ¶1 (store, law-08-09)",
+      "change": "Added statements b47 (cpca 442 ¶1), b48 (cpca 55 ¶1), b49 (cpca 56 ¶1), proposed slot divorce_action_pending, boundary n13 (warns when the spouses are not divorced and a divorce action is pending; asks when unknown), checklist k77. Existing examples now state divorce_action_pending no; ex4 asks it. Examples ex32 (warn) and ex33 (ask)."
+    },
+    {
+      "id": "adv-5",
+      "who": "adversary",
+      "target": "k9, o4, k39",
+      "kind": "caseLaw",
+      "claim": "The Supreme Court is reported (tier 3, mohamah.net) to hold that the wife's breach ends maintenance only when proved by a bailiff's report drawn up in executing a judgment, typically a return-to-home judgment; the record has no fact for that case.",
+      "verdict": "open",
+      "verifierQuote": "عند نشوز أحد الزوجين يحكم القاضي بالطلاق وبالتعويض للطرف المتضرر. — تجب نفقة الزوجة على زوجها بالدخول بها أو دعوتها إليه ببينة مع مراعاة أحكام المواد 78 و79 و80 من هذا القانون.",
+      "quoteRef": "family-code 55 ¶1 and 74 ¶1 (store); no text of the decisions found on coursupreme.dz (site-restricted search for نفقة / نشوز / محضر / حكم الرجوع إلى بيت الزوجية, 2026-11-18)",
+      "change": "No rule. The statutes in the store neither make a breach end maintenance nor exclude it; the decision was not fetched from the court's site, so it changes no rule. o4 gains the reported reading as a third reading (grade D kept), k9 note records the lead and the search. Protective reading unchanged: warn on consummation or the call, never conclude, never block."
+    },
+    {
+      "id": "adv-6",
+      "who": "adversary",
+      "target": "k30, o9",
+      "kind": "procedure",
+      "claim": "k30 says no special jurisdiction rule for a defendant abroad was found, yet CPCA 41 and 42 found the Algerian courts' jurisdiction over a foreigner (even non-resident) and an Algerian on obligations contracted with Algerians or abroad.",
+      "verdict": "fixed",
+      "verifierQuote": "يجوز أن يكلف بالحضور كل أجنبي، حتى ولو لم يكن مقيما في الجزائر، أمام الجهات القضائية الجزائرية، لتنفيذ الالتزامات التي تعاقد عليها في الجزائر مع جزائري. — كما يجوز أيضا تكليفه بالحضور أمام الجهات القضائية الجزائرية بشأن التزامات تعاقد عليها في بلد أجنبي مع جزائريين. — يجوز أن يكلف بالحضور كل جزائري أمام الجهات القضائية الجزائرية بشأن التزامات تعاقد عليها في بلد أجنبي، حتى ولو كان مع أجنبي.",
+      "quoteRef": "cpca 41 ¶1-2, 42 ¶1 (store, law-08-09)",
+      "change": "Added statements b45 (cpca 41 ¶1-2) and b46 (cpca 42 ¶1), both interpretive (whether maintenance is an obligation «تعاقد عليها» is a reading: new open point o12, grade C, both readings); k30 note corrected; n11 rests also on b45 and its message names CPCA article 41. Example ex34."
+    },
+    {
+      "id": "values-d1",
+      "who": "values",
+      "target": "d1",
+      "kind": "misreading",
+      "claim": "check-values: {\"item\": \"d1\", \"problem\": \"kindNotInText\", \"kind\": \"limitation\"}",
+      "verdict": "open",
+      "verifierQuote": "تستحق النفقة من تاريخ رفع الدعوى وللقاضي أن يحكم باستحقاقها بناء على بينة لمدة لا تتجاوز سنة قبل رفع الدعوى.",
+      "quoteRef": "family-code 80 ¶1 (store, law-84-11 wording)",
+      "change": "The paragraph holds no word of limitation (تقادم) or forfeiture (سقوط); it caps the past period the judge may award. No kind of the schema is stated by the text, so the kind is a modelling choice: d1 stays interpretive, declares warn whatever its kind, keeps its three readings and open point o1; its interpretiveNote now says the kind is not in the text."
+    },
+    {
+      "id": "values-b41",
+      "who": "values",
+      "target": "b41",
+      "kind": "misreading",
+      "claim": "check-values: {\"item\": \"b41\", \"problem\": \"numberNotInQuote\", \"lang\": \"en\", \"numbers\": [2]}",
+      "verdict": "fixed",
+      "verifierQuote": "يسرى القانون الجزائرى وحده فى الاحوال المنصوص عليها فى المادتين 11 و 12 اذا كان احد الزوجين جزائريا وقت انعقاد الزواج، الا فيما يخص أهلية الزواج.",
+      "quoteRef": "civil-code 13 ¶1 (store, original text)",
+      "change": "The paragraph names articles 11 and 12, not a count; b41's says (ar and en) no longer write «two preceding articles» but «the conditions of validity and the effects of the marriage covered by the preceding conflict rules» (civil-code 11 ¶1 and 12 ¶1 govern those), with no number. Example ex34 (n11, which rests on b41)."
+    },
+    {
+      "id": "values-section",
+      "who": "values",
+      "target": "section",
+      "kind": "misreading",
+      "claim": "check-values: {\"item\": \"section\", \"problem\": \"messageArticleNotInBasis\", \"lang\": \"ar\", \"articles\": [\"32\", \"423\"]}",
+      "verdict": "refuted",
+      "verifierQuote": "2 - دعاوى النفقة والحضانة وحق الزيارة، — غير أنه في المحاكم التي لم تنشأ فيها الأقسام، يبقى القسم المدني هو الذي ينظر في جميع النزاعات باستثناء القضايا الاجتماعية.",
+      "quoteRef": "cpca 423 ¶3 (court-sections b8, cites cpca 423 ¶1 and ¶3) and cpca 32 ¶5 (court-sections b4; b3 cites cpca 32 ¶4)",
+      "change": ""
+    },
+    {
+      "id": "values-section-2",
+      "who": "values",
+      "target": "section",
+      "kind": "misreading",
+      "claim": "check-values: {\"item\": \"section\", \"problem\": \"messageArticleNotInBasis\", \"lang\": \"en\", \"articles\": [\"32\", \"423\"]}",
+      "verdict": "refuted",
+      "verifierQuote": "2 - دعاوى النفقة والحضانة وحق الزيارة، — غير أنه في المحاكم التي لم تنشأ فيها الأقسام، يبقى القسم المدني هو الذي ينظر في جميع النزاعات باستثناء القضايا الاجتماعية.",
+      "quoteRef": "cpca 423 ¶3 and cpca 32 ¶5, the paragraphs of the imported statements court-sections.b8, court-sections.b3 and court-sections.b4 named in the section rule's basis and alternative",
+      "change": ""
+    }
+  ]
+}

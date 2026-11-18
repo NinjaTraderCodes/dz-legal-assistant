@@ -908,6 +908,425 @@
       "readFromNote": false,
       "origin": "labour-prelitigation",
       "why": "Deadline d3 runs from it (CPCA 504 as read by the Supreme Court, file 1488919, 07-10-2021; attack adv-1)."
+    },
+    {
+      "id": "wages_claimed_after_dismissal",
+      "type": "yesNoUnknown",
+      "question": {
+        "ar": "هل يطالب العامل بأجور عن فترة لاحقة لتسريحه؟",
+        "en": "Does the worker claim pay for a period after his dismissal?"
+      },
+      "askedFor": [
+        "unpaid-wages"
+      ],
+      "readFromNote": false,
+      "origin": "unpaid-wages",
+      "why": "Boundary n1 reads it: Law 90-11 article 80 paragraph 1 ties the wage to work performed, while article 73-4 paragraph 1 grants a worker dismissed in breach of procedure a compensation measured on the wage he would have earned had he gone on working; pay claimed for a period after a dismissal belongs to the dismissal claim. A suspension without dismissal is not covered: article 73-4 concerns dismissal only (open point o13)."
+    },
+    {
+      "id": "worker_pay_below_twice_snmg",
+      "type": "yesNoUnknown",
+      "question": {
+        "ar": "هل يقل مرتب العامل عن ضعف الأجر الوطني الأدنى المضمون؟",
+        "en": "Is the worker's pay below twice the national guaranteed minimum wage?"
+      },
+      "askedFor": [
+        "unpaid-wages"
+      ],
+      "readFromNote": false,
+      "origin": "unpaid-wages",
+      "why": "Document doc3 reads it: Law 90-04 article 25 paragraph 1 grants legal aid as of right to a worker whose pay is below twice the guaranteed minimum wage, and CPCA article 417 paragraph 2 exempts a beneficiary from court costs."
+    },
+    {
+      "id": "dismissal_date",
+      "type": "date",
+      "question": {
+        "ar": "ما تاريخ تسريح المدعي أو فصله من العمل (تاريخ تبليغ قرار التسريح، أو تاريخ منعه فعلا من العمل إن لم يصدر قرار مكتوب)؟",
+        "en": "On what date was the plaintiff dismissed (the date the dismissal decision was notified, or the date he was in fact kept from work when no written decision was given)?"
+      },
+      "askedFor": [
+        "abusive-dismissal"
+      ],
+      "readFromNote": false,
+      "origin": "abusive-dismissal",
+      "why": "Element e2 reads it (event dismissal); labour-relations 73-4 ¶1 measures the compensation for a procedural breach on the pay the worker would have received had he stayed at work, which runs from this date. Proposed by both derivations (same id)."
+    },
+    {
+      "id": "dismissal_notified_in_writing",
+      "type": "yesNoUnknown",
+      "question": {
+        "ar": "هل بلغ قرار التسريح إلى العامل كتابة؟",
+        "en": "Was the dismissal decision notified to the worker in writing?"
+      },
+      "askedFor": [
+        "abusive-dismissal"
+      ],
+      "readFromNote": false,
+      "origin": "abusive-dismissal",
+      "why": "Boundary n3 and elements e2 and e3 read it; labour-relations 73-2 ¶2 requires the procedure to provide for written notification, and 73-4 ¶1 attaches its own remedy to a breach of the procedure. Proposed by derivation B."
+    },
+    {
+      "id": "worker_heard_before_dismissal",
+      "type": "yesNoUnknown",
+      "question": {
+        "ar": "هل استمع المستخدم إلى العامل قبل تسريحه؟",
+        "en": "Did the employer hear the worker before the dismissal?"
+      },
+      "askedFor": [
+        "abusive-dismissal"
+      ],
+      "readFromNote": false,
+      "origin": "abusive-dismissal",
+      "why": "Boundary n3 and elements e2 and e3 read it; labour-relations 73-2 ¶2 requires the procedure to provide for the employer to hear the worker, and 73-4 ¶1 attaches its own remedy to a breach of the procedure. Proposed by derivation B."
+    },
+    {
+      "id": "lease_form",
+      "type": "choice",
+      "question": {
+        "ar": "في أي شكل أبرم عقد الإيجار؟",
+        "en": "In what form was the lease made?"
+      },
+      "choices": [
+        {
+          "id": "official",
+          "label": {
+            "ar": "عقد رسمي (محرر لدى موثق)",
+            "en": "An official deed (drawn up by a notary)"
+          }
+        },
+        {
+          "id": "private_fixed_date",
+          "label": {
+            "ar": "عقد عرفي ثابت التاريخ (مسجل أو مؤشر عليه من ضابط عمومي)",
+            "en": "A private written contract with a fixed date (registered, or endorsed by a public officer)"
+          }
+        },
+        {
+          "id": "private_no_fixed_date",
+          "label": {
+            "ar": "عقد عرفي مكتوب غير ثابت التاريخ",
+            "en": "A private written contract without a fixed date"
+          }
+        },
+        {
+          "id": "oral",
+          "label": {
+            "ar": "إيجار شفهي دون كتابة",
+            "en": "An oral lease, with nothing in writing"
+          }
+        }
+      ],
+      "askedFor": [
+        "unpaid-rent"
+      ],
+      "readFromNote": false,
+      "origin": "unpaid-rent",
+      "why": "Boundaries n1 and n2 read it: civil-code 467 مكرر makes a lease void unless written with a fixed date (328 says when a private contract's date is fixed), and civil-code 324 مكرر 1 and commercial-code 187 مكرر require the official form for commercial leases on pain of nullity. It replaces derivation B's lease_in_writing_with_certain_date and commercial_lease_in_official_form."
+    },
+    {
+      "id": "lease_has_rescission_clause",
+      "type": "yesNoUnknown",
+      "question": {
+        "ar": "هل يتضمن عقد الإيجار شرطا يقضي بفسخه بقوة القانون عند عدم دفع بدل الإيجار في مواعيده؟",
+        "en": "Does the lease contain a clause that rescinds it by law if the rent is not paid on the agreed dates?"
+      },
+      "askedFor": [
+        "unpaid-rent"
+      ],
+      "readFromNote": false,
+      "origin": "unpaid-rent",
+      "why": "Prior step p1 reads it: Commercial Code 191 gives such a clause in a commercial lease effect only one month after an unanswered demand to pay that mentions the period."
+    },
+    {
+      "id": "rescission_clause_notice_month_elapsed",
+      "type": "yesNoUnknown",
+      "question": {
+        "ar": "هل وجه إلى المستأجر إخطار بالدفع يذكر مهلة الشهر، ومضى شهر كامل من تبليغه دون دفع قبل تاريخ العريضة؟",
+        "en": "Was the tenant served with a demand to pay that mentions the one-month period, and had a full month passed since it without payment before the petition's date?"
+      },
+      "askedFor": [
+        "unpaid-rent"
+      ],
+      "readFromNote": false,
+      "origin": "unpaid-rent",
+      "why": "Prior step p1 (its own slot) reads it: Commercial Code 191 ¶1 and ¶2."
+    },
+    {
+      "id": "petition_lodged_for_publication",
+      "type": "yesNoUnknown",
+      "question": {
+        "ar": "هل أودعت عريضة الدعوى للإشهار بالمحافظة العقارية، أو سيقدم ما يثبت إيداعها في أول جلسة؟",
+        "en": "Has the petition been lodged for publication at the land registry, or will proof of lodging be shown at the first hearing?"
+      },
+      "askedFor": [
+        "unpaid-rent"
+      ],
+      "readFromNote": false,
+      "origin": "unpaid-rent",
+      "why": "Prior step p2 (its own slot) reads it: cpca 17 ¶3 requires publication of a petition relating to a published immovable or real right, on pain of formal inadmissibility unless its lodging for publication is proved. It replaces derivation B's petition_published_at_land_registry."
+    },
+    {
+      "id": "lease_term_expired",
+      "type": "yesNoUnknown",
+      "question": {
+        "ar": "هل انقضى الأجل المتفق عليه في عقد الإيجار قبل رفع الدعوى، ولو بقي المستأجر في العين بعده أو لم يوجه إليه تنبيه بالإخلاء؟",
+        "en": "Did the term agreed in the lease end before the claim is filed, even if the tenant stayed on or no notice to quit was served?"
+      },
+      "askedFor": [
+        "unpaid-rent"
+      ],
+      "readFromNote": false,
+      "origin": "unpaid-rent",
+      "why": "Boundaries n3 and n9 read it: Civil Code 469 مكرر 1 and Commercial Code 187 مكرر ¶2 end the lease at its term, after which Civil Code 502 gives compensation for holding over rather than rent; Commercial Code 173 ends a commercial lease made before law 05-02 only by a notice to quit, failing which a written lease continues by tacit extension."
+    },
+    {
+      "id": "lease_with_public_housing_body",
+      "type": "yesNoUnknown",
+      "question": {
+        "ar": "هل الإيجار إيجار سكني مبرم مع مؤسسة عمومية مختصة في السكن؟",
+        "en": "Is the lease a residential lease made with a competent public housing institution?"
+      },
+      "askedFor": [
+        "unpaid-rent"
+      ],
+      "readFromNote": false,
+      "origin": "unpaid-rent",
+      "why": "Boundary n4 reads it: Civil Code 507 مكرر 1 keeps such leases under their own special provisions."
+    },
+    {
+      "id": "leased_thing",
+      "type": "choice",
+      "question": {
+        "ar": "ما محل الإيجار؟",
+        "en": "What is leased?"
+      },
+      "choices": [
+        {
+          "id": "premises",
+          "label": {
+            "ar": "مسكن أو محل مهني أو محل تجاري",
+            "en": "A dwelling, professional premises or business premises"
+          }
+        },
+        {
+          "id": "agricultural",
+          "label": {
+            "ar": "أرض أو مستثمرة فلاحية (إيجار فلاحي)",
+            "en": "Agricultural land or a farm (an agricultural lease)"
+          }
+        },
+        {
+          "id": "business_management",
+          "label": {
+            "ar": "تسيير محل تجاري أو مؤسسة صناعية (عقد تسيير)",
+            "en": "The running of a business or industrial establishment (a management contract)"
+          }
+        },
+        {
+          "id": "other_immovable",
+          "label": {
+            "ar": "عقار آخر (أرض أو مستودع أو غيرهما)",
+            "en": "Another immovable (land, a warehouse or the like)"
+          }
+        },
+        {
+          "id": "movable",
+          "label": {
+            "ar": "منقول (مركبة أو آلة أو عتاد أو غيرها)",
+            "en": "A movable (a vehicle, machine, equipment or the like)"
+          }
+        }
+      ],
+      "askedFor": [
+        "unpaid-rent"
+      ],
+      "readFromNote": false,
+      "origin": "unpaid-rent",
+      "why": "Boundary n10, the section rule and territory rule t1 read it: a lease may be of any thing (civil-code 467 ¶1); civil-code 324 مكرر 1 ¶1 requires the official form for agricultural leases and business-management contracts; cpca 512 ¶11 and ¶12 give the real-estate section leases of dwellings, professional premises and agricultural leases, and cpca 40 ¶2 reaches only lease actions relating to immovables, so a movable's lease follows cpca 32 ¶4 and 37 ¶1."
+    },
+    {
+      "id": "periods_claimed_after_term",
+      "type": "yesNoUnknown",
+      "question": {
+        "ar": "هل تشمل الفترات المطالب بها فترات لاحقة لانقضاء الأجل المتفق عليه في العقد؟",
+        "en": "Do the periods claimed include periods after the agreed term of the lease ended?"
+      },
+      "askedFor": [
+        "unpaid-rent"
+      ],
+      "readFromNote": false,
+      "origin": "unpaid-rent",
+      "why": "Boundaries n3 and n9 read it: rent that fell due during the term is owed as rent under civil-code 498 ¶1, while civil-code 502 ¶1 speaks of keeping the property after the end of the term."
+    },
+    {
+      "id": "tenant_in_collective_procedure",
+      "type": "yesNoUnknown",
+      "question": {
+        "ar": "هل صدر حكم بإفلاس المستأجر أو بتسويته القضائية أو بتصفيته القضائية؟",
+        "en": "Has a judgment opened bankruptcy, judicial settlement or judicial liquidation against the tenant?"
+      },
+      "askedFor": [
+        "unpaid-rent"
+      ],
+      "readFromNote": false,
+      "origin": "unpaid-rent",
+      "why": "Boundary n11 reads it: commercial-code 201 ¶1 keeps the lease of premises used for trade, industry or crafts despite the tenant's bankruptcy or judicial liquidation and voids a contrary clause; cpca 536 مكرر ¶4 gives judicial settlement and bankruptcy to the specialised commercial court."
+    },
+    {
+      "id": "maintenance_unpaid_since",
+      "type": "date",
+      "question": {
+        "ar": "منذ أي تاريخ توقف المدعى عليه عن الإنفاق؟",
+        "en": "Since what date has the defendant stopped maintaining?"
+      },
+      "askedFor": [
+        "nafaqa"
+      ],
+      "readFromNote": false,
+      "origin": "nafaqa",
+      "why": "Deadline d1 and element e5 read it: family-code article 80 lets the judge award maintenance for no more than a year before filing. Same id in A and B."
+    },
+    {
+      "id": "maintenance_for",
+      "type": "choice",
+      "question": {
+        "ar": "لمن تطلب النفقة؟",
+        "en": "For whom is maintenance claimed?"
+      },
+      "choices": [
+        {
+          "id": "wife",
+          "label": {
+            "ar": "للزوجة أو المطلقة وحدها",
+            "en": "The wife or former wife only"
+          }
+        },
+        {
+          "id": "children",
+          "label": {
+            "ar": "للأولاد وحدهم (يطالب الحاضن أو الولي باسمهم)",
+            "en": "The children only (the custodian or guardian claims in their name)"
+          }
+        },
+        {
+          "id": "wife_and_children",
+          "label": {
+            "ar": "للزوجة أو المطلقة وللأولاد",
+            "en": "The wife or former wife and the children"
+          }
+        },
+        {
+          "id": "ascendant_or_descendant",
+          "label": {
+            "ar": "لأصل أو فرع (والد، أو ولد بالغ لا يزاول الدراسة وغير عاجز)",
+            "en": "An ascendant or descendant (a parent, or an adult child who is neither studying nor disabled)"
+          }
+        }
+      ],
+      "askedFor": [
+        "nafaqa"
+      ],
+      "readFromNote": false,
+      "origin": "nafaqa",
+      "why": "Boundaries n3, n5, n6, n9, documents doc3, doc7, doc9, doc10 and elements e2, e4 read it: family-code 74 and 61 (wife), 75 and 87 (children) and 77 (ascendants and descendants) set different conditions. Merges A's maintenance_for and B's maintenance_creditor; whether the marriage was dissolved is held by spouses_divorced."
+    },
+    {
+      "id": "consummation_or_invitation",
+      "type": "yesNoUnknown",
+      "question": {
+        "ar": "هل وقع الدخول بالزوجة أو الدعوة إليه، وهل تقوم على ذلك بينة؟",
+        "en": "Was the marriage consummated, or was there a call (دعوتها) to consummate it, and can it be proved?"
+      },
+      "askedFor": [
+        "nafaqa"
+      ],
+      "readFromNote": false,
+      "origin": "nafaqa",
+      "why": "Boundary n6, element e2 and document doc7 read it: family-code article 74 makes the wife's maintenance due upon consummation or the call to it, on evidence. Merges A's consummation_or_invitation and B's wife_entered_or_called_with_proof; the question keeps the text's own word because the text does not say who makes the call (open point o10)."
+    },
+    {
+      "id": "spouses_divorced",
+      "type": "yesNoUnknown",
+      "question": {
+        "ar": "هل وقع الطلاق بين الطرفين بحكم؟",
+        "en": "Has a divorce between the parties been pronounced by judgment?"
+      },
+      "askedFor": [
+        "nafaqa"
+      ],
+      "readFromNote": false,
+      "origin": "nafaqa",
+      "why": "Requests r3, r4, r5, boundaries n5, n9, documents doc2, doc10 and elements e3, e4 read it: family-code articles 61 and 72 apply after divorce, 87 paragraph 3 moves guardianship on divorce. Holds the fact B carried in the choice divorced_wife of maintenance_creditor."
+    },
+    {
+      "id": "marriage_registered",
+      "type": "yesNoUnknown",
+      "question": {
+        "ar": "هل الزواج مسجل في سجل الحالة المدنية؟",
+        "en": "Is the marriage registered in the civil-status register?"
+      },
+      "askedFor": [
+        "nafaqa"
+      ],
+      "readFromNote": false,
+      "origin": "nafaqa",
+      "why": "Boundary n4 and element e1 read it: family-code article 22 proves an unregistered marriage only by a judgment."
+    },
+    {
+      "id": "maintenance_previously_judged",
+      "type": "yesNoUnknown",
+      "question": {
+        "ar": "هل سبق أن صدر حكم بالنفقة بين الطرفين، مع ذكر تاريخه إن وجد؟",
+        "en": "Has a judgment already awarded maintenance between the parties? (Give its date if so.)"
+      },
+      "askedFor": [
+        "nafaqa"
+      ],
+      "readFromNote": false,
+      "origin": "nafaqa",
+      "why": "Boundary n1 and document doc6 read it: family-code article 79 bars revision of an assessment before a year from the judgment. Merges A's maintenance_previously_judged and B's maintenance_judgment_date (the date itself drives no computable rule: the record cannot add a year to a slot)."
+    },
+    {
+      "id": "debtor_is_foreign_national",
+      "type": "yesNoUnknown",
+      "question": {
+        "ar": "هل المدعى عليه أجنبي الجنسية؟",
+        "en": "Is the defendant of foreign nationality?"
+      },
+      "askedFor": [
+        "nafaqa"
+      ],
+      "readFromNote": false,
+      "origin": "nafaqa",
+      "why": "Boundary n11 reads it: civil-code articles 12, 13 and 14 choose the applicable law by nationality."
+    },
+    {
+      "id": "adult_child_claimed",
+      "type": "yesNoUnknown",
+      "question": {
+        "ar": "هل بلغ أحد الأولاد المطالب بنفقتهم سن الرشد؟",
+        "en": "Has any child for whom maintenance is claimed reached majority?"
+      },
+      "askedFor": [
+        "nafaqa"
+      ],
+      "readFromNote": false,
+      "origin": "nafaqa",
+      "why": "Boundary n12 reads it (verifier, attack adv-3): family-code 75 continues maintenance for a studying or disabled child, while family-code 86 and 87 give guardianship over minor children only, and CPCA 13 has the judge raise lack of standing of his own motion."
+    },
+    {
+      "id": "divorce_action_pending",
+      "type": "yesNoUnknown",
+      "question": {
+        "ar": "هل توجد بين الزوجين دعوى طلاق أو تطليق أو خلع قائمة لم يفصل فيها؟",
+        "en": "Is a divorce, judicial-divorce or khul action between the spouses pending and not yet decided?"
+      },
+      "askedFor": [
+        "nafaqa"
+      ],
+      "readFromNote": false,
+      "origin": "nafaqa",
+      "why": "Boundary n13 reads it (verifier, attack adv-4): CPCA 442 lets the divorce judge order provisional measures, and CPCA 55 and 56 let a connected case be handed over."
     }
   ]
 }

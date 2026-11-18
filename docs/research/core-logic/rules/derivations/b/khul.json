@@ -1,0 +1,1905 @@
+{
+ "schemaVersion": "1.0",
+ "kind": "claim",
+ "id": "khul",
+ "label": {
+  "ar": "الخلع",
+  "en": "Khul"
+ },
+ "verified": false,
+ "stage": "derivationB",
+ "derivedBy": {
+  "role": "derivationB",
+  "model": "claude-sonnet-5-5",
+  "date": "2026-11-18"
+ },
+ "area": "family",
+ "imports": [
+  {
+   "module": "court-sections",
+   "blocks": [
+    "b3",
+    "b4",
+    "b5",
+    "b7",
+    "b8",
+    "b30",
+    "b34",
+    "b42",
+    "t4",
+    "n5"
+   ],
+   "how": {
+    "ar": "تُستورد قواعد قسم شؤون الأسرة واختصاصه الإقليمي والنيابة العامة والتدابير الاستعجالية ولا تُعاد صياغتها هنا.",
+    "en": "The rules on the family section, its territory, the public prosecutor and urgent measures are imported and not restated here."
+   }
+  }
+ ],
+ "checklist": [
+  {
+   "id": "k1",
+   "item": "Is the plaintiff the wife, and is there a valid marriage between the parties (contract or judgment proving it)?",
+   "from": [
+    "derivationB"
+   ],
+   "answer": "applies",
+   "refs": [
+    "e1",
+    "b19",
+    "doc1",
+    "doc2"
+   ]
+  },
+  {
+   "id": "k2",
+   "item": "Is the marriage registered in the civil-status register, or must proof of marriage be sought first?",
+   "from": [
+    "derivationB"
+   ],
+   "answer": "applies",
+   "refs": [
+    "b19",
+    "n4",
+    "doc2"
+   ]
+  },
+  {
+   "id": "k3",
+   "item": "Is the claim a khul (wife frees herself for money) and not a tatliq or a divorce at the husband's will?",
+   "from": [
+    "derivationB"
+   ],
+   "answer": "applies",
+   "refs": [
+    "n1",
+    "n5",
+    "b3"
+   ]
+  },
+  {
+   "id": "k4",
+   "item": "Does the wife offer a consideration, and is the sum stated in the petition?",
+   "from": [
+    "derivationB"
+   ],
+   "answer": "applies",
+   "refs": [
+    "e2",
+    "r1",
+    "b1"
+   ]
+  },
+  {
+   "id": "k5",
+   "item": "Does khul require the husband's consent, or may the court grant it without it?",
+   "from": [
+    "derivationB"
+   ],
+   "answer": "applies",
+   "refs": [
+    "b1"
+   ]
+  },
+  {
+   "id": "k6",
+   "item": "If the parties disagree on the sum, what limit does the judge apply (the dower of the like)?",
+   "from": [
+    "derivationB"
+   ],
+   "answer": "applies",
+   "refs": [
+    "b2",
+    "doc4"
+   ]
+  },
+  {
+   "id": "k7",
+   "item": "Does the wife need to prove any cause or harm?",
+   "from": [
+    "derivationB"
+   ],
+   "answer": "applies",
+   "refs": [
+    "b1",
+    "b12",
+    "o8"
+   ],
+   "note": "Article 54 states no cause; article 451 leaves the facts to be qualified."
+  },
+  {
+   "id": "k8",
+   "item": "Which section of the court hears the claim (family affairs section)?",
+   "from": [
+    "derivationB"
+   ],
+   "answer": "applies",
+   "refs": [
+    "court-sections.b7",
+    "n5"
+   ]
+  },
+  {
+   "id": "k9",
+   "item": "Which court has territorial jurisdiction (place of the conjugal home, or where the custodian lives, etc.)?",
+   "from": [
+    "derivationB"
+   ],
+   "answer": "applies",
+   "refs": [
+    "court-sections.t4",
+    "t1",
+    "b31"
+   ]
+  },
+  {
+   "id": "k10",
+   "item": "Is the territorial rule one of public order?",
+   "from": [
+    "derivationB"
+   ],
+   "answer": "searchedNotFound",
+   "refs": [
+    "o2"
+   ],
+   "note": "Searched articles 36 to 46 and 51 of the procedure code: article 36 makes only subject-matter incompetence public order; no text qualifies territorial incompetence in family matters."
+  },
+  {
+   "id": "k11",
+   "item": "Is a divorce, tatliq or khul action between the spouses already pending and undecided?",
+   "from": [
+    "derivationB"
+   ],
+   "answer": "applies",
+   "refs": [
+    "n3",
+    "b33",
+    "b34"
+   ]
+  },
+  {
+   "id": "k12",
+   "item": "Is a conciliation attempt by the judge mandatory, in how many sessions and within what maximum period?",
+   "from": [
+    "derivationB"
+   ],
+   "answer": "applies",
+   "refs": [
+    "b4",
+    "b9",
+    "b10",
+    "o1"
+   ],
+   "note": "The texts give no number of sessions: several attempts within three months."
+  },
+  {
+   "id": "k13",
+   "item": "Is the conciliation record required and what happens if the attempt is omitted?",
+   "from": [
+    "derivationB"
+   ],
+   "answer": "applies",
+   "refs": [
+    "b5",
+    "b11"
+   ],
+   "note": "No sanction for an omitted attempt is stated."
+  },
+  {
+   "id": "k14",
+   "item": "Is there a time limit to file the khul claim, or may it be filed at any time?",
+   "from": [
+    "derivationB"
+   ],
+   "answer": "searchedNotFound",
+   "refs": [
+    "o6"
+   ],
+   "note": "Searched the Family Code articles 48 to 57 and the procedure code articles 423 to 453: no period for filing."
+  },
+  {
+   "id": "k15",
+   "item": "Does the public prosecutor have to be joined in the case?",
+   "from": [
+    "derivationB"
+   ],
+   "answer": "applies",
+   "refs": [
+    "court-sections.b34",
+    "b8"
+   ]
+  },
+  {
+   "id": "k16",
+   "item": "Which elements of the petition are mandatory, and is a lawyer required?",
+   "from": [
+    "derivationB"
+   ],
+   "answer": "doesNotApply",
+   "refs": [
+    "o7"
+   ],
+   "note": "Belongs to the petition-formal-elements module, for which no final record was available."
+  },
+  {
+   "id": "k17",
+   "item": "Which documents must be attached (marriage certificate, family record, children's birth extracts)?",
+   "from": [
+    "derivationB"
+   ],
+   "answer": "applies",
+   "refs": [
+    "doc1",
+    "doc2",
+    "doc3",
+    "doc4"
+   ],
+   "note": "The store has no text requiring a family record or birth extracts in a khul claim."
+  },
+  {
+   "id": "k18",
+   "item": "Are there children, and does the petition ask for custody, visitation, maintenance and housing for them?",
+   "from": [
+    "derivationB"
+   ],
+   "answer": "applies",
+   "refs": [
+    "r2",
+    "r3",
+    "r4",
+    "r5"
+   ]
+  },
+  {
+   "id": "k19",
+   "item": "Can maintenance of the idda period be claimed together with khul, or is it waived by the consideration?",
+   "from": [
+    "derivationB"
+   ],
+   "answer": "applies",
+   "refs": [
+    "r2",
+    "b20",
+    "o4"
+   ]
+  },
+  {
+   "id": "k20",
+   "item": "Does the wife keep the right to maintenance of the children after khul?",
+   "from": [
+    "derivationB"
+   ],
+   "answer": "applies",
+   "refs": [
+    "b22",
+    "r2",
+    "o4"
+   ]
+  },
+  {
+   "id": "k21",
+   "item": "Who is entitled to custody and what is the housing of the custodian?",
+   "from": [
+    "derivationB"
+   ],
+   "answer": "applies",
+   "refs": [
+    "b25",
+    "b26",
+    "b27",
+    "r3",
+    "r5"
+   ]
+  },
+  {
+   "id": "k22",
+   "item": "Does the wife ask to recover her furniture and jewellery, and how does she prove ownership?",
+   "from": [
+    "derivationB"
+   ],
+   "answer": "applies",
+   "refs": [
+    "r6",
+    "b28",
+    "b29",
+    "b36",
+    "doc3"
+   ]
+  },
+  {
+   "id": "k23",
+   "item": "Can the consideration include waiving the dower, the maintenance or the custody?",
+   "from": [
+    "derivationB"
+   ],
+   "answer": "searchedNotFound",
+   "refs": [
+    "o4"
+   ],
+   "note": "Searched Family Code articles 14 to 17 and 48 to 57: nothing on the content of the consideration."
+  },
+  {
+   "id": "k24",
+   "item": "Is the consideration subject to any limit (not exceeding the dower of the like at judgment)?",
+   "from": [
+    "derivationB"
+   ],
+   "answer": "applies",
+   "refs": [
+    "b2",
+    "doc4"
+   ]
+  },
+  {
+   "id": "k25",
+   "item": "Is the judgment on khul appealable, and which parts?",
+   "from": [
+    "derivationB"
+   ],
+   "answer": "applies",
+   "refs": [
+    "b13",
+    "b14",
+    "b15",
+    "o3"
+   ]
+  },
+  {
+   "id": "k26",
+   "item": "Does the appeal suspend enforcement of the dissolution?",
+   "from": [
+    "derivationB"
+   ],
+   "answer": "applies",
+   "refs": [
+    "b16",
+    "b17"
+   ]
+  },
+  {
+   "id": "k27",
+   "item": "Is the judgment provisionally enforceable as to maintenance and custody?",
+   "from": [
+    "derivationB"
+   ],
+   "answer": "applies",
+   "refs": [
+    "b30",
+    "r7"
+   ]
+  },
+  {
+   "id": "k28",
+   "item": "Is the request for provisional measures (maintenance, residence, custody) available during the case?",
+   "from": [
+    "derivationB"
+   ],
+   "answer": "applies",
+   "refs": [
+    "b18",
+    "court-sections.b30"
+   ]
+  },
+  {
+   "id": "k29",
+   "item": "Which means of proof apply to marriage and to the consideration?",
+   "from": [
+    "derivationB"
+   ],
+   "answer": "doesNotApply",
+   "refs": [
+    "b19",
+    "o7"
+   ],
+   "note": "Marriage: article 22. Proof in general belongs to the proof module, for which no final record was available."
+  },
+  {
+   "id": "k30",
+   "item": "Does the idda start with the final judgment, and is the husband's remarriage right affected?",
+   "from": [
+    "derivationB"
+   ],
+   "answer": "applies",
+   "refs": [
+    "b21",
+    "o5"
+   ],
+   "note": "The article counts from the declaration of divorce; nothing on the husband's remarriage."
+  },
+  {
+   "id": "k31",
+   "item": "What if the husband is abroad or his address is unknown?",
+   "from": [
+    "derivationB"
+   ],
+   "answer": "applies",
+   "refs": [
+    "b35"
+   ],
+   "note": "The summons period is extended to three months for a defendant abroad; the unknown-domicile case is in the territorial module."
+  },
+  {
+   "id": "k32",
+   "item": "Which costs and fees apply and who bears them?",
+   "from": [
+    "derivationB"
+   ],
+   "answer": "doesNotApply",
+   "refs": [
+    "o7"
+   ],
+   "note": "Fees and costs belong to the petition-formal-elements and accessory-requests modules, for which no final record was available."
+  },
+  {
+   "id": "k33",
+   "item": "The store carries a note on articles 54, 57 and 72 saying the current text is checked at a recorded cut-off and does not certify applicability to an earlier case: what does it raise?",
+   "from": [
+    "derivationB"
+   ],
+   "answer": "applies",
+   "refs": [
+    "b2",
+    "b13",
+    "b26"
+   ],
+   "note": "The 2005 wording is cited; a case on a marriage or a dissolution dating before the 2005 amendment may fall under the earlier wording, which the store does not hold."
+  }
+ ],
+ "basis": [
+  {
+   "id": "b1",
+   "role": "basis",
+   "cite": {
+    "code": "family-code",
+    "article": "54",
+    "paragraphs": [
+     1
+    ]
+   },
+   "says": {
+    "ar": "يجوز للزوجة أن تخالع نفسها بمقابل مالي دون موافقة الزوج.",
+    "en": "The wife may free herself by khul for a sum of money without her husband's consent."
+   },
+   "required": true
+  },
+  {
+   "id": "b2",
+   "role": "limit",
+   "cite": {
+    "code": "family-code",
+    "article": "54",
+    "paragraphs": [
+     2
+    ]
+   },
+   "says": {
+    "ar": "إذا لم يتفق الزوجان على المقابل المالي، يحكم القاضي بما لا يتجاوز قيمة صداق المثل وقت صدور الحكم.",
+    "en": "If the spouses do not agree on the sum, the judge awards a sum that may not exceed the dower of the like, valued when the judgment is given."
+   },
+   "required": true
+  },
+  {
+   "id": "b3",
+   "role": "basis",
+   "cite": {
+    "code": "family-code",
+    "article": "48",
+    "paragraphs": [
+     1
+    ]
+   },
+   "says": {
+    "ar": "يتم حل عقد الزواج بالطلاق، ومنه ما يكون بطلب من الزوجة في حدود ما نص عليه القانون.",
+    "en": "Marriage is dissolved by divorce, including divorce at the wife's request within the limits the law sets."
+   }
+  },
+  {
+   "id": "b4",
+   "role": "procedure",
+   "cite": {
+    "code": "family-code",
+    "article": "49",
+    "paragraphs": [
+     1
+    ]
+   },
+   "says": {
+    "ar": "لا يثبت الطلاق إلا بحكم بعد عدة محاولات صلح يجريها القاضي في مدة محددة من تاريخ رفع الدعوى.",
+    "en": "Divorce is established only by judgment, after several conciliation attempts by the judge within a limited period from the filing of the claim."
+   },
+   "interpretive": true,
+   "interpretiveNote": "The article speaks of divorce; that khul falls within it rests on the Family Code treating khul as a way of dissolving marriage on the wife's request and on the procedure code placing the khul request in the divorce chapter."
+  },
+  {
+   "id": "b5",
+   "role": "procedure",
+   "cite": {
+    "code": "family-code",
+    "article": "49",
+    "paragraphs": [
+     2
+    ]
+   },
+   "says": {
+    "ar": "يحرر القاضي محضرا بمساعي الصلح ونتائجها يوقعه مع كاتب الضبط والطرفين.",
+    "en": "The judge draws up a record of the conciliation attempts and their results, signed with the clerk and the parties."
+   }
+  },
+  {
+   "id": "b6",
+   "role": "procedure",
+   "cite": {
+    "code": "family-code",
+    "article": "49",
+    "paragraphs": [
+     3
+    ]
+   },
+   "says": {
+    "ar": "تسجل أحكام الطلاق وجوبا في الحالة المدنية بسعي من النيابة العامة.",
+    "en": "Divorce judgments must be registered in the civil-status register at the public prosecutor's initiative."
+   }
+  },
+  {
+   "id": "b7",
+   "role": "procedure",
+   "cite": {
+    "code": "cpca",
+    "article": "436",
+    "paragraphs": [
+     1
+    ]
+   },
+   "says": {
+    "ar": "ترفع دعوى الطلاق أمام قسم شؤون الأسرة بعريضة وفق أشكال رفع الدعوى.",
+    "en": "A divorce claim is brought before the family section by petition in the usual form of filing."
+   }
+  },
+  {
+   "id": "b8",
+   "role": "procedure",
+   "cite": {
+    "code": "cpca",
+    "article": "438",
+    "paragraphs": [
+     1
+    ]
+   },
+   "says": {
+    "ar": "يبلغ المدعي رسميا المدعى عليه والنيابة العامة بنسخة من العريضة.",
+    "en": "The plaintiff serves a copy of the petition formally on the defendant and on the public prosecutor."
+   }
+  },
+  {
+   "id": "b9",
+   "role": "procedure",
+   "cite": {
+    "code": "cpca",
+    "article": "439",
+    "paragraphs": [
+     1
+    ]
+   },
+   "says": {
+    "ar": "محاولات الصلح وجوبية وتتم في جلسة سرية.",
+    "en": "Conciliation attempts are mandatory and held in closed session."
+   },
+   "interpretive": true,
+   "interpretiveNote": "Placed in the chapter on the divorce procedure; whether the khul request is subject to it rests on the same reading as the Family Code conciliation duty."
+  },
+  {
+   "id": "b10",
+   "role": "limit",
+   "cite": {
+    "code": "cpca",
+    "article": "442",
+    "paragraphs": [
+     2
+    ]
+   },
+   "says": {
+    "ar": "يجب ألا تتجاوز محاولات الصلح ثلاثة أشهر من تاريخ رفع دعوى الطلاق.",
+    "en": "Conciliation attempts may not exceed three months from the filing of the divorce claim."
+   },
+   "interpretive": true,
+   "interpretiveNote": "Applies to the divorce claim; its application to the khul request is a reading."
+  },
+  {
+   "id": "b11",
+   "role": "procedure",
+   "cite": {
+    "code": "cpca",
+    "article": "443",
+    "paragraphs": [
+     4
+    ]
+   },
+   "says": {
+    "ar": "عند عدم الصلح أو تخلف أحد الزوجين رغم مهلة التفكير يشرع في مناقشة موضوع الدعوى.",
+    "en": "If conciliation fails, or a spouse is absent despite the time for reflection, the merits are argued."
+   }
+  },
+  {
+   "id": "b12",
+   "role": "basis",
+   "cite": {
+    "code": "cpca",
+    "article": "451",
+    "paragraphs": [
+     5
+    ]
+   },
+   "says": {
+    "ar": "يعاين القاضي ويكيف الوقائع المعتمد عليها في طلب الخلع طبقا لأحكام قانون الأسرة.",
+    "en": "The judge finds and qualifies the facts on which the khul request rests, according to the Family Code."
+   },
+   "required": true
+  },
+  {
+   "id": "b13",
+   "role": "limit",
+   "cite": {
+    "code": "family-code",
+    "article": "57",
+    "paragraphs": [
+     1
+    ]
+   },
+   "says": {
+    "ar": "أحكام الطلاق والتطليق والخلع غير قابلة للاستئناف إلا في جوانبها المادية.",
+    "en": "Judgments of divorce, tatliq and khul cannot be appealed except in their material aspects."
+   }
+  },
+  {
+   "id": "b14",
+   "role": "procedure",
+   "cite": {
+    "code": "family-code",
+    "article": "57",
+    "paragraphs": [
+     2
+    ]
+   },
+   "says": {
+    "ar": "الأحكام المتعلقة بالحضانة قابلة للاستئناف.",
+    "en": "Judgments on custody may be appealed."
+   }
+  },
+  {
+   "id": "b15",
+   "role": "limit",
+   "cite": {
+    "code": "cpca",
+    "article": "336",
+    "paragraphs": [
+     1,
+     2
+    ]
+   },
+   "says": {
+    "ar": "يحدد أجل الاستئناف بشهر من التبليغ الرسمي للشخص ذاته، ويمدد إلى شهرين إذا تم التبليغ في الموطن.",
+    "en": "The appeal period is one month from formal service on the person, extended to two months when service is at his domicile."
+   }
+  },
+  {
+   "id": "b16",
+   "role": "procedure",
+   "cite": {
+    "code": "cpca",
+    "article": "323",
+    "paragraphs": [
+     1
+    ]
+   },
+   "says": {
+    "ar": "يوقف تنفيذ الحكم خلال أجل الطعن العادي ويوقف بسبب ممارسته.",
+    "en": "Enforcement is suspended during the period for ordinary appeal and by its exercise."
+   }
+  },
+  {
+   "id": "b17",
+   "role": "procedure",
+   "cite": {
+    "code": "cpca",
+    "article": "452",
+    "paragraphs": [
+     1
+    ]
+   },
+   "says": {
+    "ar": "لا يوقف الطعن بالنقض تنفيذ أحكام الطلاق المنصوص عليها في المادتين 450 و451.",
+    "en": "An appeal in cassation does not suspend enforcement of the divorce judgments of the two preceding articles."
+   }
+  },
+  {
+   "id": "b18",
+   "role": "procedure",
+   "cite": {
+    "code": "family-code",
+    "article": "57 مكرر",
+    "paragraphs": [
+     1
+    ]
+   },
+   "says": {
+    "ar": "يجوز للقاضي الفصل على وجه الاستعجال بأمر على عريضة في جميع التدابير المؤقتة، ولا سيما النفقة والحضانة والزيارة والمسكن.",
+    "en": "The judge may rule urgently, by order on petition, on all provisional measures, notably maintenance, custody, visitation and housing."
+   }
+  },
+  {
+   "id": "b19",
+   "role": "proof",
+   "cite": {
+    "code": "family-code",
+    "article": "22",
+    "paragraphs": [
+     1
+    ]
+   },
+   "says": {
+    "ar": "يثبت الزواج بمستخرج من سجل الحالة المدنية، وفي حالة عدم تسجيله يثبت بحكم قضائي.",
+    "en": "Marriage is proved by an extract of the civil-status register, and, if it was not registered, by a court judgment."
+   },
+   "required": true
+  },
+  {
+   "id": "b20",
+   "role": "basis",
+   "cite": {
+    "code": "family-code",
+    "article": "61",
+    "paragraphs": [
+     1
+    ]
+   },
+   "says": {
+    "ar": "للمطلقة الحق في السكن العائلي والنفقة ما دامت في عدة الطلاق.",
+    "en": "A divorced wife keeps the family home and has the right to maintenance while she is in the waiting period of the divorce."
+   },
+   "interpretive": true,
+   "interpretiveNote": "The article speaks of the divorced wife; whether it reaches a wife who obtained khul, and whether the consideration can waive it, is not stated."
+  },
+  {
+   "id": "b21",
+   "role": "basis",
+   "cite": {
+    "code": "family-code",
+    "article": "58",
+    "paragraphs": [
+     1
+    ]
+   },
+   "says": {
+    "ar": "تعتد المطلقة المدخول بها غير الحامل بثلاثة قروء، ومن يئست من المحيض بثلاثة أشهر من تاريخ التصريح بالطلاق.",
+    "en": "A divorced woman after consummation, not pregnant, waits three periods, or three months if past menstruation, from the declaration of divorce."
+   },
+   "interpretive": true,
+   "interpretiveNote": "The article speaks of the divorced woman; its application to khul is a reading."
+  },
+  {
+   "id": "b22",
+   "role": "basis",
+   "cite": {
+    "code": "family-code",
+    "article": "75",
+    "paragraphs": [
+     1
+    ]
+   },
+   "says": {
+    "ar": "تجب نفقة الولد على الأب ما لم يكن له مال، وتستمر لأسباب منها الدراسة والعجز.",
+    "en": "The father owes the child's maintenance unless the child has property, and it continues in cases such as study or disability."
+   }
+  },
+  {
+   "id": "b23",
+   "role": "damages",
+   "cite": {
+    "code": "family-code",
+    "article": "78",
+    "paragraphs": [
+     1
+    ]
+   },
+   "says": {
+    "ar": "تشمل النفقة الغذاء والكسوة والعلاج والسكن أو أجرته وما يعد من الضروريات عرفا.",
+    "en": "Maintenance covers food, clothing, medical care, housing or its rent, and what custom treats as necessary."
+   }
+  },
+  {
+   "id": "b24",
+   "role": "procedure",
+   "cite": {
+    "code": "family-code",
+    "article": "80",
+    "paragraphs": [
+     1
+    ]
+   },
+   "says": {
+    "ar": "تستحق النفقة من تاريخ رفع الدعوى، وللقاضي أن يحكم بها عن مدة لا تتجاوز سنة قبل رفعها بناء على بينة.",
+    "en": "Maintenance is due from the filing of the claim, and the judge may award it on evidence for a period of up to one year before filing."
+   }
+  },
+  {
+   "id": "b25",
+   "role": "basis",
+   "cite": {
+    "code": "family-code",
+    "article": "64",
+    "paragraphs": [
+     1
+    ]
+   },
+   "says": {
+    "ar": "الأم أولى بحضانة ولدها ثم الأب ثم من ذكروا بعدهما مع مراعاة مصلحة المحضون، ويحكم القاضي بحق الزيارة عند إسناد الحضانة.",
+    "en": "The mother has first claim to custody, then the father and the others listed, always in the child's interest; the judge who awards custody must also rule on visitation."
+   }
+  },
+  {
+   "id": "b26",
+   "role": "basis",
+   "cite": {
+    "code": "family-code",
+    "article": "72",
+    "paragraphs": [
+     1
+    ]
+   },
+   "says": {
+    "ar": "في حالة الطلاق يجب على الأب أن يوفر للحاضنة سكنا ملائما أو بدل الإيجار إن تعذر ذلك.",
+    "en": "On divorce the father must provide the custodian with suitable housing or, failing that, pay rent."
+   }
+  },
+  {
+   "id": "b27",
+   "role": "procedure",
+   "cite": {
+    "code": "family-code",
+    "article": "72",
+    "paragraphs": [
+     2
+    ]
+   },
+   "says": {
+    "ar": "تبقى الحاضنة في بيت الزوجية حتى تنفيذ الأب للحكم القضائي المتعلق بالسكن.",
+    "en": "The custodian stays in the marital home until the father carries out the judgment on housing."
+   }
+  },
+  {
+   "id": "b28",
+   "role": "proof",
+   "cite": {
+    "code": "family-code",
+    "article": "73",
+    "paragraphs": [
+     1
+    ]
+   },
+   "says": {
+    "ar": "عند النزاع في متاع البيت دون بينة، القول للزوجة مع اليمين في المعتاد للنساء وللزوج في المعتاد للرجال.",
+    "en": "When the household goods are disputed and neither side has evidence, the wife is believed on oath for what is usual for women and the husband for what is usual for men."
+   }
+  },
+  {
+   "id": "b29",
+   "role": "proof",
+   "cite": {
+    "code": "family-code",
+    "article": "73",
+    "paragraphs": [
+     2
+    ]
+   },
+   "says": {
+    "ar": "المشتركات بين الزوجين يقتسمانها مع اليمين.",
+    "en": "Goods common to both are divided between them on oath."
+   }
+  },
+  {
+   "id": "b30",
+   "role": "procedure",
+   "cite": {
+    "code": "cpca",
+    "article": "323",
+    "paragraphs": [
+     2
+    ]
+   },
+   "says": {
+    "ar": "يؤمر بالنفاذ المعجل عند طلبه في مادة النفقة وفي منح مسكن الزوجية لمن أسندت له الحضانة.",
+    "en": "Provisional enforcement is ordered, when requested, in maintenance matters and in granting the marital home to the person who has custody."
+   }
+  },
+  {
+   "id": "b31",
+   "role": "procedure",
+   "cite": {
+    "code": "cpca",
+    "article": "40",
+    "paragraphs": [
+     3
+    ]
+   },
+   "says": {
+    "ar": "ترفع دعاوى الطلاق أو الرجوع أمام المحكمة التي يقع في دائرتها مسكن الزوجية دون سواها.",
+    "en": "Claims for divorce or return are brought before the court of the marital home and no other."
+   }
+  },
+  {
+   "id": "b32",
+   "role": "procedure",
+   "cite": {
+    "code": "cpca",
+    "article": "51",
+    "paragraphs": [
+     1,
+     2
+    ]
+   },
+   "says": {
+    "ar": "يجوز للخصم أن يدفع بعدم الاختصاص الإقليمي مع تسبيب طلبه وتعيين الجهة المختصة، ولا يجوز ذلك للمدعي.",
+    "en": "The opposing party may plead territorial incompetence, giving reasons and naming the competent court; the plaintiff may not."
+   }
+  },
+  {
+   "id": "b33",
+   "role": "procedure",
+   "cite": {
+    "code": "cpca",
+    "article": "53",
+    "paragraphs": [
+     1
+    ]
+   },
+   "says": {
+    "ar": "تقوم وحدة الموضوع عندما يرفع نفس النزاع إلى جهتين قضائيتين مختصتين ومن نفس الدرجة.",
+    "en": "There is unity of subject when the same dispute is brought before two competent courts of the same level."
+   }
+  },
+  {
+   "id": "b34",
+   "role": "procedure",
+   "cite": {
+    "code": "cpca",
+    "article": "54",
+    "paragraphs": [
+     1,
+     2
+    ]
+   },
+   "says": {
+    "ar": "تتخلى الجهة الأخيرة المرفوع إليها النزاع لصالح الأخرى عند طلب أحد الخصوم، وللقاضي أن يتخلى تلقائيا.",
+    "en": "The court last seised gives way to the other at a party's request, and the judge may do so of his own motion."
+   }
+  },
+  {
+   "id": "b35",
+   "role": "procedure",
+   "cite": {
+    "code": "cpca",
+    "article": "16",
+    "paragraphs": [
+     3,
+     4
+    ]
+   },
+   "says": {
+    "ar": "يجب احترام أجل عشرين يوما بين تسليم التكليف بالحضور وأول جلسة، ويمدد إلى ثلاثة أشهر إذا كان المكلف مقيما في الخارج.",
+    "en": "Twenty days must separate service of the summons from the first hearing, extended to three months when the person summoned lives abroad."
+   }
+  },
+  {
+   "id": "b36",
+   "role": "basis",
+   "cite": {
+    "code": "family-code",
+    "article": "14",
+    "paragraphs": [
+     1
+    ]
+   },
+   "says": {
+    "ar": "الصداق ملك للزوجة تتصرف فيه كما تشاء.",
+    "en": "The dower belongs to the wife, who may deal with it as she wishes."
+   }
+  },
+  {
+   "id": "b37",
+   "role": "procedure",
+   "cite": {
+    "code": "cpca",
+    "article": "427",
+    "paragraphs": [
+     1
+    ]
+   },
+   "says": {
+    "ar": "الطلاق بالتراضي إجراء يرمي إلى حل الرابطة الزوجية بإرادة الزوجين المشتركة.",
+    "en": "Divorce by mutual consent is a procedure that dissolves the marriage by the spouses' joint will."
+   }
+  }
+ ],
+ "elements": [
+  {
+   "id": "e1",
+   "toProve": {
+    "ar": "قيام الزواج بين المدعية والمدعى عليه",
+    "en": "That a marriage exists between the plaintiff and the defendant"
+   },
+   "factsToState": [
+    {
+     "ar": "تاريخ عقد الزواج ومكانه",
+     "en": "The date and place of the marriage"
+    },
+    {
+     "ar": "رقم تسجيل الزواج بالحالة المدنية إن وجد",
+     "en": "The civil-status registration of the marriage, if any"
+    }
+   ],
+   "events": [
+    "marriage"
+   ],
+   "slots": [
+    "marriage_registered"
+   ],
+   "burden": "plaintiff",
+   "proof": [
+    {
+     "means": "civil-status extract",
+     "basis": [
+      "b19"
+     ],
+     "note": {
+      "ar": "مستخرج من سجل الحالة المدنية",
+      "en": "Extract of the civil-status register"
+     }
+    },
+    {
+     "means": "judgment establishing the marriage",
+     "basis": [
+      "b19"
+     ],
+     "note": {
+      "ar": "حكم بإثبات الزواج إن لم يسجل",
+      "en": "A judgment establishing the marriage if it was not registered"
+     }
+    }
+   ],
+   "basis": [
+    "b1",
+    "b19"
+   ]
+  },
+  {
+   "id": "e2",
+   "toProve": {
+    "ar": "عرض الزوجة مقابلا ماليا للخلع",
+    "en": "That the wife offers a sum of money as the consideration for khul"
+   },
+   "factsToState": [
+    {
+     "ar": "مبلغ المقابل المعروض",
+     "en": "The sum offered"
+    },
+    {
+     "ar": "قيمة صداق المثل إن نوزع في المقابل",
+     "en": "The dower of the like, if the sum is disputed"
+    }
+   ],
+   "events": [],
+   "slots": [
+    "requests"
+   ],
+   "burden": "plaintiff",
+   "basis": [
+    "b1",
+    "b2"
+   ]
+  }
+ ],
+ "requests": [
+  {
+   "id": "r1",
+   "kind": "khul",
+   "accessory": false,
+   "text": {
+    "ar": "الحكم بالخلع بين الطرفين مقابل مبلغ (...) دج تعرضه المدعية.",
+    "en": "A judgment of khul between the parties for a sum of (...) DZD offered by the plaintiff."
+   },
+   "basis": [
+    "b1",
+    "b2",
+    "b12"
+   ],
+   "amount": true
+  },
+  {
+   "id": "r2",
+   "kind": "maintenance",
+   "accessory": true,
+   "text": {
+    "ar": "الحكم بنفقة العدة ونفقة الأولاد بمبلغ (...) دج شهريا من تاريخ رفع الدعوى.",
+    "en": "An award of maintenance for the waiting period and for the children of (...) DZD a month from the filing of the claim."
+   },
+   "basis": [
+    "b20",
+    "b22",
+    "b23",
+    "b24"
+   ],
+   "amount": true
+  },
+  {
+   "id": "r3",
+   "kind": "custody",
+   "accessory": true,
+   "text": {
+    "ar": "إسناد حضانة الأولاد (...) إلى المدعية مع تحديد حق الزيارة.",
+    "en": "Custody of the children (...) to the plaintiff, with visitation fixed."
+   },
+   "basis": [
+    "b25"
+   ]
+  },
+  {
+   "id": "r4",
+   "kind": "visitation",
+   "accessory": true,
+   "text": {
+    "ar": "تنظيم حق الزيارة للمدعى عليه على النحو (...).",
+    "en": "Visitation for the defendant to be arranged as follows (...)."
+   },
+   "basis": [
+    "b25"
+   ]
+  },
+  {
+   "id": "r5",
+   "kind": "housing",
+   "accessory": true,
+   "text": {
+    "ar": "إلزام المدعى عليه بتوفير سكن ملائم للحاضنة أو دفع بدل الإيجار بمبلغ (...) دج.",
+    "en": "An order that the defendant provide suitable housing for the custodian or pay rent of (...) DZD."
+   },
+   "basis": [
+    "b26",
+    "b27"
+   ],
+   "amount": true
+  },
+  {
+   "id": "r6",
+   "kind": "restitution",
+   "accessory": true,
+   "text": {
+    "ar": "تمكين المدعية من أثاثها ومصوغها وهي (...).",
+    "en": "That the plaintiff recover her furniture and jewellery, namely (...)."
+   },
+   "basis": [
+    "b28",
+    "b29",
+    "b36"
+   ]
+  },
+  {
+   "id": "r7",
+   "kind": "provisional_execution",
+   "accessory": true,
+   "text": {
+    "ar": "شمول الحكم بالنفاذ المعجل فيما يخص النفقة والسكن.",
+    "en": "Provisional enforcement of the judgment as to maintenance and housing."
+   },
+   "basis": [
+    "b30"
+   ]
+  }
+ ],
+ "court": {
+  "section": {
+   "value": "family",
+   "basis": [
+    "court-sections.b7",
+    "court-sections.b3"
+   ],
+   "alternatives": [
+    {
+     "when": {
+      "slot": "court_has_section_for_matter",
+      "is": "no"
+     },
+     "value": "civil",
+     "basis": [
+      "court-sections.b4"
+     ]
+    }
+   ],
+   "message": {
+    "ar": "المادة 423 من قانون الإجراءات المدنية والإدارية: ينظر قسم شؤون الأسرة في دعاوى انحلال الرابطة الزوجية وتوابعها؛ تحقق من القسم الذي سجلت أمامه العريضة.",
+    "en": "Article 423 of the Code of Civil and Administrative Procedure: the family section hears claims on the dissolution of marriage and its consequences; check the section before which the petition is listed."
+   }
+  },
+  "territory": [
+   {
+    "id": "t1",
+    "rule": {
+     "ar": "الدعوى ترفع أمام محكمة مسكن الزوجية دون سواها (المادة 40)، ولا يجوز للمدعي أن يثير الدفع بعدم الاختصاص الإقليمي؛ للمدعى عليه وحده ذلك (المادة 51).",
+     "en": "The claim is brought before the court of the marital home and no other (article 40); the plaintiff cannot plead territorial incompetence, only the defendant can (article 51)."
+    },
+    "basis": [
+     "b31",
+     "b32"
+    ]
+   }
+  ]
+ },
+ "deadlines": [],
+ "priorSteps": [],
+ "documents": [
+  {
+   "id": "doc1",
+   "name": {
+    "ar": "مستخرج من سجل الحالة المدنية يثبت الزواج",
+    "en": "Civil-status extract proving the marriage"
+   },
+   "requiredWhen": {
+    "slot": "marriage_registered",
+    "is": "yes"
+   },
+   "why": {
+    "ar": "المادة 22: يثبت الزواج بمستخرج من سجل الحالة المدنية.",
+    "en": "Article 22: marriage is proved by an extract of the civil-status register."
+   },
+   "basis": [
+    "b19"
+   ]
+  },
+  {
+   "id": "doc2",
+   "name": {
+    "ar": "حكم قضائي بإثبات الزواج",
+    "en": "Court judgment establishing the marriage"
+   },
+   "requiredWhen": {
+    "slot": "marriage_registered",
+    "is": "no"
+   },
+   "why": {
+    "ar": "المادة 22: إن لم يسجل الزواج يثبت بحكم قضائي.",
+    "en": "Article 22: an unregistered marriage is proved by a court judgment."
+   },
+   "basis": [
+    "b19"
+   ]
+  },
+  {
+   "id": "doc3",
+   "name": {
+    "ar": "ما يثبت ملكية المدعية لأثاثها ومصوغها",
+    "en": "Evidence that the furniture and jewellery are the plaintiff's"
+   },
+   "requiredWhen": {
+    "slot": "requests",
+    "includes": "restitution"
+   },
+   "why": {
+    "ar": "المادة 73: عند غياب البينة يرجع إلى ما هو معتاد للنساء مع اليمين.",
+    "en": "Article 73: without evidence, what is usual for women is decided on oath."
+   },
+   "basis": [
+    "b28",
+    "b29"
+   ]
+  },
+  {
+   "id": "doc4",
+   "name": {
+    "ar": "ما يبين قيمة صداق المثل",
+    "en": "Evidence of the value of the dower of the like"
+   },
+   "requiredWhen": {
+    "slot": "requests",
+    "includes": "khul"
+   },
+   "why": {
+    "ar": "المادة 54: لا يتجاوز المقابل صداق المثل وقت الحكم عند الخلاف.",
+    "en": "Article 54: where the sum is disputed it cannot exceed the dower of the like when judgment is given."
+   },
+   "basis": [
+    "b2"
+   ]
+  }
+ ],
+ "boundaries": [
+  {
+   "id": "n1",
+   "looksLike": {
+    "ar": "دعوى خلع تقدمها الزوجة",
+    "en": "A khul claim by the wife"
+   },
+   "isActually": "claim:tatliq",
+   "tellingFacts": [
+    {
+     "ar": "الزوجة تتمسك بخطأ الزوج أو بضرر لحقها وتطلب التعويض",
+     "en": "The wife relies on the husband's fault or harm and asks for compensation"
+    }
+   ],
+   "message": {
+    "ar": "المادة 48: تحقق هل تتمسك الزوجة بسبب من أسباب التطليق لا بمقابل مالي.",
+    "en": "Article 48: check whether the wife relies on a ground for judicial divorce rather than offering a sum."
+   },
+   "basis": [
+    "b3"
+   ],
+   "when": {
+    "slot": "wife_relies_on_husband_fault",
+    "is": "yes"
+   },
+   "slots": [
+    "wife_relies_on_husband_fault"
+   ]
+  },
+  {
+   "id": "n2",
+   "looksLike": {
+    "ar": "دعوى خلع",
+    "en": "A khul claim"
+   },
+   "isActually": "outside:divorce-by-mutual-consent",
+   "tellingFacts": [
+    {
+     "ar": "الزوجان متفقان على الطلاق وعلى توابعه",
+     "en": "The spouses agree on the divorce and on its consequences"
+    }
+   ],
+   "message": {
+    "ar": "المادة 427 من قانون الإجراءات المدنية والإدارية: تحقق هل يقدم الزوجان طلبا مشتركا بدل دعوى الخلع.",
+    "en": "Article 427 of the Code of Civil and Administrative Procedure: check whether the spouses file a joint request instead of a khul claim."
+   },
+   "basis": [
+    "b37"
+   ],
+   "when": {
+    "slot": "spouses_agree_on_divorce_terms",
+    "is": "yes"
+   },
+   "slots": [
+    "spouses_agree_on_divorce_terms"
+   ]
+  },
+  {
+   "id": "n3",
+   "looksLike": {
+    "ar": "دعوى خلع جديدة",
+    "en": "A new khul claim"
+   },
+   "isActually": "outside:pending-case",
+   "tellingFacts": [
+    {
+     "ar": "دعوى طلاق أو تطليق أو خلع بين الزوجين قائمة ولم يفصل فيها",
+     "en": "A divorce, tatliq or khul action between the spouses is pending and undecided"
+    }
+   ],
+   "message": {
+    "ar": "المادتان 53 و54 من قانون الإجراءات المدنية والإدارية: تحقق من وحدة الموضوع مع الدعوى القائمة.",
+    "en": "Articles 53 and 54 of the Code of Civil and Administrative Procedure: check unity of subject with the pending action."
+   },
+   "basis": [
+    "b33",
+    "b34"
+   ],
+   "when": {
+    "slot": "divorce_action_pending",
+    "is": "yes"
+   },
+   "slots": [
+    "divorce_action_pending"
+   ]
+  },
+  {
+   "id": "n4",
+   "looksLike": {
+    "ar": "دعوى خلع بين زوجين",
+    "en": "A khul claim between spouses"
+   },
+   "isActually": "outside:proof-of-marriage",
+   "tellingFacts": [
+    {
+     "ar": "الزواج غير مسجل بالحالة المدنية",
+     "en": "The marriage is not registered in the civil-status register"
+    }
+   ],
+   "message": {
+    "ar": "المادة 22 من قانون الأسرة: الزواج غير المسجل يثبت بحكم قضائي؛ تحقق من وجوده.",
+    "en": "Article 22 of the Family Code: an unregistered marriage is proved by court judgment; check that there is one."
+   },
+   "basis": [
+    "b19"
+   ],
+   "when": {
+    "slot": "marriage_registered",
+    "is": "no"
+   },
+   "slots": [
+    "marriage_registered"
+   ]
+  },
+  {
+   "id": "n5",
+   "looksLike": {
+    "ar": "طلب الطلاق بإرادة الزوج",
+    "en": "A divorce at the husband's will"
+   },
+   "isActually": "outside:divorce-at-husbands-will",
+   "tellingFacts": [
+    {
+     "ar": "الذي يطلب فك الرابطة هو الزوج لا الزوجة",
+     "en": "The party asking to end the marriage is the husband, not the wife"
+    }
+   ],
+   "message": {
+    "ar": "المادة 48: الطلاق قد يتم بإرادة الزوج أو بتراضيهما أو بطلب الزوجة.",
+    "en": "Article 48: divorce may be by the husband's will, by consent, or at the wife's request."
+   },
+   "basis": [
+    "b3"
+   ]
+  }
+ ],
+ "slots": [
+  "marriage_registered",
+  "divorce_action_pending",
+  "court_has_section_for_matter",
+  "wife_relies_on_husband_fault",
+  "spouses_agree_on_divorce_terms",
+  "requests"
+ ],
+ "proposedSlots": [
+  {
+   "id": "wife_relies_on_husband_fault",
+   "type": "yesNoUnknown",
+   "question": {
+    "ar": "هل تستند الزوجة إلى خطأ الزوج أو ضرر لحقها وتطلب التعويض عنه؟",
+    "en": "Does the wife rely on the husband's fault or on harm to her, and ask compensation for it?"
+   },
+   "why": "Boundary n1 reads it; article 48 separates divorce at the wife's request on the grounds of the law from khul."
+  },
+  {
+   "id": "spouses_agree_on_divorce_terms",
+   "type": "yesNoUnknown",
+   "question": {
+    "ar": "هل يتفق الزوجان على الطلاق وعلى توابعه؟",
+    "en": "Do the spouses agree on the divorce and on its consequences?"
+   },
+   "why": "Boundary n2 reads it; the code gives them divorce by mutual consent."
+  }
+ ],
+ "examples": [
+  {
+   "id": "ex1",
+   "by": "derivationB",
+   "title": "Wife offers a sum, registered marriage, two children: clean case",
+   "petitionDate": "2026-11-02",
+   "slots": {
+    "marriage_registered": "yes",
+    "divorce_action_pending": "no",
+    "wife_relies_on_husband_fault": "no",
+    "spouses_agree_on_divorce_terms": "no",
+    "court_has_section_for_matter": "yes",
+    "requests": [
+     "khul",
+     "custody",
+     "maintenance",
+     "housing"
+    ]
+   },
+   "expect": {
+    "findings": [
+     {
+      "ref": "n1",
+      "effect": "none"
+     },
+     {
+      "ref": "n2",
+      "effect": "none"
+     },
+     {
+      "ref": "n3",
+      "effect": "none"
+     },
+     {
+      "ref": "n4",
+      "effect": "none"
+     },
+     {
+      "ref": "doc1",
+      "effect": "none"
+     }
+    ],
+    "questions": [],
+    "section": "family"
+   }
+  },
+  {
+   "id": "ex2",
+   "by": "derivationB",
+   "title": "Wife says the husband beat her and wants compensation: looks like khul, is tatliq",
+   "petitionDate": "2026-11-02",
+   "slots": {
+    "marriage_registered": "yes",
+    "divorce_action_pending": "no",
+    "wife_relies_on_husband_fault": "yes",
+    "spouses_agree_on_divorce_terms": "no",
+    "court_has_section_for_matter": "yes",
+    "requests": [
+     "khul",
+     "custody",
+     "maintenance",
+     "housing"
+    ]
+   },
+   "expect": {
+    "findings": [
+     {
+      "ref": "n1",
+      "effect": "warn"
+     },
+     {
+      "ref": "n2",
+      "effect": "none"
+     }
+    ]
+   }
+  },
+  {
+   "id": "ex3",
+   "by": "derivationB",
+   "title": "Marriage was never registered: proof by judgment first",
+   "petitionDate": "2026-11-02",
+   "slots": {
+    "marriage_registered": "no",
+    "divorce_action_pending": "no",
+    "wife_relies_on_husband_fault": "no",
+    "spouses_agree_on_divorce_terms": "no",
+    "court_has_section_for_matter": "yes",
+    "requests": [
+     "khul",
+     "custody",
+     "maintenance",
+     "housing"
+    ]
+   },
+   "expect": {
+    "findings": [
+     {
+      "ref": "n4",
+      "effect": "warn"
+     },
+     {
+      "ref": "doc2",
+      "effect": "none"
+     }
+    ]
+   }
+  },
+  {
+   "id": "ex4",
+   "by": "derivationB",
+   "title": "A divorce action is already pending between the spouses",
+   "petitionDate": "2026-11-02",
+   "slots": {
+    "marriage_registered": "yes",
+    "divorce_action_pending": "yes",
+    "wife_relies_on_husband_fault": "no",
+    "spouses_agree_on_divorce_terms": "no",
+    "court_has_section_for_matter": "yes",
+    "requests": [
+     "khul",
+     "custody",
+     "maintenance",
+     "housing"
+    ]
+   },
+   "expect": {
+    "findings": [
+     {
+      "ref": "n3",
+      "effect": "warn"
+     }
+    ]
+   }
+  },
+  {
+   "id": "ex5",
+   "by": "derivationB",
+   "title": "Both spouses agree on divorce and its effects: near-miss, mutual consent",
+   "petitionDate": "2026-11-02",
+   "slots": {
+    "marriage_registered": "yes",
+    "divorce_action_pending": "no",
+    "wife_relies_on_husband_fault": "no",
+    "spouses_agree_on_divorce_terms": "yes",
+    "court_has_section_for_matter": "yes",
+    "requests": [
+     "khul",
+     "custody",
+     "maintenance",
+     "housing"
+    ]
+   },
+   "expect": {
+    "findings": [
+     {
+      "ref": "n2",
+      "effect": "warn"
+     }
+    ]
+   }
+  },
+  {
+   "id": "ex6",
+   "by": "derivationB",
+   "title": "Nothing known: the rules ask",
+   "petitionDate": "2026-11-02",
+   "slots": {},
+   "expect": {
+    "findings": [
+     {
+      "ref": "n1",
+      "effect": "ask"
+     },
+     {
+      "ref": "n2",
+      "effect": "ask"
+     },
+     {
+      "ref": "n3",
+      "effect": "ask"
+     },
+     {
+      "ref": "n4",
+      "effect": "ask"
+     }
+    ],
+    "questions": [
+     "wife_relies_on_husband_fault",
+     "spouses_agree_on_divorce_terms",
+     "divorce_action_pending",
+     "marriage_registered",
+     "court_has_section_for_matter"
+    ]
+   }
+  },
+  {
+   "id": "ex7",
+   "by": "derivationB",
+   "title": "The court has no family section: civil section hears it",
+   "petitionDate": "2026-11-02",
+   "slots": {
+    "marriage_registered": "yes",
+    "divorce_action_pending": "no",
+    "wife_relies_on_husband_fault": "no",
+    "spouses_agree_on_divorce_terms": "no",
+    "court_has_section_for_matter": "no",
+    "requests": [
+     "khul",
+     "custody",
+     "maintenance",
+     "housing"
+    ]
+   },
+   "expect": {
+    "findings": [
+     {
+      "ref": "n1",
+      "effect": "none"
+     }
+    ],
+    "section": "civil"
+   }
+  }
+ ],
+ "openPoints": [
+  {
+   "id": "o1",
+   "question": {
+    "ar": "هل تسري محاولات الصلح الوجوبية على دعوى الخلع؟",
+    "en": "Do the mandatory conciliation attempts apply to a khul claim?"
+   },
+   "why": {
+    "ar": "النصوص تذكر الطلاق، وقانون الأسرة يعد الخلع صورة من انحلال الزواج بطلب الزوجة.",
+    "en": "The texts speak of divorce; the Family Code treats khul as a way of dissolving the marriage at the wife's request."
+   },
+   "protectiveReading": {
+    "ar": "اعتبار الصلح واجبا وتنبيه المحامي إلى محضره.",
+    "en": "Treat conciliation as required and remind the lawyer of its record."
+   },
+   "grade": "C",
+   "refs": [
+    "b4",
+    "b9",
+    "b10"
+   ],
+   "readings": [
+    {
+     "reading": {
+      "ar": "تسري، لأن الخلع من انحلال الزواج",
+      "en": "They apply, since khul is a dissolution of marriage"
+     },
+     "basis": [
+      "b3",
+      "b4",
+      "b9"
+     ]
+    },
+    {
+     "reading": {
+      "ar": "لا تسري، لأن النص يذكر الطلاق وحده",
+      "en": "They do not, as the text names divorce alone"
+     },
+     "basis": [
+      "b4"
+     ]
+    }
+   ]
+  },
+  {
+   "id": "o2",
+   "question": {
+    "ar": "هل الاختصاص الإقليمي في دعاوى الأسرة من النظام العام؟",
+    "en": "Is the territorial rule in family claims of public order?"
+   },
+   "why": {
+    "ar": "المادة 40 تقول دون سواها، والمادة 51 تحصر الدفع في الخصم، ولا نص يصفها بالنظام العام.",
+    "en": "Article 40 says no other court and article 51 gives the plea to the opposing party only; no text calls the rule public order."
+   },
+   "protectiveReading": {
+    "ar": "تنبيه المحامي إلى محكمة مسكن الزوجية دون الجزم.",
+    "en": "Point the lawyer to the court of the marital home without concluding."
+   },
+   "grade": "C",
+   "refs": [
+    "t1",
+    "b31",
+    "b32"
+   ]
+  },
+  {
+   "id": "o3",
+   "question": {
+    "ar": "كيف يحسب أجل الاستئناف في الجوانب المادية؟",
+    "en": "How does the appeal period run for the material aspects?"
+   },
+   "why": {
+    "ar": "المادة 57 تحصر الاستئناف في الجوانب المادية والمادة 336 تحدد الأجل دون تمييز، والمقصود بالجوانب المادية غير محدد في النص.",
+    "en": "One article limits appeal to the material aspects and another fixes the period without distinction; the text does not define the material aspects."
+   },
+   "protectiveReading": {
+    "ar": "اعتبار أجل الاستئناف شهرا من التبليغ لصاحبه.",
+    "en": "Treat the period as one month from service on the person."
+   },
+   "grade": "C",
+   "refs": [
+    "b13",
+    "b15"
+   ]
+  },
+  {
+   "id": "o4",
+   "question": {
+    "ar": "هل يشمل المقابل المالي التنازل عن نفقة العدة أو نفقة الأولاد، وهل تبقى نفقة العدة بعد الخلع؟",
+    "en": "May the consideration cover a waiver of idda maintenance or the children's maintenance, and does idda maintenance survive khul?"
+   },
+   "why": {
+    "ar": "المادتان 61 و54 لا تتناولان ذلك، وما أعتقده من الذاكرة (أن المقابل قد يشمل التنازل عن نفقة العدة دون نفقة الأولاد) لا نص له في المخزن.",
+    "en": "The articles do not say; what I believe from memory (that the consideration may waive idda maintenance but not the children's) has no text in the store."
+   },
+   "protectiveReading": {
+    "ar": "طلب نفقة العدة ونفقة الأولاد معا وتنبيه المحامي إلى الاتفاق على المقابل.",
+    "en": "List both maintenance requests and remind the lawyer to check the agreement on the sum."
+   },
+   "grade": "D",
+   "refs": [
+    "r2",
+    "b20"
+   ]
+  },
+  {
+   "id": "o5",
+   "question": {
+    "ar": "هل تسري مدة العدة على المختلعة وكيف تحسب؟",
+    "en": "Does the waiting period apply to a wife who obtained khul, and how is it counted?"
+   },
+   "why": {
+    "ar": "المادة 58 تتحدث عن المطلقة.",
+    "en": "The article speaks of the divorced woman."
+   },
+   "protectiveReading": {
+    "ar": "معاملة المختلعة كالمطلقة في العدة.",
+    "en": "Treat her like the divorced woman for the waiting period."
+   },
+   "grade": "C",
+   "refs": [
+    "b21",
+    "b20"
+   ]
+  },
+  {
+   "id": "o6",
+   "question": {
+    "ar": "هل يوجد أجل لرفع دعوى الخلع؟",
+    "en": "Is there a time limit for a khul claim?"
+   },
+   "why": {
+    "ar": "لم يوجد في المخزن نص يحدد أجلا، وأعتقد من الذاكرة أنه لا أجل.",
+    "en": "No text in the store sets one; from memory I believe there is none."
+   },
+   "protectiveReading": {
+    "ar": "عدم تنبيه المحامي إلى سقوط دون نص.",
+    "en": "Raise no forfeiture without a text."
+   },
+   "grade": "D",
+   "refs": [
+    "b1"
+   ]
+  },
+  {
+   "id": "o7",
+   "question": {
+    "ar": "هل تتوفر وحدات مشتركة لم تكن متاحة لهذه الوحدة؟",
+    "en": "Were shared modules unavailable for this unit?"
+   },
+   "why": {
+    "ar": "لم تتوفر سجلات نهائية لوحدات الصلح والصيغ الشكلية للعريضة والإثبات والطلبات الفرعية والاختصاص الإقليمي، فلم تستورد.",
+    "en": "No final records existed for the conciliation, petition-form, proof, accessory-request and territorial modules, so none was imported."
+   },
+   "protectiveReading": {
+    "ar": "الاكتفاء بما يخص الخلع وترك الباقي للوحدات.",
+    "en": "Keep only what is specific to khul and leave the rest to the modules."
+   },
+   "grade": "C",
+   "refs": [
+    "b4"
+   ]
+  },
+  {
+   "id": "o8",
+   "question": {
+    "ar": "ما الوقائع التي يكيفها القاضي في طلب الخلع؟",
+    "en": "Which facts does the judge qualify in a khul request?"
+   },
+   "why": {
+    "ar": "المادة 451 تقول يكيف الوقائع طبقا لقانون الأسرة ولا تبين ما هي.",
+    "en": "The article says he qualifies the facts according to the Family Code and does not say which."
+   },
+   "protectiveReading": {
+    "ar": "بيان عرض الزوجة للمقابل وعدم ربط الخلع بسبب.",
+    "en": "State the wife's offer of the sum and do not tie khul to a cause."
+   },
+   "grade": "C",
+   "refs": [
+    "b12",
+    "e2"
+   ]
+  }
+ ]
+}

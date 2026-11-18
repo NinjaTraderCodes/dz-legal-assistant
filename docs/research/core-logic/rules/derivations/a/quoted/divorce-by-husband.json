@@ -1,0 +1,2741 @@
+{
+  "schemaVersion": "1.0",
+  "kind": "claim",
+  "id": "divorce-by-husband",
+  "label": {
+    "ar": "الطلاق بإرادة الزوج",
+    "en": "Divorce at the husband's will"
+  },
+  "verified": false,
+  "stage": "derivationA",
+  "derivedBy": {
+    "role": "derivationA",
+    "model": "claude-opus-5-5",
+    "date": "2026-11-18"
+  },
+  "area": "family",
+  "imports": [
+    {
+      "module": "court-sections",
+      "blocks": [
+        "b4",
+        "b7",
+        "b8",
+        "b9",
+        "b30",
+        "b34",
+        "b35",
+        "b42",
+        "b55",
+        "b58",
+        "t4",
+        "n2"
+      ],
+      "how": {
+        "ar": "قسم شؤون الأسرة ينظر في انحلال الرابطة الزوجية وتوابعها وفي حق الزيارة، والاختصاص الإقليمي لمحكمة المسكن الزوجي، والنيابة العامة طرف أصلي، والتدابير المؤقتة من صلاحيات رئيس القسم بصفته قاضيا للاستعجال، وسكن الحاضنة من توابع الطلاق.",
+        "en": "The family section hears the dissolution of marriage, its consequences and visitation; the court of the marital home has territorial jurisdiction; the public prosecutor is a principal party; provisional measures belong to the section president as urgent-matters judge; the custodian's housing is a consequence of divorce."
+      }
+    }
+  ],
+  "slots": [
+    "requests",
+    "marriage_registered",
+    "divorce_action_pending",
+    "spouses_divorced",
+    "court_has_section_for_matter",
+    "minor_children",
+    "husband_is_foreign_national"
+  ],
+  "proposedSlots": [
+    {
+      "id": "minor_children",
+      "type": "yesNoUnknown",
+      "question": {
+        "ar": "هل للزوجين أولاد لم تنقض مدة حضانتهم؟",
+        "en": "Do the spouses have children still within the age of custody?"
+      },
+      "why": "Request r2 (visitation) reads it: family-code 64 makes the judge rule on visitation when he awards custody, and family-code 65 sets when custody ends; without such children there is no visitation to ask for."
+    },
+    {
+      "id": "husband_is_foreign_national",
+      "type": "yesNoUnknown",
+      "question": {
+        "ar": "هل الزوج المدعي أجنبي الجنسية وقت رفع الدعوى؟",
+        "en": "Is the plaintiff husband of foreign nationality when the claim is filed?"
+      },
+      "why": "Boundary n8 reads it: civil-code 12 paragraph 2 submits the dissolution of marriage to the husband's national law at the time the claim is filed, and civil-code 13 makes Algerian law apply alone when one spouse was Algerian when the marriage was made. The existing slot debtor_is_foreign_national asks about the defendant, who here is the wife."
+    }
+  ],
+  "basis": [
+    {
+      "id": "b1",
+      "role": "basis",
+      "required": true,
+      "cite": {
+        "code": "family-code",
+        "article": "48",
+        "paragraphs": [
+          1
+        ]
+      },
+      "says": {
+        "ar": "يحل عقد الزواج بالطلاق الذي يتم بإرادة الزوج، مع مراعاة اشتراط الحكم ومحاولات الصلح.",
+        "en": "The marriage contract is dissolved by a divorce made at the husband's will, subject to the requirement of a judgment and of conciliation attempts."
+      },
+      "quote": [
+        {
+          "paragraph": 1,
+          "text": "مع مراعاة أحكام المادة 49 أدناه، يحل عقد الزواج بالطلاق الذي يتم بإرادة الزوج أو بتراضي الزوجين أو بطلب من الزوجة في حدود ما ورد في المادتين 53 و54 من هذا القانون.",
+          "sha256": "58af3a2d48480f9aa7b61f37cc19202e607b0e3b96f2e3c8fe90214203cfe993"
+        }
+      ],
+      "source": {
+        "tier": 1,
+        "store": "library",
+        "textAsOf": "2026-11-10",
+        "ledgerRefs": [],
+        "ledgerClean": false
+      }
+    },
+    {
+      "id": "b2",
+      "role": "basis",
+      "cite": {
+        "code": "family-code",
+        "article": "47",
+        "paragraphs": [
+          1
+        ]
+      },
+      "says": {
+        "ar": "تنحل الرابطة الزوجية بالطلاق أو الوفاة.",
+        "en": "The marital bond is dissolved by divorce or by death."
+      },
+      "quote": [
+        {
+          "paragraph": 1,
+          "text": "تنحل الرابطة الزوجية بالطلاق أو الوفاة.",
+          "sha256": "d537baaba1f9db904da279db633336ec4fb343e957adba75932232358dd6a08d"
+        }
+      ],
+      "source": {
+        "tier": 1,
+        "store": "library",
+        "textAsOf": "2026-11-10",
+        "ledgerRefs": [],
+        "ledgerClean": false
+      }
+    },
+    {
+      "id": "b3",
+      "role": "procedure",
+      "required": true,
+      "cite": {
+        "code": "family-code",
+        "article": "49",
+        "paragraphs": [
+          1
+        ]
+      },
+      "says": {
+        "ar": "لا يثبت الطلاق إلا بحكم بعد عدة محاولات صلح يجريها القاضي لا تتجاوز ثلاثة أشهر من تاريخ رفع الدعوى.",
+        "en": "A divorce is established only by a judgment, after several conciliation attempts by the judge lasting no more than three months from the filing of the claim."
+      },
+      "quote": [
+        {
+          "paragraph": 1,
+          "text": "لا يثبت الطلاق إلا بحكم بعد عدة محاولات صلح يجريها القاضي دون أن تتجاوز مدته ثلاثة (3) أشهر ابتداء من تاريخ رفع الدعوى.",
+          "sha256": "d6019c5c67f78b680f234970b71404fbc6525ce34733cd9079679aa10a15a3e6"
+        }
+      ],
+      "source": {
+        "tier": 1,
+        "store": "library",
+        "textAsOf": "2026-11-10",
+        "ledgerRefs": [],
+        "ledgerClean": false
+      }
+    },
+    {
+      "id": "b4",
+      "role": "procedure",
+      "cite": {
+        "code": "family-code",
+        "article": "49",
+        "paragraphs": [
+          2
+        ]
+      },
+      "says": {
+        "ar": "يحرر القاضي محضرا بمساعي ونتائج محاولات الصلح يوقعه مع كاتب الضبط والطرفين.",
+        "en": "The judge draws up a record of the conciliation attempts and their outcome, signed by him, the clerk and both parties."
+      },
+      "quote": [
+        {
+          "paragraph": 2,
+          "text": "يتعين على القاضي تحرير محضر يبين مساعي ونتائج محاولات الصلح، يوقعه مع كاتب الضبط والطرفين.",
+          "sha256": "7632b71c6c417a8eaf1fad971ad0a55309056a394f25971013d4e4b0a16ec7c8"
+        }
+      ],
+      "source": {
+        "tier": 1,
+        "store": "library",
+        "textAsOf": "2026-11-10",
+        "ledgerRefs": [],
+        "ledgerClean": false
+      }
+    },
+    {
+      "id": "b5",
+      "role": "procedure",
+      "cite": {
+        "code": "family-code",
+        "article": "49",
+        "paragraphs": [
+          3
+        ]
+      },
+      "says": {
+        "ar": "تسجل أحكام الطلاق وجوبا في الحالة المدنية بسعي من النيابة العامة.",
+        "en": "Divorce judgments must be entered in the civil-status registers at the initiative of the public prosecutor."
+      },
+      "quote": [
+        {
+          "paragraph": 3,
+          "text": "تسجل أحكام الطلاق وجوبا في الحالة المدنية بسعي من النيابة العامة.",
+          "sha256": "57a8e8f9550bf58c6e8c03b4c88e2a50ff7030ca167abf542f07fab77b7822da"
+        }
+      ],
+      "source": {
+        "tier": 1,
+        "store": "library",
+        "textAsOf": "2026-11-10",
+        "ledgerRefs": [],
+        "ledgerClean": false
+      }
+    },
+    {
+      "id": "b6",
+      "role": "procedure",
+      "cite": {
+        "code": "family-code",
+        "article": "50",
+        "paragraphs": [
+          1
+        ]
+      },
+      "says": {
+        "ar": "المراجعة أثناء محاولة الصلح لا تحتاج إلى عقد جديد، وبعد الحكم بالطلاق تحتاج إلى عقد جديد.",
+        "en": "Taking the wife back during the conciliation attempt needs no new contract; after the divorce judgment it needs a new contract."
+      },
+      "quote": [
+        {
+          "paragraph": 1,
+          "text": "من راجع زوجته أثناء محاولة الصلح لا يحتاج إلى عقد جديد ومن راجعها بعد صدور الحكم بالطلاق يحتاج إلى عقد جديد.",
+          "sha256": "0e53a0b4f68820ce8bbf14875031ba7a22f366a1ff79db3a4e8ad64bfcb0e15c"
+        }
+      ],
+      "source": {
+        "tier": 1,
+        "store": "library",
+        "textAsOf": "2026-11-10",
+        "ledgerRefs": [],
+        "ledgerClean": false
+      }
+    },
+    {
+      "id": "b7",
+      "role": "damages",
+      "cite": {
+        "code": "family-code",
+        "article": "52",
+        "paragraphs": [
+          1
+        ]
+      },
+      "says": {
+        "ar": "إذا تبين للقاضي تعسف الزوج في الطلاق حكم للمطلقة بالتعويض عن الضرر اللاحق بها.",
+        "en": "If the judge finds the husband abused his right of divorce, he awards the divorced wife compensation for the harm."
+      },
+      "quote": [
+        {
+          "paragraph": 1,
+          "text": "إذا تبين للقاضي تعسف الزوج في الطلاق حكم للمطلقة بالتعويض عن الضرر اللاحق بها.",
+          "sha256": "1ed0319e25379236a13d53b31c53d14016229a9a5f9076327436c7ca11bae1a5"
+        }
+      ],
+      "source": {
+        "tier": 1,
+        "store": "library",
+        "textAsOf": "2026-11-10",
+        "ledgerRefs": [],
+        "ledgerClean": false
+      }
+    },
+    {
+      "id": "b8",
+      "role": "proof",
+      "required": true,
+      "cite": {
+        "code": "family-code",
+        "article": "22",
+        "paragraphs": [
+          1
+        ]
+      },
+      "says": {
+        "ar": "يثبت الزواج بمستخرج من سجل الحالة المدنية، وإن لم يسجل يثبت بحكم قضائي.",
+        "en": "A marriage is proved by an extract of the civil-status register; if it was not registered, it is proved by a court judgment."
+      },
+      "quote": [
+        {
+          "paragraph": 1,
+          "text": "يثبت الزواج بمستخرج من سجل الحالة المدنية، وفي حالة عدم تسجيله يثبت بحكم قضائي.",
+          "sha256": "08fc5700538c315f6806d3b1333a4ee99048c9cde976a3bb9b8e80922f3418c8"
+        }
+      ],
+      "source": {
+        "tier": 1,
+        "store": "library",
+        "textAsOf": "2026-11-10",
+        "ledgerRefs": [],
+        "ledgerClean": false
+      }
+    },
+    {
+      "id": "b9",
+      "role": "procedure",
+      "cite": {
+        "code": "family-code",
+        "article": "57",
+        "paragraphs": [
+          1
+        ]
+      },
+      "says": {
+        "ar": "أحكام الطلاق غير قابلة للاستئناف إلا في جوانبها المادية.",
+        "en": "Divorce judgments cannot be appealed except in their financial aspects."
+      },
+      "quote": [
+        {
+          "paragraph": 1,
+          "text": "تكون الأحكام الصادرة في دعاوى الطلاق والتطليق والخلع غير قابلة للاستئناف فيما عدا جوانبها المادية.",
+          "sha256": "753cf0f1c7e535dfbb7fb1a7752e546a9acb3c7515b9e7b82c3afb3e7fcb5400"
+        }
+      ],
+      "source": {
+        "tier": 1,
+        "store": "library",
+        "textAsOf": "2026-11-10",
+        "ledgerRefs": [],
+        "ledgerClean": false
+      }
+    },
+    {
+      "id": "b10",
+      "role": "procedure",
+      "cite": {
+        "code": "family-code",
+        "article": "57",
+        "paragraphs": [
+          2
+        ]
+      },
+      "says": {
+        "ar": "الأحكام المتعلقة بالحضانة قابلة للاستئناف.",
+        "en": "Judgments on custody can be appealed."
+      },
+      "quote": [
+        {
+          "paragraph": 2,
+          "text": "تكون الأحكام المتعلقة بالحضانة قابلة للاستئناف.",
+          "sha256": "c811a07ba5c2c5f521e24dc8cbff7770a7001f44ab841c15684310b96423cc7c"
+        }
+      ],
+      "source": {
+        "tier": 1,
+        "store": "library",
+        "textAsOf": "2026-11-10",
+        "ledgerRefs": [],
+        "ledgerClean": false
+      }
+    },
+    {
+      "id": "b11",
+      "role": "procedure",
+      "cite": {
+        "code": "family-code",
+        "article": "57 مكرر",
+        "paragraphs": [
+          1
+        ]
+      },
+      "says": {
+        "ar": "للقاضي أن يفصل استعجالا بأمر على عريضة في التدابير المؤقتة، ولا سيما النفقة والحضانة والزيارة والمسكن.",
+        "en": "The judge may rule urgently, by order on petition, on provisional measures, in particular maintenance, custody, visitation and housing."
+      },
+      "quote": [
+        {
+          "paragraph": 1,
+          "text": "يجوز للقاضي الفصل على وجه الاستعجال بموجب أمر على عريضة في جميع التدابير المؤقتة ولا سيما ما تعلق منها بالنفقة والحضانة والزيارة والمسكن.",
+          "sha256": "a5cddde3c58c6534be04eeb2df32de8ebbfefc17888c1ab5094c7dddd7d16c2d"
+        }
+      ],
+      "source": {
+        "tier": 1,
+        "store": "library",
+        "textAsOf": "2026-11-10",
+        "ledgerRefs": [],
+        "ledgerClean": false
+      }
+    },
+    {
+      "id": "b12",
+      "role": "basis",
+      "cite": {
+        "code": "family-code",
+        "article": "64",
+        "paragraphs": [
+          1
+        ]
+      },
+      "says": {
+        "ar": "ترتيب المستحقين للحضانة تبدأ بالأم ثم الأب مع مراعاة مصلحة المحضون، وعلى القاضي عند إسناد الحضانة أن يحكم بحق الزيارة.",
+        "en": "Custody goes first to the mother, then the father, in the child's interest; when awarding custody the judge must rule on the right of visitation."
+      },
+      "quote": [
+        {
+          "paragraph": 1,
+          "text": "الأم أولى بحضانة ولدها، ثم الأب، ثم الجدة لأم، ثم الجدة لأب، ثم الخالة، ثم العمة، ثم الأقربون درجة مع مراعاة مصلحة المحضون في كل ذلك، وعلى القاضي عندما يحكم بإسناد الحضانة أن يحكم بحق الزيارة.",
+          "sha256": "bdb48582d9d6eedbb784b5179d93ce66ce633218eff9c32bafc2719aee2a72b2"
+        }
+      ],
+      "source": {
+        "tier": 1,
+        "store": "library",
+        "textAsOf": "2026-11-10",
+        "ledgerRefs": [],
+        "ledgerClean": false
+      }
+    },
+    {
+      "id": "b13",
+      "role": "procedure",
+      "required": true,
+      "cite": {
+        "code": "cpca",
+        "article": "436",
+        "paragraphs": [
+          1
+        ]
+      },
+      "says": {
+        "ar": "ترفع دعوى الطلاق من أحد الزوجين أمام قسم شؤون الأسرة بعريضة وفق أشكال رفع الدعوى.",
+        "en": "A divorce claim by one spouse is brought before the family section by a petition in the forms required for any claim."
+      },
+      "quote": [
+        {
+          "paragraph": 1,
+          "text": "ترفع دعوى الطلاق من أحد الزوجين أمام قسم شؤون الأسرة، بتقديم عريضة وفقا للأشكال المقررة لرفع الدعوى.",
+          "sha256": "0e6703e627e911662482837aad4cb4afacb47e1da5da5cdec49bc86528c2ce16"
+        }
+      ],
+      "source": {
+        "tier": 1,
+        "store": "library",
+        "textAsOf": "2026-11-10",
+        "ledgerRefs": [],
+        "ledgerClean": true
+      }
+    },
+    {
+      "id": "b14",
+      "role": "procedure",
+      "cite": {
+        "code": "cpca",
+        "article": "437",
+        "paragraphs": [
+          1
+        ]
+      },
+      "says": {
+        "ar": "إذا كان الزوج ناقص الأهلية قدم الطلب باسمه وليه أو مقدمه.",
+        "en": "When the spouse lacks full capacity, his guardian or curator files the claim in his name."
+      },
+      "quote": [
+        {
+          "paragraph": 1,
+          "text": "عندما يكون الزوج ناقص الأهلية، يقدم الطلب باسمه، من قبل وليه أو مقدمه، حسب الحالة.",
+          "sha256": "6572c8ce4cfdcb15aa425f9903e97ad2b22e44aefe54b9111ccb3294bf04cf93"
+        }
+      ],
+      "source": {
+        "tier": 1,
+        "store": "library",
+        "textAsOf": "2026-11-10",
+        "ledgerRefs": [],
+        "ledgerClean": true
+      }
+    },
+    {
+      "id": "b15",
+      "role": "procedure",
+      "cite": {
+        "code": "cpca",
+        "article": "438",
+        "paragraphs": [
+          1
+        ]
+      },
+      "says": {
+        "ar": "على المدعي في دعوى الطلاق أن يبلغ رسميا المدعى عليه والنيابة العامة بنسخة من العريضة.",
+        "en": "The plaintiff in a divorce claim must formally serve a copy of the petition on the defendant and on the public prosecutor."
+      },
+      "quote": [
+        {
+          "paragraph": 1,
+          "text": "يجب على المدعي في دعوى الطلاق، أن يبلغ رسميا المدعى عليه والنيابة العامة بنسخة من العريضة المشار إليها في المادة 436 أعلاه.",
+          "sha256": "827146af3cb758f70b071fd845f8b82850d9e5e7ad4dfcc6faa94c5c35e99a76"
+        }
+      ],
+      "source": {
+        "tier": 1,
+        "store": "library",
+        "textAsOf": "2026-11-10",
+        "ledgerRefs": [],
+        "ledgerClean": true
+      }
+    },
+    {
+      "id": "b16",
+      "role": "procedure",
+      "cite": {
+        "code": "cpca",
+        "article": "438",
+        "paragraphs": [
+          2
+        ]
+      },
+      "says": {
+        "ar": "يجوز تبليغ النيابة العامة عن طريق أمانة الضبط.",
+        "en": "The public prosecutor may be notified through the court registry."
+      },
+      "quote": [
+        {
+          "paragraph": 2,
+          "text": "ويجوز له أيضا تبليغ النيابة العامة عن طريق أمانة الضبط.",
+          "sha256": "7ba19787b63c99b939609940d70055070ed6f14c106fe485cc25083bc230ff24"
+        }
+      ],
+      "source": {
+        "tier": 1,
+        "store": "library",
+        "textAsOf": "2026-11-10",
+        "ledgerRefs": [],
+        "ledgerClean": true
+      }
+    },
+    {
+      "id": "b17",
+      "role": "procedure",
+      "cite": {
+        "code": "cpca",
+        "article": "439",
+        "paragraphs": [
+          1
+        ]
+      },
+      "says": {
+        "ar": "محاولات الصلح وجوبية وتجرى في جلسة سرية.",
+        "en": "Conciliation attempts are mandatory and are held in a closed hearing."
+      },
+      "quote": [
+        {
+          "paragraph": 1,
+          "text": "محاولات الصلح وجوبية، وتتم في جلسة سرية.",
+          "sha256": "fbbfdc07b439c339b65086ebfbdfd0490c5c763554e47ab5bf604625dcfa71ee"
+        }
+      ],
+      "source": {
+        "tier": 1,
+        "store": "library",
+        "textAsOf": "2026-11-10",
+        "ledgerRefs": [],
+        "ledgerClean": true
+      }
+    },
+    {
+      "id": "b18",
+      "role": "procedure",
+      "cite": {
+        "code": "cpca",
+        "article": "441",
+        "paragraphs": [
+          2
+        ]
+      },
+      "says": {
+        "ar": "إذا تخلف أحد الزوجين عن جلسة الصلح بدون عذر رغم تبليغه شخصيا حرر القاضي محضرا بذلك.",
+        "en": "If a spouse fails to attend the conciliation hearing without excuse although personally served, the judge records it."
+      },
+      "quote": [
+        {
+          "paragraph": 2,
+          "text": "غير أنه إذا تخلف أحد الزوجين عن حضور الجلسة المحددة للصلح بدون عذر رغم تبليغه شخصيا، يحرر القاضي محضرا بذلك.",
+          "sha256": "a00e37a311712654d1e93747e5c0c5ae440863a36ef62fa373b5e2ffef214844"
+        }
+      ],
+      "source": {
+        "tier": 1,
+        "store": "library",
+        "textAsOf": "2026-11-10",
+        "ledgerRefs": [],
+        "ledgerClean": true
+      }
+    },
+    {
+      "id": "b19",
+      "role": "procedure",
+      "cite": {
+        "code": "cpca",
+        "article": "442",
+        "paragraphs": [
+          2
+        ]
+      },
+      "says": {
+        "ar": "لا تتجاوز محاولات الصلح ثلاثة أشهر من تاريخ رفع دعوى الطلاق.",
+        "en": "Conciliation attempts may not exceed three months from the filing of the divorce claim."
+      },
+      "quote": [
+        {
+          "paragraph": 2,
+          "text": "في جميع الحالات، يجب ألا تتجاوز محاولات الصلح ثلاثة (3) أشهر من تاريخ رفع دعوى الطلاق.",
+          "sha256": "2d28b81b311ca01774a1992011e1f554fed36f1d43ef853ca205123028ff6b9d"
+        }
+      ],
+      "source": {
+        "tier": 1,
+        "store": "library",
+        "textAsOf": "2026-11-10",
+        "ledgerRefs": [],
+        "ledgerClean": true
+      }
+    },
+    {
+      "id": "b20",
+      "role": "procedure",
+      "cite": {
+        "code": "cpca",
+        "article": "443",
+        "paragraphs": [
+          4
+        ]
+      },
+      "says": {
+        "ar": "عند عدم الصلح أو تخلف أحد الزوجين رغم مهلة التفكير يشرع في مناقشة الموضوع.",
+        "en": "When conciliation fails, or a spouse stays away despite the time for reflection, the court proceeds to the merits."
+      },
+      "quote": [
+        {
+          "paragraph": 4,
+          "text": "في حالة عدم الصلح أو تخلف أحد الزوجين بالرغم من مهلة التفكير الممنوحة له، يشرع في مناقشة موضوع الدعوى.",
+          "sha256": "4355ea8d4c9b5ca863b1b377934dc6e0b098898f7af1e7a11318a0bcb08c23dd"
+        }
+      ],
+      "source": {
+        "tier": 1,
+        "store": "library",
+        "textAsOf": "2026-11-10",
+        "ledgerRefs": [],
+        "ledgerClean": true
+      }
+    },
+    {
+      "id": "b21",
+      "role": "basis",
+      "required": true,
+      "cite": {
+        "code": "cpca",
+        "article": "450",
+        "paragraphs": [
+          1
+        ]
+      },
+      "says": {
+        "ar": "يتأكد القاضي من إرادة الزوج في طلب الطلاق ويأمر بما يراه لازما من تدابير.",
+        "en": "The judge makes sure of the husband's will to divorce and orders any measure he finds necessary."
+      },
+      "quote": [
+        {
+          "paragraph": 1,
+          "text": "يتأكد القاضي من إرادة الزوج في طلب الطلاق، ويأمر باتخاذ كل التدابير التي يراها لازمة في ذلك.",
+          "sha256": "c7913151dfe2d5e1ae9166219c1ae74b56ca4c2d4dce2166cd655281014afc7d"
+        }
+      ],
+      "source": {
+        "tier": 1,
+        "store": "library",
+        "textAsOf": "2026-11-10",
+        "ledgerRefs": [],
+        "ledgerClean": true
+      }
+    },
+    {
+      "id": "b22",
+      "role": "limit",
+      "cite": {
+        "code": "cpca",
+        "article": "994",
+        "paragraphs": [
+          1
+        ]
+      },
+      "says": {
+        "ar": "لا يعرض القاضي الوساطة في قضايا شؤون الأسرة.",
+        "en": "The judge does not offer mediation in family cases."
+      },
+      "quote": [
+        {
+          "paragraph": 1,
+          "text": "يجب على القاضي عرض إجراء الوساطة على الخصوم في جميع المواد، باستثناء قضايا شؤون الأسرة والقضايا العمالية و كل ما من شأنه أن يمس بالنظام العام.",
+          "sha256": "d3ce5d785e5874643253eafbd2b2ebce4cfe2a2b8f47d6723d8371db5f4fc32a"
+        }
+      ],
+      "source": {
+        "tier": 1,
+        "store": "library",
+        "textAsOf": "2026-11-10",
+        "ledgerRefs": [],
+        "ledgerClean": true
+      }
+    },
+    {
+      "id": "b23",
+      "role": "procedure",
+      "cite": {
+        "code": "cpca",
+        "article": "40",
+        "paragraphs": [
+          1,
+          3
+        ]
+      },
+      "says": {
+        "ar": "ترفع دعاوى الطلاق دون سواها أمام المحكمة التي يقع في دائرتها مسكن الزوجية.",
+        "en": "Divorce claims go only to the court in whose area the marital home lies."
+      },
+      "quote": [
+        {
+          "paragraph": 1,
+          "text": "فضلا عما ورد في المواد 37 و38 و46 من هذا القانون، ترفع الدعاوى أمام الجهات القضائية المبينة أدناه دون سواها :",
+          "sha256": "d1d3cfc6318041605707b19b98dfdc39a081a85d440e9ce268c413b1899e6fc0"
+        },
+        {
+          "paragraph": 3,
+          "text": "2 - في مواد الميراث، دعاوى الطلاق أو الرجوع، الحضانة، النفقة الغذائية والسكن، على التوالي، أمام المحكمة التي يقع في دائرة اختصاصها موطن المتوفى، مسكن الزوجية، مكان ممارسة الحضانة، موطن الدائن بالنفقة، مكان وجود السكن.",
+          "sha256": "8ef7dd9a44053fce927e9f0916d2518605f7ff6be761cd398a526a0bf9f71e1c"
+        }
+      ],
+      "source": {
+        "tier": 1,
+        "store": "library",
+        "textAsOf": "2026-11-10",
+        "ledgerRefs": [],
+        "ledgerClean": true
+      }
+    },
+    {
+      "id": "b24",
+      "role": "procedure",
+      "cite": {
+        "code": "cpca",
+        "article": "46",
+        "paragraphs": [
+          1
+        ]
+      },
+      "says": {
+        "ar": "يجوز للخصوم الحضور باختيارهم أمام قاض غير مختص إقليميا.",
+        "en": "The parties may appear of their own choice before a judge who lacks territorial jurisdiction."
+      },
+      "quote": [
+        {
+          "paragraph": 1,
+          "text": "يجوز للخصوم الحضور باختيارهم أمام القاضي، حتى ولو لم يكن مختصا إقليميا.",
+          "sha256": "b5beca3e0c61b8ee0317300150e7b570bf81d82862cf0dedd503bb9cfd805d31"
+        }
+      ],
+      "source": {
+        "tier": 1,
+        "store": "library",
+        "textAsOf": "2026-11-10",
+        "ledgerRefs": [],
+        "ledgerClean": true
+      }
+    },
+    {
+      "id": "b25",
+      "role": "procedure",
+      "cite": {
+        "code": "cpca",
+        "article": "47",
+        "paragraphs": [
+          1
+        ]
+      },
+      "says": {
+        "ar": "يثار الدفع بعدم الاختصاص الإقليمي قبل أي دفاع في الموضوع أو دفع بعدم القبول.",
+        "en": "The plea of territorial incompetence must be raised before any defence on the merits or plea of inadmissibility."
+      },
+      "quote": [
+        {
+          "paragraph": 1,
+          "text": "يجب إثارة الدفع بعدم الاختصاص الإقليمي، قبل أي دفاع في الموضوع أو دفع بعدم القبول",
+          "sha256": "1a85b9edfdac12029100bfa042088db5e7bb10e5f7f85b7f8a330ad6d371a1ab"
+        }
+      ],
+      "source": {
+        "tier": 1,
+        "store": "library",
+        "textAsOf": "2026-11-10",
+        "ledgerRefs": [],
+        "ledgerClean": true
+      }
+    },
+    {
+      "id": "b26",
+      "role": "limit",
+      "cite": {
+        "code": "family-code",
+        "article": "53",
+        "paragraphs": [
+          1
+        ]
+      },
+      "says": {
+        "ar": "للزوجة أن تطلب التطليق للأسباب المحددة قانونا.",
+        "en": "The wife may seek a judicial divorce on the grounds the law lists."
+      },
+      "quote": [
+        {
+          "paragraph": 1,
+          "text": "يجوز للزوجة أن تطلب التطليق للأسباب الآتية:",
+          "sha256": "fc2e2cfcdcd32d352729c0eddb8d75fa0739dfba0c879d15c74ff1182a911a8e"
+        }
+      ],
+      "source": {
+        "tier": 1,
+        "store": "library",
+        "textAsOf": "2026-11-10",
+        "ledgerRefs": [],
+        "ledgerClean": false
+      }
+    },
+    {
+      "id": "b27",
+      "role": "limit",
+      "cite": {
+        "code": "family-code",
+        "article": "54",
+        "paragraphs": [
+          1
+        ]
+      },
+      "says": {
+        "ar": "للزوجة أن تخالع نفسها بمقابل مالي دون موافقة الزوج.",
+        "en": "The wife may obtain a khul divorce for a financial consideration without the husband's consent."
+      },
+      "quote": [
+        {
+          "paragraph": 1,
+          "text": "يجوز للزوجة دون موافقة الزوج أن تخالع نفسها بمقابل مالي.",
+          "sha256": "6b6ffc5d187682670c67176fc189cd49add5430f8b6778cad16397fd4054d360"
+        }
+      ],
+      "source": {
+        "tier": 1,
+        "store": "library",
+        "textAsOf": "2026-11-10",
+        "ledgerRefs": [],
+        "ledgerClean": false
+      }
+    },
+    {
+      "id": "b28",
+      "role": "limit",
+      "cite": {
+        "code": "cpca",
+        "article": "427",
+        "paragraphs": [
+          1
+        ]
+      },
+      "says": {
+        "ar": "الطلاق بالتراضي إجراء لحل الرابطة الزوجية بإرادة الزوجين المشتركة.",
+        "en": "Divorce by mutual consent is a procedure to dissolve the marriage by the spouses' joint will."
+      },
+      "quote": [
+        {
+          "paragraph": 1,
+          "text": "الطلاق بالتراضي هو إجراء يرمي إلى حل الرابطة الزوجية بإرادة الزوجين المشتركة.",
+          "sha256": "69848ba449846192244200cfd465e417049f88b1a610384939cf0d2e95cbd20d"
+        }
+      ],
+      "source": {
+        "tier": 1,
+        "store": "library",
+        "textAsOf": "2026-11-10",
+        "ledgerRefs": [],
+        "ledgerClean": true
+      }
+    },
+    {
+      "id": "b29",
+      "role": "limit",
+      "cite": {
+        "code": "cpca",
+        "article": "428",
+        "paragraphs": [
+          1
+        ]
+      },
+      "says": {
+        "ar": "يقدم طلب الطلاق بالتراضي بعريضة وحيدة موقعة من الزوجين.",
+        "en": "Divorce by mutual consent is sought by a single petition signed by both spouses."
+      },
+      "quote": [
+        {
+          "paragraph": 1,
+          "text": "في حالة الطلاق بالتراضي يقدم طلب مشترك في شكل عريضة وحيدة موقعة من الزوجين تودع بأمانة الضبط.",
+          "sha256": "689872ad6e7cc03c6bf206e59f0ba94a140b13547230727182f1737c88e500ea"
+        }
+      ],
+      "source": {
+        "tier": 1,
+        "store": "library",
+        "textAsOf": "2026-11-10",
+        "ledgerRefs": [],
+        "ledgerClean": true
+      }
+    },
+    {
+      "id": "b30",
+      "role": "limit",
+      "cite": {
+        "code": "family-code",
+        "article": "32",
+        "paragraphs": [
+          1
+        ]
+      },
+      "says": {
+        "ar": "يبطل الزواج إذا اشتمل على مانع أو شرط يتنافى ومقتضيات العقد.",
+        "en": "A marriage is void if it involves an impediment or a condition contrary to the nature of the contract."
+      },
+      "quote": [
+        {
+          "paragraph": 1,
+          "text": "يبطل الزواج، إذا اشتمل على مانع أو شرط يتنافى ومقتضيات العقد.",
+          "sha256": "13c2ead301245da38b5f849bfe66af68df971397edfbb8a4e3f606928913c91e"
+        }
+      ],
+      "source": {
+        "tier": 1,
+        "store": "library",
+        "textAsOf": "2026-11-10",
+        "ledgerRefs": [],
+        "ledgerClean": false
+      }
+    },
+    {
+      "id": "b31",
+      "role": "limit",
+      "cite": {
+        "code": "family-code",
+        "article": "33",
+        "paragraphs": [
+          1
+        ]
+      },
+      "says": {
+        "ar": "يبطل الزواج إذا اختل ركن الرضا.",
+        "en": "A marriage is void when consent is lacking."
+      },
+      "quote": [
+        {
+          "paragraph": 1,
+          "text": "يبطل الزواج إذا اختل ركن الرضا.",
+          "sha256": "f0568765396c592af79cf1cc9a02e6d598767065a8dd85b9298942f92b64e58c"
+        }
+      ],
+      "source": {
+        "tier": 1,
+        "store": "library",
+        "textAsOf": "2026-11-10",
+        "ledgerRefs": [],
+        "ledgerClean": false
+      }
+    },
+    {
+      "id": "b32",
+      "role": "limit",
+      "cite": {
+        "code": "cpca",
+        "article": "53",
+        "paragraphs": [
+          1
+        ]
+      },
+      "says": {
+        "ar": "تقوم وحدة الموضوع عند رفع نفس النزاع إلى جهتين قضائيتين مختصتين من نفس الدرجة.",
+        "en": "Lis pendens exists when the same dispute is brought before two competent courts of the same level."
+      },
+      "quote": [
+        {
+          "paragraph": 1,
+          "text": "تقوم وحدة الموضوع عندما يرفع نفس النزاع إلى جهتين قضائيتين مختصتين ومن نفس الدرجة.",
+          "sha256": "7fa279c93654f88bb192f4fd9b74471dc9ccce7ca9ddcf2f635588d9e3db143c"
+        }
+      ],
+      "source": {
+        "tier": 1,
+        "store": "library",
+        "textAsOf": "2026-11-10",
+        "ledgerRefs": [],
+        "ledgerClean": true
+      }
+    },
+    {
+      "id": "b33",
+      "role": "limit",
+      "cite": {
+        "code": "cpca",
+        "article": "54",
+        "paragraphs": [
+          1
+        ]
+      },
+      "says": {
+        "ar": "تتخلى الجهة القضائية التي رفع إليها النزاع أخيرا لصالح الأخرى بطلب من أحد الخصوم.",
+        "en": "The court seised last must decline in favour of the other at a party's request."
+      },
+      "quote": [
+        {
+          "paragraph": 1,
+          "text": "يجب على الجهة القضائية الأخيرة التي رفع إليها النزاع أن تتخلى لصالح الجهة الأخرى، إذا طلب أحد الخصوم ذلك.",
+          "sha256": "5532e2b853a4941028f2a69cd043d704fa3bd46c079cb37a0a834762aaab92c9"
+        }
+      ],
+      "source": {
+        "tier": 1,
+        "store": "library",
+        "textAsOf": "2026-11-10",
+        "ledgerRefs": [],
+        "ledgerClean": true
+      }
+    },
+    {
+      "id": "b34",
+      "role": "limit",
+      "cite": {
+        "code": "cpca",
+        "article": "54",
+        "paragraphs": [
+          2
+        ]
+      },
+      "says": {
+        "ar": "يجوز للقاضي أن يتخلى تلقائيا إذا تبينت له وحدة الموضوع.",
+        "en": "The judge may decline of his own motion when he finds lis pendens."
+      },
+      "quote": [
+        {
+          "paragraph": 2,
+          "text": "ويجوز للقاضي أن يتخلى عن الفصل تلقائيا إذا تبين له وحدة الموضوع.",
+          "sha256": "603681daf78934e2934b7f5f47131535eb62d11b2d45605559cdf2ad50a9727e"
+        }
+      ],
+      "source": {
+        "tier": 1,
+        "store": "library",
+        "textAsOf": "2026-11-10",
+        "ledgerRefs": [],
+        "ledgerClean": true
+      }
+    },
+    {
+      "id": "b35",
+      "role": "limit",
+      "cite": {
+        "code": "civil-code",
+        "article": "338",
+        "paragraphs": [
+          1
+        ]
+      },
+      "says": {
+        "ar": "الحكم الحائز لقوة الشيء المقضي به حجة فيما فصل فيه بين نفس الخصوم في نزاع له نفس المحل والسبب.",
+        "en": "A judgment with the force of res judicata binds on what it decided between the same parties, on the same object and cause."
+      },
+      "quote": [
+        {
+          "paragraph": 1,
+          "text": "الاحكام التى حازت قوة الشىء المقضى به تكون حجة بما فصلت فيه من الحقوق، ولا يجوز قبول اى دليل ينقض هذه القرينة ولكن لا تكون لتلك الاحكام هذه الحجية الا فى نزاع قام بين الخصوم أنفسهم، دون أن تتغير صفاتهم وتتعلق بحقوق لها نفس المحل والسبب .",
+          "sha256": "ffc83bffeb75fc38574d116aa093859ab1c8841aadd93645dca3795acbc20bc8"
+        }
+      ],
+      "source": {
+        "tier": 1,
+        "store": "delta",
+        "textAsOf": "2026-11-10",
+        "ledgerRefs": [],
+        "ledgerClean": true
+      }
+    },
+    {
+      "id": "b36",
+      "role": "limit",
+      "cite": {
+        "code": "civil-code",
+        "article": "338",
+        "paragraphs": [
+          2
+        ]
+      },
+      "says": {
+        "ar": "لا تأخذ المحكمة بقرينة حجية الشيء المقضي به تلقائيا.",
+        "en": "The court may not apply res judicata of its own motion."
+      },
+      "quote": [
+        {
+          "paragraph": 2,
+          "text": "ولا يجوز للمحكمة أن تأخذ بهذه القرينة تلقائيا.",
+          "sha256": "abcd49062a02cc7fdad309dab3bf4f9c07d425b41a45576c15302d704057e585"
+        }
+      ],
+      "source": {
+        "tier": 1,
+        "store": "delta",
+        "textAsOf": "2026-11-10",
+        "ledgerRefs": [],
+        "ledgerClean": true
+      }
+    },
+    {
+      "id": "b37",
+      "role": "damages",
+      "cite": {
+        "code": "family-code",
+        "article": "16",
+        "paragraphs": [
+          1
+        ]
+      },
+      "says": {
+        "ar": "تستحق الزوجة الصداق كاملا بالدخول، ونصفه عند الطلاق قبل الدخول.",
+        "en": "The wife is owed the full dowry upon consummation, and half of it upon divorce before consummation."
+      },
+      "quote": [
+        {
+          "paragraph": 1,
+          "text": "تستحق الزوجة الصداق كاملا بالدخول، أو بوفاة الزوج، وتستحق نصفه عند الطلاق قبل الدخول.",
+          "sha256": "f92c5d04c068449087cf058dc1510eaad9a6e83088d3066ad2a68d5f54daadc3"
+        }
+      ],
+      "source": {
+        "tier": 1,
+        "store": "library",
+        "textAsOf": "2026-11-10",
+        "ledgerRefs": [],
+        "ledgerClean": false
+      }
+    },
+    {
+      "id": "b38",
+      "role": "basis",
+      "cite": {
+        "code": "family-code",
+        "article": "58",
+        "paragraphs": [
+          1
+        ]
+      },
+      "says": {
+        "ar": "تعتد المطلقة المدخول بها غير الحامل بثلاثة قروء، واليائس بثلاثة أشهر من تاريخ التصريح بالطلاق.",
+        "en": "A divorced wife whose marriage was consummated and who is not pregnant waits three menstrual cycles, or three months from the pronouncement of divorce if past menstruation."
+      },
+      "quote": [
+        {
+          "paragraph": 1,
+          "text": "تعتد المطلقة المدخول بها غير الحامل بثلاثة قروء، واليائس من المحيض بثلاثة أشهر من تاريخ التصريح بالطلاق.",
+          "sha256": "d7d5cb539c92273ef8b424e7123d293d17b1781349756465ced6d9eb1a047d6c"
+        }
+      ],
+      "source": {
+        "tier": 1,
+        "store": "library",
+        "textAsOf": "2026-11-10",
+        "ledgerRefs": [],
+        "ledgerClean": false
+      }
+    },
+    {
+      "id": "b39",
+      "role": "damages",
+      "cite": {
+        "code": "family-code",
+        "article": "61",
+        "paragraphs": [
+          1
+        ]
+      },
+      "says": {
+        "ar": "لا تخرج المطلقة من السكن العائلي أثناء العدة إلا في حالة الفاحشة المبينة، ولها النفقة في عدة الطلاق.",
+        "en": "The divorced wife does not leave the family home during the waiting period save for proven gross misconduct, and is owed maintenance during it."
+      },
+      "quote": [
+        {
+          "paragraph": 1,
+          "text": "لا تخرج الزوجة المطلقة ولا المتوفى عنها زوجها من السكن العائلي ما دامت في عدة طلاقها أو وفاة زوجها إلا في حالة الفاحشة المبينة ولها الحق في النفقة في عدة الطلاق.",
+          "sha256": "1123a7c3a8b35de6482bf0aee8a3b147f35dce45b59badc22a354ecd545224bb"
+        }
+      ],
+      "source": {
+        "tier": 1,
+        "store": "library",
+        "textAsOf": "2026-11-10",
+        "ledgerRefs": [],
+        "ledgerClean": false
+      }
+    },
+    {
+      "id": "b40",
+      "role": "basis",
+      "cite": {
+        "code": "family-code",
+        "article": "65",
+        "paragraphs": [
+          1
+        ]
+      },
+      "says": {
+        "ar": "تنقضي حضانة الذكر ببلوغه 10 سنوات قابلة للتمديد إلى 16 سنة، والأنثى ببلوغها سن الزواج.",
+        "en": "Custody of a boy ends at 10, extendable to 16, and of a girl at marriageable age."
+      },
+      "quote": [
+        {
+          "paragraph": 1,
+          "text": "تنقضي مدة حضانة الذكر ببلوغه (10) سنوات، والأنثى ببلوغها سن الزواج، وللقاضي أن يمدد الحضانة بالنسبة للذكر إلى (16) سنة إذا كانت الحاضنة أما لم تتزوج ثانية.",
+          "sha256": "d82453407b87bd0c74ef4fd222d09e64a27557045e062180d4021af12e50cea0"
+        }
+      ],
+      "source": {
+        "tier": 1,
+        "store": "library",
+        "textAsOf": "2026-11-10",
+        "ledgerRefs": [],
+        "ledgerClean": false
+      }
+    },
+    {
+      "id": "b41",
+      "role": "procedure",
+      "cite": {
+        "code": "family-code",
+        "article": "87",
+        "paragraphs": [
+          3
+        ]
+      },
+      "says": {
+        "ar": "في حالة الطلاق يمنح القاضي الولاية لمن أسندت له حضانة الأولاد.",
+        "en": "On divorce, the judge gives guardianship to the person awarded custody of the children."
+      },
+      "quote": [
+        {
+          "paragraph": 3,
+          "text": "وفي حالة الطلاق، يمنح القاضي الولاية لمن أسندت له حضانة الأولاد.",
+          "sha256": "7115e764100678271ebda57999aa8a8334ea97bbff2653a196ca71576bd4b449"
+        }
+      ],
+      "source": {
+        "tier": 1,
+        "store": "library",
+        "textAsOf": "2026-11-10",
+        "ledgerRefs": [],
+        "ledgerClean": false
+      }
+    },
+    {
+      "id": "b42",
+      "role": "limit",
+      "cite": {
+        "code": "family-code",
+        "article": "55",
+        "paragraphs": [
+          1
+        ]
+      },
+      "says": {
+        "ar": "عند نشوز أحد الزوجين يحكم القاضي بالطلاق وبالتعويض للطرف المتضرر.",
+        "en": "Where one spouse is recalcitrant (nushuz), the judge pronounces divorce and awards compensation to the injured spouse."
+      },
+      "quote": [
+        {
+          "paragraph": 1,
+          "text": "عند نشوز أحد الزوجين يحكم القاضي بالطلاق وبالتعويض للطرف المتضرر.",
+          "sha256": "7ccf9461cf3f0e26562f317c18a4c9ca370596d9bad735771741712d8026c0cf"
+        }
+      ],
+      "source": {
+        "tier": 1,
+        "store": "library",
+        "textAsOf": "2026-11-10",
+        "ledgerRefs": [],
+        "ledgerClean": false
+      }
+    },
+    {
+      "id": "b43",
+      "role": "limit",
+      "interpretive": true,
+      "interpretiveNote": "The store marks civil-code 12 as amended by law-05-10 with temporal applicability unsettled; whether a foreign husband's national law governs depends also on civil-code 13 (below).",
+      "cite": {
+        "code": "civil-code",
+        "article": "12",
+        "paragraphs": [
+          2
+        ]
+      },
+      "says": {
+        "ar": "يسري على انحلال الزواج القانون الوطني للزوج وقت رفع الدعوى.",
+        "en": "The dissolution of marriage is governed by the husband's national law at the time the claim is filed."
+      },
+      "quote": [
+        {
+          "paragraph": 2,
+          "text": "ويسري على انحلال الزواج والانفصال الجسماني القانون الوطني الذي ينتمي إليه الزوج وقت رفع الدعوى.",
+          "sha256": "3aecbb2d2abd4169a31fbfedfe332114a0db15ca0690a0e9de218dbad5b2012c"
+        }
+      ],
+      "source": {
+        "tier": 1,
+        "store": "corpus",
+        "textAsOf": "2026-11-10",
+        "ledgerRefs": [
+          "civil-code/law-05-10"
+        ],
+        "ledgerClean": true
+      }
+    },
+    {
+      "id": "b44",
+      "role": "limit",
+      "interpretive": true,
+      "interpretiveNote": "The store gives only the original wording, which refers to articles 11 and 12; its note records that the French text refers to 12 and 13, and the wording in force after the 2005 amendment of the Civil Code is not in the store (requested).",
+      "cite": {
+        "code": "civil-code",
+        "article": "13",
+        "paragraphs": [
+          1
+        ]
+      },
+      "says": {
+        "ar": "يسري القانون الجزائري وحده إذا كان أحد الزوجين جزائريا وقت انعقاد الزواج، إلا في أهلية الزواج.",
+        "en": "Algerian law alone applies when one spouse was Algerian when the marriage was made, except for capacity to marry."
+      },
+      "quote": [
+        {
+          "paragraph": 1,
+          "text": "يسرى القانون الجزائرى وحده فى الاحوال المنصوص عليها فى المادتين 11 و 12 اذا كان احد الزوجين جزائريا وقت انعقاد الزواج، الا فيما يخص أهلية الزواج.",
+          "sha256": "e663f46db509a529150ae547e220c2acff3417fc58d6caca98e38d3b5199ab91"
+        }
+      ],
+      "source": {
+        "tier": 1,
+        "store": "corpus",
+        "textAsOf": "2026-11-10",
+        "ledgerRefs": [],
+        "ledgerClean": true
+      }
+    },
+    {
+      "id": "b45",
+      "role": "procedure",
+      "cite": {
+        "code": "family-code",
+        "article": "22",
+        "paragraphs": [
+          2
+        ]
+      },
+      "says": {
+        "ar": "يسجل حكم تثبيت الزواج في الحالة المدنية بسعي من النيابة العامة.",
+        "en": "A judgment validating a marriage is entered in the civil-status register at the initiative of the public prosecutor."
+      },
+      "quote": [
+        {
+          "paragraph": 2,
+          "text": "يجب تسجيل حكم تثبيت الزواج في الحالة المدنية بسعي من النيابة العامة.",
+          "sha256": "53fdd15730baa80b26035f87e959ece30dad2f665b54d1928350b7b92ed04e56"
+        }
+      ],
+      "source": {
+        "tier": 1,
+        "store": "library",
+        "textAsOf": "2026-11-10",
+        "ledgerRefs": [],
+        "ledgerClean": false
+      }
+    }
+  ],
+  "elements": [
+    {
+      "id": "e1",
+      "toProve": {
+        "ar": "قيام رابطة زوجية صحيحة بين المدعي والمدعى عليها",
+        "en": "A valid, existing marriage between the plaintiff and the defendant"
+      },
+      "factsToState": [
+        {
+          "ar": "تاريخ ومكان انعقاد الزواج وجهة تحرير العقد",
+          "en": "The date and place of the marriage and the authority that drew up the contract"
+        },
+        {
+          "ar": "تسجيل الزواج في سجل الحالة المدنية ومراجعه",
+          "en": "The registration of the marriage in the civil-status register and its references"
+        },
+        {
+          "ar": "وقوع الدخول أو عدمه، والأولاد إن وجدوا وأعمارهم",
+          "en": "Whether the marriage was consummated, and the children, if any, with their ages"
+        },
+        {
+          "ar": "عنوان المسكن الزوجي",
+          "en": "The address of the marital home"
+        }
+      ],
+      "events": [
+        "marriage"
+      ],
+      "slots": [
+        "marriage_registered"
+      ],
+      "burden": "plaintiff",
+      "proof": [
+        {
+          "means": "civilStatusExtract",
+          "basis": [
+            "b8"
+          ],
+          "note": {
+            "ar": "مستخرج من سجل الحالة المدنية؛ وإن لم يسجل الزواج فبحكم قضائي بتثبيته.",
+            "en": "An extract of the civil-status register; if the marriage was not registered, a judgment validating it."
+          }
+        }
+      ],
+      "basis": [
+        "b1",
+        "b8"
+      ]
+    },
+    {
+      "id": "e2",
+      "toProve": {
+        "ar": "إرادة الزوج في إيقاع الطلاق، قائمة بعد محاولات الصلح",
+        "en": "The husband's will to divorce, maintained after the conciliation attempts"
+      },
+      "factsToState": [
+        {
+          "ar": "تمسك الزوج بطلب الطلاق بإرادته المنفردة",
+          "en": "The husband's insistence on divorce at his sole will"
+        }
+      ],
+      "burden": "plaintiff",
+      "basis": [
+        "b1",
+        "b21",
+        "b3"
+      ]
+    }
+  ],
+  "requests": [
+    {
+      "id": "r1",
+      "kind": "divorce",
+      "accessory": false,
+      "amount": false,
+      "text": {
+        "ar": "الحكم بفك الرابطة الزوجية بين المدعي والمدعى عليها بالطلاق بإرادة الزوج المنفردة.",
+        "en": "Dissolve the marriage between the plaintiff and the defendant by divorce at the husband's sole will."
+      },
+      "basis": [
+        "b1",
+        "b3",
+        "b21"
+      ]
+    },
+    {
+      "id": "r2",
+      "kind": "visitation",
+      "accessory": true,
+      "amount": false,
+      "text": {
+        "ar": "تمكين المدعي من حق زيارة الأولاد (...) وفق الكيفية التي تحددها المحكمة.",
+        "en": "Grant the plaintiff a right to visit the children (...) on the terms the court sets."
+      },
+      "when": {
+        "slot": "minor_children",
+        "is": "yes"
+      },
+      "basis": [
+        "b12",
+        "court-sections.b8",
+        "b11"
+      ]
+    },
+    {
+      "id": "r3",
+      "kind": "other",
+      "accessory": true,
+      "amount": false,
+      "text": {
+        "ar": "الأمر بتسجيل منطوق الحكم في سجلات الحالة المدنية بسعي من النيابة العامة.",
+        "en": "Order the judgment to be entered in the civil-status registers at the initiative of the public prosecutor."
+      },
+      "basis": [
+        "b5"
+      ]
+    }
+  ],
+  "court": {
+    "section": {
+      "value": "family",
+      "basis": [
+        "court-sections.b7",
+        "court-sections.b8",
+        "b13"
+      ],
+      "alternatives": [
+        {
+          "when": {
+            "slot": "court_has_section_for_matter",
+            "is": "no"
+          },
+          "value": "civil",
+          "basis": [
+            "court-sections.b4"
+          ]
+        }
+      ],
+      "message": {
+        "ar": "المادتان 423 و436 من قانون الإجراءات المدنية والإدارية: ترفع دعوى الطلاق من أحد الزوجين أمام قسم شؤون الأسرة، والمادة 32: في المحاكم التي لم تنشأ فيها الأقسام ينظر القسم المدني في جميع النزاعات عدا الاجتماعية. تحقق من القسم المختار ومن أقسام المحكمة.",
+        "en": "CPCA articles 423 and 436: a divorce claim by one spouse goes to the family section; article 32: where the court has no sections, the civil section hears every dispute except social ones. Check the section chosen and the court's sections."
+      }
+    },
+    "territory": [
+      {
+        "id": "t1",
+        "rule": {
+          "ar": "ترفع دعوى الطلاق دون سواها أمام محكمة مكان المسكن الزوجي (المادة 40)؛ ويجوز للخصوم الحضور باختيارهم أمام قاض غير مختص إقليميا (المادة 46)، ويثار الدفع بعدم الاختصاص الإقليمي قبل أي دفاع في الموضوع (المادة 47).",
+          "en": "A divorce claim goes only to the court of the marital home (article 40); the parties may appear of their own choice before a court without territorial jurisdiction (article 46), and the plea of territorial incompetence must come before any defence on the merits (article 47)."
+        },
+        "basis": [
+          "b23",
+          "b24",
+          "b25"
+        ]
+      }
+    ]
+  },
+  "documents": [
+    {
+      "id": "doc1",
+      "name": {
+        "ar": "مستخرج من عقد الزواج من سجل الحالة المدنية، أو الحكم القاضي بتثبيت الزواج",
+        "en": "An extract of the marriage certificate from the civil-status register, or the judgment validating the marriage"
+      },
+      "why": {
+        "ar": "يثبت به الزواج الذي يطلب حله.",
+        "en": "It proves the marriage whose dissolution is sought."
+      },
+      "basis": [
+        "b8"
+      ]
+    },
+    {
+      "id": "doc2",
+      "name": {
+        "ar": "ما يثبت التبليغ الرسمي لنسخة من العريضة إلى المدعى عليها وإلى النيابة العامة (أو تبليغ النيابة عن طريق أمانة الضبط)",
+        "en": "Proof that a copy of the petition was formally served on the defendant and on the public prosecutor (or that the prosecutor was notified through the registry)"
+      },
+      "why": {
+        "ar": "يوجب القانون على المدعي في دعوى الطلاق تبليغ المدعى عليها والنيابة العامة بنسخة من العريضة.",
+        "en": "The law requires the plaintiff in a divorce claim to serve a copy of the petition on the defendant and the public prosecutor."
+      },
+      "basis": [
+        "b15",
+        "b16"
+      ]
+    }
+  ],
+  "boundaries": [
+    {
+      "id": "n1",
+      "looksLike": {
+        "ar": "دعوى طلاق عن زواج غير مسجل في الحالة المدنية",
+        "en": "A divorce claim about a marriage not registered in the civil-status register"
+      },
+      "isActually": "outside:proof-of-marriage",
+      "tellingFacts": [
+        {
+          "ar": "الزواج عرفي (بالفاتحة) أو لم يقيد في سجل الحالة المدنية",
+          "en": "The marriage was customary (by fatiha) or was never entered in the civil-status register"
+        }
+      ],
+      "when": {
+        "slot": "marriage_registered",
+        "is": "no"
+      },
+      "slots": [
+        "marriage_registered"
+      ],
+      "message": {
+        "ar": "المادة 22 من قانون الأسرة: يثبت الزواج بمستخرج من سجل الحالة المدنية، وإن لم يسجل فبحكم قضائي. تحقق من وسيلة إثبات الزواج ومن الحاجة إلى طلب تثبيته (المادتان 423 و426 من قانون الإجراءات المدنية والإدارية).",
+        "en": "Family Code article 22: a marriage is proved by a civil-status extract, or, if unregistered, by a judgment. Check how the marriage will be proved and whether its validation must be sought (CPCA articles 423 and 426)."
+      },
+      "basis": [
+        "b8",
+        "b45",
+        "court-sections.b9",
+        "court-sections.b55"
+      ]
+    },
+    {
+      "id": "n2",
+      "looksLike": {
+        "ar": "طلب حل الزواج تقدمه الزوجة أو يقوم على أسباب التطليق أو الخلع",
+        "en": "A request to end the marriage made by the wife, or resting on the grounds of judicial divorce or khul"
+      },
+      "isActually": "outside:wife-divorce-action",
+      "tellingFacts": [
+        {
+          "ar": "الطالبة هي الزوجة، أو تذكر أسباب التطليق، أو يعرض مقابل مالي للخلع",
+          "en": "The applicant is the wife, or grounds for judicial divorce are relied on, or a financial consideration for khul is offered"
+        }
+      ],
+      "when": {
+        "any": [
+          {
+            "slot": "requests",
+            "includes": "tatliq"
+          },
+          {
+            "slot": "requests",
+            "includes": "khul"
+          }
+        ]
+      },
+      "slots": [
+        "requests"
+      ],
+      "message": {
+        "ar": "المادة 48 من قانون الأسرة: الطلاق يتم بإرادة الزوج أو بتراضي الزوجين أو بطلب من الزوجة في حدود المادتين 53 و54. تحقق من صفة الطالب ومن الأساس الذي تقوم عليه الطلبات.",
+        "en": "Family Code article 48: divorce occurs at the husband's will, by mutual consent, or at the wife's request within articles 53 and 54. Check who is asking and on what ground the requests rest."
+      },
+      "basis": [
+        "b1",
+        "b26",
+        "b27"
+      ]
+    },
+    {
+      "id": "n3",
+      "looksLike": {
+        "ar": "اتفاق الزوجين على الطلاق وتوابعه",
+        "en": "The spouses agree on the divorce and its consequences"
+      },
+      "isActually": "outside:divorce-by-mutual-consent",
+      "tellingFacts": [
+        {
+          "ar": "الزوجان متفقان على حل الزواج ويوقعان عريضة وحيدة",
+          "en": "Both spouses agree to end the marriage and sign one joint petition"
+        }
+      ],
+      "message": {
+        "ar": "المادتان 427 و428 من قانون الإجراءات المدنية والإدارية: الطلاق بالتراضي يقدم بعريضة وحيدة موقعة من الزوجين وفق إجراءات خاصة. تحقق من وجود اتفاق بين الزوجين.",
+        "en": "CPCA articles 427 and 428: divorce by mutual consent is sought by one petition signed by both spouses, under its own procedure. Check whether the spouses agree."
+      },
+      "basis": [
+        "b28",
+        "b29"
+      ]
+    },
+    {
+      "id": "n4",
+      "looksLike": {
+        "ar": "طلب حل زواج يشوبه سبب بطلان",
+        "en": "A request to end a marriage that has a ground of nullity"
+      },
+      "isActually": "outside:annulment-of-marriage",
+      "tellingFacts": [
+        {
+          "ar": "مانع شرعي أو انعدام الرضا أو شرط ينافي العقد",
+          "en": "A legal impediment, lack of consent, or a condition contrary to the contract"
+        }
+      ],
+      "when": {
+        "slot": "requests",
+        "includes": "annulment"
+      },
+      "slots": [
+        "requests"
+      ],
+      "message": {
+        "ar": "المادتان 32 و33 من قانون الأسرة: يبطل الزواج إذا اشتمل على مانع أو شرط ينافي العقد أو اختل ركن الرضا، وهو غير الطلاق. تحقق من الأساس الذي يقوم عليه الطلب.",
+        "en": "Family Code articles 32 and 33: a marriage with an impediment, a contrary condition or no consent is void, which is not divorce. Check the ground of the request."
+      },
+      "basis": [
+        "b30",
+        "b31"
+      ]
+    },
+    {
+      "id": "n5",
+      "looksLike": {
+        "ar": "دعوى طلاق جديدة بينما توجد دعوى طلاق أو تطليق أو خلع قائمة بين الزوجين",
+        "en": "A new divorce claim while a divorce, judicial-divorce or khul action between the spouses is pending"
+      },
+      "isActually": "outside:pending-action",
+      "tellingFacts": [
+        {
+          "ar": "دعوى سابقة بين نفس الزوجين لم يفصل فيها",
+          "en": "An earlier action between the same spouses not yet decided"
+        }
+      ],
+      "when": {
+        "slot": "divorce_action_pending",
+        "is": "yes"
+      },
+      "slots": [
+        "divorce_action_pending"
+      ],
+      "message": {
+        "ar": "المادتان 53 و54 من قانون الإجراءات المدنية والإدارية: عند رفع نفس النزاع إلى جهتين مختصتين تتخلى الأخيرة بطلب من أحد الخصوم ويجوز لها التخلي تلقائيا. تحقق من الدعوى القائمة وموضوعها.",
+        "en": "CPCA articles 53 and 54: when the same dispute is before two competent courts, the one seised last declines at a party's request and may decline of its own motion. Check the pending action and its subject."
+      },
+      "basis": [
+        "b32",
+        "b33",
+        "b34"
+      ]
+    },
+    {
+      "id": "n6",
+      "looksLike": {
+        "ar": "دعوى طلاق بين زوجين سبق الحكم بطلاقهما",
+        "en": "A divorce claim between spouses already divorced by judgment"
+      },
+      "isActually": "outside:already-divorced",
+      "tellingFacts": [
+        {
+          "ar": "حكم سابق بالطلاق بين الطرفين، ولم يبرم بعده عقد زواج جديد",
+          "en": "An earlier divorce judgment between the parties, with no new marriage contract made after it"
+        }
+      ],
+      "when": {
+        "slot": "spouses_divorced",
+        "is": "yes"
+      },
+      "slots": [
+        "spouses_divorced"
+      ],
+      "message": {
+        "ar": "المادة 50 من قانون الأسرة: المراجعة بعد الحكم بالطلاق تحتاج إلى عقد جديد، والمادة 338 من القانون المدني: للحكم الحائز لقوة الشيء المقضي به حجية بين نفس الخصوم ولا تأخذ بها المحكمة تلقائيا. تحقق من الحكم السابق ومن وجود عقد زواج جديد.",
+        "en": "Family Code article 50: taking the wife back after a divorce judgment needs a new contract; Civil Code article 338: a final judgment binds the same parties, but the court does not apply it of its own motion. Check the earlier judgment and whether a new marriage contract was made."
+      },
+      "basis": [
+        "b6",
+        "b35",
+        "b36",
+        "b3"
+      ]
+    },
+    {
+      "id": "n7",
+      "looksLike": {
+        "ar": "طلاق يطلبه الزوج مع التعويض بسبب نشوز الزوجة",
+        "en": "A divorce the husband seeks, with compensation, because of the wife's recalcitrance"
+      },
+      "isActually": "outside:divorce-for-nushuz",
+      "tellingFacts": [
+        {
+          "ar": "يستند الزوج إلى نشوز الزوجة ويطلب التعويض",
+          "en": "The husband relies on the wife's recalcitrance and claims compensation"
+        }
+      ],
+      "message": {
+        "ar": "المادة 55 من قانون الأسرة: عند نشوز أحد الزوجين يحكم القاضي بالطلاق وبالتعويض للطرف المتضرر. تحقق من الأساس الذي تقوم عليه الطلبات.",
+        "en": "Family Code article 55: where a spouse is recalcitrant the judge pronounces divorce and compensation for the injured spouse. Check the ground the requests rest on."
+      },
+      "basis": [
+        "b42"
+      ]
+    },
+    {
+      "id": "n8",
+      "looksLike": {
+        "ar": "دعوى طلاق يرفعها زوج أجنبي الجنسية",
+        "en": "A divorce claim brought by a husband of foreign nationality"
+      },
+      "isActually": "outside:foreign-law-check",
+      "tellingFacts": [
+        {
+          "ar": "الزوج أجنبي وقت رفع الدعوى، ولم تكن الزوجة جزائرية وقت انعقاد الزواج",
+          "en": "The husband is foreign when the claim is filed, and the wife was not Algerian when the marriage was made"
+        }
+      ],
+      "when": {
+        "slot": "husband_is_foreign_national",
+        "is": "yes"
+      },
+      "slots": [
+        "husband_is_foreign_national"
+      ],
+      "message": {
+        "ar": "المادة 12 من القانون المدني: يسري على انحلال الزواج القانون الوطني للزوج وقت رفع الدعوى، والمادة 13: يسري القانون الجزائري وحده إذا كان أحد الزوجين جزائريا وقت انعقاد الزواج. تحقق من جنسية الزوجين وقت الزواج ووقت رفع الدعوى.",
+        "en": "Civil Code article 12: the dissolution of marriage is governed by the husband's national law when the claim is filed; article 13: Algerian law alone applies if one spouse was Algerian when the marriage was made. Check both spouses' nationality at the marriage and at filing."
+      },
+      "basis": [
+        "b43",
+        "b44"
+      ]
+    }
+  ],
+  "openPoints": [
+    {
+      "id": "o1",
+      "question": {
+        "ar": "هل يخضع طلب الزوج الطلاق بإرادته لأي أجل تقادم أو سقوط؟",
+        "en": "Is the husband's claim for divorce at his will subject to any limitation or forfeiture period?"
+      },
+      "why": {
+        "ar": "لم يعثر في النصوص المقروءة من قانون الأسرة وقانون الإجراءات المدنية والإدارية على أجل لرفع هذه الدعوى؛ والتقادم في القانون المدني يتعلق بالالتزامات.",
+        "en": "No period for filing this claim was found in the Family Code or CPCA texts read; Civil Code limitation concerns obligations."
+      },
+      "readings": [
+        {
+          "reading": {
+            "ar": "لا أجل لرفع الدعوى ما دامت الرابطة الزوجية قائمة.",
+            "en": "There is no period: the claim may be brought while the marriage subsists."
+          },
+          "basis": [
+            "b1",
+            "b3"
+          ]
+        }
+      ],
+      "protectiveReading": {
+        "ar": "لا يصدر أي تحذير بشأن الأجل، مع التحقق من قيام الرابطة الزوجية (الحد n6).",
+        "en": "No deadline warning; check that the marriage still subsists (boundary n6)."
+      },
+      "grade": "C",
+      "refs": [
+        "n6"
+      ]
+    },
+    {
+      "id": "o2",
+      "question": {
+        "ar": "هل قاعدة اختصاص محكمة المسكن الزوجي في الطلاق من النظام العام؟",
+        "en": "Is the rule giving divorce to the court of the marital home a matter of public order?"
+      },
+      "why": {
+        "ar": "المادة 40 تقول «دون سواها»، بينما تجيز المادة 46 الحضور الاختياري وتوجب المادة 47 إثارة الدفع قبل أي دفاع في الموضوع، ولا تقول أي منها إن القاضي يثيره تلقائيا.",
+        "en": "Article 40 says «and no other», while article 46 allows voluntary appearance and article 47 requires the plea before any defence on the merits; none says the judge raises it of his own motion."
+      },
+      "readings": [
+        {
+          "reading": {
+            "ar": "اختصاص حصري لكنه لا يثار تلقائيا ويسقط الدفع به إن لم يثر في وقته.",
+            "en": "Exclusive, but not raised by the court; the plea is lost if not raised in time."
+          },
+          "basis": [
+            "b23",
+            "b25"
+          ]
+        },
+        {
+          "reading": {
+            "ar": "اختصاص حصري يقبل الخروج عنه بالحضور الاختياري للخصوم.",
+            "en": "Exclusive, but the parties may depart from it by appearing voluntarily."
+          },
+          "basis": [
+            "b23",
+            "b24"
+          ]
+        }
+      ],
+      "protectiveReading": {
+        "ar": "اقتراح محكمة المسكن الزوجي دائما وإبراز القاعدة للمحامي.",
+        "en": "Always propose the court of the marital home and show the rule to the lawyer."
+      },
+      "grade": "C",
+      "refs": [
+        "t1",
+        "court-sections.t4"
+      ]
+    },
+    {
+      "id": "o3",
+      "question": {
+        "ar": "ما جزاء عدم تبليغ النيابة العامة بنسخة من عريضة الطلاق؟",
+        "en": "What is the sanction for not serving a copy of the divorce petition on the public prosecutor?"
+      },
+      "why": {
+        "ar": "المادة 438 توجب التبليغ دون أن تذكر جزاء، والتبليغ يتم بعد قيد العريضة لا قبل رفع الدعوى.",
+        "en": "Article 438 imposes the service but states no sanction, and the service follows the filing of the petition rather than preceding it."
+      },
+      "protectiveReading": {
+        "ar": "إدراج إثبات التبليغ ضمن الوثائق دون حجب التصدير.",
+        "en": "List proof of service among the documents; never block the export."
+      },
+      "grade": "C",
+      "refs": [
+        "doc2"
+      ]
+    },
+    {
+      "id": "o4",
+      "question": {
+        "ar": "هل يجوز الجمع بين طلب تثبيت الزواج وطلب الطلاق في عريضة واحدة؟",
+        "en": "May the validation of a marriage and divorce be sought in the same petition?"
+      },
+      "why": {
+        "ar": "المادة 22 تجعل الحكم القضائي وسيلة إثبات الزواج غير المسجل ولا تبين هل يكون في دعوى مستقلة، والاختصاص الإقليمي يختلف (موطن المدعى عليه في إثبات الزواج، المسكن الزوجي في الطلاق).",
+        "en": "Article 22 makes a judgment the proof of an unregistered marriage without saying whether it needs a separate action, and the territorial rules differ (defendant's domicile for proof of marriage, marital home for divorce)."
+      },
+      "protectiveReading": {
+        "ar": "التحذير عند عدم تسجيل الزواج وترك التقدير للمحامي.",
+        "en": "Warn when the marriage is unregistered and leave the choice to the lawyer."
+      },
+      "grade": "C",
+      "refs": [
+        "n1"
+      ]
+    },
+    {
+      "id": "o5",
+      "question": {
+        "ar": "ما الصياغة السارية للمادة 13 من القانون المدني بعد تعديل 2005؟",
+        "en": "What is the wording of Civil Code article 13 in force after the 2005 amendment?"
+      },
+      "why": {
+        "ar": "المخزن لا يحوي إلا الصياغة الأصلية التي تحيل إلى المادتين 11 و12، ونعتقد من الذاكرة دون نص أن القانون 05-10 عدلها لتحيل إلى المادتين 12 و13.",
+        "en": "The store holds only the original wording, referring to articles 11 and 12; from memory, without a text, we believe law 05-10 amended it to refer to articles 12 and 13."
+      },
+      "protectiveReading": {
+        "ar": "التحذير كلما كان الزوج أجنبيا، دون حجب.",
+        "en": "Warn whenever the husband is foreign; never block."
+      },
+      "grade": "D",
+      "refs": [
+        "n8",
+        "b44"
+      ]
+    }
+  ],
+  "checklist": [
+    {
+      "id": "k1",
+      "item": "Basis: the Family Code provisions on the dissolution of marriage: marriage ends by divorce or death; divorce occurs at the husband's will, by mutual consent, or at the wife's request (tatliq, khul).",
+      "from": [
+        "derivationA"
+      ],
+      "answer": "applies",
+      "refs": [
+        "b1",
+        "b2",
+        "r1"
+      ]
+    },
+    {
+      "id": "k2",
+      "item": "Divorce is established only by a judgment, preceded by several conciliation attempts by the judge within a period not exceeding three months from the filing of the claim.",
+      "from": [
+        "derivationA"
+      ],
+      "answer": "applies",
+      "refs": [
+        "b3",
+        "b17",
+        "b19"
+      ],
+      "note": "A limit on the judge's conciliation phase after filing, not a filing deadline: no deadline item."
+    },
+    {
+      "id": "k3",
+      "item": "The judge must draw up a record of the conciliation attempts, signed by the judge, the clerk and the parties; reconciliation during the attempts needs no new contract, after the judgment it needs a new contract.",
+      "from": [
+        "derivationA"
+      ],
+      "answer": "applies",
+      "refs": [
+        "b4",
+        "b6",
+        "b20"
+      ]
+    },
+    {
+      "id": "k4",
+      "item": "Element to prove: a valid, existing marriage between the parties, proven by an extract of the marriage certificate from the civil-status register; if the marriage is not registered, it must first be proven by judgment (validation of the marriage) or proven in the same proceedings.",
+      "from": [
+        "derivationA"
+      ],
+      "answer": "applies",
+      "refs": [
+        "e1",
+        "b8",
+        "n1",
+        "o4"
+      ]
+    },
+    {
+      "id": "k5",
+      "item": "Who proves: the husband proves the marriage; he does not need to give or prove a reason for the divorce at his will, but the court may find the divorce abusive and award compensation to the wife.",
+      "from": [
+        "derivationA"
+      ],
+      "answer": "applies",
+      "refs": [
+        "e1",
+        "e2",
+        "b21",
+        "b7"
+      ],
+      "note": "No text requires the husband to state a reason; the judge only makes sure of his will (cpca 450)."
+    },
+    {
+      "id": "k6",
+      "item": "Plaintiff standing: only the husband himself (or his special agent) may bring divorce at his will; the wife's route is tatliq or khul.",
+      "from": [
+        "derivationA"
+      ],
+      "answer": "applies",
+      "refs": [
+        "b1",
+        "b14",
+        "n2"
+      ],
+      "note": "A husband lacking capacity files through his guardian or curator (cpca 437). No text on filing through a special agent was found in the chapters read."
+    },
+    {
+      "id": "k7",
+      "item": "The public prosecution is a principal party in all cases applying the Family Code; check communication of the file to the prosecutor.",
+      "from": [
+        "derivationA"
+      ],
+      "answer": "applies",
+      "refs": [
+        "court-sections.b34",
+        "b15",
+        "b16",
+        "doc2"
+      ]
+    },
+    {
+      "id": "k8",
+      "item": "Competent section: the family section (قسم شؤون الأسرة) of the tribunal; if the court has no section, the tribunal sits in its ordinary composition.",
+      "from": [
+        "derivationA"
+      ],
+      "answer": "applies",
+      "refs": [
+        "court-sections.b7",
+        "court-sections.b4",
+        "b13"
+      ]
+    },
+    {
+      "id": "k9",
+      "item": "Territorial jurisdiction: in divorce and return to the marital home, the court of the place of the marital residence (مسكن الزوجية); custody and visitation, the place where custody is exercised; maintenance, the creditor's domicile. Check whether the rule is of public order.",
+      "from": [
+        "derivationA"
+      ],
+      "answer": "applies",
+      "refs": [
+        "court-sections.t4",
+        "court-sections.b42",
+        "t1",
+        "b23",
+        "o2"
+      ]
+    },
+    {
+      "id": "k10",
+      "item": "Defendant abroad or a foreign spouse: check the rules of international jurisdiction of Algerian courts and service abroad; delays of summons are extended for parties abroad.",
+      "from": [
+        "derivationA"
+      ],
+      "answer": "searchedNotFound",
+      "refs": [
+        "n8",
+        "b43",
+        "b44",
+        "o5"
+      ],
+      "note": "Applicable law found (civil-code 12, 13). International jurisdiction: cpca 41 and 42 cover only contractual obligations; no article on the jurisdiction of Algerian courts in divorce when the marital home or the defendant is abroad was found in cpca 37-47 or the family-section chapter. Service abroad was not searched beyond these chapters."
+    },
+    {
+      "id": "k11",
+      "item": "Procedure: the claim is filed by petition with the mandatory elements of the CPCA; the judge sets a hearing for the conciliation attempt; the spouses must appear in person; hearings in chamber.",
+      "from": [
+        "derivationA"
+      ],
+      "answer": "applies",
+      "refs": [
+        "b13",
+        "b17",
+        "b18"
+      ],
+      "note": "The petition's mandatory elements belong to the petition-formal-elements module, which has no final record to import."
+    },
+    {
+      "id": "k12",
+      "item": "If a spouse fails to appear at the conciliation attempt without excuse, the judge records it and proceeds; if impediment, the judge may delegate another judge or postpone.",
+      "from": [
+        "derivationA"
+      ],
+      "answer": "applies",
+      "refs": [
+        "b18",
+        "b20"
+      ]
+    },
+    {
+      "id": "k13",
+      "item": "The judge may order provisional measures during the proceedings (custody, visitation, housing, maintenance) by urgent order.",
+      "from": [
+        "derivationA"
+      ],
+      "answer": "applies",
+      "refs": [
+        "b11",
+        "court-sections.b30",
+        "court-sections.n2"
+      ]
+    },
+    {
+      "id": "k14",
+      "item": "No limitation period or forfeiture runs against the husband's right to divorce at will; no prior formal notice is required.",
+      "from": [
+        "derivationA"
+      ],
+      "answer": "doesNotApply",
+      "refs": [
+        "o1"
+      ],
+      "note": "No period and no prior notice found in the texts; the formal-notice and periods modules concern obligations and are not imported."
+    },
+    {
+      "id": "k15",
+      "item": "Mandatory conciliation in family matters replaces any pre-litigation step; mediation is excluded in family matters.",
+      "from": [
+        "derivationA"
+      ],
+      "answer": "applies",
+      "refs": [
+        "b17",
+        "b22"
+      ],
+      "note": "The conciliation happens after filing, before the court; no prior step before filing."
+    },
+    {
+      "id": "k16",
+      "item": "Requests: the divorce (الحكم بالطلاق); visitation right for the husband if custody goes to the mother; the judge must rule on visitation when awarding custody.",
+      "from": [
+        "derivationA"
+      ],
+      "answer": "applies",
+      "refs": [
+        "r1",
+        "r2",
+        "r3",
+        "b12"
+      ]
+    },
+    {
+      "id": "k17",
+      "item": "Consequences the court rules on: idda (three cycles or three months from the declaration of divorce), idda maintenance, compensation (mut'a/abusive divorce) for the wife, custody, child maintenance, housing or rent allowance for the custodian, the dowry (half the dowry if before consummation).",
+      "from": [
+        "derivationA"
+      ],
+      "answer": "applies",
+      "refs": [
+        "b38",
+        "b39",
+        "b7",
+        "b37",
+        "court-sections.b58",
+        "b41"
+      ],
+      "note": "Mut'a as such has no article in the store's Family Code; compensation for abusive divorce is article 52."
+    },
+    {
+      "id": "k18",
+      "item": "Custody order of priority: the mother first, then the father, then the maternal grandmother, etc., always in the child's interest; custody ends at 10 for boys (extendable to 16) and at marriageable age for girls.",
+      "from": [
+        "derivationA"
+      ],
+      "answer": "applies",
+      "refs": [
+        "b12",
+        "b40"
+      ]
+    },
+    {
+      "id": "k19",
+      "item": "The divorce judgment is not subject to appeal except in its material (financial) aspects; cassation remains open; check the period for cassation.",
+      "from": [
+        "derivationA"
+      ],
+      "answer": "applies",
+      "refs": [
+        "b9",
+        "b10"
+      ],
+      "note": "Cassation periods concern the judgment, not the petition; not derived."
+    },
+    {
+      "id": "k20",
+      "item": "The divorce judgment is registered in the civil-status registers at the diligence of the public prosecutor.",
+      "from": [
+        "derivationA"
+      ],
+      "answer": "applies",
+      "refs": [
+        "b5",
+        "r3"
+      ]
+    },
+    {
+      "id": "k21",
+      "item": "Required documents: extract of the marriage certificate, family booklet, birth certificates of the children, identity papers, proof of the marital residence.",
+      "from": [
+        "derivationA"
+      ],
+      "answer": "applies",
+      "refs": [
+        "doc1",
+        "doc2"
+      ],
+      "note": "Only the marriage extract rests on a text (family-code 22). The family certificate is required by cpca 429 for mutual consent only; no text lists the other papers for this claim."
+    },
+    {
+      "id": "k22",
+      "item": "Divorce before consummation: the wife is entitled to half the dowry; no idda in that case.",
+      "from": [
+        "derivationA"
+      ],
+      "answer": "applies",
+      "refs": [
+        "b37",
+        "b38"
+      ],
+      "note": "Article 58 sets the waiting period for the divorced wife whose marriage was consummated."
+    },
+    {
+      "id": "k23",
+      "item": "Boundary: divorce by mutual consent (joint petition, separate procedure) is not divorce at the husband's will.",
+      "from": [
+        "derivationA"
+      ],
+      "answer": "applies",
+      "refs": [
+        "n3"
+      ]
+    },
+    {
+      "id": "k24",
+      "item": "Boundary: tatliq at the wife's request on the listed grounds and khul are the wife's actions, not this claim.",
+      "from": [
+        "derivationA"
+      ],
+      "answer": "applies",
+      "refs": [
+        "n2"
+      ]
+    },
+    {
+      "id": "k25",
+      "item": "Boundary: annulment of a void or voidable marriage (defect of a pillar, impediment) is not divorce.",
+      "from": [
+        "derivationA"
+      ],
+      "answer": "applies",
+      "refs": [
+        "n4"
+      ]
+    },
+    {
+      "id": "k26",
+      "item": "Boundary: an unregistered (customary) marriage requires validation of the marriage first; combining validation and divorce must be checked.",
+      "from": [
+        "derivationA"
+      ],
+      "answer": "applies",
+      "refs": [
+        "n1",
+        "o4"
+      ]
+    },
+    {
+      "id": "k27",
+      "item": "Boundary: return to the marital home (رجوع الزوجة) and maintenance claims are separate claims, though connected.",
+      "from": [
+        "derivationA"
+      ],
+      "answer": "applies",
+      "refs": [
+        "court-sections.b7",
+        "court-sections.b8",
+        "court-sections.t4"
+      ],
+      "note": "Shown through the section and territory statements; no boundary item, since no slot tells these claims apart from a divorce petition."
+    },
+    {
+      "id": "k28",
+      "item": "Lis pendens: check whether a divorce, tatliq or khul action between the spouses is already pending or decided (res judicata).",
+      "from": [
+        "derivationA"
+      ],
+      "answer": "applies",
+      "refs": [
+        "n5",
+        "n6"
+      ]
+    },
+    {
+      "id": "k29",
+      "item": "Revocable divorce: during the idda the husband may take back his wife only before the judgment; after the judgment a new contract is needed.",
+      "from": [
+        "derivationA"
+      ],
+      "answer": "applies",
+      "refs": [
+        "b6"
+      ]
+    },
+    {
+      "id": "k30",
+      "item": "Amendments: Ordinance 05-02 of 27 February 2005 amended the Family Code (articles on divorce, custody housing, conciliation); the CPCA of 2008 (Law 08-09) replaced the old CPC from April 2009 and organised the family section and divorce procedure; Law 22-13 amended the CPCA in 2022.",
+      "from": [
+        "derivationA"
+      ],
+      "answer": "applies",
+      "refs": [
+        "b1",
+        "b3",
+        "b13"
+      ],
+      "note": "The store gives family-code 48, 49, 52, 57, 57 مكرر, 64 and 72 in their ordinance-05-02 wording and the CPCA family chapter in its law-08-09 wording; law-22-13 in the store touches article 32 and the administrative and commercial courts, not the family chapter."
+    },
+    {
+      "id": "k31",
+      "item": "Abusive divorce: the court assesses abuse and awards compensation to the wife; the husband should expect this accessory request from the wife.",
+      "from": [
+        "derivationA"
+      ],
+      "answer": "applies",
+      "refs": [
+        "b7"
+      ]
+    },
+    {
+      "id": "k32",
+      "item": "Fees: registration fees of the petition; legal aid where applicable.",
+      "from": [
+        "derivationA"
+      ],
+      "answer": "doesNotApply",
+      "note": "Fees belong to the petition-formal-elements and accessory-requests modules, which have no final record to import; not restated here."
+    },
+    {
+      "id": "k33",
+      "item": "Store notes on the Family Code articles cited: the text is a current snapshot that does not certify applicability to an earlier case; for articles 16 and 65 the French print splits the paragraphs differently.",
+      "from": [
+        "derivationA"
+      ],
+      "answer": "applies",
+      "refs": [
+        "b37",
+        "b40"
+      ],
+      "note": "A divorce petition is filed now, so the current wording is the one that matters. Articles 16 and 65 are cited by their Arabic paragraphs as the store counts them."
+    },
+    {
+      "id": "k34",
+      "item": "Store notes on civil-code 12 and 13: temporal applicability unsettled; article 13 is given only in its original wording, with a cross-reference discrepancy.",
+      "from": [
+        "derivationA"
+      ],
+      "answer": "searchedNotFound",
+      "refs": [
+        "b43",
+        "b44",
+        "o5"
+      ],
+      "note": "Searched civil-code 9-24 in the store; the amended wording of article 13 is not there. Requested."
+    },
+    {
+      "id": "k35",
+      "item": "Registration of the divorce in civil status: the civil-status law the Family Code refers to.",
+      "from": [
+        "derivationA"
+      ],
+      "answer": "searchedNotFound",
+      "refs": [
+        "b5"
+      ],
+      "note": "Family-code 21 refers to the civil-status law, which is not in the store (codes present: civil, commercial, cpca, family, labour). Requested for context."
+    }
+  ],
+  "examples": [
+    {
+      "id": "ex1",
+      "by": "derivationA",
+      "title": "Clean case: registered marriage, children, no other action, court with a family section.",
+      "petitionDate": "2026-11-20",
+      "slots": {
+        "marriage_registered": "yes",
+        "divorce_action_pending": "no",
+        "spouses_divorced": "no",
+        "minor_children": "yes",
+        "court_has_section_for_matter": "yes",
+        "husband_is_foreign_national": "no",
+        "requests": [
+          "divorce",
+          "visitation"
+        ]
+      },
+      "expect": {
+        "section": "family",
+        "findings": [
+          {
+            "ref": "n1",
+            "effect": "none"
+          },
+          {
+            "ref": "n2",
+            "effect": "none"
+          },
+          {
+            "ref": "n4",
+            "effect": "none"
+          },
+          {
+            "ref": "n5",
+            "effect": "none"
+          },
+          {
+            "ref": "n6",
+            "effect": "none"
+          },
+          {
+            "ref": "n8",
+            "effect": "none"
+          }
+        ],
+        "questions": []
+      }
+    },
+    {
+      "id": "ex2",
+      "by": "derivationA",
+      "title": "Customary marriage never registered: proof of marriage must be checked.",
+      "petitionDate": "2026-11-20",
+      "slots": {
+        "marriage_registered": "no",
+        "divorce_action_pending": "no",
+        "spouses_divorced": "no",
+        "husband_is_foreign_national": "no",
+        "requests": [
+          "divorce"
+        ]
+      },
+      "expect": {
+        "findings": [
+          {
+            "ref": "n1",
+            "effect": "warn"
+          },
+          {
+            "ref": "n5",
+            "effect": "none"
+          },
+          {
+            "ref": "n6",
+            "effect": "none"
+          }
+        ],
+        "questions": [
+          "court_has_section_for_matter"
+        ]
+      }
+    },
+    {
+      "id": "ex3",
+      "by": "derivationA",
+      "title": "Nothing known but the request: the boundaries ask.",
+      "petitionDate": "2026-11-20",
+      "slots": {
+        "requests": [
+          "divorce"
+        ]
+      },
+      "expect": {
+        "findings": [
+          {
+            "ref": "n1",
+            "effect": "ask"
+          },
+          {
+            "ref": "n2",
+            "effect": "none"
+          },
+          {
+            "ref": "n4",
+            "effect": "none"
+          },
+          {
+            "ref": "n5",
+            "effect": "ask"
+          },
+          {
+            "ref": "n6",
+            "effect": "ask"
+          },
+          {
+            "ref": "n8",
+            "effect": "ask"
+          }
+        ],
+        "questions": [
+          "marriage_registered",
+          "divorce_action_pending",
+          "spouses_divorced",
+          "husband_is_foreign_national",
+          "court_has_section_for_matter"
+        ]
+      }
+    },
+    {
+      "id": "ex4",
+      "by": "derivationA",
+      "title": "A khul action by the wife is pending.",
+      "petitionDate": "2026-11-20",
+      "slots": {
+        "marriage_registered": "yes",
+        "divorce_action_pending": "yes",
+        "spouses_divorced": "no",
+        "husband_is_foreign_national": "no",
+        "requests": [
+          "divorce"
+        ]
+      },
+      "expect": {
+        "findings": [
+          {
+            "ref": "n5",
+            "effect": "warn"
+          },
+          {
+            "ref": "n1",
+            "effect": "none"
+          },
+          {
+            "ref": "n6",
+            "effect": "none"
+          }
+        ],
+        "questions": [
+          "court_has_section_for_matter"
+        ]
+      }
+    },
+    {
+      "id": "ex5",
+      "by": "derivationA",
+      "title": "The spouses were already divorced by judgment.",
+      "petitionDate": "2026-11-20",
+      "slots": {
+        "marriage_registered": "yes",
+        "divorce_action_pending": "no",
+        "spouses_divorced": "yes",
+        "husband_is_foreign_national": "no",
+        "requests": [
+          "divorce"
+        ]
+      },
+      "expect": {
+        "findings": [
+          {
+            "ref": "n6",
+            "effect": "warn"
+          },
+          {
+            "ref": "n5",
+            "effect": "none"
+          }
+        ],
+        "questions": [
+          "court_has_section_for_matter"
+        ]
+      }
+    },
+    {
+      "id": "ex6",
+      "by": "derivationA",
+      "title": "The petition asks for khul: a wife's action, not this claim.",
+      "petitionDate": "2026-11-20",
+      "slots": {
+        "marriage_registered": "yes",
+        "divorce_action_pending": "no",
+        "spouses_divorced": "no",
+        "husband_is_foreign_national": "no",
+        "requests": [
+          "khul"
+        ]
+      },
+      "expect": {
+        "findings": [
+          {
+            "ref": "n2",
+            "effect": "warn"
+          },
+          {
+            "ref": "n4",
+            "effect": "none"
+          }
+        ],
+        "questions": [
+          "court_has_section_for_matter"
+        ]
+      }
+    },
+    {
+      "id": "ex7",
+      "by": "derivationA",
+      "title": "The petition also asks for annulment of the marriage.",
+      "petitionDate": "2026-11-20",
+      "slots": {
+        "marriage_registered": "yes",
+        "divorce_action_pending": "no",
+        "spouses_divorced": "no",
+        "husband_is_foreign_national": "no",
+        "requests": [
+          "divorce",
+          "annulment"
+        ]
+      },
+      "expect": {
+        "findings": [
+          {
+            "ref": "n4",
+            "effect": "warn"
+          },
+          {
+            "ref": "n2",
+            "effect": "none"
+          }
+        ],
+        "questions": [
+          "court_has_section_for_matter"
+        ]
+      }
+    },
+    {
+      "id": "ex8",
+      "by": "derivationA",
+      "title": "Court without sections: the civil section is proposed.",
+      "petitionDate": "2026-11-20",
+      "slots": {
+        "marriage_registered": "yes",
+        "divorce_action_pending": "no",
+        "spouses_divorced": "no",
+        "husband_is_foreign_national": "no",
+        "court_has_section_for_matter": "no",
+        "requests": [
+          "divorce"
+        ]
+      },
+      "expect": {
+        "section": "civil",
+        "findings": [
+          {
+            "ref": "n1",
+            "effect": "none"
+          }
+        ],
+        "questions": []
+      }
+    },
+    {
+      "id": "ex9",
+      "by": "derivationA",
+      "title": "Foreign husband: the applicable law must be checked.",
+      "petitionDate": "2026-11-20",
+      "slots": {
+        "marriage_registered": "yes",
+        "divorce_action_pending": "no",
+        "spouses_divorced": "no",
+        "husband_is_foreign_national": "yes",
+        "requests": [
+          "divorce"
+        ]
+      },
+      "expect": {
+        "findings": [
+          {
+            "ref": "n8",
+            "effect": "warn"
+          },
+          {
+            "ref": "n1",
+            "effect": "none"
+          }
+        ],
+        "questions": [
+          "court_has_section_for_matter"
+        ]
+      }
+    },
+    {
+      "id": "ex10",
+      "by": "derivationA",
+      "title": "Registration of the marriage unknown: the lawyer is asked.",
+      "petitionDate": "2026-11-20",
+      "slots": {
+        "marriage_registered": "unknown",
+        "divorce_action_pending": "no",
+        "spouses_divorced": "no",
+        "husband_is_foreign_national": "no",
+        "requests": [
+          "divorce"
+        ]
+      },
+      "expect": {
+        "findings": [
+          {
+            "ref": "n1",
+            "effect": "ask"
+          }
+        ],
+        "questions": [
+          "marriage_registered",
+          "court_has_section_for_matter"
+        ]
+      }
+    }
+  ]
+}

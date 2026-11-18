@@ -1,0 +1,115 @@
+{
+  "unit": "unpaid-rent",
+  "attacks": [
+    {
+      "id": "adv-1",
+      "who": "adversary",
+      "target": "n3, b30, k28, lease_term_expired",
+      "kind": "exception",
+      "claim": "For a commercial lease made before law 05-02, whose renewal 187 مكرر 1 keeps under the earlier law, the lease does not end at its term: Commercial Code 173 ¶1 ends it only by a notice to quit at least six months ahead, and without one a written lease continues by tacit extension (173 ¶2); under 187 ¶1 a tenant entitled to eviction compensation stays on the expired lease's terms until paid. n3 fired on lease_term_expired alone for every lease and told the lawyer the lease ended with no notice to quit and only Civil Code 502 compensation is owed; the record cited 173 nowhere.",
+      "verdict": "fixed",
+      "verifierQuote": "لا ينتهي إيجار المحلات الخاصة بهذه الأحكام إلا بأثر تنبيه بالإخلاء حسبما جرت عليه العادات المحلية وفي مدة ستة أشهر قبل الأجل على الأقل. / وفي حالة عدم التنبيه بالإخلاء يتواصل الإيجار المنعقد كتابة بالتمديد الضمني إلى ما بعد الأجل المحدد في العقد مع مراعاة الأحكام المنصوص عليها في الفقرة السابقة. / يبقى تجديد عقود الإيجار المبرمة قبل النشر المذكور في المادة 187 مكرر أعلاه، خاضعا للتشريع الساري المفعول بتاريخ إبرام عقد الإيجار.",
+      "quoteRef": "commercial-code 173 ¶1 and ¶2 (ordinance 75-59, in the chapter «في تجديد الإيجار»); commercial-code 187 مكرر 1 ¶1 (law 05-02); also 187 ¶1 (ordinance 75-59). Article store, commercial-code text view.",
+      "change": "Added statements b52 (173 ¶1), b53 (173 ¶2), b54 (187 ¶1). n3 now applies only to a non-commercial lease (commercial_lease = no) and no longer cites 187 مكرر / 187 مكرر 1. New boundary n9 (outside:commercial-lease-regimes) for a commercial lease whose term ended with periods claimed after it: states both regimes (187 مكرر ¶2 for later leases; 173 ¶1-¶2 and 187 ¶1 under 187 مكرر 1 for earlier ones) and asks to check the date, the notice to quit, and whether post-term periods are rent or 502 compensation; it compares no date (o4). lease_term_expired's question now asks whether the agreed term ended even if the tenant stayed on or no notice to quit was served. Checklist k15, k16, k28, k36, k64 and o4 updated. exA20 corrected (n3 and n9 ask when the lease's nature is unknown); example exV1 added."
+    },
+    {
+      "id": "adv-2",
+      "who": "adversary",
+      "target": "n1, n2, k29, k34, lease_form",
+      "kind": "missing",
+      "claim": "Civil Code 324 مكرر 1 ¶1, which the record quotes, requires the official form on pain of nullity for agricultural leases and business-management contracts too; the record checked it only for commercial leases (n2), had no slot on what is leased, and let an agricultural lease or management contract on a private paper with a fixed date pass silently.",
+      "verdict": "fixed",
+      "verifierQuote": "يجب، تحت طائلة البطلان، تحرير العقود التي تتضمن ... أو عقود إيجار زراعية أو تجارية أو عقود تسيير محلات تجارية أو مؤسسات صناعية في شكل رسمي",
+      "quoteRef": "civil-code 324 مكرر 1 ¶1 (law 88-14); cpca 512 ¶12 «11 - في الإيجارات الفلاحية.» (law 08-09)",
+      "change": "New proposed slot leased_thing (premises, agricultural, business_management, other_immovable, movable). New boundary n10 (outside:agricultural-lease-or-management-contract) warns when the thing is agricultural or a business to run, citing b21 (324 مكرر 1 ¶1, its says now names management contracts) and court-sections.b36 (512 ¶12). k29 changed from doesNotApply to applies (refs n10); k34, k35 updated; court-sections.b36 added to the section basis. Example exV4 added."
+    },
+    {
+      "id": "adv-3",
+      "who": "adversary",
+      "target": "court.section, k13, k14, k45, k46",
+      "kind": "missing",
+      "claim": "A lease may be of a movable (civil-code 467 ¶1 «بشيء»). CPCA 512 ¶11-¶12 give the real-estate section only leases of dwellings, professional premises and agricultural leases, and CPCA 40 ¶2 reaches only lease actions relating to immovables; for a vehicle or equipment lease the record proposed the real-estate section and the court where the 'property' lies, instead of the civil section (32 ¶4) and the defendant's domicile (37 ¶1).",
+      "verdict": "fixed",
+      "verifierQuote": "الإيجار عقد يمكن المؤجر بمقتضاه المستأجر من الانتفاع بشيء لمدة محددة مقابل بدل إيجار معلوم. / 10 - في إيجار السكنات والمحلات المهنية، / 1- في المواد العقارية، أو الأشغال المتعلقة بالعقار، أو دعاوى الإيجارات بما فيها التجارية المتعلقة بالعقارات ... أمام المحكمة التي يقع في دائرة اختصاصها العقار / يؤول الاختصاص الإقليمي للجهة القضائية التي يقع في دائرة اختصاصها موطن المدعى عليه ... ما لم ينص القانون على خلاف ذلك. / تتم جدولة القضايا أمام الأقسام حسب طبيعة النزاع.",
+      "quoteRef": "civil-code 467 ¶1; cpca 512 ¶11; cpca 40 ¶2; cpca 37 ¶1; cpca 32 ¶4 (law 22-13 version)",
+      "change": "Section rule: new alternative leased_thing = movable → civil (basis court-sections.b2, b3; court-sections.b2 added to the imports); message and interpretiveNote name the movable case. New own territory rule t1 (when leased_thing = movable: defendant's domicile, cpca 37 ¶1, new statement b58). Another immovable stays with the real-estate section as a reading (511 ¶1), recorded with the movable case in new open point o12 (grade C). k13, k14, k35, k45, k46 updated. Example exV5 added."
+    },
+    {
+      "id": "adv-4",
+      "who": "adversary",
+      "target": "court.section (commercial alternative), k13, k44, o6",
+      "kind": "procedure",
+      "claim": "When the commercial section is proposed, the record omits CPCA 534 as replaced by law 22-13: the president of the commercial section must first refer the dispute to mediation, which needs no consent of the parties.",
+      "verdict": "fixed",
+      "verifierQuote": "يجب على رئيس القسم التجاري عرض النزاع مسبقا على الوساطة. / لا تخضع الوساطة أمام القسم التجاري إلى قبول الأطراف، خلافا لأحكام المادة 994 من هذا القانون.",
+      "quoteRef": "cpca 534 ¶1 and ¶2 (law 22-13, JO no. 48 of 17 July 2022; the version in force in the article store). The ledger's transitional text of law 22-13 art. 13 defers only «Les règles de compétence matérielle et territoriale relatives aux juridictions administratives et aux tribunaux commerciaux spécialisés».",
+      "change": "Added statements b55 (534 ¶1) and b56 (534 ¶2). New boundary n12 (outside:commercial-section-mediation), when commercial_lease = yes: warns that the commercial section's president first puts the dispute to mediation without the parties' consent, that this is not a condition of the petition, and that the section itself is a reading. k13, k31, k44 and o6 refs updated. Example exV6 added."
+    },
+    {
+      "id": "adv-5",
+      "who": "adversary",
+      "target": "k62, p1, b25, r2",
+      "kind": "exception",
+      "claim": "k62 put the tenant's bankruptcy or judicial liquidation outside the unit, yet Commercial Code 201 ¶1, in the commercial-lease title the record cites, says these do not by law rescind the lease of business premises and voids any contrary clause; bankruptcy and judicial settlement belong to the specialised commercial court (CPCA 536 مكرر ¶4). Lead only (tier 3, unchecked): individual creditors' actions are suspended after the opening judgment (Commercial Code 245).",
+      "verdict": "fixed",
+      "verifierQuote": "لا يترتب بحكم القانون على الافلاس أو التصفية القضائية، فسخ ايجار العمارات المخصصة للصناعة أو التجارة أو الصناعة التقليدية التابعة للمدين ... ويعتبر لاغيا كل شرط يخالف ذلك . / تختص المحكمة التجارية المتخصصة بالنظر في المنازعات المذكورة أدناه : ... – التسوية القضائية والإفلاس،",
+      "quoteRef": "commercial-code 201 ¶1 (ordinance 75-59); cpca 536 مكرر ¶1 and ¶4 (law 22-13). Commercial Code 245 is not in the article store (its commercial-code view holds only arts. 30 and 169-202); not fetched.",
+      "change": "Added statement b57 (201 ¶1) and proposed slot tenant_in_collective_procedure. New boundary n11 (outside:tenant-in-collective-procedure) warns when the tenant is under a bankruptcy, judicial settlement or liquidation judgment, citing b57 and the imported ordinary-court-exits.b26 (536 مكرر). The unverified suspension of individual actions became open point o11, grade D, with a request line for commercial-code 245 appended to law/requests.jsonl. k62 changed from doesNotApply to applies. p1 and r2 unchanged: 201 voids a clause rescinding the lease on insolvency, not the non-payment clause of 191. Example exV7 added."
+    },
+    {
+      "id": "adv-6",
+      "who": "adversary",
+      "target": "n3, lease_term_expired",
+      "kind": "missing",
+      "claim": "n3 fired whenever the term had expired, without asking whether the periods claimed fall after the term; arrears that fell due during the term are rent under 498 ¶1, and only the post-term part is 502 compensation, yet n3 classed the whole claim as outside: holding-over-after-term.",
+      "verdict": "fixed",
+      "verifierQuote": "يجب على المستأجر أن يقوم بدفع بدل الإيجار في المواعيد المتفق عليها / يجب على المستأجر أن يرد العين المؤجرة عند انتهاء مدة الإيجار فإذا أبقاها تحت يده دون حق وجب عليه أن يدفع للمؤجر تعويضا باعتبار القيمة الإيجارية للعين",
+      "quoteRef": "civil-code 498 ¶1 (law 07-05); civil-code 502 ¶1 (ordinance 75-58)",
+      "change": "New proposed slot periods_claimed_after_term; n3 (and new n9) fire only when it is yes. n3's message now says rent that fell due before the term stays rent (498, b3 added to its basis) and only the later period is 502 compensation; a telling fact and an element e3 fact on periods before and after the term were added. Examples exV2 (none) and exV3 (warn) added."
+    },
+    {
+      "id": "adv-7",
+      "who": "adversary",
+      "target": "o7",
+      "kind": "misreading",
+      "claim": "Open point o7's first reading (the lessee's domicile) gave b5 (499 ¶1, the presumption of earlier payment) as its basis; the place of payment is in 498 ¶2 (b4).",
+      "verdict": "fixed",
+      "verifierQuote": "ويكون دفع بدل الإيجار في موطن المستأجر ما لم يكن اتفاق أو عرف يقضي بخلاف ذلك. / الوفاء بقسط من بدل الإيجار يعتبر قرينة على الوفاء بالأقساط السابقة حتى يقوم الدليل على عكس ذلك.",
+      "quoteRef": "civil-code 498 ¶2 and 499 ¶1 (law 07-05)",
+      "change": "o7 readings[0].basis changed from b5 to b4. Example exV8 added (no rule turns on the place of payment; an open point is not evaluated)."
+    },
+    {
+      "id": "adv-8",
+      "who": "adversary",
+      "target": "k27, n1, b2",
+      "kind": "specialLaw",
+      "claim": "Lead only (tier 3): law 07-05 art. 8 repealed only arts. 20, 21 ¶2-¶3 and 22 of legislative decree 93-03, so 93-03 art. 21 ¶1 (residential leases on a regulatory model contract, executive decree 94-69) may still be in force unless law 11-04 repealed 93-03; if so, n1 and k27 miss a special form rule.",
+      "verdict": "refuted",
+      "verifierQuote": "المادة 80 : تلغى أحكام المرسوم التشريعي رقم 93-03 المؤرخ في أول مارس سنة 1993 والمتعلق بالنشاط العقاري، المعدل والمتمم، باستثناء المادة 27 منه، وكذا أحكام الأمر رقم 76-92 المؤرخ في 23 أكتوبر سنة 1976 والمتعلق بتنظيم التعاون العقاري.",
+      "quoteRef": "Law 11-04 of 17 February 2011 (real-estate promotion), art. 80; Official Journal 2011 no. 14 (6 March 2011), p. 13; https://www.joradp.dz/FTP/JO-ARABE/2011/A2011014.pdf, sha256 c482f78590e0df5a6c5e05eea56c3d4b61478b4262e9f089c0c7089ca87165ac (fetched with oj_fetch.py, page read as an image). The ledger confirms law 07-05 art. 8 repealed only «art. 20, alinéas 2 et 3 of art. 21 and art. 22 of décret législatif n° 93-03».",
+      "change": "No rule changed: article 21 of 93-03 was repealed by law 11-04 art. 80 (only art. 27 survives), so n1 and k27 are right not to add a model-contract requirement. k27's note now records the reading of law 11-04 art. 80."
+    },
+    {
+      "id": "values-section",
+      "who": "values",
+      "target": "section",
+      "kind": "misreading",
+      "claim": "check-values: {\"item\": \"section\", \"problem\": \"messageArticleNotInBasis\", \"lang\": \"ar\", \"articles\": [\"32\", \"512\", \"531\"]}",
+      "verdict": "refuted",
+      "verifierQuote": "10 - في إيجار السكنات والمحلات المهنية، / غير أنه في المحاكم التي لم تنشأ فيها الأقسام، يبقى القسم المدني هو الذي ينظر في جميع النزاعات باستثناء القضايا الاجتماعية. / تتم جدولة القضايا أمام الأقسام حسب طبيعة النزاع. / يختص القسم التجاري بالنظر في المنازعات التجارية، باستثناء تلك المذكورة في المادة 536 مكرر من هذا القانون.",
+      "quoteRef": "cpca 512 ¶11 (law 08-09); cpca 32 ¶4 and ¶5 and 531 ¶1 (law 22-13)",
+      "change": "No change needed: the articles the message names are those of the imported statements the section rule cites (court-sections.b3 and b4: cpca 32; b19 and b36: cpca 512; b21: cpca 531, in the commercial alternative), and the texts say what the message says. The checker reads only the record's own statements. The message was rewritten for adv-3 and names the same three articles."
+    },
+    {
+      "id": "values-section-2",
+      "who": "values",
+      "target": "section",
+      "kind": "misreading",
+      "claim": "check-values: {\"item\": \"section\", \"problem\": \"messageArticleNotInBasis\", \"lang\": \"en\", \"articles\": [\"32\", \"512\", \"531\"]}",
+      "verdict": "refuted",
+      "verifierQuote": "10 - في إيجار السكنات والمحلات المهنية، / غير أنه في المحاكم التي لم تنشأ فيها الأقسام، يبقى القسم المدني هو الذي ينظر في جميع النزاعات باستثناء القضايا الاجتماعية. / تتم جدولة القضايا أمام الأقسام حسب طبيعة النزاع. / يختص القسم التجاري بالنظر في المنازعات التجارية، باستثناء تلك المذكورة في المادة 536 مكرر من هذا القانون.",
+      "quoteRef": "cpca 512 ¶11 (law 08-09); cpca 32 ¶4 and ¶5 and 531 ¶1 (law 22-13)",
+      "change": "No change needed: same as values-section, for the English message."
+    }
+  ]
+}

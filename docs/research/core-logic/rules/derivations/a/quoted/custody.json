@@ -1,0 +1,2517 @@
+{
+  "schemaVersion": "1.0",
+  "kind": "claim",
+  "id": "custody",
+  "label": {
+    "ar": "إسناد الحضانة وتوابعها",
+    "en": "Award of custody"
+  },
+  "verified": false,
+  "stage": "derivationA",
+  "derivedBy": {
+    "role": "derivationA",
+    "model": "claude-opus-5-5",
+    "date": "2026-11-18"
+  },
+  "area": "family",
+  "imports": [
+    {
+      "module": "court-sections",
+      "blocks": [
+        "b3",
+        "b4",
+        "b5",
+        "b7",
+        "b8",
+        "b10",
+        "b30",
+        "b34",
+        "b35",
+        "b42",
+        "b55",
+        "t4",
+        "n5"
+      ],
+      "how": {
+        "ar": "دعوى الحضانة والولاية من اختصاص قسم شؤون الأسرة، والنيابة العامة طرف أصلي فيها، والاختصاص الإقليمي لمكان ممارسة الحضانة؛ تستورد البيانات والقاعدة الإقليمية للأسرة وحد القسم المدني، ويكتب السجل قاعدة القسم الخاصة به.",
+        "en": "Custody and guardianship claims belong to the family section, the public prosecutor is a principal party, and the court is that of the place where custody is exercised; the statements, the family territory rule and the civil-section boundary are imported, and the record writes its own section rule."
+      }
+    },
+    {
+      "module": "ordinary-court-exits",
+      "blocks": [
+        "n5",
+        "b50",
+        "b51",
+        "b52",
+        "b59"
+      ],
+      "how": {
+        "ar": "الأمر على عريضة بالتدابير المؤقتة في الحضانة والسكن لا يغني عن دعوى الموضوع؛ يستورد الحد الذي يبين ذلك وبياناته.",
+        "en": "An order on petition for provisional measures on custody or housing does not replace the claim on the merits; the boundary that says so and its statements are imported."
+      }
+    },
+    {
+      "module": "periods",
+      "blocks": [
+        "b27",
+        "b11"
+      ],
+      "how": {
+        "ar": "تستورد قاعدة حساب الآجال بالتقويم الميلادي وطريقة حساب مدة التقادم، للاستناد إليهما في قراءات حساب أجل السنة في سقوط الحق في طلب الحضانة.",
+        "en": "The rule that periods run by the Gregorian calendar and the counting rule for limitation are imported, as the basis of the readings of how the one-year period for losing the right to claim custody is counted."
+      }
+    }
+  ],
+  "slots": [
+    "requests",
+    "spouses_divorced",
+    "divorce_action_pending",
+    "court_has_section_for_matter",
+    "divorce_judgment_date",
+    "custody_claim_delay_excused",
+    "custody_already_decided",
+    "child_past_custody_age",
+    "plaintiff_parent"
+  ],
+  "proposedSlots": [
+    {
+      "id": "divorce_judgment_date",
+      "type": "date",
+      "question": {
+        "ar": "ما تاريخ صدور حكم الطلاق بين الطرفين؟",
+        "en": "On what date was the divorce between the parties pronounced by judgment?"
+      },
+      "why": "Deadline d1 starts from it: family-code article 68 makes the right to custody lapse when the person entitled does not claim it for more than a year without excuse, and the right of the parent arises with the divorce (family-code articles 72 and 87 speak of the case of divorce). The slot spouses_divorced says whether there was a divorce, not when."
+    },
+    {
+      "id": "custody_claim_delay_excused",
+      "type": "yesNoUnknown",
+      "question": {
+        "ar": "هل كان للمدعي عذر منعه من طلب الحضانة خلال السنة الموالية لنشوء حقه فيها؟",
+        "en": "Did the plaintiff have an excuse that kept him or her from claiming custody during the year after the right arose?"
+      },
+      "why": "Deadline d1 reads it: family-code article 68 makes the right lapse only when the claim was not made for more than a year 'without excuse'."
+    },
+    {
+      "id": "custody_already_decided",
+      "type": "yesNoUnknown",
+      "question": {
+        "ar": "هل سبق أن فصل حكم (حكم الطلاق أو غيره) في حضانة الأبناء المعنيين؟",
+        "en": "Has an earlier judgment (the divorce judgment or another) already ruled on the custody of these children?"
+      },
+      "why": "Boundary n1 reads it: the brief separates the award of custody not yet decided from the forfeiture and transfer of custody awarded by an earlier judgment (family-code articles 66, 67 and 71 on loss and return of custody)."
+    },
+    {
+      "id": "child_past_custody_age",
+      "type": "yesNoUnknown",
+      "question": {
+        "ar": "هل بلغ أحد الأبناء المطالب بحضانتهم نهاية مدة الحضانة (الذكر عشر سنوات، والأنثى سن الزواج)؟",
+        "en": "Has any child whose custody is claimed reached the end of the custody period (a boy ten years, a girl the age of marriage)?"
+      },
+      "why": "Boundary n4 reads it: family-code article 65 ends custody of a boy at 10 (extendable to 16 when the custodian is a mother who has not remarried) and of a girl at the age of marriage, which family-code article 7 sets at 19."
+    },
+    {
+      "id": "plaintiff_parent",
+      "type": "choice",
+      "question": {
+        "ar": "من هو المدعي؟",
+        "en": "Who is the plaintiff?"
+      },
+      "choices": [
+        {
+          "id": "mother",
+          "label": {
+            "ar": "الأم",
+            "en": "The mother"
+          }
+        },
+        {
+          "id": "father",
+          "label": {
+            "ar": "الأب",
+            "en": "The father"
+          }
+        }
+      ],
+      "why": "Boundary n8 and request r3 read it: family-code article 64 puts the mother before the father, and family-code article 72 puts the housing duty on the father towards the female custodian, so the claim differs with the plaintiff's position."
+    }
+  ],
+  "basis": [
+    {
+      "id": "b1",
+      "role": "basis",
+      "required": true,
+      "cite": {
+        "code": "family-code",
+        "article": "62",
+        "paragraphs": [
+          1
+        ]
+      },
+      "says": {
+        "ar": "الحضانة رعاية الولد وتعليمه وتربيته والسهر على حمايته وحفظه صحة وخلقا.",
+        "en": "Custody is the care, schooling and upbringing of the child and the watch over his protection, health and morals."
+      },
+      "quote": [
+        {
+          "paragraph": 1,
+          "text": "الحضانة هي رعاية الولد وتعليمه والقيام بتربيته على دين أبيه والسهر على حمايته وحفظه صحة وخلقا.",
+          "sha256": "63da512ec01601312329c2c21c934154644945734cff9a2446417d5cae502803"
+        }
+      ],
+      "source": {
+        "tier": 1,
+        "store": "library",
+        "textAsOf": "2026-11-10",
+        "ledgerRefs": [],
+        "ledgerClean": false
+      }
+    },
+    {
+      "id": "b2",
+      "role": "basis",
+      "required": true,
+      "cite": {
+        "code": "family-code",
+        "article": "62",
+        "paragraphs": [
+          2
+        ]
+      },
+      "says": {
+        "ar": "يشترط في الحاضن أن يكون أهلا للقيام بالحضانة.",
+        "en": "The custodian must be fit to exercise custody."
+      },
+      "quote": [
+        {
+          "paragraph": 2,
+          "text": "ويشترط في الحاضن أن يكون أهلا للقيام بذلك.",
+          "sha256": "42fcab09f9b1a5459cb6eea8b1df1cb2ac25d76aa620535ae2e33a68bb435850"
+        }
+      ],
+      "source": {
+        "tier": 1,
+        "store": "library",
+        "textAsOf": "2026-11-10",
+        "ledgerRefs": [],
+        "ledgerClean": false
+      }
+    },
+    {
+      "id": "b3",
+      "role": "basis",
+      "required": true,
+      "cite": {
+        "code": "family-code",
+        "article": "64",
+        "paragraphs": [
+          1
+        ]
+      },
+      "says": {
+        "ar": "ترتيب المستحقين للحضانة يبدأ بالأم ثم الأب ثم الجدتين ثم الخالة ثم العمة ثم الأقربين، مع مراعاة مصلحة المحضون، وعلى القاضي أن يحكم بحق الزيارة عند إسناد الحضانة.",
+        "en": "Custody goes first to the mother, then the father, the two grandmothers, the maternal aunt, the paternal aunt and the nearest relatives, always in the child's interest, and the judge who awards custody must rule on visiting rights."
+      },
+      "quote": [
+        {
+          "paragraph": 1,
+          "text": "الأم أولى بحضانة ولدها، ثم الأب، ثم الجدة لأم، ثم الجدة لأب، ثم الخالة، ثم العمة، ثم الأقربون درجة مع مراعاة مصلحة المحضون في كل ذلك، وعلى القاضي عندما يحكم بإسناد الحضانة أن يحكم بحق الزيارة.",
+          "sha256": "bdb48582d9d6eedbb784b5179d93ce66ce633218eff9c32bafc2719aee2a72b2"
+        }
+      ],
+      "source": {
+        "tier": 1,
+        "store": "library",
+        "textAsOf": "2026-11-10",
+        "ledgerRefs": [],
+        "ledgerClean": false
+      }
+    },
+    {
+      "id": "b4",
+      "role": "limit",
+      "cite": {
+        "code": "family-code",
+        "article": "65",
+        "paragraphs": [
+          1
+        ]
+      },
+      "says": {
+        "ar": "تنقضي حضانة الذكر ببلوغه 10 سنوات والأنثى ببلوغها سن الزواج، وللقاضي تمديدها للذكر إلى 16 سنة إذا كانت الحاضنة أما لم تتزوج ثانية.",
+        "en": "Custody of a boy ends at 10 years and of a girl at the age of marriage; the judge may extend a boy's custody to 16 when the custodian is a mother who has not remarried."
+      },
+      "quote": [
+        {
+          "paragraph": 1,
+          "text": "تنقضي مدة حضانة الذكر ببلوغه (10) سنوات، والأنثى ببلوغها سن الزواج، وللقاضي أن يمدد الحضانة بالنسبة للذكر إلى (16) سنة إذا كانت الحاضنة أما لم تتزوج ثانية.",
+          "sha256": "d82453407b87bd0c74ef4fd222d09e64a27557045e062180d4021af12e50cea0"
+        }
+      ],
+      "source": {
+        "tier": 1,
+        "store": "library",
+        "textAsOf": "2026-11-10",
+        "ledgerRefs": [],
+        "ledgerClean": false
+      }
+    },
+    {
+      "id": "b5",
+      "role": "limit",
+      "cite": {
+        "code": "family-code",
+        "article": "65",
+        "paragraphs": [
+          2
+        ]
+      },
+      "says": {
+        "ar": "يراعى في الحكم بانتهاء الحضانة مصلحة المحضون.",
+        "en": "The child's interest is weighed when ending custody."
+      },
+      "quote": [
+        {
+          "paragraph": 2,
+          "text": "على أن يراعى في الحكم بانتهائها مصلحة المحضون.",
+          "sha256": "1495c6e5a8ac12e2f4dad48b278b46728badc624bba965f71e6aeba615d44522"
+        }
+      ],
+      "source": {
+        "tier": 1,
+        "store": "library",
+        "textAsOf": "2026-11-10",
+        "ledgerRefs": [],
+        "ledgerClean": false
+      }
+    },
+    {
+      "id": "b6",
+      "role": "limit",
+      "interpretive": true,
+      "interpretiveNote": "The custody article speaks of 'the age of marriage' without a number; reading it as the marriage capacity of this article is a reading.",
+      "cite": {
+        "code": "family-code",
+        "article": "7",
+        "paragraphs": [
+          1
+        ]
+      },
+      "says": {
+        "ar": "تكتمل أهلية الزواج للرجل والمرأة بتمام 19 سنة، مع ترخيص القاضي بما دون ذلك لمصلحة أو ضرورة.",
+        "en": "Capacity to marry is complete at 19 for men and women, the judge may allow it earlier for an interest or a necessity."
+      },
+      "quote": [
+        {
+          "paragraph": 1,
+          "text": "تكتمل أهلية الرجل والمرأة في الزواج بتمام 19 سنة. وللقاضي أن يرخص بالزواج قبل ذلك لمصلحة أو ضرورة، متى تأكدت قدرة الطرفين على الزواج.",
+          "sha256": "61d32f01a76a41bcd43eed4f7f76bf444ab6dcfcb8ed3d460b84e3105f23cd34"
+        }
+      ],
+      "source": {
+        "tier": 1,
+        "store": "library",
+        "textAsOf": "2026-11-10",
+        "ledgerRefs": [],
+        "ledgerClean": false
+      }
+    },
+    {
+      "id": "b7",
+      "role": "limit",
+      "cite": {
+        "code": "family-code",
+        "article": "66",
+        "paragraphs": [
+          1
+        ]
+      },
+      "says": {
+        "ar": "يسقط حق الحاضنة بزواجها بغير قريب محرم وبالتنازل ما لم يضر بمصلحة المحضون.",
+        "en": "The custodian's right falls by her marriage to a man who is not a close relative barred from marrying the child, and by waiver unless it harms the child's interest."
+      },
+      "quote": [
+        {
+          "paragraph": 1,
+          "text": "يسقط حق الحاضنة بالتزوج بغير قريب محرم، وبالتنازل ما لم يضر بمصلحة المحضون.",
+          "sha256": "05ab0828b9f90226332f2e56970ed517eb114d8c4409621832134b4ba8b8ca5c"
+        }
+      ],
+      "source": {
+        "tier": 1,
+        "store": "library",
+        "textAsOf": "2026-11-10",
+        "ledgerRefs": [],
+        "ledgerClean": false
+      }
+    },
+    {
+      "id": "b8",
+      "role": "limit",
+      "cite": {
+        "code": "family-code",
+        "article": "67",
+        "paragraphs": [
+          1
+        ]
+      },
+      "says": {
+        "ar": "تسقط الحضانة باختلال أحد شروط الأهلية للحضانة.",
+        "en": "Custody falls when one of the conditions of fitness for custody fails."
+      },
+      "quote": [
+        {
+          "paragraph": 1,
+          "text": "تسقط الحضانة باختلال أحد الشروط المنصوص عليها في المادة 62 أعلاه.",
+          "sha256": "1f497a99c2852e8b78eeae4d76849d585e2babcaee7182d62e80b9359b0d888a"
+        }
+      ],
+      "source": {
+        "tier": 1,
+        "store": "library",
+        "textAsOf": "2026-11-10",
+        "ledgerRefs": [],
+        "ledgerClean": false
+      }
+    },
+    {
+      "id": "b9",
+      "role": "limit",
+      "cite": {
+        "code": "family-code",
+        "article": "67",
+        "paragraphs": [
+          2
+        ]
+      },
+      "says": {
+        "ar": "عمل المرأة ليس سببا لسقوط حقها في الحضانة.",
+        "en": "A woman's work is not a ground for losing her right to custody."
+      },
+      "quote": [
+        {
+          "paragraph": 2,
+          "text": "ولا يمكن لعمل المرأة أن يشكل سببا من أسباب سقوط الحق عنها في ممارسة الحضانة.",
+          "sha256": "be4e0e609f58f76a707280c29791b4d8e6f32d8928f51a2713f18ff61a570b2b"
+        }
+      ],
+      "source": {
+        "tier": 1,
+        "store": "library",
+        "textAsOf": "2026-11-10",
+        "ledgerRefs": [],
+        "ledgerClean": false
+      }
+    },
+    {
+      "id": "b10",
+      "role": "limit",
+      "cite": {
+        "code": "family-code",
+        "article": "67",
+        "paragraphs": [
+          3
+        ]
+      },
+      "says": {
+        "ar": "تراعى مصلحة المحضون في جميع حالات السقوط.",
+        "en": "The child's interest is weighed in every case of loss."
+      },
+      "quote": [
+        {
+          "paragraph": 3,
+          "text": "غير أنه يجب في جميع الحالات مراعاة مصلحة المحضون.",
+          "sha256": "78b3fa90b90bfdf26b49fee93223a67723e8c3d782497b8c0fee146fa4e75b2d"
+        }
+      ],
+      "source": {
+        "tier": 1,
+        "store": "library",
+        "textAsOf": "2026-11-10",
+        "ledgerRefs": [],
+        "ledgerClean": false
+      }
+    },
+    {
+      "id": "b11",
+      "role": "limit",
+      "required": true,
+      "cite": {
+        "code": "family-code",
+        "article": "68",
+        "paragraphs": [
+          1
+        ]
+      },
+      "says": {
+        "ar": "يسقط حق من له الحضانة إذا لم يطلبها مدة تزيد عن سنة بدون عذر.",
+        "en": "The person entitled to custody loses the right if he does not claim it for more than a year without excuse."
+      },
+      "quote": [
+        {
+          "paragraph": 1,
+          "text": "إذا لم يطلب من له الحق في الحضانة مدة تزيد عن سنة بدون عذر سقط حقه فيها.",
+          "sha256": "17c8b5004ebed2a63d2f531457b31c6a80c9400b17a86acd574091ae78a951da"
+        }
+      ],
+      "source": {
+        "tier": 1,
+        "store": "library",
+        "textAsOf": "2026-11-10",
+        "ledgerRefs": [],
+        "ledgerClean": false
+      }
+    },
+    {
+      "id": "b12",
+      "role": "limit",
+      "cite": {
+        "code": "family-code",
+        "article": "69",
+        "paragraphs": [
+          1
+        ]
+      },
+      "says": {
+        "ar": "إذا أراد الحاضن الاستيطان في بلد أجنبي رجع للقاضي إثبات الحضانة له أو إسقاطها مع مراعاة مصلحة المحضون.",
+        "en": "When the custodian wants to settle in a foreign country, the judge decides whether to keep or remove custody, in the child's interest."
+      },
+      "quote": [
+        {
+          "paragraph": 1,
+          "text": "إذا أراد الشخص الموكول له حق الحضانة أن يستوطن في بلد أجنبي رجع الأمر للقاضي في إثبات الحضانة له أو إسقاطها عنه، مع مراعاة مصلحة المحضون.",
+          "sha256": "221b098e16d8c8a4d39bdc085d64b8480aa1f49a67ede5a2344d820daa0674b1"
+        }
+      ],
+      "source": {
+        "tier": 1,
+        "store": "library",
+        "textAsOf": "2026-11-10",
+        "ledgerRefs": [],
+        "ledgerClean": false
+      }
+    },
+    {
+      "id": "b13",
+      "role": "limit",
+      "cite": {
+        "code": "family-code",
+        "article": "71",
+        "paragraphs": [
+          1
+        ]
+      },
+      "says": {
+        "ar": "يعود الحق في الحضانة إذا زال سبب سقوطه غير الاختياري.",
+        "en": "The right to custody returns when an involuntary cause of its loss ends."
+      },
+      "quote": [
+        {
+          "paragraph": 1,
+          "text": "يعود الحق في الحضانة إذا زال سبب سقوطه غير الإختياري.",
+          "sha256": "c38621e29fe11f6cd9995bdffa4b3bb71485666c65db86e0e0d8758e9a91e136"
+        }
+      ],
+      "source": {
+        "tier": 1,
+        "store": "library",
+        "textAsOf": "2026-11-10",
+        "ledgerRefs": [],
+        "ledgerClean": false
+      }
+    },
+    {
+      "id": "b14",
+      "role": "basis",
+      "required": true,
+      "cite": {
+        "code": "family-code",
+        "article": "72",
+        "paragraphs": [
+          1
+        ]
+      },
+      "says": {
+        "ar": "في حالة الطلاق يلتزم الأب بتوفير سكن ملائم للحاضنة لممارسة الحضانة، وإلا فبدل الإيجار.",
+        "en": "On divorce the father must provide suitable housing for the custodian to exercise custody, or else pay the rent."
+      },
+      "quote": [
+        {
+          "paragraph": 1,
+          "text": "في حالة الطلاق، يجب على الأب أن يوفر، لممارسة الحضانة، سكنا ملائما للحاضنة، وإن تعذر ذلك فعليه دفع بدل الإيجار.",
+          "sha256": "cf8bee6a4fa3531107fc036d2c14784013fee7e2eb12dc2e695607723a8f39fa"
+        }
+      ],
+      "source": {
+        "tier": 1,
+        "store": "library",
+        "textAsOf": "2026-11-10",
+        "ledgerRefs": [],
+        "ledgerClean": false
+      }
+    },
+    {
+      "id": "b15",
+      "role": "basis",
+      "cite": {
+        "code": "family-code",
+        "article": "72",
+        "paragraphs": [
+          2
+        ]
+      },
+      "says": {
+        "ar": "تبقى الحاضنة في بيت الزوجية حتى ينفذ الأب الحكم المتعلق بالسكن.",
+        "en": "The custodian stays in the marital home until the father carries out the judgment on housing."
+      },
+      "quote": [
+        {
+          "paragraph": 2,
+          "text": "وتبقى الحاضنة في بيت الزوجية حتى تنفيذ الأب للحكم القضائي المتعلق بالسكن.",
+          "sha256": "ae93b21087d7c293a981942ee5efd2b9cbff4fe3e3348a3b9de5d4cf11812037"
+        }
+      ],
+      "source": {
+        "tier": 1,
+        "store": "library",
+        "textAsOf": "2026-11-10",
+        "ledgerRefs": [],
+        "ledgerClean": false
+      }
+    },
+    {
+      "id": "b16",
+      "role": "basis",
+      "required": true,
+      "cite": {
+        "code": "family-code",
+        "article": "87",
+        "paragraphs": [
+          3
+        ]
+      },
+      "says": {
+        "ar": "في حالة الطلاق يمنح القاضي الولاية لمن أسندت له حضانة الأولاد.",
+        "en": "On divorce the judge grants guardianship to the person given custody of the children."
+      },
+      "quote": [
+        {
+          "paragraph": 3,
+          "text": "وفي حالة الطلاق، يمنح القاضي الولاية لمن أسندت له حضانة الأولاد.",
+          "sha256": "7115e764100678271ebda57999aa8a8334ea97bbff2653a196ca71576bd4b449"
+        }
+      ],
+      "source": {
+        "tier": 1,
+        "store": "library",
+        "textAsOf": "2026-11-10",
+        "ledgerRefs": [],
+        "ledgerClean": false
+      }
+    },
+    {
+      "id": "b17",
+      "role": "basis",
+      "cite": {
+        "code": "family-code",
+        "article": "87",
+        "paragraphs": [
+          1
+        ]
+      },
+      "says": {
+        "ar": "الأب ولي على أولاده القصر، وتحل الأم محله بعد وفاته.",
+        "en": "The father is guardian of his minor children, and the mother takes his place after his death."
+      },
+      "quote": [
+        {
+          "paragraph": 1,
+          "text": "يكون الأب وليا على أولاده القصر، وبعد وفاته تحل الأم محله قانونا.",
+          "sha256": "32600dd26af5da3477889aa010a9139225722522bb83509f664d4b505456ac86"
+        }
+      ],
+      "source": {
+        "tier": 1,
+        "store": "library",
+        "textAsOf": "2026-11-10",
+        "ledgerRefs": [],
+        "ledgerClean": false
+      }
+    },
+    {
+      "id": "b18",
+      "role": "procedure",
+      "cite": {
+        "code": "family-code",
+        "article": "57",
+        "paragraphs": [
+          2
+        ]
+      },
+      "says": {
+        "ar": "الأحكام المتعلقة بالحضانة قابلة للاستئناف.",
+        "en": "Judgments on custody are open to appeal."
+      },
+      "quote": [
+        {
+          "paragraph": 2,
+          "text": "تكون الأحكام المتعلقة بالحضانة قابلة للاستئناف.",
+          "sha256": "c811a07ba5c2c5f521e24dc8cbff7770a7001f44ab841c15684310b96423cc7c"
+        }
+      ],
+      "source": {
+        "tier": 1,
+        "store": "library",
+        "textAsOf": "2026-11-10",
+        "ledgerRefs": [],
+        "ledgerClean": false
+      }
+    },
+    {
+      "id": "b19",
+      "role": "procedure",
+      "cite": {
+        "code": "family-code",
+        "article": "57 مكرر",
+        "paragraphs": [
+          1
+        ]
+      },
+      "says": {
+        "ar": "يجوز للقاضي الفصل استعجالا بأمر على عريضة في التدابير المؤقتة، ومنها الحضانة والزيارة والمسكن.",
+        "en": "The judge may rule urgently, by an order on petition, on provisional measures, among them custody, visiting and housing."
+      },
+      "quote": [
+        {
+          "paragraph": 1,
+          "text": "يجوز للقاضي الفصل على وجه الاستعجال بموجب أمر على عريضة في جميع التدابير المؤقتة ولا سيما ما تعلق منها بالنفقة والحضانة والزيارة والمسكن.",
+          "sha256": "a5cddde3c58c6534be04eeb2df32de8ebbfefc17888c1ab5094c7dddd7d16c2d"
+        }
+      ],
+      "source": {
+        "tier": 1,
+        "store": "library",
+        "textAsOf": "2026-11-10",
+        "ledgerRefs": [],
+        "ledgerClean": false
+      }
+    },
+    {
+      "id": "b20",
+      "role": "procedure",
+      "cite": {
+        "code": "cpca",
+        "article": "323",
+        "paragraphs": [
+          2
+        ]
+      },
+      "says": {
+        "ar": "يؤمر بالنفاذ المعجل عند طلبه رغم المعارضة أو الاستئناف في حالات منها منح مسكن الزوجية لمن أسندت له الحضانة.",
+        "en": "Provisional execution, despite opposition or appeal, is ordered when asked for in listed cases, among them granting the marital home to the person given custody."
+      },
+      "quote": [
+        {
+          "paragraph": 2,
+          "text": "باستثناء الأحكام الواجبة التنفيذ بقوة القانون، يؤمر بالنفاذ المعجل، رغم المعارضة أو الاستئناف، عند طلبه في جميع الحالات التي يحكم فيها بناء على عقد رسمي أو وعد معترف به أو حكم سابق حاز قوة الشيء المقضي به، أوفي مادة النفقة أو منح مسكن الزوجية لمن أسندت له الحضانة.",
+          "sha256": "945949c650753d1bca3bfda5951cd6076cab8b362e631e7a1d71cf4229b2114f"
+        }
+      ],
+      "source": {
+        "tier": 1,
+        "store": "library",
+        "textAsOf": "2026-11-10",
+        "ledgerRefs": [],
+        "ledgerClean": true
+      }
+    },
+    {
+      "id": "b21",
+      "role": "procedure",
+      "cite": {
+        "code": "cpca",
+        "article": "323",
+        "paragraphs": [
+          3
+        ]
+      },
+      "says": {
+        "ar": "في غير ذلك يجوز للقاضي الأمر بالنفاذ المعجل في حالة الاستعجال بكفالة أو بدونها.",
+        "en": "In all other cases the judge may order provisional execution in urgency, with or without security."
+      },
+      "quote": [
+        {
+          "paragraph": 3,
+          "text": "يجوز للقاضي في جميع الأحوال الأخرى، أن يأمر في حالة الاستعجال بالنفاذ المعجل بكفالة أو بدون كفالة.",
+          "sha256": "70a204fd42f6ac4088047179b89f5396bf562d76973fee8fcb753014037abba4"
+        }
+      ],
+      "source": {
+        "tier": 1,
+        "store": "library",
+        "textAsOf": "2026-11-10",
+        "ledgerRefs": [],
+        "ledgerClean": true
+      }
+    },
+    {
+      "id": "b22",
+      "role": "procedure",
+      "cite": {
+        "code": "cpca",
+        "article": "40",
+        "paragraphs": [
+          1,
+          3
+        ]
+      },
+      "says": {
+        "ar": "ترفع دعاوى الحضانة دون سواها أمام محكمة مكان ممارسة الحضانة، ودعاوى السكن أمام محكمة مكان وجود السكن.",
+        "en": "Custody claims go only to the court of the place where custody is exercised, and housing claims to the court where the housing is."
+      },
+      "quote": [
+        {
+          "paragraph": 1,
+          "text": "فضلا عما ورد في المواد 37 و38 و46 من هذا القانون، ترفع الدعاوى أمام الجهات القضائية المبينة أدناه دون سواها :",
+          "sha256": "d1d3cfc6318041605707b19b98dfdc39a081a85d440e9ce268c413b1899e6fc0"
+        },
+        {
+          "paragraph": 3,
+          "text": "2 - في مواد الميراث، دعاوى الطلاق أو الرجوع، الحضانة، النفقة الغذائية والسكن، على التوالي، أمام المحكمة التي يقع في دائرة اختصاصها موطن المتوفى، مسكن الزوجية، مكان ممارسة الحضانة، موطن الدائن بالنفقة، مكان وجود السكن.",
+          "sha256": "8ef7dd9a44053fce927e9f0916d2518605f7ff6be761cd398a526a0bf9f71e1c"
+        }
+      ],
+      "source": {
+        "tier": 1,
+        "store": "library",
+        "textAsOf": "2026-11-10",
+        "ledgerRefs": [],
+        "ledgerClean": true
+      }
+    },
+    {
+      "id": "b23",
+      "role": "limit",
+      "cite": {
+        "code": "cpca",
+        "article": "994",
+        "paragraphs": [
+          1
+        ]
+      },
+      "says": {
+        "ar": "لا يعرض القاضي الوساطة في قضايا شؤون الأسرة.",
+        "en": "The judge does not offer mediation in family cases."
+      },
+      "quote": [
+        {
+          "paragraph": 1,
+          "text": "يجب على القاضي عرض إجراء الوساطة على الخصوم في جميع المواد، باستثناء قضايا شؤون الأسرة والقضايا العمالية و كل ما من شأنه أن يمس بالنظام العام.",
+          "sha256": "d3ce5d785e5874643253eafbd2b2ebce4cfe2a2b8f47d6723d8371db5f4fc32a"
+        }
+      ],
+      "source": {
+        "tier": 1,
+        "store": "library",
+        "textAsOf": "2026-11-10",
+        "ledgerRefs": [],
+        "ledgerClean": true
+      }
+    },
+    {
+      "id": "b24",
+      "role": "procedure",
+      "cite": {
+        "code": "cpca",
+        "article": "442",
+        "paragraphs": [
+          1
+        ]
+      },
+      "says": {
+        "ar": "يجوز لقاضي الطلاق خلال محاولات الصلح اتخاذ التدابير المؤقتة اللازمة بأمر غير قابل لأي طعن.",
+        "en": "During the reconciliation attempts the divorce judge may take the provisional measures he finds necessary, by an order open to no remedy."
+      },
+      "quote": [
+        {
+          "paragraph": 1,
+          "text": "يمكن للقاضي منح الزوجين مهلة تفكير لإجراء محاولة صلح جديدة، كما يجوز له اتخاذ ما يراه لازما من التدابير المؤقتة بموجب أمر غير قابل لأي طعن.",
+          "sha256": "af5434f0eaf2b44037a8c26e009a2aab42a19e0346240c0bf82896a359819e4f"
+        }
+      ],
+      "source": {
+        "tier": 1,
+        "store": "library",
+        "textAsOf": "2026-11-10",
+        "ledgerRefs": [],
+        "ledgerClean": true
+      }
+    },
+    {
+      "id": "b25",
+      "role": "limit",
+      "cite": {
+        "code": "cpca",
+        "article": "605",
+        "paragraphs": [
+          1
+        ]
+      },
+      "says": {
+        "ar": "لا تنفذ الأحكام الأجنبية في الجزائر إلا بعد منحها الصيغة التنفيذية من جهة قضائية جزائرية بشروط.",
+        "en": "Foreign judgments are enforced in Algeria only after an Algerian court grants them the enforcement formula, on conditions."
+      },
+      "quote": [
+        {
+          "paragraph": 1,
+          "text": "لا يجوز تنفيذ الأوامر والأحكام والقرارات الصادرة من جهات قضائية أجنبية، في الإقليم الجزائري، إلا بعد منحها الصيغة التنفيذية من إحدى الجهات القضائية الجزائرية متى استوفت الشروط الآتية :",
+          "sha256": "38db9c1f173cf0eebde9a6024f6488877bc220eacf9ee212f50424a01ba08923"
+        }
+      ],
+      "source": {
+        "tier": 1,
+        "store": "library",
+        "textAsOf": "2026-11-10",
+        "ledgerRefs": [],
+        "ledgerClean": true
+      }
+    }
+  ],
+  "elements": [
+    {
+      "id": "e1",
+      "toProve": {
+        "ar": "وقوع الطلاق بين الطرفين وتاريخه.",
+        "en": "The divorce between the parties, and its date."
+      },
+      "factsToState": [
+        {
+          "ar": "تاريخ عقد الزواج وتسجيله.",
+          "en": "The date of the marriage and its registration."
+        },
+        {
+          "ar": "تاريخ حكم الطلاق والجهة التي أصدرته، وهل فصل في الحضانة.",
+          "en": "The date of the divorce judgment, the court that gave it, and whether it ruled on custody."
+        }
+      ],
+      "events": [
+        "divorce",
+        "marriage"
+      ],
+      "slots": [
+        "spouses_divorced",
+        "divorce_judgment_date",
+        "custody_already_decided"
+      ],
+      "burden": "plaintiff",
+      "proof": [
+        {
+          "means": "divorceJudgment",
+          "basis": [
+            "b14",
+            "b16"
+          ],
+          "note": {
+            "ar": "نسخة من حكم الطلاق تبين تاريخه وما إذا فصل في الحضانة.",
+            "en": "A copy of the divorce judgment showing its date and whether it ruled on custody."
+          }
+        }
+      ],
+      "basis": [
+        "b14",
+        "b16"
+      ]
+    },
+    {
+      "id": "e2",
+      "toProve": {
+        "ar": "الأبناء المعنيون وأعمارهم، ولدى أي من الوالدين يقيمون حاليا ومكان ممارسة الحضانة.",
+        "en": "The children concerned and their ages, with which parent they live now, and where custody is exercised."
+      },
+      "factsToState": [
+        {
+          "ar": "أسماء الأبناء وتواريخ ميلادهم وجنس كل منهم.",
+          "en": "The children's names, dates of birth and sex."
+        },
+        {
+          "ar": "الوالد الذي يقيم عنده الأبناء حاليا ومنذ متى، وعنوان إقامتهم.",
+          "en": "The parent the children live with now, since when, and their address."
+        }
+      ],
+      "events": [
+        "custody_held"
+      ],
+      "slots": [
+        "child_past_custody_age"
+      ],
+      "burden": "plaintiff",
+      "proof": [
+        {
+          "means": "birthCertificates",
+          "basis": [
+            "b4",
+            "b5"
+          ],
+          "note": {
+            "ar": "شهادات ميلاد الأبناء لإثبات أعمارهم.",
+            "en": "The children's birth certificates, to prove their ages."
+          }
+        },
+        {
+          "means": "residenceCertificate",
+          "basis": [
+            "b22"
+          ],
+          "note": {
+            "ar": "ما يثبت مكان إقامة الأبناء ومكان ممارسة الحضانة.",
+            "en": "Proof of where the children live and custody is exercised."
+          }
+        }
+      ],
+      "basis": [
+        "b1",
+        "b3",
+        "b4",
+        "b22"
+      ]
+    },
+    {
+      "id": "e3",
+      "toProve": {
+        "ar": "أهلية المدعي للحضانة ومرتبته في استحقاقها، ومصلحة المحضون؛ وإذا كان المدعي الأب: الوقائع التي تسقط أولوية الأم أو تقتضيها مصلحة المحضون.",
+        "en": "The plaintiff's fitness for custody and rank among those entitled, and the child's interest; when the plaintiff is the father, the facts that make the mother's priority fall or that the child's interest calls for."
+      },
+      "factsToState": [
+        {
+          "ar": "ظروف المدعي وقدرته على رعاية الأبناء وتربيتهم.",
+          "en": "The plaintiff's circumstances and ability to care for and raise the children."
+        },
+        {
+          "ar": "عند ادعاء الأب: زواج الأم بغير قريب محرم، أو تنازلها، أو اختلال شروط أهليتها، أو عدم طلبها الحضانة مدة تزيد عن سنة بدون عذر.",
+          "en": "When the father claims: the mother's marriage to a man who is not a barred close relative, her waiver, the failure of her fitness, or her not claiming custody for more than a year without excuse."
+        }
+      ],
+      "events": [
+        "custodian_remarried",
+        "custody_renounced",
+        "custodian_unfit",
+        "custody_unclaimed"
+      ],
+      "slots": [
+        "plaintiff_parent"
+      ],
+      "burden": "plaintiff",
+      "proof": [
+        {
+          "means": "anyMeans",
+          "basis": [
+            "b2",
+            "b3",
+            "b7",
+            "b8",
+            "b11"
+          ],
+          "note": {
+            "ar": "يثبت المدعي الوقائع التي يستند إليها، وللقاضي الاستعانة بمساعدة اجتماعية أو خبير.",
+            "en": "The plaintiff proves the facts relied on; the judge may call on a social assistant or an expert."
+          }
+        }
+      ],
+      "basis": [
+        "b2",
+        "b3",
+        "b7",
+        "b8",
+        "b9",
+        "b10",
+        "b11"
+      ]
+    }
+  ],
+  "requests": [
+    {
+      "id": "r1",
+      "kind": "custody",
+      "accessory": false,
+      "amount": false,
+      "text": {
+        "ar": "إسناد حضانة الأبناء (...) المولودين بتاريخ (...) إلى المدعي(ة).",
+        "en": "Award custody of the children (...), born on (...), to the plaintiff."
+      },
+      "basis": [
+        "b1",
+        "b2",
+        "b3"
+      ]
+    },
+    {
+      "id": "r2",
+      "kind": "guardianship",
+      "accessory": true,
+      "amount": false,
+      "text": {
+        "ar": "منح المدعي(ة) الولاية على الأبناء المحضونين (...).",
+        "en": "Grant the plaintiff guardianship of the children in custody (...)."
+      },
+      "basis": [
+        "b16"
+      ]
+    },
+    {
+      "id": "r3",
+      "kind": "housing",
+      "accessory": true,
+      "amount": true,
+      "when": {
+        "slot": "plaintiff_parent",
+        "is": "mother"
+      },
+      "text": {
+        "ar": "إلزام المدعى عليه بأن يوفر للمدعية سكنا ملائما لممارسة الحضانة، وإن تعذر ذلك أن يدفع لها بدل إيجار شهري قدره (...) دج، مع بقائها في بيت الزوجية إلى حين التنفيذ.",
+        "en": "Order the defendant to provide the plaintiff suitable housing to exercise custody or, failing that, to pay her a monthly rent of (...) DZD, she staying in the marital home until he does so."
+      },
+      "basis": [
+        "b14",
+        "b15"
+      ]
+    },
+    {
+      "id": "r4",
+      "kind": "provisional_execution",
+      "accessory": true,
+      "amount": false,
+      "text": {
+        "ar": "شمول الحكم بالنفاذ المعجل فيما يتعلق بـ(...).",
+        "en": "Order provisional execution of the judgment as to (...)."
+      },
+      "basis": [
+        "b20",
+        "b21"
+      ]
+    }
+  ],
+  "court": {
+    "section": {
+      "value": "family",
+      "basis": [
+        "court-sections.b8",
+        "court-sections.b10",
+        "court-sections.b7",
+        "court-sections.b3"
+      ],
+      "alternatives": [
+        {
+          "when": {
+            "slot": "court_has_section_for_matter",
+            "is": "no"
+          },
+          "value": "civil",
+          "basis": [
+            "court-sections.b4"
+          ]
+        }
+      ],
+      "message": {
+        "ar": "المادة 423 من قانون الإجراءات المدنية والإدارية: ينظر قسم شؤون الأسرة في دعاوى الحضانة والولاية وتوابع انحلال الزواج؛ والمادة 32: في المحاكم التي لم تنشأ فيها الأقسام ينظر القسم المدني. القسم المختار يختلف عن القسم المقترح؛ تحقق من أقسام المحكمة.",
+        "en": "CPCA article 423: the family section hears custody and guardianship claims and the consequences of the dissolution of marriage; article 32: where no sections were created, the civil section hears the case. The section chosen differs from the one proposed; check the court's sections."
+      }
+    },
+    "territory": [
+      {
+        "id": "t1",
+        "when": {
+          "slot": "requests",
+          "includes": "housing"
+        },
+        "rule": {
+          "ar": "يجمع طلب السكن مع الحضانة: المادة 40 تجعل دعاوى السكن لمحكمة مكان وجود السكن، والمادتان 40 و426 تجعلان الحضانة لمكان ممارستها؛ تحقق من أن المكانين في دائرة المحكمة نفسها.",
+          "en": "The housing request is joined to custody: article 40 sends housing claims to the court where the housing is, and articles 40 and 426 send custody to where it is exercised; check that both places lie within the same court."
+        },
+        "basis": [
+          "b22",
+          "court-sections.b42"
+        ]
+      }
+    ]
+  },
+  "deadlines": [
+    {
+      "id": "d1",
+      "kind": "forfeiture",
+      "period": {
+        "value": 1,
+        "unit": "year"
+      },
+      "startsFrom": {
+        "slot": "divorce_judgment_date",
+        "event": "divorce",
+        "description": {
+          "ar": "تاريخ حكم الطلاق الذي نشأ به حق المدعي في طلب الحضانة.",
+          "en": "The date of the divorce judgment, from which the plaintiff could claim custody."
+        }
+      },
+      "raisedBy": "unclear",
+      "when": {
+        "any": [
+          {
+            "slot": "custody_claim_delay_excused",
+            "known": false
+          },
+          {
+            "slot": "custody_claim_delay_excused",
+            "is": "no"
+          }
+        ]
+      },
+      "effectWhenExpired": "warn",
+      "message": {
+        "ar": "المادة 68 من قانون الأسرة: يسقط حق من له الحضانة إذا لم يطلبها مدة تزيد عن سنة بدون عذر. لا يحدد النص بداية المدة ولا طريقة حسابها؛ تحقق من تاريخ نشوء الحق ومن وجود عذر ومن إقامة الأبناء الفعلية لدى المدعي.",
+        "en": "Family Code article 68: the person entitled to custody loses the right if he does not claim it for more than one (1) year without excuse. The text sets neither the starting day nor the counting; check when the right arose, any excuse, and whether the children in fact live with the plaintiff."
+      },
+      "basis": [
+        "b11"
+      ],
+      "extract": {
+        "period": "مدة تزيد عن سنة",
+        "sanction": "سقط حقه فيها"
+      },
+      "interpretive": true,
+      "interpretiveNote": "The article states the lapse but not its starting event (the divorce judgment, the day the children left the plaintiff, or the day the plaintiff learned of the facts), nor how the year is counted (it is in the Family Code, outside the procedure code's counting article; the civil code's counting article speaks of limitation), nor whether the court raises it of its own motion. 'More than a year' also leaves open whether the lapse falls on the anniversary or the day after. A lapse that rests on the absence of an excuse cannot be decided by dates alone, so the item warns and never blocks.",
+      "readings": [
+        {
+          "reading": {
+            "ar": "تبدأ السنة من تاريخ حكم الطلاق، وتحسب بالتقويم الميلادي دون احتساب اليوم الأول.",
+            "en": "The year runs from the divorce judgment, by the Gregorian calendar, the first day not counted."
+          },
+          "basis": [
+            "b11",
+            "periods.b27",
+            "periods.b11"
+          ]
+        },
+        {
+          "reading": {
+            "ar": "تبدأ السنة من اليوم الذي انقطعت فيه ممارسة المدعي للحضانة فعليا أو علم فيه بسببها؛ ولا يسري السقوط ما دام الأبناء يقيمون لدى المدعي.",
+            "en": "The year runs from the day the plaintiff in fact stopped exercising custody or learned of its cause; the lapse does not run while the children live with the plaintiff."
+          },
+          "basis": [
+            "b11"
+          ]
+        },
+        {
+          "reading": {
+            "ar": "السقوط بسبب عدم الطلب يخضع دائما لمصلحة المحضون التي يراعيها القاضي في كل أحكام الحضانة.",
+            "en": "Lapse for not claiming always yields to the child's interest, which the judge weighs in every custody ruling."
+          },
+          "basis": [
+            "b3",
+            "b10"
+          ]
+        }
+      ]
+    }
+  ],
+  "documents": [
+    {
+      "id": "doc1",
+      "name": {
+        "ar": "نسخة من حكم الطلاق.",
+        "en": "A copy of the divorce judgment."
+      },
+      "why": {
+        "ar": "يثبت الطلاق وتاريخه وما إذا فصل في الحضانة.",
+        "en": "It proves the divorce, its date and whether it ruled on custody."
+      },
+      "basis": [
+        "b14",
+        "b16"
+      ]
+    },
+    {
+      "id": "doc2",
+      "name": {
+        "ar": "شهادات ميلاد الأبناء.",
+        "en": "The children's birth certificates."
+      },
+      "why": {
+        "ar": "تثبت الأعمار التي تحدد مدة الحضانة.",
+        "en": "They prove the ages that set the custody period."
+      },
+      "basis": [
+        "b4"
+      ]
+    },
+    {
+      "id": "doc3",
+      "name": {
+        "ar": "ما يثبت مكان إقامة الأبناء (شهادة إقامة).",
+        "en": "Proof of where the children live (a residence certificate)."
+      },
+      "why": {
+        "ar": "يحدد مكان ممارسة الحضانة والمحكمة المختصة إقليميا.",
+        "en": "It fixes where custody is exercised and so the competent court."
+      },
+      "basis": [
+        "b22"
+      ]
+    },
+    {
+      "id": "doc4",
+      "requiredWhen": {
+        "slot": "requests",
+        "includes": "housing"
+      },
+      "name": {
+        "ar": "ما يثبت قيمة بدل الإيجار المطلوب (عقد إيجار أو ما يقوم مقامه).",
+        "en": "Proof of the rent asked for (a lease or the like)."
+      },
+      "why": {
+        "ar": "يستند إليه تقدير بدل الإيجار.",
+        "en": "The amount of the rent rests on it."
+      },
+      "basis": [
+        "b14"
+      ]
+    }
+  ],
+  "boundaries": [
+    {
+      "id": "n1",
+      "looksLike": {
+        "ar": "طلب إسناد حضانة سبق أن فصل فيها حكم.",
+        "en": "A claim to award custody already decided by a judgment."
+      },
+      "isActually": "outside:custody-transfer",
+      "tellingFacts": [
+        {
+          "ar": "حكم سابق أسند الحضانة لأحد الطرفين.",
+          "en": "An earlier judgment gave custody to one party."
+        }
+      ],
+      "when": {
+        "slot": "custody_already_decided",
+        "is": "yes"
+      },
+      "slots": [
+        "custody_already_decided"
+      ],
+      "message": {
+        "ar": "المواد 66 و67 و71 من قانون الأسرة: سقوط الحضانة وعودتها. إذا سبق أن فصل حكم في الحضانة فدعوى إسقاطها ونقلها دعوى مستقلة؛ تحقق من منطوق الحكم السابق.",
+        "en": "Family Code articles 66, 67 and 71: loss and return of custody. Where an earlier judgment already ruled on custody, a claim to forfeit and transfer it is a separate claim; check the earlier judgment."
+      },
+      "basis": [
+        "b7",
+        "b8",
+        "b13"
+      ]
+    },
+    {
+      "id": "n2",
+      "looksLike": {
+        "ar": "دعوى حضانة مستقلة أثناء دعوى طلاق قائمة.",
+        "en": "A separate custody claim while a divorce action is pending."
+      },
+      "isActually": "outside:pending-divorce-action",
+      "tellingFacts": [
+        {
+          "ar": "دعوى طلاق أو تطليق أو خلع لم يفصل فيها.",
+          "en": "A divorce, judicial-divorce or khul action not yet decided."
+        }
+      ],
+      "when": {
+        "slot": "divorce_action_pending",
+        "is": "yes"
+      },
+      "slots": [
+        "divorce_action_pending"
+      ],
+      "message": {
+        "ar": "المادة 57 مكرر من قانون الأسرة والمادة 442 من قانون الإجراءات المدنية والإدارية: يفصل القاضي في التدابير المؤقتة ومنها الحضانة أثناء دعوى الطلاق. تحقق من الدعوى القائمة ومن الطريق المناسب.",
+        "en": "Family Code article 57 مكرر and CPCA article 442: the judge rules on provisional measures, custody among them, during the divorce action. Check the pending action and the proper route."
+      },
+      "basis": [
+        "b19",
+        "b24"
+      ]
+    },
+    {
+      "id": "n3",
+      "looksLike": {
+        "ar": "طلب إسناد الحضانة بين زوجين لم يقع الطلاق بينهما.",
+        "en": "A custody claim between spouses who are not divorced."
+      },
+      "isActually": "outside:no-divorce",
+      "tellingFacts": [
+        {
+          "ar": "لا يوجد حكم طلاق بين الطرفين.",
+          "en": "There is no divorce judgment between the parties."
+        }
+      ],
+      "when": {
+        "slot": "spouses_divorced",
+        "is": "no"
+      },
+      "slots": [
+        "spouses_divorced"
+      ],
+      "message": {
+        "ar": "المادتان 72 و87 من قانون الأسرة تتكلمان عن السكن والولاية في حالة الطلاق. لم يقع طلاق بحكم؛ تحقق من أساس الطلب.",
+        "en": "Family Code articles 72 and 87 deal with housing and guardianship in the case of divorce. No divorce has been pronounced; check the basis of the claim."
+      },
+      "basis": [
+        "b14",
+        "b16"
+      ]
+    },
+    {
+      "id": "n4",
+      "looksLike": {
+        "ar": "طلب حضانة ولد بلغ نهاية مدة الحضانة.",
+        "en": "A custody claim for a child past the custody period."
+      },
+      "isActually": "outside:custody-period-ended",
+      "tellingFacts": [
+        {
+          "ar": "ذكر تجاوز عشر سنوات أو أنثى بلغت سن الزواج.",
+          "en": "A boy over ten, or a girl who has reached the age of marriage."
+        }
+      ],
+      "when": {
+        "slot": "child_past_custody_age",
+        "is": "yes"
+      },
+      "slots": [
+        "child_past_custody_age"
+      ],
+      "message": {
+        "ar": "المادة 65 من قانون الأسرة: تنقضي حضانة الذكر ببلوغه 10 سنوات وللقاضي تمديدها إلى 16 سنة إذا كانت الحاضنة أما لم تتزوج ثانية، والأنثى ببلوغها سن الزواج (المادة 7: 19 سنة). تحقق من أعمار الأبناء.",
+        "en": "Family Code article 65: a boy's custody ends at 10, extendable to 16 when the custodian is a mother who has not remarried, and a girl's at the age of marriage (article 7: 19). Check the children's ages."
+      },
+      "basis": [
+        "b4",
+        "b5",
+        "b6"
+      ]
+    },
+    {
+      "id": "n5",
+      "looksLike": {
+        "ar": "طلب حضانة من حاضن يريد الاستيطان في بلد أجنبي.",
+        "en": "A custody claim by a custodian who wants to settle abroad."
+      },
+      "isActually": "outside:custodian-abroad",
+      "tellingFacts": [
+        {
+          "ar": "الحاضن يعتزم الإقامة الدائمة خارج الوطن.",
+          "en": "The custodian intends to live permanently abroad."
+        }
+      ],
+      "message": {
+        "ar": "المادة 69 من قانون الأسرة: يرجع للقاضي إثبات الحضانة أو إسقاطها لمن يريد الاستيطان في بلد أجنبي مع مراعاة مصلحة المحضون.",
+        "en": "Family Code article 69: the judge decides whether to keep or remove custody of a custodian who wants to settle abroad, in the child's interest."
+      },
+      "basis": [
+        "b12"
+      ]
+    },
+    {
+      "id": "n6",
+      "looksLike": {
+        "ar": "المطالبة بنفقة الأبناء ضمن دعوى الحضانة.",
+        "en": "Claiming the children's maintenance within the custody claim."
+      },
+      "isActually": "claim:nafaqa",
+      "tellingFacts": [
+        {
+          "ar": "طلب مبلغ نفقة للأبناء.",
+          "en": "A request for a maintenance sum for the children."
+        }
+      ],
+      "message": {
+        "ar": "نفقة الأبناء دعوى نفقة لها قواعدها؛ والمسكن المطلوب هنا هو سكن ممارسة الحضانة وفق المادة 72 من قانون الأسرة.",
+        "en": "The children's maintenance is a maintenance claim with its own rules; the housing asked for here is housing to exercise custody under Family Code article 72."
+      },
+      "basis": [
+        "b14"
+      ]
+    },
+    {
+      "id": "n7",
+      "looksLike": {
+        "ar": "شكوى من منع الزيارة.",
+        "en": "A complaint that visits are refused."
+      },
+      "isActually": "outside:visitation-claim",
+      "tellingFacts": [
+        {
+          "ar": "الحضانة مسندة والنزاع حول حق الزيارة.",
+          "en": "Custody is already awarded and the dispute is on visiting."
+        }
+      ],
+      "message": {
+        "ar": "المادة 64 من قانون الأسرة: يحكم القاضي بحق الزيارة عند إسناد الحضانة؛ أما النزاع في حق زيارة مقرر فدعوى أخرى.",
+        "en": "Family Code article 64: the judge rules on visiting when awarding custody; a dispute over a visiting right already set is another claim."
+      },
+      "basis": [
+        "b3"
+      ]
+    },
+    {
+      "id": "n8",
+      "looksLike": {
+        "ar": "طلب الأب إسناد الحضانة إليه.",
+        "en": "The father's claim to be given custody."
+      },
+      "isActually": "outside:mother-priority-to-rebut",
+      "tellingFacts": [
+        {
+          "ar": "المدعي هو الأب والأم على قيد الحياة.",
+          "en": "The plaintiff is the father and the mother is alive."
+        }
+      ],
+      "when": {
+        "slot": "plaintiff_parent",
+        "is": "father"
+      },
+      "slots": [
+        "plaintiff_parent"
+      ],
+      "message": {
+        "ar": "المادة 64 من قانون الأسرة: الأم أولى بالحضانة ثم الأب مع مراعاة مصلحة المحضون؛ والمواد 66 و67 و68 تبين أسباب السقوط. تحقق من الوقائع التي يستند إليها الطلب.",
+        "en": "Family Code article 64: the mother comes before the father, always in the child's interest; articles 66, 67 and 68 set the grounds of loss. Check the facts the claim rests on."
+      },
+      "basis": [
+        "b3",
+        "b7",
+        "b8",
+        "b11"
+      ]
+    },
+    {
+      "id": "n9",
+      "looksLike": {
+        "ar": "طلب حضانة سبق أن فصل فيها حكم أجنبي.",
+        "en": "A custody claim already decided by a foreign judgment."
+      },
+      "isActually": "outside:exequatur",
+      "tellingFacts": [
+        {
+          "ar": "حكم صادر عن جهة قضائية أجنبية في حضانة الأبناء.",
+          "en": "A judgment of a foreign court on the children's custody."
+        }
+      ],
+      "message": {
+        "ar": "المادة 605 من قانون الإجراءات المدنية والإدارية: لا ينفذ الحكم الأجنبي إلا بعد منحه الصيغة التنفيذية بشروط؛ تحقق من وجود حكم أجنبي في الحضانة.",
+        "en": "CPCA article 605: a foreign judgment is enforced only once granted the enforcement formula, on conditions; check for a foreign custody judgment."
+      },
+      "basis": [
+        "b25"
+      ]
+    }
+  ],
+  "openPoints": [
+    {
+      "id": "o1",
+      "question": {
+        "ar": "متى تبدأ سنة المادة 68 وكيف تحسب، ومن يثيرها؟",
+        "en": "When does the year of article 68 start, how is it counted, and who raises it?"
+      },
+      "why": {
+        "ar": "النص يقرر السقوط دون بيان بداية المدة ولا حسابها ولا من يتمسك به.",
+        "en": "The text states the lapse without its starting day, counting, or who may rely on it."
+      },
+      "readings": [
+        {
+          "reading": {
+            "ar": "من تاريخ حكم الطلاق، بالتقويم الميلادي.",
+            "en": "From the divorce judgment, by the Gregorian calendar."
+          },
+          "basis": [
+            "b11",
+            "periods.b27"
+          ]
+        },
+        {
+          "reading": {
+            "ar": "من تاريخ انقطاع الممارسة الفعلية أو العلم بسببها.",
+            "en": "From the end of actual exercise, or knowledge of its cause."
+          },
+          "basis": [
+            "b11"
+          ]
+        }
+      ],
+      "protectiveReading": {
+        "ar": "يحسب من تاريخ حكم الطلاق وينبه دون منع.",
+        "en": "Count from the divorce judgment and warn, never block."
+      },
+      "grade": "C",
+      "refs": [
+        "d1",
+        "b11"
+      ]
+    },
+    {
+      "id": "o2",
+      "question": {
+        "ar": "هل «سن الزواج» في المادة 65 هي سن 19 سنة في المادة 7؟",
+        "en": "Is 'the age of marriage' in article 65 the 19 years of article 7?"
+      },
+      "why": {
+        "ar": "المادة 65 لا تذكر رقما، والمادة 7 عدلت سنة 2005.",
+        "en": "Article 65 gives no number, and article 7 was amended in 2005."
+      },
+      "protectiveReading": {
+        "ar": "يسأل عن عمر البنت وينبه عند بلوغها 19 سنة.",
+        "en": "Ask the girl's age and warn when she has reached 19."
+      },
+      "grade": "C",
+      "refs": [
+        "b6",
+        "n4"
+      ]
+    },
+    {
+      "id": "o3",
+      "question": {
+        "ar": "هل تقبل دعوى إسناد الحضانة بين زوجين لم يقع الطلاق بينهما؟",
+        "en": "Can a custody claim be brought between spouses who are not divorced?"
+      },
+      "why": {
+        "ar": "أحكام الحضانة واردة في فصل آثار الطلاق، والمادتان 72 و87 تتكلمان عن حالة الطلاق، ولا نص يمنعها صراحة.",
+        "en": "The custody articles sit in the chapter on the effects of divorce and articles 72 and 87 speak of divorce, yet no text expressly bars such a claim."
+      },
+      "protectiveReading": {
+        "ar": "ينبه دون منع إذا لم يقع الطلاق.",
+        "en": "Warn, do not block, when there is no divorce."
+      },
+      "grade": "C",
+      "refs": [
+        "n3",
+        "e1"
+      ]
+    },
+    {
+      "id": "o4",
+      "question": {
+        "ar": "أي محكمة مختصة إقليميا إذا اختلف مكان ممارسة الحضانة عن مكان السكن المطلوب؟",
+        "en": "Which court has territorial jurisdiction when the place custody is exercised differs from the place of the housing claimed?"
+      },
+      "why": {
+        "ar": "المادة 40 تجعل السكن لمكان وجوده والمادة 426 لا تذكر السكن.",
+        "en": "Article 40 sends housing to where it is, and article 426 does not name housing."
+      },
+      "protectiveReading": {
+        "ar": "يعرض القاعدتين ويطلب التحقق.",
+        "en": "Show both rules and ask the lawyer to check."
+      },
+      "grade": "C",
+      "refs": [
+        "t1"
+      ]
+    },
+    {
+      "id": "o5",
+      "question": {
+        "ar": "وحدات الاختصاص الإقليمي والعريضة والإثبات والطلبات التبعية والصلح والوساطة ليس لها سجل نهائي؛ ماذا يستورد منها؟",
+        "en": "The territorial-jurisdiction, petition-formal-elements, proof, accessory-requests and conciliation-mediation modules have no final record; what should be imported from them?"
+      },
+      "why": {
+        "ar": "لم تكن سجلاتها النهائية متاحة، فاستند السجل مباشرة إلى المواد 40 و323 و994 من قانون الإجراءات المدنية والإدارية.",
+        "en": "Their final records were not available, so the record cites CPCA articles 40, 323 and 994 directly."
+      },
+      "protectiveReading": {
+        "ar": "تستبدل هذه البيانات باستيراد من الوحدات عند صدور سجلاتها النهائية.",
+        "en": "Replace these statements by imports from the modules once their final records exist."
+      },
+      "grade": "C",
+      "refs": [
+        "b20",
+        "b21",
+        "b22",
+        "b23",
+        "t1"
+      ]
+    },
+    {
+      "id": "o6",
+      "question": {
+        "ar": "ما النص المطبق على وقائع سابقة لتعديل 2005 (المواد 64 و67 و72 و87)؟",
+        "en": "Which wording applies to facts before the 2005 amendment (articles 64, 67, 72 and 87)?"
+      },
+      "why": {
+        "ar": "المخزن يحمل الصياغة المعدلة فقط ولا يشهد بتطبيقها على حالة سابقة، والصياغات السابقة غير متوفرة فيه.",
+        "en": "The store holds only the amended wording and does not certify its application to an earlier case; the former wordings are not in it."
+      },
+      "protectiveReading": {
+        "ar": "يطبق النص الساري وينبه المحامي إلى التحقق إذا كانت الوقائع قديمة.",
+        "en": "Apply the wording in force and tell the lawyer to check when the facts are old."
+      },
+      "grade": "D",
+      "refs": [
+        "b3",
+        "b9",
+        "b14",
+        "b16"
+      ]
+    },
+    {
+      "id": "o7",
+      "question": {
+        "ar": "متى يتقدم الأب على الأم في الحضانة؟",
+        "en": "When does the father come before the mother for custody?"
+      },
+      "why": {
+        "ar": "المادة 64 ترتب الأم أولا مع مراعاة مصلحة المحضون، ولا تحدد متى ترجح المصلحة على الترتيب.",
+        "en": "Article 64 puts the mother first in the child's interest, and does not say when the interest overrides the order."
+      },
+      "protectiveReading": {
+        "ar": "ينبه عند ادعاء الأب ويطلب بيان الوقائع.",
+        "en": "Warn when the father claims, and ask for the facts."
+      },
+      "grade": "C",
+      "refs": [
+        "n8",
+        "e3"
+      ]
+    },
+    {
+      "id": "o8",
+      "question": {
+        "ar": "هل يشمل النفاذ المعجل الوجوبي عند الطلب بدل الإيجار، أم منح مسكن الزوجية فقط؟",
+        "en": "Does the provisional execution ordered on request cover the rent allowance, or only the grant of the marital home?"
+      },
+      "why": {
+        "ar": "المادة 323 تذكر «منح مسكن الزوجية لمن أسندت له الحضانة» دون بدل الإيجار، وما عداه يخضع لتقدير القاضي عند الاستعجال.",
+        "en": "Article 323 names 'granting the marital home to the person given custody' and not the rent; the rest is left to the judge in urgency."
+      },
+      "protectiveReading": {
+        "ar": "يذكر الفقرتين ويترك الطلب للمحامي.",
+        "en": "Show both paragraphs and leave the request to the lawyer."
+      },
+      "grade": "C",
+      "refs": [
+        "r4",
+        "b20",
+        "b21"
+      ]
+    }
+  ],
+  "checklist": [
+    {
+      "id": "k1",
+      "item": "Basis: the Family Code chapter on custody (definition of custody and the custodian's fitness, the order of persons entitled, the end of custody by age, its loss and its lapse, the housing of the custodian) - check the article numbers and the 2005 amendments (Ordinance 05-02).",
+      "from": [
+        "derivationA"
+      ],
+      "answer": "applies",
+      "refs": [
+        "b1",
+        "b2",
+        "b3",
+        "b4",
+        "b7",
+        "b8",
+        "b11",
+        "b14",
+        "o6"
+      ],
+      "note": "Family-code articles 62 to 72 read whole; 63 is repealed in the store. Articles 64, 67, 72 are in the 2005 wording."
+    },
+    {
+      "id": "k2",
+      "item": "Definition and purpose of custody: care, education and upbringing of the child in his father's religion, protection of his health and morals; the custodian must be fit (أهلا للقيام بذلك).",
+      "from": [
+        "derivationA"
+      ],
+      "answer": "applies",
+      "refs": [
+        "b1",
+        "b2"
+      ]
+    },
+    {
+      "id": "k3",
+      "item": "Order of entitlement after the 2005 amendment: the mother, then the father, then the maternal grandmother, the paternal grandmother, the maternal aunt, the paternal aunt, then the closest relatives - always taking the child's interest into account; the judge who awards custody must also rule on the visiting right.",
+      "from": [
+        "derivationA"
+      ],
+      "answer": "applies",
+      "refs": [
+        "b3",
+        "n8"
+      ]
+    },
+    {
+      "id": "k4",
+      "item": "The child's interest (مصلحة المحضون) is the governing criterion; the judge may depart from the order for the child's interest.",
+      "from": [
+        "derivationA"
+      ],
+      "answer": "applies",
+      "refs": [
+        "b3",
+        "b5",
+        "b10",
+        "o7"
+      ],
+      "note": "The texts weigh the interest in every case; whether it overrides the order is not stated (o7)."
+    },
+    {
+      "id": "k5",
+      "item": "Element: the dissolution of marriage (divorce judgment) with its date - check whether the divorce judgment already ruled on custody; if it did, a new claim is a transfer or forfeiture claim (custody_transfer), not an award claim.",
+      "from": [
+        "derivationA"
+      ],
+      "answer": "applies",
+      "refs": [
+        "e1",
+        "n1",
+        "n3",
+        "doc1"
+      ]
+    },
+    {
+      "id": "k6",
+      "item": "Element: with whom the children actually live now (custody_held), their names, dates of birth and ages.",
+      "from": [
+        "derivationA"
+      ],
+      "answer": "applies",
+      "refs": [
+        "e2",
+        "doc2",
+        "doc3"
+      ]
+    },
+    {
+      "id": "k7",
+      "item": "End of custody: for a boy at 10 years, the judge may extend to 16 if the custodian is the mother who has not remarried; for a girl at the age of marriage (19) - check the children's ages against these limits before asking for custody.",
+      "from": [
+        "derivationA"
+      ],
+      "answer": "applies",
+      "refs": [
+        "b4",
+        "b5",
+        "b6",
+        "n4",
+        "o2"
+      ]
+    },
+    {
+      "id": "k8",
+      "item": "Loss of custody (the custodian's marriage to a non-mahram, renunciation, unfitness, failure of conditions); the woman's work is not by itself a ground of loss; but loss is a different claim.",
+      "from": [
+        "derivationA"
+      ],
+      "answer": "applies",
+      "refs": [
+        "b7",
+        "b8",
+        "b9",
+        "e3",
+        "n1"
+      ]
+    },
+    {
+      "id": "k9",
+      "item": "Lapse: whoever is entitled and does not claim custody for more than one year without excuse loses the right - check when the right arose (the divorce date) and whether an excuse exists.",
+      "from": [
+        "derivationA"
+      ],
+      "answer": "applies",
+      "refs": [
+        "d1",
+        "b11",
+        "o1"
+      ]
+    },
+    {
+      "id": "k10",
+      "item": "Custodian settling abroad: the judge may award or withdraw custody in the child's interest (custodian_abroad) - boundary.",
+      "from": [
+        "derivationA"
+      ],
+      "answer": "applies",
+      "refs": [
+        "b12",
+        "n5"
+      ]
+    },
+    {
+      "id": "k11",
+      "item": "Return of custody when the cause of loss ceases if it was involuntary.",
+      "from": [
+        "derivationA"
+      ],
+      "answer": "applies",
+      "refs": [
+        "b13",
+        "n1"
+      ]
+    },
+    {
+      "id": "k12",
+      "item": "Housing: in case of divorce the father must provide the custodian a suitable dwelling or, failing that, its rent; the custodian stays in the marital home until the father executes the judgment on housing - request housing with an amount.",
+      "from": [
+        "derivationA"
+      ],
+      "answer": "applies",
+      "refs": [
+        "b14",
+        "b15",
+        "r3",
+        "doc4"
+      ]
+    },
+    {
+      "id": "k13",
+      "item": "Guardianship (الولاية): the father is guardian of minor children; after his death the mother; in case of divorce the judge grants guardianship to the parent awarded custody - request guardianship tied to that article.",
+      "from": [
+        "derivationA"
+      ],
+      "answer": "applies",
+      "refs": [
+        "b16",
+        "b17",
+        "r2"
+      ]
+    },
+    {
+      "id": "k14",
+      "item": "Maintenance of the children is a separate request (nafaqa) - boundary; may be joined.",
+      "from": [
+        "derivationA"
+      ],
+      "answer": "applies",
+      "refs": [
+        "n6"
+      ],
+      "note": "Whether it may be joined is left to the nafaqa claim record; no text read here settles joinder."
+    },
+    {
+      "id": "k15",
+      "item": "Visiting right: the judge must rule on it when awarding custody - the defendant may ask for it; visitation refusal is a separate claim.",
+      "from": [
+        "derivationA"
+      ],
+      "answer": "applies",
+      "refs": [
+        "b3",
+        "n7"
+      ]
+    },
+    {
+      "id": "k16",
+      "item": "Provisional (urgent) measures: the judge may rule by summary order on custody, visiting rights and housing (Family Code article 57 bis) - check.",
+      "from": [
+        "derivationA"
+      ],
+      "answer": "applies",
+      "refs": [
+        "b19",
+        "n2",
+        "ordinary-court-exits.n5"
+      ],
+      "note": "The text says an order on petition, not a summary order."
+    },
+    {
+      "id": "k17",
+      "item": "Appeal: divorce judgments are not appealable except in their material aspects, but custody is a material/accessory aspect - check the Family Code article on appeal.",
+      "from": [
+        "derivationA"
+      ],
+      "answer": "applies",
+      "refs": [
+        "b18"
+      ],
+      "note": "Article 57 states expressly that custody judgments are open to appeal."
+    },
+    {
+      "id": "k18",
+      "item": "Provisional execution: check the Code of Civil and Administrative Procedure provision that orders provisional execution by law in family matters such as custody and maintenance, and the general provisional-execution article.",
+      "from": [
+        "derivationA"
+      ],
+      "answer": "applies",
+      "refs": [
+        "b20",
+        "b21",
+        "r4",
+        "o8"
+      ],
+      "note": "CPCA 323 orders it on request for maintenance and for granting the marital home to the custodian; custody itself falls under the urgency paragraph. No text read lists custody among judgments enforceable by law."
+    },
+    {
+      "id": "k19",
+      "item": "Public prosecutor: principal party in all cases applying the Family Code (article 3 bis) - the petition and the file must be communicated to him.",
+      "from": [
+        "derivationA"
+      ],
+      "answer": "applies",
+      "refs": [
+        "court-sections.b34"
+      ],
+      "note": "Imported from court-sections; the text makes him a principal party and says nothing of how the file is communicated."
+    },
+    {
+      "id": "k20",
+      "item": "Competent section: the family affairs section (قسم شؤون الأسرة) of the tribunal - via the court-sections module.",
+      "from": [
+        "derivationA"
+      ],
+      "answer": "applies",
+      "refs": [
+        "court-sections.b8",
+        "court-sections.b4",
+        "court-sections.n5"
+      ]
+    },
+    {
+      "id": "k21",
+      "item": "Territorial jurisdiction: in custody, visiting right and custodian housing matters, the court of the place where custody is exercised; check the CPCA family-matters territorial article - via territorial-jurisdiction module.",
+      "from": [
+        "derivationA"
+      ],
+      "answer": "applies",
+      "refs": [
+        "court-sections.t4",
+        "court-sections.b42",
+        "b22",
+        "t1",
+        "o4"
+      ],
+      "note": "The territorial-jurisdiction module has no final record; the family rule comes from court-sections t4. CPCA 40 sends housing to the place of the housing (t1)."
+    },
+    {
+      "id": "k22",
+      "item": "Who may bring the claim: the mother or the father (positions from the brief); standing and interest; the other relatives in the order also have standing but are outside this unit.",
+      "from": [
+        "derivationA"
+      ],
+      "answer": "applies",
+      "refs": [
+        "b3",
+        "e3"
+      ],
+      "note": "Standing and interest belong to petition-formal-elements, which has no final record (o5)."
+    },
+    {
+      "id": "k23",
+      "item": "Proof: civil-status extracts (marriage, divorce judgment, children's birth certificates), the divorce judgment showing it did not rule on custody, residence certificate of the children, rent evidence for the housing amount.",
+      "from": [
+        "derivationA"
+      ],
+      "answer": "applies",
+      "refs": [
+        "doc1",
+        "doc2",
+        "doc3",
+        "doc4"
+      ]
+    },
+    {
+      "id": "k24",
+      "item": "No formal notice required before the claim; no mandatory conciliation for a custody claim on its own (reconciliation attempts are for divorce).",
+      "from": [
+        "derivationA"
+      ],
+      "answer": "doesNotApply",
+      "refs": [
+        "b23"
+      ],
+      "note": "No text read requires a notice or a reconciliation before a custody claim; family-code 49 and CPCA 439 to 443 concern the divorce action; CPCA 994 excludes family cases from the mediation the judge must offer."
+    },
+    {
+      "id": "k25",
+      "item": "No limitation period of the civil code applies to custody itself; the only time limit is the one-year lapse for not claiming; check whether the court raises it of its own motion or only on the defendant's plea.",
+      "from": [
+        "derivationA"
+      ],
+      "answer": "applies",
+      "refs": [
+        "d1",
+        "o1"
+      ],
+      "note": "No text says who raises the lapse: raisedBy unclear."
+    },
+    {
+      "id": "k26",
+      "item": "Social inquiry: the judge may order a social inquiry (تحقيق اجتماعي) and hear the child - check the CPCA family chapter.",
+      "from": [
+        "derivationA"
+      ],
+      "answer": "applies",
+      "refs": [
+        "court-sections.b30",
+        "e3"
+      ],
+      "note": "CPCA 425 lets the family-section president appoint a social assistant or medical expert; hearing the minor (CPCA 454, 463) is written for guardianship proceedings."
+    },
+    {
+      "id": "k27",
+      "item": "Hearing in chambers / the family section judge's powers in the CPCA (articles around 423-428).",
+      "from": [
+        "derivationA"
+      ],
+      "answer": "applies",
+      "refs": [
+        "court-sections.b30",
+        "court-sections.b35"
+      ],
+      "note": "No text read puts custody hearings in chambers; hearings are public unless family privacy calls otherwise (CPCA 7, imported)."
+    },
+    {
+      "id": "k28",
+      "item": "Mother's remarriage to a non-mahram: if the mother has remarried, the father (or another) may be entitled - check custodian_remarried events.",
+      "from": [
+        "derivationA"
+      ],
+      "answer": "applies",
+      "refs": [
+        "b7",
+        "e3",
+        "n8"
+      ]
+    },
+    {
+      "id": "k29",
+      "item": "Boundary: custody transfer or forfeiture of custody awarded by an earlier judgment is an independent claim (custody_transfer), not this one.",
+      "from": [
+        "derivationA"
+      ],
+      "answer": "applies",
+      "refs": [
+        "n1"
+      ]
+    },
+    {
+      "id": "k30",
+      "item": "Boundary: custody during a pending divorce action is decided in that action (divorce_action_pending) or by provisional measures; an independent claim may be premature.",
+      "from": [
+        "derivationA"
+      ],
+      "answer": "applies",
+      "refs": [
+        "n2",
+        "b19",
+        "b24"
+      ]
+    },
+    {
+      "id": "k31",
+      "item": "Boundary: a foreign custody judgment needs exequatur - not this claim.",
+      "from": [
+        "derivationA"
+      ],
+      "answer": "applies",
+      "refs": [
+        "b25",
+        "n9"
+      ],
+      "note": "CPCA 605 to 608 read: general exequatur rules; no custody-specific text. A note boundary only."
+    },
+    {
+      "id": "k32",
+      "item": "Boundary: kafala of a child is a different institution.",
+      "from": [
+        "derivationA"
+      ],
+      "answer": "doesNotApply",
+      "refs": [
+        "court-sections.b8"
+      ],
+      "note": "Kafala (family-code 116 ff., CPCA 492 to 497) concerns a child placed with a non-parent; it does not arise between two parents."
+    },
+    {
+      "id": "k33",
+      "item": "Petition formal elements (CPCA articles 14-15) and the fee - via petition-formal-elements.",
+      "from": [
+        "derivationA"
+      ],
+      "answer": "searchedNotFound",
+      "refs": [
+        "o5"
+      ],
+      "note": "The petition-formal-elements module has no final record to import from; not restated here."
+    },
+    {
+      "id": "k34",
+      "item": "Costs and provisional execution - via accessory-requests module.",
+      "from": [
+        "derivationA"
+      ],
+      "answer": "applies",
+      "refs": [
+        "b20",
+        "b21",
+        "r4",
+        "o5"
+      ],
+      "note": "The accessory-requests module has no final record; CPCA 323 cited directly for provisional execution; costs not covered."
+    },
+    {
+      "id": "k35",
+      "item": "Store note on the Family Code articles: the current text does not certify its application to an earlier case, and former wordings are not held. What does that mean for custody facts before 2005?",
+      "from": [
+        "derivationA"
+      ],
+      "answer": "applies",
+      "refs": [
+        "o6"
+      ]
+    },
+    {
+      "id": "k36",
+      "item": "Store note on family-code 65: the French print has three paragraphs, the Arabic two. Do the cited paragraphs follow the Arabic?",
+      "from": [
+        "derivationA"
+      ],
+      "answer": "applies",
+      "refs": [
+        "b4",
+        "b5"
+      ],
+      "note": "The cites follow the Arabic paragraphs of the store (¶1 the ages, ¶2 the child's interest)."
+    },
+    {
+      "id": "k37",
+      "item": "Store note on family-code 66 and 68: unconfirmed punctuation. Does it change the rule?",
+      "from": [
+        "derivationA"
+      ],
+      "answer": "applies",
+      "refs": [
+        "b7",
+        "b11"
+      ],
+      "note": "Only a final full stop is unconfirmed; the wording is not affected."
+    }
+  ],
+  "examples": [
+    {
+      "id": "ex1",
+      "by": "derivationA",
+      "title": "Clean case: the mother claims custody, guardianship and housing four months after the divorce.",
+      "petitionDate": "2026-07-01",
+      "slots": {
+        "spouses_divorced": "yes",
+        "divorce_judgment_date": "2026-03-01",
+        "custody_claim_delay_excused": "no",
+        "custody_already_decided": "no",
+        "divorce_action_pending": "no",
+        "child_past_custody_age": "no",
+        "plaintiff_parent": "mother",
+        "court_has_section_for_matter": "yes",
+        "requests": [
+          "custody",
+          "guardianship",
+          "housing",
+          "provisional_execution"
+        ]
+      },
+      "expect": {
+        "section": "family",
+        "findings": [
+          {
+            "ref": "d1",
+            "effect": "none"
+          },
+          {
+            "ref": "n1",
+            "effect": "none"
+          },
+          {
+            "ref": "n2",
+            "effect": "none"
+          },
+          {
+            "ref": "n3",
+            "effect": "none"
+          },
+          {
+            "ref": "n4",
+            "effect": "none"
+          },
+          {
+            "ref": "n8",
+            "effect": "none"
+          }
+        ],
+        "questions": []
+      }
+    },
+    {
+      "id": "ex2",
+      "by": "derivationA",
+      "title": "Divorce more than three years ago, no excuse: the lapse warns, never blocks.",
+      "petitionDate": "2026-07-01",
+      "slots": {
+        "spouses_divorced": "yes",
+        "divorce_judgment_date": "2023-02-10",
+        "custody_claim_delay_excused": "no",
+        "custody_already_decided": "no",
+        "divorce_action_pending": "no",
+        "child_past_custody_age": "no",
+        "plaintiff_parent": "mother",
+        "requests": [
+          "custody"
+        ]
+      },
+      "expect": {
+        "findings": [
+          {
+            "ref": "d1",
+            "effect": "warn"
+          }
+        ]
+      }
+    },
+    {
+      "id": "ex3",
+      "by": "derivationA",
+      "title": "Petition a few days before the first anniversary of the divorce: inside the band, a warning.",
+      "petitionDate": "2026-06-05",
+      "slots": {
+        "spouses_divorced": "yes",
+        "divorce_judgment_date": "2025-06-10",
+        "custody_claim_delay_excused": "no",
+        "plaintiff_parent": "mother",
+        "requests": [
+          "custody"
+        ]
+      },
+      "expect": {
+        "findings": [
+          {
+            "ref": "d1",
+            "effect": "warn"
+          }
+        ]
+      }
+    },
+    {
+      "id": "ex4",
+      "by": "derivationA",
+      "title": "Late, but the plaintiff had an excuse: the lapse does not apply.",
+      "petitionDate": "2026-07-01",
+      "slots": {
+        "spouses_divorced": "yes",
+        "divorce_judgment_date": "2023-02-10",
+        "custody_claim_delay_excused": "yes",
+        "plaintiff_parent": "mother",
+        "requests": [
+          "custody"
+        ]
+      },
+      "expect": {
+        "findings": [
+          {
+            "ref": "d1",
+            "effect": "none"
+          }
+        ]
+      }
+    },
+    {
+      "id": "ex5",
+      "by": "derivationA",
+      "title": "Nothing known: the rules ask.",
+      "petitionDate": "2026-07-01",
+      "slots": {
+        "requests": [
+          "custody"
+        ]
+      },
+      "expect": {
+        "findings": [
+          {
+            "ref": "d1",
+            "effect": "ask"
+          },
+          {
+            "ref": "n1",
+            "effect": "ask"
+          },
+          {
+            "ref": "n2",
+            "effect": "ask"
+          },
+          {
+            "ref": "n3",
+            "effect": "ask"
+          },
+          {
+            "ref": "n4",
+            "effect": "ask"
+          },
+          {
+            "ref": "n8",
+            "effect": "ask"
+          }
+        ],
+        "questions": [
+          "divorce_judgment_date",
+          "custody_already_decided",
+          "divorce_action_pending",
+          "spouses_divorced",
+          "child_past_custody_age",
+          "plaintiff_parent",
+          "court_has_section_for_matter"
+        ]
+      }
+    },
+    {
+      "id": "ex6",
+      "by": "derivationA",
+      "title": "The father claims custody: the mother's priority is flagged.",
+      "petitionDate": "2026-07-01",
+      "slots": {
+        "spouses_divorced": "yes",
+        "divorce_judgment_date": "2026-01-15",
+        "custody_claim_delay_excused": "no",
+        "custody_already_decided": "no",
+        "divorce_action_pending": "no",
+        "child_past_custody_age": "no",
+        "plaintiff_parent": "father",
+        "requests": [
+          "custody",
+          "guardianship"
+        ]
+      },
+      "expect": {
+        "findings": [
+          {
+            "ref": "n8",
+            "effect": "warn"
+          },
+          {
+            "ref": "d1",
+            "effect": "none"
+          }
+        ]
+      }
+    },
+    {
+      "id": "ex7",
+      "by": "derivationA",
+      "title": "The divorce judgment already ruled on custody: a transfer claim, not this one.",
+      "petitionDate": "2026-07-01",
+      "slots": {
+        "spouses_divorced": "yes",
+        "divorce_judgment_date": "2026-01-15",
+        "custody_already_decided": "yes",
+        "plaintiff_parent": "father",
+        "requests": [
+          "custody"
+        ]
+      },
+      "expect": {
+        "findings": [
+          {
+            "ref": "n1",
+            "effect": "warn"
+          }
+        ]
+      }
+    },
+    {
+      "id": "ex8",
+      "by": "derivationA",
+      "title": "Divorce action still pending and no divorce yet: both boundaries warn.",
+      "petitionDate": "2026-07-01",
+      "slots": {
+        "spouses_divorced": "no",
+        "divorce_action_pending": "yes",
+        "plaintiff_parent": "mother",
+        "requests": [
+          "custody",
+          "housing"
+        ]
+      },
+      "expect": {
+        "findings": [
+          {
+            "ref": "n2",
+            "effect": "warn"
+          },
+          {
+            "ref": "n3",
+            "effect": "warn"
+          }
+        ]
+      }
+    },
+    {
+      "id": "ex9",
+      "by": "derivationA",
+      "title": "A child past the custody age.",
+      "petitionDate": "2026-07-01",
+      "slots": {
+        "spouses_divorced": "yes",
+        "divorce_judgment_date": "2026-03-01",
+        "child_past_custody_age": "yes",
+        "plaintiff_parent": "mother",
+        "requests": [
+          "custody"
+        ]
+      },
+      "expect": {
+        "findings": [
+          {
+            "ref": "n4",
+            "effect": "warn"
+          }
+        ]
+      }
+    },
+    {
+      "id": "ex10",
+      "by": "derivationA",
+      "title": "A court without a family section: the civil section is proposed.",
+      "petitionDate": "2026-07-01",
+      "slots": {
+        "spouses_divorced": "yes",
+        "divorce_judgment_date": "2026-03-01",
+        "court_has_section_for_matter": "no",
+        "plaintiff_parent": "mother",
+        "requests": [
+          "custody"
+        ]
+      },
+      "expect": {
+        "section": "civil",
+        "findings": [
+          {
+            "ref": "d1",
+            "effect": "none"
+          }
+        ]
+      }
+    },
+    {
+      "id": "ex11",
+      "by": "derivationA",
+      "title": "Excuse unknown and the year long gone: the lapse warns without asking about the excuse first.",
+      "petitionDate": "2026-07-01",
+      "slots": {
+        "spouses_divorced": "yes",
+        "divorce_judgment_date": "2024-01-20",
+        "plaintiff_parent": "mother",
+        "requests": [
+          "custody"
+        ]
+      },
+      "expect": {
+        "findings": [
+          {
+            "ref": "d1",
+            "effect": "warn"
+          }
+        ]
+      }
+    }
+  ]
+}

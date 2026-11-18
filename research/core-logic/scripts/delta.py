@@ -9,6 +9,7 @@ as a done French check.
 """
 from __future__ import annotations
 
+import datetime
 import json
 import os
 import re
@@ -203,13 +204,17 @@ def entry(batch: str, job_name: str, article: str, text_paragraphs: list[str] | 
     code, version = job["code"], job["version"]
     imgs = [im["sha256"] for im in job["images"]]
     first_imgs = [im["sha256"] for im in first_job["images"]]
-    meta = os.path.join(folder, f"{job_name}.sonnet.meta.json")
+    # the dates the readings were made: the first from its run's meta file, the second from Codex's answer file
+    meta = fetch.first_reading_path(batch, job_name, job).replace(".sonnet.json", ".sonnet.meta.json")
+    first_date = rd.load(meta).get("date") if os.path.exists(meta) else None
+    c_path = os.path.join(folder, f"{job_name}.codex.json")
+    second_date = datetime.date.fromtimestamp(os.path.getmtime(c_path)).isoformat() if os.path.exists(c_path) else None
     proof = {
         "pdfPage": page, "dpi": job.get("dpi", 300),
         "readings": [
-            {"by": "first", "model": rd.SONNET, "date": job.get("date") or "2026-11-13", "imageSha256s": first_imgs,
+            {"by": "first", "model": rd.SONNET, "date": first_date or job.get("date") or "2026-11-13", "imageSha256s": first_imgs,
              "textSha256": rd.sha_text("\n".join(s["paragraphs"]))},
-            {"by": "second", "model": f"{rd.codex_run.PINNED_VERSION} (default model)", "date": "2026-11-13",
+            {"by": "second", "model": f"{rd.codex_run.PINNED_VERSION} (default model)", "date": second_date or "2026-11-13",
              "imageSha256s": imgs, "textSha256": rd.sha_text("\n".join(c["paragraphs"])), "codexLog": f"{job_name}.jsonl"},
         ],
         "agreement": "twoAgree" if row["result"] == "twoAgree" else "settledByThird",

@@ -15,6 +15,8 @@ namespace DzLegal.CoreLogic.Notes.Writing;
 /// </summary>
 public static partial class ChallengeChecks
 {
+    private static readonly HashSet<string> RefusalPresent =
+        [.. CueEngine.RefusalVerbStems.SelectMany(v => CueEngine.Present(v[0] == 'ا' ? v[1..] : v))];
     private static readonly string[] Fields = ["subject", "facts", "requests", "documents"];
 
     public static IReadOnlyList<string> Run(JsonObject scenario, JsonObject note, WriterLabels.Pointed pointed)
@@ -136,11 +138,12 @@ public static partial class ChallengeChecks
     public static int NegationCount(string sentence)
     {
         ArgumentNullException.ThrowIfNull(sentence);
-        var disputes = CueEngine.DisputeCues.Where(d => !d.Contains(' ', StringComparison.Ordinal)).ToList();
-        bool Refusal(string w) => CueEngine.RefusalCues.Any(r => w.StartsWith(r, StringComparison.Ordinal) ||
-            (w.Length > 1 && w[0] is 'ي' or 'ت' or 'ن' && w[1..].StartsWith(r[0] == 'ا' ? r[1..] : r, StringComparison.Ordinal)));
-        return Words(sentence).Count(w => CueEngine.NegationCues.Contains(w, StringComparer.Ordinal) || Refusal(w) ||
-                                          disputes.Any(d => w.StartsWith(d, StringComparison.Ordinal)));
+        // The reader's whole-word rule (CueEngine.IsDispute, IsRefusal); a refusal verb also counts in its present, which the
+        // recipe names («لم يمتنع عن»): every person, generated from the verb (امتنع -> متنع).
+        var words = Words(sentence).ToList();
+        return words.Select((w, i) => CueEngine.NegationCues.Contains(w, StringComparer.Ordinal) || CueEngine.IsRefusal(w) ||
+                                      CueEngine.Unprefixed(w).Any(RefusalPresent.Contains) ||
+                                      CueEngine.IsDispute(w, i + 1 < words.Count ? words[i + 1] : null)).Count(hit => hit);
     }
 
     [GeneratedRegex(@"[^\p{L}\p{Nd}]+")]

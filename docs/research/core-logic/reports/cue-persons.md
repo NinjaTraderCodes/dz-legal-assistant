@@ -50,3 +50,42 @@ tuning, on the tuning notes, as a separate change.
 
 **One more hazard, read from the code, not measured:** dispute verbs are matched as substrings of the clause, so «تنفي» is
 also found inside «تنفيذ» (execution). That is a separate change, to be measured on its own.
+
+## 19 November 2026: whole words, and votes on "stated" only
+
+**The owner's tasks:**
+- Match cue verbs as whole words, allowing only the prefixes و، ف، ل، س, so «تنفيذ» never matches «تنفي».
+- Find the cause of each of the five wrong votes.
+- If the cues stay unreliable for disputed and denied events, let them vote only for stated events.
+
+**Whole words** (`CueEngine.IsDispute`, `IsRefusal`; the challenge check uses the same functions). A cue verb is a whole
+word after at most an optional «و»/«ف» and an optional «ل»/«س», with nothing after its own endings. «يدفع» counts only
+before a word in «ب». The noun «امتناع» may carry «ب»/«ل»/«ك» and the article. Tests: «تنفيذ العقد», «عدم التنفيذ» and
+«انتظار التنفيذ» never make an event disputed; «وتنفي» is a dispute verb; «سينكر» counts, since «س» is allowed.
+Measure on the tuning notes: identical to before, so no line lowered.
+
+**The five wrong votes, cause of each:**
+
+| Note | Event | Gold | Vote | Cause |
+|---|---|---|---|---|
+| n-dev-00031 | employment_started | stated | denied | «عدم» inside a document's name («محضر عدم المصالحة») stands before the trigger in the same clause and negates nothing. |
+| n-dev-00043 | payment_made | notMentioned | stated | «دفع الموكل»: the client pays, not the debtor; a trigger cannot tell who acts. |
+| n-dev-00059 | notice_served | disputed | stated | The facts field abstains, because a clause with «يتمسك … بأن الإنذار» disagrees with the others. The documents field («صورة الإنذار») votes stated alone. |
+| n-dev-00079 | notice_served | disputed | stated | The dispute («تنازع … وتتمسك بعدم استلامه») is in another clause and names the notice by a pronoun, so no trigger links it. |
+| n-dev-00099 | rent_unpaid | denied | stated | «ولا وجود لبدلات متأخرة»: the table never votes denied on a kind whose proposition is negative. |
+
+**Votes on "stated" only.** The cues were right on 0 of 2 disputed and 0 of 1 denied events, so a clause read as denied
+or disputed now makes the table abstain on the note.
+
+| Gold polarity | Votes | Right | Wrong |
+|---|---:|---:|---:|
+| stated (47 events) | 14 (was 15) | 14 (was 14) | 0 (was 1) |
+| disputed (11) | 2 | 0 | 2 |
+| denied (1) | 1 | 0 | 1 |
+| not mentioned (27) | 1 | 0 | 1 |
+
+No right vote is lost, and one wrong vote goes, so the change is kept. The four wrong votes left are "stated" votes on
+events that are disputed, denied or not mentioned. Their causes are in the table above: a dispute outside the trigger's
+clause, a document named in another field, a negative kind, and an actor the trigger cannot see. At 32 notes, the cue
+table's polarity is reliable only as a "stated" signal. The reader abstains where the cues and the model disagree, so
+these cost coverage, not wrong answers. Files: `reader\runs\cue-persons\wholeword.json`, `stated-only.json`.

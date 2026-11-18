@@ -52,4 +52,44 @@ public sealed class CueVerbFormTests
         Assert.NotNull(vote);
         Assert.Equal(Contracts.Polarity.Stated, vote.Polarity);
     }
+
+    // The owner, 19 November 2026: cue verbs match as whole words, so «تنفيذ» never matches «تنفي».
+    [Theory]
+    [InlineData("تنفيذ", false)]
+    [InlineData("التنفيذ", false)]
+    [InlineData("وتنفي", true)]
+    [InlineData("فننكر", true)]
+    [InlineData("سينكر", true)]  // «س» is an allowed prefix (the future)
+    [InlineData("ينكرون", true)]
+    [InlineData("انكار", false)]
+    public void ACueVerbIsAWholeWord(string word, bool dispute) => Assert.Equal(dispute, CueEngine.IsDispute(word));
+
+    [Fact]
+    public void YadfaCountsOnlyBeforeAWordInBa()
+    {
+        Assert.True(CueEngine.IsDispute("يدفع", "بالمقاصة"));
+        Assert.False(CueEngine.IsDispute("يدفع", "المبلغ"));
+    }
+
+    [Fact]
+    public void TanfidhNeverMakesAnEventDisputed()
+    {
+        var engine = CueEngine.Load(Path.Combine(AppContext.BaseDirectory, "cues.json"));
+        foreach (var text in new[] { "بعد تنفيذ العقد أقرض الموكل المدين مبلغا", "رغم الوعد وفي انتظار التنفيذ أقرض الموكل المدين مبلغا", "بسبب عدم التنفيذ أقرض الموكل المدين مبلغا" })
+        {
+            Assert.NotEqual(Contracts.Polarity.Disputed, engine.Vote(text, "money_lent")?.Polarity);
+        }
+
+        // «وتنفي» is a dispute verb; since the cues vote only "stated", a disputed clause means no vote at all.
+        Assert.True(CueEngine.IsDispute("وتنفي"));
+        Assert.Null(engine.Vote("وتنفي المدعى عليها أن الموكل أقرضها مبلغا", "money_lent"));
+    }
+
+    [Fact]
+    public void TheRefusalNounKeepsItsArticleAndAVerbItsPersons()
+    {
+        Assert.True(CueEngine.IsRefusal("بالامتناع"));
+        Assert.True(CueEngine.IsRefusal("وامتنعوا"));
+        Assert.False(CueEngine.IsRefusal("رفضة"));
+    }
 }

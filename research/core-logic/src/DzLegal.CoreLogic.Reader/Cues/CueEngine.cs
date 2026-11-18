@@ -45,6 +45,12 @@ public sealed class CueEngine
     private static readonly string[] RefusalVerbs = ["امتنع", "رفض", "تخلف", "تقاعس", "احجم", "اغفل", "اهمل"];
     private static readonly string[] Disputes = [.. DisputeVerbs.SelectMany(v => Present(v.Stem).Select(form => form + v.Tail)).Distinct()];
     private static readonly string[] Refusals = [.. RefusalVerbs.SelectMany(Perfect).Append("امتناع").Distinct()];
+    // Whole-word matching (the owner, 19 November 2026: «تنفيذ» must never match «تنفي»): a cue verb is a whole word, after
+    // at most an optional «و»/«ف» and an optional «ل»/«س», with nothing after the verb's own endings.
+    private static readonly HashSet<string> DisputeWords = [.. DisputeVerbs.Where(v => v.Tail.Length == 0).SelectMany(v => Present(v.Stem))];
+    private static readonly HashSet<string> DisputeWithB = [.. DisputeVerbs.Where(v => v.Tail.Length > 0).SelectMany(v => Present(v.Stem))];
+    private static readonly HashSet<string> RefusalWords = [.. RefusalVerbs.SelectMany(Perfect)];
+    private static readonly string[] RefusalNouns = ["امتناع"];
     private static readonly string[] Despite = ["رغم", "بالرغم", "مع ان"];
     private static readonly string[] Doubt = ["لا يعلم", "لا تعلم", "لا يدري", "يجهل", "ان كان", "ما اذا", "هل ", "يتحقق", "لا يعرف", "غير معروف", "سوف", "يعتزم", "تعتزم", "ينوي", "تنوي"];
     private static readonly string[] FutureStop = ["سيارة", "سيدة", "ستة", "سنة", "سنوات", "سند", "ستمائة", "سنتيم", "ستين", "ستون", "سيما", "سير", "سيولة", "ستار"];
@@ -95,6 +101,48 @@ public sealed class CueEngine
 
     /// <summary>The verbs of refusal («امتنع», «رفض», «تخلف» …).</summary>
     public static IReadOnlyList<string> RefusalCues => Refusals;
+
+    /// <summary>The refusal verbs as the table writes them (the perfect, third person).</summary>
+    public static IReadOnlyList<string> RefusalVerbStems => RefusalVerbs;
+
+    /// <summary>The word without the prefixes a cue verb may carry: an optional «و»/«ف», then an optional «ل»/«س».</summary>
+    public static IEnumerable<string> Unprefixed(string word)
+    {
+        ArgumentNullException.ThrowIfNull(word);
+        yield return word;
+        var rest = word.Length > 2 && word[0] is 'و' or 'ف' ? word[1..] : word;
+        if (!ReferenceEquals(rest, word))
+        {
+            yield return rest;
+        }
+
+        if (rest.Length > 2 && rest[0] is 'ل' or 'س')
+        {
+            yield return rest[1..];
+        }
+    }
+
+    /// <summary>A dispute verb as a whole word («وتنفي» yes, «تنفيذ» no); «يدفع» counts only before a word in «ب».</summary>
+    public static bool IsDispute(string word, string? next = null) =>
+        Unprefixed(word).Any(w => DisputeWords.Contains(w) || (DisputeWithB.Contains(w) && next is not null && next.StartsWith('ب')));
+
+    /// <summary>A refusal verb as a whole word, or the noun «امتناع» with its article or a preposition.</summary>
+    public static bool IsRefusal(string word) =>
+        Unprefixed(word).Any(RefusalWords.Contains) ||
+        RefusalNouns.Any(noun => NounForms(word).Any(w => w == noun || (w.StartsWith(noun, StringComparison.Ordinal) && w[noun.Length..] is "ه" or "ها" or "هم" or "هما")));
+
+    /// <summary>A noun without its prefixes: «و»/«ف», then «ب»/«ل»/«ك», then the article «ال».</summary>
+    private static IEnumerable<string> NounForms(string word)
+    {
+        var w = word.Length > 2 && word[0] is 'و' or 'ف' ? word[1..] : word;
+        w = w.Length > 2 && w[0] is 'ب' or 'ل' or 'ك' ? w[1..] : w;
+        yield return word;
+        yield return w;
+        if (w.StartsWith("ال", StringComparison.Ordinal))
+        {
+            yield return w[2..];
+        }
+    }
 
     /// <summary>The table shipped beside the reader (src/DzLegal.CoreLogic.Reader/cues.json).</summary>
     public static CueEngine Load(string path)
@@ -162,9 +210,11 @@ public sealed class CueEngine
             if (found is { } at)
             {
                 var polarity = Decide(clause.Text, at.Index, at.Length, cues);
-                if (polarity is null)
+                // The owner, 19 November 2026: on the tuning notes the cues were right on 0 of 2 disputed and 0 of 1 denied
+                // events, so they vote only "stated"; a clause read as denied or disputed makes the table abstain.
+                if (polarity is null or not Polarity.Stated)
                 {
-                    return null;  // a clause that is not plain: no vote for the note
+                    return null;  // a clause that is not plain, or not plainly stated: no vote for the note
                 }
 
                 var first = original[clause.Start + at.Index];
@@ -193,17 +243,19 @@ public sealed class CueEngine
             return null;
         }
 
-        if (!Refusals.Any(word => trigger.Contains(word, StringComparison.Ordinal))
-            && Refusals.Any(word => Words(before).Concat(Words(after)).Any(w => w.StartsWith(word, StringComparison.Ordinal))))
+        if (!Words(trigger).Any(IsRefusal) && Words(before).Concat(Words(after)).Any(IsRefusal))
         {
             return null;
         }
 
-        var dispute = Disputes.Select(word => before.IndexOf(word, StringComparison.Ordinal)).Where(i => i >= 0).DefaultIfEmpty(-1).Min();
-        if (dispute >= 0)
+        var words = Words(before).ToList();
+        for (var i = 0; i < words.Count; i++)
         {
-            var lead = Words(before[..dispute]).LastOrDefault();
-            return lead is not null && Negations.Contains(lead, StringComparer.Ordinal) ? Polarity.Stated : Polarity.Disputed;
+            if (IsDispute(words[i], i + 1 < words.Count ? words[i + 1] : null))
+            {
+                var lead = i > 0 ? words[i - 1] : null;
+                return lead is not null && Negations.Contains(lead, StringComparer.Ordinal) ? Polarity.Stated : Polarity.Disputed;
+            }
         }
 
         var cleaned = NotNegations.Aggregate(before, (text, phrase) => text.Replace(phrase, " ", StringComparison.Ordinal));

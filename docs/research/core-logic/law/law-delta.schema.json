@@ -145,9 +145,10 @@
         "agreement": {
           "enum": [
             "twoAgree",
-            "settledByThird"
+            "settledByThird",
+            "readingAndConsolidatedPdf"
           ],
-          "description": "twoAgree: the first two readings are the same letters (level 2 of specs/article-store.md). settledByThird: they differed and a third reader, shown the image and both readings, settled each difference."
+          "description": "twoAgree: the first two readings are the same letters (level 2 of specs/article-store.md). settledByThird: they differed and a third reader, shown the image and both readings, settled each difference. readingAndConsolidatedPdf (the owner, 18 November 2026, while Codex was blocked by its weekly limit): one reading, and the official 2007 consolidated edition (Civil and Commercial Codes) prints the same letters (consolidatedPdf status sameLetters): a mechanical proof. The Codex reading follows when Codex is back (secondReadingPending), and any difference is reported."
         },
         "differences": {
           "type": "array",
@@ -192,6 +193,10 @@
               "type": "string"
             }
           }
+        },
+        "secondReadingPending": {
+          "type": "string",
+          "description": "Why the second-family reading is not yet made, and when it will be (readingAndConsolidatedPdf only)."
         }
       }
     },

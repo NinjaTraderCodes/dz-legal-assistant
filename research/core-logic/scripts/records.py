@@ -1140,6 +1140,13 @@ HEADING = re.compile(r"^(الكتاب|الباب|الفصل|القسم)")
 LEVELS = ("الكتاب", "الباب", "الفصل", "القسم")
 
 
+# Numbers the consolidated edition's chapter list yields that the Official Journal prints as no article: the Journal
+# (Law 88-14, A1988018 pp 8-9, read 18 November 2026, fetch-20261118 civ8814-p008) prints 324 مكرر 1 to 7 and 326 مكرر 1
+# and 2, which the store holds, and no bare «324 مكرر» or «326 مكرر». Codex's reading of the same pages confirms it
+# when Codex is back (its weekly limit, until 22 November 2026).
+NOT_ARTICLES = {("civil-code", "324 مكرر"), ("civil-code", "326 مكرر")}
+
+
 def consolidated_chapters(code: str) -> dict:
     """Article -> its headings, read from the official consolidated edition (tier 2) where the store has no path: the
     library carries no headings, and the corpus lacks some articles (Civil Code 160 to 188). Only headings are taken
@@ -1247,7 +1254,8 @@ def unit_texts(unit: str, starts: list[tuple[str, str]], store: st.Store, editio
             path = paths.get(article)
             source = "consolidatedEdition" if path else "noHeadingFound"
             members = [a for a, pth in paths.items() if pth == path and store.get(code, a)] if path else [article]
-            missing = [a for a, pth in paths.items() if path and pth == path and not store.get(code, a)]
+            missing = [a for a, pth in paths.items() if path and pth == path and not store.get(code, a)
+                       and (code, a) not in NOT_ARTICLES]
         key = (code, tuple(path or ([] if source == "wholeLaw" else [article])))
         if key in seen:
             continue

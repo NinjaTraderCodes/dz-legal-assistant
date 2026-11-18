@@ -143,6 +143,23 @@ def test_a_delta_article_and_two_wordings(tmp_path):
     assert s.get("civil-code", "312", "law-00-00")["inForce"] is False
 
 
+def test_one_reading_and_the_consolidated_edition_is_a_mechanical_proof(tmp_path):
+    # The owner, 18 November 2026: while Codex is blocked by its weekly limit, a Civil Code article read once and printed
+    # with the same letters by the 2007 consolidated edition is verified, with the proof label mechanical.
+    proof = {"readings": [{"model": "claude-sonnet-5-5"}], "agreement": "readingAndConsolidatedPdf",
+             "french": {"url": "u", "sha256": "s", "retrievedOn": "d"}, "frenchChecked": True,
+             "consolidatedPdf": {"status": "sameLetters"}, "secondReadingPending": "Codex, later"}
+    delta = {"articles": [{"code": "civil-code", "number": "165", "text": "نص.", "version": "ordinance-75-58", "proof": proof,
+                           "path": ["باب"]}], "corpusCorrections": [], "libraryCorrections": []}
+    e = build(tmp_path, delta=delta).get("civil-code", "165")
+    assert e["verified"] is True and e["verifiedBy"] == "readingAndConsolidatedPdf"
+    assert store.proof_of(e) == "mechanical"
+    # without the consolidated edition's same letters, one reading proves nothing
+    differs = dict(proof, consolidatedPdf={"status": "differs"})
+    delta["articles"][0]["proof"] = differs
+    assert build(tmp_path, delta=delta).get("civil-code", "165")["verified"] is False
+
+
 def test_the_store_is_deterministic(tmp_path):
     a = store.build(str(tmp_path / "a.json"), inputs())
     b = store.build(str(tmp_path / "b.json"), inputs())

@@ -271,6 +271,53 @@ GOVERNS_0502 = {
 }
 
 
+def entry_consolidated(batch: str, job_name: str, article: str) -> tuple[dict | None, str]:
+    """A missing article proved by its first reading and the 2007 consolidated edition (agreement
+    readingAndConsolidatedPdf): refused unless the consolidated letters are the same and the reading has no [؟]."""
+    job = rd.load(rd.job_path(batch, job_name))
+    if job["code"] not in ("civil-code", "commercial-code"):
+        return None, "the consolidated proof exists for the Civil and Commercial Codes only"
+    s = next((a for a in rd.load(fetch.first_reading_path(batch, job_name, job))["articles"] if fetch.article_key(a) == article), None)
+    if not s or not s.get("found"):
+        return None, "not found by the reading"
+    text = "\n".join(s["paragraphs"])
+    if rd.UNREADABLE in text:
+        return None, "the reading has an unreadable mark"
+    cp = consolidated.check(job["code"], text)
+    if cp["status"] != "sameLetters":
+        return None, f"consolidated: {cp['status']}"
+    fr = french_check(job, article, text)
+    if fr["status"] == "pending":
+        return None, f"French: {fr['why']}"
+    _, first_job = fetch.first_reading_job(batch, job_name, job)
+    page = first_job["pages"][max(0, s["where"]["image"] - 1)]
+    meta = rd.load(os.path.join(rd.JOBS, batch, f"{job_name}.sonnet.meta.json"))
+    proof = {
+        "pdfPage": page, "dpi": job.get("dpi", 300),
+        "readings": [{"by": "first", "model": rd.SONNET, "date": meta.get("date", "2026-11-18"),
+                      "imageSha256s": [im["sha256"] for im in first_job["images"]],
+                      "textSha256": rd.sha_text(text)}],
+        "agreement": "readingAndConsolidatedPdf", "differences": [], "frenchChecked": fr["status"] == "equal",
+        "consolidatedPdf": {"status": cp["status"], "note": f"{cp['pdf']} p{cp['pdfPage']}: coverage {cp['coverage']}, {cp['stretches']} stretch(es)"},
+        "secondReadingPending": "Codex's reading waits for its weekly limit (until 22 November 2026, 16:33); any difference is reported (the owner, 18 November 2026)",
+    }
+    if fr.get("source"):
+        proof["french"] = fr["source"]
+    if fr.get("frenchPdfPage"):
+        proof["frenchPdfPage"] = fr["frenchPdfPage"]
+    if fr["status"] == "equal":
+        proof["numbers"] = [str(n) for n in fr["check"]["arabicNumbers"]]
+    note = [] if fr["status"] == "equal" else [f"French check: {fr.get('why') or fr['status']}."]
+    e = {"code": job["code"], "number": article, "text": text, "page": page,
+         "source": {"url": job["source"]["url"], "sha256": job["source"]["sha256"],
+                    "retrievedOn": retrieved_on(job["source"]["url"], job["source"]["localPdf"])},
+         "version": job["version"], "textAsOf": text_as_of(job["code"], job["version"]), "proof": proof,
+         "neededBy": needed_by(job["code"], article)}
+    if note:
+        e["note"] = " ".join(note)
+    return e, "ok"
+
+
 def two_wordings(article: str, old: tuple[str, str], amending: tuple[str, str]) -> list[dict]:
     """The older wording (supersededWording) and the amended one, composed from the amending text's printed paragraphs
     and the older wording (reading.compose). old, amending: (batch, fetch job)."""
@@ -313,6 +360,19 @@ def write(entries: list[dict]) -> None:
 def main(argv: list[str] | None = None) -> int:
     argv = argv if argv is not None else sys.argv[1:]
     sys.stdout.reconfigure(encoding="utf-8")
+    if argv[0] == "add-consolidated":
+        # The owner, 18 November 2026: while Codex is blocked by its weekly limit, an article of the Civil or Commercial
+        # Code is proved by its one reading and the 2007 consolidated edition's same letters; Codex reads it later.
+        batch, job_name, arts = argv[1], argv[2], argv[3:]
+        made = []
+        for a in arts:
+            e, why = entry_consolidated(batch, job_name, a)
+            print(a, why if e is None else "written (one reading + consolidated sameLetters; second reading pending)")
+            if e:
+                made.append(e)
+        if made:
+            write(made)
+        return 0
     if argv[0] == "add":
         batch, job_name, arts = argv[1], argv[2], argv[3:]
         if not arts:

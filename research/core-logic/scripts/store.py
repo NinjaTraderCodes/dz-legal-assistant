@@ -165,7 +165,8 @@ class Builder:
         if e["repealed"]:
             return False, None
         if store == "delta":
-            return e.get("_deltaVerified", False), ("twoFamilies" if e.get("_deltaVerified") else None)
+            return e.get("_deltaVerified", False), (("readingAndConsolidatedPdf" if e.get("_deltaProof") == "mechanical"
+                                                     else "twoFamilies") if e.get("_deltaVerified") else None)
         if code in ("civil-code", "commercial-code"):
             if store == "library":
                 if e["_libraryProof"]:
@@ -273,7 +274,12 @@ class Builder:
                     "corpusState": None, "guardFlag": False, "inForceNote": None, "frenchCheck": fc,
                     "page": {"url": (d.get("source") or {}).get("url"), "sha256": (d.get("source") or {}).get("sha256"),
                              "pdfPage": d.get("page"), "endPage": None},
-                    "_deltaVerified": two and french_ok and pdf_ok and proof.get("agreement") in ("twoAgree", "settledByThird"),
+                    "_deltaVerified": (two and french_ok and pdf_ok and proof.get("agreement") in ("twoAgree", "settledByThird"))
+                    # one reading and the 2007 consolidated edition's same letters: a mechanical proof (the owner,
+                    # 18 November 2026, while Codex was blocked by its weekly limit; law-delta.schema.json)
+                    or (proof.get("agreement") == "readingAndConsolidatedPdf" and french_ok and len(readings) >= 1
+                        and (proof.get("consolidatedPdf") or {}).get("status") == "sameLetters"),
+                    "_deltaProof": "mechanical" if proof.get("agreement") == "readingAndConsolidatedPdf" else "twoFamilies",
                     "_libraryProof": False, "_checker": CLAUDE,
                 }
                 if not d.get("supersededWording"):
@@ -363,7 +369,8 @@ def build(out: str = DEFAULT_OUT, inputs: Inputs | None = None) -> dict:
 # The proof label of a verified text (specs/article-store.md, "The proof label"; owner, 14 November 2026).
 PROOF = {"libraryProof": "mechanical", "libraryProofAndCorpus": "mechanical", "libraryProofAndReread": "mechanical",
          "corpusAndReread": "twoFamilies", "corpusAndTwoReadings": "twoFamilies", "ojPageReread": "twoFamilies",
-         "libraryAndCodexReread": "twoFamilies", "twoFamilies": "twoFamilies", "corpusChecked": "oneFamily"}
+         "libraryAndCodexReread": "twoFamilies", "twoFamilies": "twoFamilies", "corpusChecked": "oneFamily",
+         "readingAndConsolidatedPdf": "mechanical"}
 
 
 def proof_of(entry: dict | None) -> str | None:

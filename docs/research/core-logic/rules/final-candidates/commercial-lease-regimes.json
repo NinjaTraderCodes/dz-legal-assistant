@@ -78,10 +78,10 @@
       "id": "lease_chapter_action_other_than_refusal",
       "type": "yesNoUnknown",
       "question": {
-        "ar": "هل تستند الدعوى إلى حق تنشئه أحكام الإيجارات التجارية في القانون التجاري غير المنازعة في رفض التجديد والمطالبة بتعويض الإخلاء (مثل حق الأولوية، التعويض عن استرجاع لم ينفذ أو عن التدليس، التعويض عن التحسينات، إخلاء المستأجر بانتهاء الأجل)؟ (المنازعة في التنبيه بالإخلاء منازعة في رفض التجديد)",
-        "en": "Does the claim rest on a right created by the commercial-lease provisions of the Commercial Code other than contesting a refusal to renew and claiming the eviction compensation (for example the priority right, compensation for a repossession not carried out or for fraud, compensation for improvements, eviction of the lessee at the end of the term)? (Contesting a notice to quit is contesting a refusal to renew.)"
+        "ar": "هل تستند الدعوى إلى حق تنشئه أحكام الإيجارات التجارية في القانون التجاري غير المنازعة في رفض التجديد والمطالبة بتعويض الإخلاء (مثل حق الأولوية، التعويض عن استرجاع لم ينفذ أو عن التدليس، التعويض عن التحسينات، إخلاء المستأجر بانتهاء الأجل)؟ (المنازعة في التنبيه بالإخلاء منازعة في رفض التجديد، والخلاف على بدل الإيجار أو مدته أو شروطه أو على إعادة النظر في البدل المرفوع إلى رئيس المحكمة وفق المادتين 195 و196 ليس منها)",
+        "en": "Does the claim rest on a right created by the commercial-lease provisions of the Commercial Code other than contesting a refusal to renew and claiming the eviction compensation (for example the priority right, compensation for a repossession not carried out or for fraud, compensation for improvements, eviction of the lessee at the end of the term)? (Contesting a notice to quit is contesting a refusal to renew; a dispute on the rent, duration or terms, or on rent revision, brought to the court president under articles 195 and 196, is not such a claim.)"
       },
-      "why": "Deadline d2 reads it: Commercial Code 198 ¶1 sets a two-year limitation for the actions under the commercial-lease title other than those of 196 and 197. The notice to quit is one of the two ways the lessor notifies his refusal (175 ¶3), so a lessee's attack on it is not listed here; d1 covers it."
+      "why": "Deadline d2 reads it: Commercial Code 198 ¶1 sets a two-year limitation for the actions under the commercial-lease title other than those of 196 and 197; 196 governs the president's proceeding of 195, to which 192 ¶3 also sends rent revision. The notice to quit is one of the two ways the lessor notifies his refusal (175 ¶3), so a lessee's attack on it is not listed here; d1 covers it."
     },
     {
       "id": "lease_action_arose_on",
@@ -1078,6 +1078,8 @@
     {
       "id": "b54",
       "role": "limit",
+      "interpretive": true,
+      "interpretiveNote": "197 ¶7 in the Arabic text reads «ولا يجوز ممارسة هذا الحق مادام المستأجر مازال موجودا في الاماكن وما دام لم يؤجر أو لم يشتر عمارة أخرى» (the right may not be exercised as long as the lessee is still in the premises and has not leased or bought another building); the French text of the same ordinance (JO 1975 No. 101, p. 1088) reads «Ce droit ne peut être exercé qu'autant que le locataire est encore dans les lieux et n'a pas déjà loué ou acheté un autre immeuble» (only while). Which condition governs is a reading (open point o15); no item's outcome turns on it.",
       "cite": {
         "code": "commercial-code",
         "article": "197",
@@ -1087,8 +1089,8 @@
         ]
       },
       "says": {
-        "ar": "يجوز للمالك الخاسر التملص من التعويض بقبول التجديد وتحمل المصاريف خلال خمسة عشر يوما، تسري من يوم صيرورة الحكم نهائيا إذا كان حكما ابتدائيا، ومن يوم صدوره إذا كان صادرا عن المجلس القضائي، ما دام المستأجر في الأمكنة ولم يؤجر أو يشتر عمارة أخرى.",
-        "en": "The losing owner may escape the compensation by accepting renewal and bearing the costs within fifteen days, running from the day a first-instance judgment becomes final, or from the day the judgment is given where it is the appeal court's, while the lessee is still in the premises and has not leased or bought another building."
+        "ar": "يجوز للمالك الخاسر التملص من التعويض بقبول التجديد وتحمل المصاريف خلال خمسة عشر يوما، تسري من يوم صيرورة الحكم نهائيا إذا كان حكما ابتدائيا، ومن يوم صدوره إذا كان صادرا عن المجلس القضائي؛ وتنص الفقرة السابعة على أنه لا يجوز ممارسة هذا الحق ما دام المستأجر في الأمكنة ولم يؤجر أو يشتر عمارة أخرى، والنص الفرنسي يجعل ذلك شرطا لممارسته (قراءتان).",
+        "en": "The losing owner may escape the compensation by accepting renewal and bearing the costs within fifteen days, running from the day a first-instance judgment becomes final, or from the day the judgment is given where it is the appeal court's; paragraph 7 in Arabic says the right may not be exercised as long as the lessee is still in the premises and has not leased or bought another building, while the French text makes that situation the condition for exercising it (two readings)."
       }
     },
     {
@@ -1500,7 +1502,7 @@
       },
       "says": {
         "ar": "لا يمارس حق الاسترجاع إذا أثبت المستأجر أن الحرمان من محلات السكن يعرض استغلال المحل لخطر جسيم، أو كانت المحلات التجارية والسكنية تشكل كلا مشاعا.",
-        "en": "The take-back cannot be used if the lessee proves that losing the dwelling premises seriously harms the operation of the business, or where the business and dwelling premises form one whole."
+        "en": "The take-back cannot be used if the lessee proves that losing the dwelling premises seriously harms the operation of the business, or where the business and dwelling premises form an undivided whole."
       }
     },
     {
@@ -1532,6 +1534,21 @@
       "says": {
         "ar": "تسري قواعد الاختصاص النوعي والإقليمي الجديدة الخاصة بالجهات القضائية الإدارية والمحاكم التجارية المتخصصة من تاريخ تنصيب الجهات الجديدة، وتبقى الجهات القضائية الإدارية والأقسام التجارية مختصة بما رفع أمامها قبل ذلك.",
         "en": "The amending law's new subject-matter and territorial jurisdiction rules for the administrative courts and the specialised commercial courts apply from the installation of the new courts; cases filed before then stay with the administrative courts and commercial sections."
+      }
+    },
+    {
+      "id": "b84",
+      "role": "limit",
+      "cite": {
+        "code": "cpca",
+        "article": "800",
+        "paragraphs": [
+          1
+        ]
+      },
+      "says": {
+        "ar": "المحاكم الإدارية جهات الولاية العامة في المنازعات الإدارية، باستثناء المنازعات الموكلة إلى جهات قضائية أخرى.",
+        "en": "The administrative courts are the courts of general jurisdiction in administrative disputes, except the disputes given to other courts."
       }
     }
   ],
@@ -2276,11 +2293,12 @@
         "basis": [
           "b70",
           "b71",
+          "b84",
           "b5",
           "b33"
         ],
         "interpretive": true,
-        "interpretiveNote": "cpca 800 ¶2 gives the administrative courts every case to which these persons are party, and 802 lists no lease dispute among the exceptions; the 2008 wording held in the store says the same for the State, wilaya, commune and public administrative bodies (law-22-13 art. 13 defers only the new attribution rules). But 800 ¶1 (Law 22-13) excepts disputes given to other courts, and Commercial Code 194 ¶1 and 197 ¶1 send lease disputes to the court where the building lies: whether that is such an attribution is a reading (open point o13). Public economic enterprises (170 ¶3) are not among the persons of 800; the slot public_body_party must not be answered yes for them. An exit only warns."
+        "interpretiveNote": "cpca 800 ¶2 gives the administrative courts every case to which these persons are party, and 802 lists no lease dispute among the exceptions; the 2008 wording held in the store says the same for the State, wilaya, commune and public administrative bodies (law-22-13 art. 13 defers only the new attribution rules). But 800 ¶1 (Law 22-13, b84) excepts disputes given to other courts, and Commercial Code 194 ¶1 and 197 ¶1 send lease disputes to the court where the building lies: whether that is such an attribution is a reading (open point o13). Public economic enterprises (170 ¶3) are not among the persons of 800; the slot public_body_party must not be answered yes for them. An exit only warns."
       }
     ]
   },
@@ -2420,6 +2438,12 @@
           {
             "slot": "lease_chapter_action_other_than_refusal",
             "is": "yes"
+          },
+          {
+            "not": {
+              "slot": "dispute_only_on_renewal_terms_or_rent_revision",
+              "is": "yes"
+            }
           }
         ]
       },
@@ -2435,14 +2459,16 @@
         "b65",
         "b66",
         "b50",
-        "b51"
+        "b51",
+        "b49",
+        "b44"
       ],
       "extract": {
         "period": "بعد مرور سنتين",
         "sanction": "ويشملها التقادم"
       },
       "interpretive": true,
-      "interpretiveNote": "Article 198 ¶1 gives the period and calls it a limitation, but neither its starting event nor its exact scope (whether an eviction claim under article 187 مكرر is an action 'under this title'). The counting follows civil-code 314 ¶1 and 3 ¶1 as the periods module does for limitation; whether a period ending on a non-working day runs on is the periods module's open reading, and the deadline only warns either way.",
+      "interpretiveNote": "Article 198 ¶1 gives the period and calls it a limitation, but neither its starting event nor its exact scope (whether an eviction claim under article 187 مكرر is an action 'under this title'). The counting follows civil-code 314 ¶1 and 3 ¶1 as the periods module does for limitation; whether a period ending on a non-working day runs on is the periods module's open reading, and the deadline only warns either way. 198 ¶1 excepts the actions of 196 as well as 197: 196 ¶1 governs the case brought «وفقا للمادة السابقة» (the president's proceeding of 195 on the rent, duration or terms of an accepted renewal), and 192 ¶3, 178 ¶5 and 179 ¶2 send rent revision and the terms of a new lease of substitute premises or under the priority right to 195 and 196; so the deadline stays silent when the dispute is only of that kind (slot dispute_only_on_renewal_terms_or_rent_revision).",
       "readings": [
         {
           "reading": {
@@ -2562,8 +2588,8 @@
         {
           "id": "m1",
           "label": {
-            "ar": "إنذار بعقد غير قضائي يبين السبب ويذكر مضمون الفقرة، ثم استمرار المخالفة أكثر من شهر",
-            "en": "A warning by extrajudicial act stating the ground and restating the paragraph, followed by the breach continuing for more than a month"
+            "ar": "إنذار بعقد غير قضائي يبين السبب ويذكر مضمون الفقرة، ثم استمرار المخالفة أو تجددها أكثر من شهر",
+            "en": "A warning by extrajudicial act stating the ground and restating the paragraph, followed by the breach continuing or recurring for more than a month"
           },
           "basis": [
             "b22"
@@ -2573,8 +2599,8 @@
       "effectWhenMissing": "warn",
       "effectWhenUnknown": "ask",
       "message": {
-        "ar": "المادة 177 من القانون التجاري: لا يحتج بعدم تنفيذ المستأجر لالتزامه أو بتوقفه عن الاستغلال دون سبب جدي ومشروع لرفض التجديد دون تعويض إلا إذا استمرت المخالفة أكثر من شهر بعد إنذار بعقد غير قضائي يبين السبب ويذكر مضمون الفقرة، وإلا كان الإنذار باطلا. تحقق من الإنذار ووسيلته وتاريخه واستمرار المخالفة.",
-        "en": "Commercial Code article 177: a lessee's failure to perform, or cessation of operation without a serious and legitimate reason, can ground a refusal without compensation only if it continued more than a month after a warning by extrajudicial act stating the ground and restating the paragraph; otherwise the warning is void. Check the warning, its means, its date and the breach continuing."
+        "ar": "المادة 177 من القانون التجاري: لا يحتج بعدم تنفيذ المستأجر لالتزامه أو بتوقفه عن الاستغلال دون سبب جدي ومشروع لرفض التجديد دون تعويض إلا إذا استمرت المخالفة أو تجددت أكثر من شهر بعد إنذار بعقد غير قضائي يبين السبب ويذكر مضمون الفقرة، وإلا كان الإنذار باطلا. تحقق من الإنذار ووسيلته وتاريخه واستمرار المخالفة أو تجددها.",
+        "en": "Commercial Code article 177: a lessee's failure to perform, or cessation of operation without a serious and legitimate reason, can ground a refusal without compensation only if it continued or recurred more than a month after a warning by extrajudicial act stating the ground and restating the paragraph; otherwise the warning is void. Check the warning, its means, its date and whether the breach continued or recurred."
       },
       "basis": [
         "b21",
@@ -2682,7 +2708,7 @@
         "b15"
       ],
       "interpretive": true,
-      "interpretiveNote": "174 ¶1 to ¶3 set the lessee's request as the way to renewal when no notice to quit was given; whether its absence bars a claim for eviction compensation is a reading."
+      "interpretiveNote": "174 ¶1 to ¶3 set the lessee's request as the way to renewal when no notice to quit was given; whether its absence bars a claim for eviction compensation is a reading. The step also fires when a notice to quit was given but is void (slot notice_to_quit_valid no): one reading treats a void notice as no notice (173 ¶5 «وإلا اعتبر باطلا», 173 ¶2 tacit extension, 174 ¶1 «فى حالة عدم التنبيه بالاخلاء»), so the lessee's own request was needed; the other treats even a defective notice as the lessor's refusal (175 ¶3, 178 ¶4), which the lessee contests directly under 197 without a request (open point o16). The protective rule keeps the warning; it never blocks."
     },
     {
       "id": "p5",
@@ -4065,6 +4091,7 @@
             "en": "The ordinary court, because the commercial-lease texts send the dispute to the court where the building lies."
           },
           "basis": [
+            "b84",
             "b47",
             "b51",
             "b5"
@@ -4121,6 +4148,89 @@
         "r2",
         "r5",
         "r13"
+      ]
+    },
+    {
+      "id": "o15",
+      "question": {
+        "ar": "هل يجوز للمالك الخاسر التملص من تعويض الإخلاء بقبول التجديد ما دام المستأجر في الأمكنة ولم يؤجر أو يشتر عمارة أخرى، أم يمتنع عليه ذلك في هذه الحالة؟",
+        "en": "May the losing owner escape the eviction compensation by accepting renewal while the lessee is still in the premises and has not leased or bought another building, or is that exactly when he may not?"
+      },
+      "why": {
+        "ar": "الفقرة السابعة من المادة 197 بالعربية: «ولا يجوز ممارسة هذا الحق مادام المستأجر مازال موجودا في الاماكن وما دام لم يؤجر أو لم يشتر عمارة أخرى»، والنص الفرنسي للأمر نفسه في الجريدة الرسمية (1975، العدد 101، ص 1088): «Ce droit ne peut être exercé qu'autant que le locataire est encore dans les lieux et n'a pas déjà loué ou acheté un autre immeuble»، أي لا يمارس إلا في هذه الحالة.",
+        "en": "Article 197 ¶7 in Arabic: «ولا يجوز ممارسة هذا الحق مادام المستأجر مازال موجودا في الاماكن وما دام لم يؤجر أو لم يشتر عمارة أخرى» (not while); the French text of the same ordinance in the Official Journal (1975 No. 101, p. 1088): «Ce droit ne peut être exercé qu'autant que le locataire est encore dans les lieux et n'a pas déjà loué ou acheté un autre immeuble» (only while)."
+      },
+      "readings": [
+        {
+          "reading": {
+            "ar": "حرفية النص العربي: لا يمارس المالك حق التملص ما دام المستأجر في الأمكنة ولم يؤجر أو يشتر عمارة أخرى.",
+            "en": "The Arabic wording: the owner may not use the right as long as the lessee is still in the premises and has not leased or bought another building."
+          },
+          "basis": [
+            "b54"
+          ]
+        },
+        {
+          "reading": {
+            "ar": "النص الفرنسي: لا يمارس المالك حق التملص إلا ما دام المستأجر في الأمكنة ولم يؤجر أو يشتر عمارة أخرى.",
+            "en": "The French wording: the owner may use the right only while the lessee is still in the premises and has not leased or bought another building."
+          },
+          "basis": [
+            "b54"
+          ]
+        }
+      ],
+      "protectiveReading": {
+        "ar": "عرض القراءتين على المحامي دون أن يبنى عليهما أي تحذير أو منع؛ فلا يقطع محامي المستأجر بأن التعويض مكتسب ما دام موكله في الأمكنة، ولا يؤخر محامي المالك قبوله التجديد إلى ما بعد مغادرة المستأجر.",
+        "en": "Show both readings to the lawyer and build no warning or block on them: the lessee's lawyer should not count the compensation as secured while his client is still in the premises, and the owner's lawyer should not put off accepting the renewal until the lessee has left."
+      },
+      "grade": "C",
+      "refs": [
+        "b54",
+        "r9"
+      ]
+    },
+    {
+      "id": "o16",
+      "question": {
+        "ar": "إذا وجه المؤجر تنبيها بالإخلاء باطلا، هل كان على المستأجر أن يقدم طلب التجديد قبل أن ينازع في الرفض أو يطالب بتعويض الإخلاء؟",
+        "en": "When the lessor served a void notice to quit, did the lessee have to make a renewal request before contesting the refusal or claiming the eviction compensation?"
+      },
+      "why": {
+        "ar": "المادة 173 تقرر بطلان التنبيه المعيب وتمديد الإيجار المكتوب ضمنيا عند عدم التنبيه، والمادة 174 تفرض طلب التجديد «فى حالة عدم التنبيه بالاخلاء»؛ لكن المادتين 175 و178 تجعلان التنبيه بالإخلاء إحدى طريقتي تبليغ رفض التجديد، والمادة 197 تفتح للمستأجر دعوى المنازعة في الرفض مباشرة؛ ولا يقول النص إن التنبيه الباطل يعد عدما.",
+        "en": "Article 173 voids a defective notice and extends a written lease tacitly when there is no notice, and article 174 requires the renewal request «فى حالة عدم التنبيه بالاخلاء»; but articles 175 and 178 make the notice to quit one of the two ways the refusal is notified, and article 197 opens the lessee's action against the refusal directly; the text does not say that a void notice counts as no notice."
+      },
+      "readings": [
+        {
+          "reading": {
+            "ar": "التنبيه الباطل كعدمه، فيلزم طلب التجديد وفق المادة 174.",
+            "en": "A void notice counts as no notice, so the renewal request of article 174 was needed."
+          },
+          "basis": [
+            "b13",
+            "b12",
+            "b14"
+          ]
+        },
+        {
+          "reading": {
+            "ar": "التنبيه ولو كان معيبا يبلغ رفض المؤجر، فينازع فيه المستأجر مباشرة دون طلب تجديد.",
+            "en": "Even a defective notice notifies the lessor's refusal, which the lessee contests directly without a renewal request."
+          },
+          "basis": [
+            "b72",
+            "b26",
+            "b51"
+          ]
+        }
+      ],
+      "protectiveReading": {
+        "ar": "التحذير عند بطلان التنبيه وغياب طلب التجديد، دون منع التصدير.",
+        "en": "Warn when the notice is void and no renewal request was made, without blocking the export."
+      },
+      "grade": "C",
+      "refs": [
+        "p4"
       ]
     }
   ],
@@ -5896,6 +6006,7 @@
       "slots": {
         "commercial_lease": "yes",
         "lease_chapter_action_other_than_refusal": "yes",
+        "dispute_only_on_renewal_terms_or_rent_revision": "no",
         "lease_action_arose_on": "2022-03-01"
       },
       "expect": {
@@ -5915,6 +6026,7 @@
       "slots": {
         "commercial_lease": "yes",
         "lease_chapter_action_other_than_refusal": "yes",
+        "dispute_only_on_renewal_terms_or_rent_revision": "no",
         "lease_action_arose_on": "2022-03-01"
       },
       "expect": {
@@ -5934,6 +6046,7 @@
       "slots": {
         "commercial_lease": "yes",
         "lease_chapter_action_other_than_refusal": "yes",
+        "dispute_only_on_renewal_terms_or_rent_revision": "no",
         "lease_action_arose_on": "2022-03-01"
       },
       "expect": {
@@ -6476,6 +6589,7 @@
         "commercial_lease": "yes",
         "contract_date": "2012-05-01",
         "lease_chapter_action_other_than_refusal": "yes",
+        "dispute_only_on_renewal_terms_or_rent_revision": "no",
         "lease_action_arose_on": "2022-01-10"
       },
       "expect": {
@@ -6496,6 +6610,7 @@
         "commercial_lease": "yes",
         "contract_date": "2012-05-01",
         "lease_chapter_action_other_than_refusal": "yes",
+        "dispute_only_on_renewal_terms_or_rent_revision": "no",
         "lease_action_arose_on": "2024-03-15"
       },
       "expect": {
@@ -6516,6 +6631,7 @@
         "commercial_lease": "yes",
         "contract_date": "2012-05-01",
         "lease_chapter_action_other_than_refusal": "yes",
+        "dispute_only_on_renewal_terms_or_rent_revision": "no",
         "lease_action_arose_on": "2025-12-01"
       },
       "expect": {
@@ -6739,6 +6855,7 @@
       "slots": {
         "commercial_lease": "yes",
         "lease_chapter_action_other_than_refusal": "yes",
+        "dispute_only_on_renewal_terms_or_rent_revision": "no",
         "lease_action_arose_on": "2022-03-01"
       },
       "expect": {
@@ -7313,6 +7430,7 @@
       "slots": {
         "commercial_lease": "yes",
         "lease_chapter_action_other_than_refusal": "yes",
+        "dispute_only_on_renewal_terms_or_rent_revision": "no",
         "lease_action_arose_on": "2022-01-01"
       },
       "expect": {
@@ -7320,6 +7438,88 @@
           {
             "ref": "d2",
             "effect": "warn"
+          }
+        ]
+      }
+    },
+    {
+      "id": "exV21",
+      "by": "verifier",
+      "title": "flag-f-b70-p1: a wilaya is party to a commercial-lease dispute; cpca 800 ¶1's exception for disputes given to other courts is now cited (b84) beside 800 ¶2: x2 still warns.",
+      "petitionDate": "2025-03-10",
+      "slots": {
+        "commercial_lease": "yes",
+        "public_body_party": "yes"
+      },
+      "expect": {
+        "findings": [
+          {
+            "ref": "x2",
+            "effect": "warn"
+          }
+        ]
+      }
+    },
+    {
+      "id": "exV22",
+      "by": "verifier",
+      "title": "values-b81: lessee contests a take-back of dwelling premises that form an undivided whole with the business premises (182 ¶3, b81 reworded); the claim is inside the 197 period: d1 silent.",
+      "petitionDate": "2024-02-15",
+      "slots": {
+        "commercial_lease": "yes",
+        "contract_date": "2001-05-01",
+        "lessee_contests_refusal_or_claims_eviction_compensation": "yes",
+        "renewal_refusal_notified_on": "2024-01-10"
+      },
+      "expect": {
+        "findings": [
+          {
+            "ref": "d1",
+            "effect": "none"
+          }
+        ]
+      }
+    },
+    {
+      "id": "exV23",
+      "by": "verifier",
+      "title": "sup-12: a dispute only on the rent of an accepted renewal, brought more than two years after it arose; 198 ¶1 excepts the actions of 196 (the 195 proceeding): d2 silent, x1 sends it to the president.",
+      "petitionDate": "2025-03-10",
+      "slots": {
+        "commercial_lease": "yes",
+        "lease_chapter_action_other_than_refusal": "yes",
+        "dispute_only_on_renewal_terms_or_rent_revision": "yes",
+        "lease_action_arose_on": "2020-01-01"
+      },
+      "expect": {
+        "findings": [
+          {
+            "ref": "d2",
+            "effect": "none"
+          },
+          {
+            "ref": "x1",
+            "effect": "warn"
+          }
+        ]
+      }
+    },
+    {
+      "id": "exV24",
+      "by": "verifier",
+      "title": "sup-45: the lessor refuses without compensation for a breach that stopped and then recurred more than a month after a valid warning (177 ¶2 «تواصل ارتكابها أو تجديدها»): p2 done.",
+      "petitionDate": "2025-03-10",
+      "slots": {
+        "commercial_lease": "yes",
+        "contract_date": "2001-05-01",
+        "refusal_without_compensation_for_breach": "yes",
+        "breach_warning_valid_and_unheeded": "yes"
+      },
+      "expect": {
+        "findings": [
+          {
+            "ref": "p2",
+            "effect": "none"
           }
         ]
       }

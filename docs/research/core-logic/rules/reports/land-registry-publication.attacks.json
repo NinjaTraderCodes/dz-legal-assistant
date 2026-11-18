@@ -1,0 +1,280 @@
+{
+  "unit": "land-registry-publication",
+  "attacks": [
+    {
+      "id": "adv-1",
+      "who": "adversary",
+      "target": "o8, o5, o1, k4, k17, k18, k35, k50, b1, p1",
+      "kind": "specialLaw",
+      "claim": "Finance Law 2019 (Law 18-18, art. 35) inserted article 16 bis into Ordinance 75-74; it names the territorially competent registry, places publication after registration at the court registry, covers every petition on a property or right whose title is published, does not freeze the property, and has the conservator publish the final judgment. The record never cites it.",
+      "verdict": "fixed",
+      "verifierQuote": "المادة 16 مكرر : تشهر بالسجل العقاري الممسوك بالمحافظة العقارية المختصة إقليميا كل عريضة رفع دعوى تتعلق بعقار أو حق عيني عقاري مشهر سنده، بعد تسجيلها بأمانة ضبط المحكمة. لا يترتب عن إشهار عريضة رفع الدعوى تجميد أو تعليق أو منع التصرف في العقار أو الحق العيني العقاري. ... يشهر المحافظ العقاري المعني الحكم القضائي النهائي الصادر في الدعوى محل العريضة المشهرة.",
+      "quoteRef": "Law 18-18 (Finance Law for 2019) art. 35 inserting Ordinance 75-74 art. 16 bis ¶1, ¶2, ¶4; Official Journal 2018 no. 79, p. 15 (A2018079.pdf, sha256 3d96397f5986e20a9cbe552a7966643efb5e2b0c0922006fa462f2c6fb5b97b0)",
+      "change": "Text not in the store: request appended (ordinance-75-74 art. 16 مكرر). New open point o9 (grade D) holds ¶1, ¶2 and ¶4. o5 regraded D with a reading (after registration, before the first hearing) and a protective reading to publish as soon as the petition is registered; o8 why and protective reading name the territorially competent registry; o1 why mentions «كل عريضة» (stays C on the store texts, refs o9). Checklist k1, k4, k17, k18, k28, k35, k50 notes and refs point to o9. Example exV1."
+    },
+    {
+      "id": "adv-2",
+      "who": "adversary",
+      "target": "o7, n1, k2, k30, k43, p1, doc2",
+      "kind": "specialLaw",
+      "claim": "16 bis words the condition «مشهر سنده»: the test is whether the title is published, not whether the land is surveyed; o7's second reading is weakened, and n1 and the property question should speak of the published title so that a published notarial deed on unsurveyed land is not answered 'no' without a warning.",
+      "verdict": "fixed",
+      "verifierQuote": "كل عريضة رفع دعوى تتعلق بعقار أو حق عيني عقاري مشهر سنده، بعد تسجيلها بأمانة ضبط المحكمة.",
+      "quoteRef": "Ordinance 75-74 art. 16 bis ¶1 (inserted by Law 18-18 art. 35), Official Journal 2018 no. 79, p. 15; with CPCA 17 ¶3 «إذا تعلقت بعقار و/أو حق عيني عقاري مشهر طبقا للقانون»",
+      "change": "n1 telling fact and message now say the test is a published title of the property or of the right, and that land not surveyed may still have a published title; o7 why records 16 bis («مشهر سنده», grade D through o9) as weakening reading 2, reading 1 reworded to the title, protective reading extended; k30 note. Both readings kept because 16 bis is not in the store. The slot property_registered itself (slots.json) was not open to me: its question should ask whether the title of the property or of the right is published, not whether the land is surveyed. Example exV2."
+    },
+    {
+      "id": "adv-3",
+      "who": "adversary",
+      "target": "o2, k3, k33, k14, p1, m2, exR2",
+      "kind": "specialLaw",
+      "claim": "Decree 76-63 art. 85, not amended by Decree 93-123, requires prior publication for claims to rescind, annul, revoke or undo rights from published documents, proven by the conservator's certificate or the petition bearing the mention; a deposit receipt (m2) is not among them.",
+      "verdict": "fixed",
+      "verifierQuote": "المادة 85 : ان دعاوى القضاء الرامية الى النطق بفسخ أو ابطال أو الغاء أو نقض حقوق ناتجة عن وثائق تم اشهارها، لا يمكن قبولها الا اذا تم اشهارها مسبقا طبقا للمادة 14 – 4 من الامر رقم 75 – 74 ... واذا تم اثبات هذا الاشهار بموجب شهادة من المحافظ أو تقديم نسخة من الطلب الموجود عليه تأشير الاشهار. / المادة الاولى : تعدل وتتمم احكام المواد من 8 الى 17 و62 و89 من المرسوم رقم 76 – 63",
+      "quoteRef": "Decree 76-63 art. 85, Official Journal 1976 no. 30, pp. 507-508 (A1976030.pdf, sha256 02c16937d52e1210927c2401d7547e9aeffda180fee40c435f9736c53717b7d8); Executive Decree 93-123 art. 1, Official Journal 1993 no. 34, p. 15 (A1993034.pdf, sha256 84e2b8f56187d72379068f7f255d85e63608df2e6672dd8a53a875626eef48c3)",
+      "change": "Request appended (decree-76-63 art. 85). o2 rewritten: question adds whether proof of deposit is enough; why quotes the official text; two readings (art. 85 needs actual publication and the certificate or marked copy / CPCA 17 as the later text accepts deposit); protective reading: obtain actual publication for those claims and limit m2 once the text is in the store; stays grade D. p1 message adds that for claims to rescind, annul, amend or undo the provisions referred to by article 519 may require actual publication, and to check it. p1 interpretiveNote, k3, k6, k14, k33 updated. Example exV3. Amendments of art. 85 after 1993 not searched."
+    },
+    {
+      "id": "adv-4",
+      "who": "adversary",
+      "target": "k25, k54, k43, p1, boundaries",
+      "kind": "specialLaw",
+      "claim": "Decree 76-63 art. 15 as amended in 1993 gives six months from the conservator's notification of the non-conciliation record to bring an objection to a provisional registration, on pain of rejection, with publication within the same period; the record says no period applies.",
+      "verdict": "fixed",
+      "verifierQuote": "وتكون للطرف المدعي مهلة ستة ( 6 ) اشهر ابتداء من تاريخ التبليغ الذي يتلقاه من المحافظ العقاري ليقدم، تحت طائلة رفض الدعوى، كل اعتراض امام الجهة القضائية المختصة. تشهر الدعاوى القضائية والتي يجب تبليغها الى المحافظ العقاري في نفس المهلة وفقا لاحكام المادة 85 أدناه.",
+      "quoteRef": "Decree 76-63 art. 15 as rewritten by Executive Decree 93-123 art. 1, Official Journal 1993 no. 34, p. 16 (A1993034.pdf, sha256 84e2b8f56187d72379068f7f255d85e63608df2e6672dd8a53a875626eef48c3)",
+      "change": "Request appended (decree-76-63 art. 15). New open point o10 (grade D): the six-month period from the conservator's notification, sanction of rejection, publication and notification within it, to go to the periods module once in the store; no deadline item, since the text is not in the store. k25 and k43 notes and refs add o10; k54 changed from doesNotApply to applies (refs o10). Example exV4. Amendments after 1993 not searched (Law 18-18 art. 34 rewrote Ordinance 75-74 art. 11 on registration of surveyed property; not decisive here)."
+    },
+    {
+      "id": "adv-5",
+      "who": "adversary",
+      "target": "p1, o5, k17, k38",
+      "kind": "missing",
+      "claim": "The date of the petition's publication protects the plaintiff against disposals during the case (16 bis ¶3; 76-63 art. 88 ¶3); publishing only on the eve of the first hearing exposes the client; k17's searchedNotFound is wrong.",
+      "verdict": "fixed",
+      "verifierQuote": "إذا تم التصرف في حق عيني عقاري يتعلق بعقار أشهرت بشأنه عريضة رفع الدعوى قبل التصرف، فإنه يستوجب على المتصرف إبلاغ المتصرف له بالدعوى المشهرة عن طريق محضر قضائي / انه ابتداء من الاشهار المعطى للعقد أو للقرار القضائي أو للشهادة الموثقة المثبتة الحق لصاحبه الجديد، لا يمكن القيام بأي اجراء من قبل الشخص الرئيسي أو ضد الصاحب السابق لهذا الحق دون الاخلال باشهار الطلبات القضائية الرامية الى فسخ أو ابطال أو الغاء أو نقض حق عيني عقاري.",
+      "quoteRef": "Ordinance 75-74 art. 16 bis ¶3, Official Journal 2018 no. 79, p. 15; Decree 76-63 art. 88 ¶3, Official Journal 1976 no. 30, p. 508 (sha256 as above)",
+      "change": "Request appended (decree-76-63 art. 88; 16 bis already requested). New open point o11 (grade D) with protective reading: publish as soon as the petition is registered, warn without blocking. o5 protective reading adds the same; k17 note and refs (o9, o11) record the official texts (answer kept searchedNotFound as to the store); k38 refs o11. p1 message not changed for this point, since the texts are not in the store. Example exV5."
+    },
+    {
+      "id": "atk-1",
+      "who": "attack",
+      "target": "p1",
+      "kind": "wrongCondition",
+      "claim": "p1 fires only when property_registered is yes; a claim on an unpublished property resting on a published right is not caught.",
+      "verdict": "refuted",
+      "verifierQuote": "إذا تعلقت بعقار و/أو حق عيني عقاري مشهر طبقا للقانون",
+      "quoteRef": "CPCA 17 ¶3",
+      "change": "None. The record already reads «و/أو» as reaching a published right on an unpublished property: b1 is interpretive, o7 keeps the readings, and n1 warns whenever the property is answered 'no' (exR1, exB5)."
+    },
+    {
+      "id": "atk-2",
+      "who": "attack",
+      "target": "p1",
+      "kind": "wrongEffect",
+      "claim": "The sanction is inadmissibility in form; warn understates it, and p1 should not be interpretive.",
+      "verdict": "refuted",
+      "verifierQuote": "وتقديمها في أول جلسة ينادى فيها على القضية، تحت طائلة عدم قبولها شكلا، ما لم يثبت إيداعها للإشهار.",
+      "quoteRef": "CPCA 17 ¶3; also Ordinance 75-74 art. 16 bis ¶1 «بعد تسجيلها بأمانة ضبط المحكمة» (Official Journal 2018 no. 79, p. 15)",
+      "change": "None. The sanction bites at the first hearing, after the petition is registered (and, outside the store, publication follows registration), so the clean petition must be exportable to be deposited; the scope is a reading (o1, o7). An interpretive item never declares a block; warn stays."
+    },
+    {
+      "id": "atk-3",
+      "who": "attack",
+      "target": "p1",
+      "kind": "wrongCondition",
+      "claim": "petition_deposited_for_publication is absent from the declared slots; the first-hearing production has no slot.",
+      "verdict": "refuted",
+      "verifierQuote": "ما لم يثبت إيداعها للإشهار",
+      "quoteRef": "CPCA 17 ¶3",
+      "change": "None. petition_deposited_for_publication is in the record's slots and proposedSlots, is p1's first slot, and its question covers publication, proven deposit and the proof to produce at the first hearing; ex3 asks it."
+    },
+    {
+      "id": "atk-4",
+      "who": "attack",
+      "target": "p1",
+      "kind": "misreading",
+      "claim": "The rule's label says 'before a claim', overstating the timing; the text requires proof only by the first hearing.",
+      "verdict": "refuted",
+      "verifierQuote": "وتقديمها في أول جلسة ينادى فيها على القضية",
+      "quoteRef": "CPCA 17 ¶3",
+      "change": "None. The record has no 'before a claim' label: p1's message and interpretiveNote tie the step to the first hearing, and o5 holds the timing."
+    },
+    {
+      "id": "atk-5",
+      "who": "attack",
+      "target": "p1",
+      "kind": "wrongCondition",
+      "claim": "p1 is silent when the property's registration is unknown or no; n1's isActually contradicts its message.",
+      "verdict": "refuted",
+      "verifierQuote": "إذا تعلقت بعقار و/أو حق عيني عقاري مشهر طبقا للقانون",
+      "quoteRef": "CPCA 17 ¶3",
+      "change": "None. p1 asks when the registration is unknown (ex6, exB7); n1's telling facts describe the case where neither the property nor the right is published, which is what 'outside' labels, and its when-test warns because the property answer alone does not establish that (the n1 text was sharpened under adv-2)."
+    },
+    {
+      "id": "atk-6",
+      "who": "attack",
+      "target": "p1",
+      "kind": "wrongCondition",
+      "claim": "A simple dwelling lease or possession claim does not involve a published real right; p1 over-fires on such leases when the property is published.",
+      "verdict": "open",
+      "verifierQuote": "يجب إشهار عريضة رفع الدعوى لدى المحافظة العقارية، إذا تعلقت بعقار و/أو حق عيني عقاري مشهر طبقا للقانون / 10 - في إيجار السكنات والمحلات المهنية،",
+      "quoteRef": "CPCA 17 ¶3; CPCA 512 ¶11; outside the store, Ordinance 75-74 art. 16 bis ¶1 «كل عريضة رفع دعوى تتعلق بعقار أو حق عيني عقاري مشهر سنده» (Official Journal 2018 no. 79, p. 15)",
+      "change": "None. «تعلقت بعقار» bears both readings in the store's texts; the record already keeps them in o1 with the protective reading (ask and warn) as the rule. The text outside the store («كل عريضة») leans to the broad reading but is not yet read twice (o9)."
+    },
+    {
+      "id": "atk-7",
+      "who": "attack",
+      "target": "b3",
+      "kind": "misreading",
+      "claim": "b3 adds 'fees', which is not in 539 ¶3; the paragraph is about appeals and should not support the rule.",
+      "verdict": "refuted",
+      "verifierQuote": "مع مراعاة أحكام المادة 17 من هذا القانون، تقيد عريضة الاستئناف حالا في سجل خاص / لا تقيد العريضة إلا بعد دفع الرسوم المحددة قانونا / يجب إشهار عريضة رفع الدعوى لدى المحافظة العقارية",
+      "quoteRef": "CPCA 539 ¶3; CPCA 17 ¶1; CPCA 17 ¶3",
+      "change": "None. Article 17, to which 539 ¶3 refers, is the article on fees (¶1-¶2) and on publication (¶3), so b3's description is accurate; b3 is interpretive as to ¶3 and supports only o6, k19, k42, k49, not p1."
+    },
+    {
+      "id": "atk-8",
+      "who": "attack",
+      "target": "b7",
+      "kind": "misreading",
+      "claim": "b7 omits the text's examples and does not say whether non-publication is of public order.",
+      "verdict": "refuted",
+      "verifierQuote": "يجب على القاضي أن يثير تلقائيا، الدفع بعدم القبول إذا كان من النظام العام، لاسيما عند عدم احترام آجال طرق الطعن أو عند غياب طرق الطعن.",
+      "quoteRef": "CPCA 69 ¶1",
+      "change": "None. «لاسيما» introduces examples, not a limit, so b7's summary does not distort the paragraph; whether non-publication is of public order is open point o3, with the protective reading."
+    },
+    {
+      "id": "atk-9",
+      "who": "attack",
+      "target": "b5",
+      "kind": "wrongEffect",
+      "claim": "b5 and b6 are in tension for non-publication; the record does not say which regime governs.",
+      "verdict": "open",
+      "verifierQuote": "تحت طائلة عدم قبولها شكلا / يجب إثارة الدفوع الشكلية في آن واحد قبل إبداء أي دفاع في الموضوع / يمكن للخصوم تقديم الدفع بعدم القبول في أية مرحلة كانت عليها الدعوى",
+      "quoteRef": "CPCA 17 ¶3; CPCA 50 ¶1; CPCA 68 ¶1",
+      "change": "None. The texts allow both readings; the record already keeps them in o3 (grade C) with the protective reading (any stage, by the judge), and b5, b6, b7 are its bases. Searched CPCA 17, 50, 67 to 69 in the store; no official text decides it."
+    },
+    {
+      "id": "atk-10",
+      "who": "attack",
+      "target": "b2",
+      "kind": "misreading",
+      "claim": "b2 only refers to special provisions without stating the rule.",
+      "verdict": "refuted",
+      "verifierQuote": "مع مراعاة الأحكام الخاصة بشهر دعاوى الفسخ أو الإبطال أو التعديل أو نقض حقوق قائمة على عقود تم شهرها.",
+      "quoteRef": "CPCA 519 ¶1",
+      "change": "None. b2's says states exactly the reference to special provisions, nothing more; the provisions themselves (Decree 76-63 art. 85) are now in o2 (adv-3)."
+    },
+    {
+      "id": "atk-11",
+      "who": "attack",
+      "target": "court",
+      "kind": "exception",
+      "claim": "t1 drops the work-accident exception (court of the plaintiff's domicile).",
+      "verdict": "refuted",
+      "verifierQuote": "1- في المواد العقارية، أو الأشغال المتعلقة بالعقار، أو دعاوى الإيجارات بما فيها التجارية المتعلقة بالعقارات ... أمام المحكمة التي يقع في دائرة اختصاصها العقار / غير أنه في حالة إنهاء أو تعليق عقد العمل بسبب حادث عمل أو مرض مهني يؤول الاختصاص للمحكمة التي يوجد بها موطن المدعي.",
+      "quoteRef": "CPCA 40 ¶2; CPCA 40 ¶10",
+      "change": "None. 40 ¶10 is the exception to the labour rule, not to the real-property rule of 40 ¶2; k58 already answers it as doesNotApply."
+    },
+    {
+      "id": "atk-12",
+      "who": "attack",
+      "target": "p1",
+      "kind": "missing",
+      "claim": "No rule for a plaintiff holding only a deposit receipt, a first hearing already held, a late cure, or a public body as party.",
+      "verdict": "refuted",
+      "verifierQuote": "تحت طائلة عدم قبولها شكلا، ما لم يثبت إيداعها للإشهار.",
+      "quoteRef": "CPCA 17 ¶3",
+      "change": "None. A deposit receipt is means m2; late production and filing again are o4; the first hearing already held is o4's 'no cure' reading; 17 ¶3 makes no distinction by party (k46). The limit on m2 for annulment-type claims is handled under adv-3 (o2)."
+    },
+    {
+      "id": "atk-13",
+      "who": "attack",
+      "target": "p1",
+      "kind": "amendmentSuspected",
+      "claim": "From memory: Ordinance 75-74, Decree 76-63 and later finance laws set which claims must be published; check whether they alter article 17.",
+      "verdict": "fixed",
+      "verifierQuote": "المادة 35 : تدرج ضمن القسم الأول من الباب الثاني من الأمر رقم 75-74 ... مادة 16 مكرر تحرر كما يأتي : «المادة 16 مكرر : تشهر بالسجل العقاري الممسوك بالمحافظة العقارية المختصة إقليميا كل عريضة رفع دعوى تتعلق بعقار أو حق عيني عقاري مشهر سنده، بعد تسجيلها بأمانة ضبط المحكمة» / المادة 85 : ان دعاوى القضاء الرامية الى النطق بفسخ أو ابطال أو الغاء أو نقض حقوق ناتجة عن وثائق تم اشهارها، لا يمكن قبولها الا اذا تم اشهارها مسبقا",
+      "quoteRef": "Law 18-18 art. 35 (Ordinance 75-74 art. 16 bis), Official Journal 2018 no. 79, p. 15; Decree 76-63 art. 85, Official Journal 1976 no. 30, pp. 507-508",
+      "change": "Article 17 itself is not amended (store wording in force, ledger clean; 16 bis amends Ordinance 75-74, not the CPCA): k28 note says so. The texts the attack remembered were found and requested; the record now carries them as o9 and o2 (grade D), with p1's message on actual publication for article 519 claims (see adv-1, adv-3). Example exV6."
+    },
+    {
+      "id": "sup-4",
+      "who": "support",
+      "target": "p1",
+      "kind": "partlySupported",
+      "claim": "The text does not say publication must be completed before bringing the claim; it requires production at the first hearing with a deposit exception.",
+      "verdict": "refuted",
+      "verifierQuote": "وتقديمها في أول جلسة ينادى فيها على القضية، تحت طائلة عدم قبولها شكلا، ما لم يثبت إيداعها للإشهار.",
+      "quoteRef": "CPCA 17 ¶3",
+      "change": "None. The 'before a claim' wording is the support checker's rendering of a prior step; the record's message and interpretiveNote fix the first hearing and keep deposit as a means (m2)."
+    },
+    {
+      "id": "sup-14",
+      "who": "support",
+      "target": "b3",
+      "kind": "partlySupported",
+      "claim": "539 ¶3 makes registration subject to article 17 but does not state that article 17 concerns fees and publication.",
+      "verdict": "refuted",
+      "verifierQuote": "لا تقيد العريضة إلا بعد دفع الرسوم المحددة قانونا، ما لم ينص القانون على خلاف ذلك. / يجب إشهار عريضة رفع الدعوى لدى المحافظة العقارية",
+      "quoteRef": "CPCA 17 ¶1 and ¶3, read with CPCA 539 ¶3",
+      "change": "None. As atk-7: the content of article 17 is in the store; b3 stays interpretive."
+    },
+    {
+      "id": "sup-20",
+      "who": "support",
+      "target": "b13",
+      "kind": "partlySupported",
+      "claim": "512's cited items do not name the real-property section as the body that hears them.",
+      "verdict": "fixed",
+      "verifierQuote": "ينظر القسم العقاري على الخصوص في القضايا الآتية :",
+      "quoteRef": "CPCA 512 ¶1",
+      "change": "b13 cite paragraphs now [1, 2, 3, 5, 10, 11] (the chapeau added). Example exV7."
+    },
+    {
+      "id": "sup-21",
+      "who": "support",
+      "target": "b16",
+      "kind": "partlySupported",
+      "claim": "15 ¶7 does not identify the petition as the document containing the reference to supporting documents.",
+      "verdict": "fixed",
+      "verifierQuote": "يجب أن تتضمن عريضة افتتاح الدعوى، تحت طائلة عدم قبولها شكلا، البيانات الآتية :",
+      "quoteRef": "CPCA 15 ¶1",
+      "change": "b16 cite paragraphs now [1, 7] (the chapeau added); says names the petition opening the claim. Example exV8."
+    },
+    {
+      "id": "sup-22",
+      "who": "support",
+      "target": "b17",
+      "kind": "partlySupported",
+      "claim": "512 ¶7 does not name the real-property section as the body that hears pre-emption cases.",
+      "verdict": "fixed",
+      "verifierQuote": "ينظر القسم العقاري على الخصوص في القضايا الآتية :",
+      "quoteRef": "CPCA 512 ¶1",
+      "change": "b17 cite paragraphs now [1, 7] (the chapeau added). Example exV9."
+    },
+    {
+      "id": "bc-bc4",
+      "who": "boundaryCase",
+      "target": "p1, n1",
+      "kind": "wrongEffect",
+      "claim": "Blind case bc4 (property not published, eviction) expects stepExempt under 17 ¶3: no duty, no warning. The record gives p1 none and n1 warn.",
+      "verdict": "refuted",
+      "verifierQuote": "إذا تعلقت بعقار و/أو حق عيني عقاري مشهر طبقا للقانون",
+      "quoteRef": "CPCA 17 ¶3; outside the store, Ordinance 75-74 art. 16 bis ¶1 «تتعلق بعقار أو حق عيني عقاري مشهر سنده» (Official Journal 2018 no. 79, p. 15)",
+      "change": "None. The record agrees that p1 is not required; but «و/أو حق عيني عقاري مشهر» means an unpublished property does not by itself exclude a published right or title, so the text does not settle stepExempt; n1's warning is the protective outcome (o7)."
+    },
+    {
+      "id": "bc-bc10",
+      "who": "boundaryCase",
+      "target": "p1, n1",
+      "kind": "wrongEffect",
+      "claim": "Blind case bc10 (dwelling lease, property not published, eviction and payment) expects stepExempt under 512 ¶11 and 17 ¶3. The record gives p1 none and n1 warn.",
+      "verdict": "refuted",
+      "verifierQuote": "إذا تعلقت بعقار و/أو حق عيني عقاري مشهر طبقا للقانون",
+      "quoteRef": "CPCA 17 ¶3; CPCA 512 ¶11",
+      "change": "None. As bc4: p1 none, n1 warns because the property answer alone does not exclude a published right (for example a published lease) under «و/أو»; whether 17 ¶3 reaches leases at all is o1."
+    }
+  ]
+}

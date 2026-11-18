@@ -632,9 +632,10 @@
         "b94",
         "b95",
         "b96",
-        "b97"
+        "b97",
+        "b100"
       ],
-      "note": "Article 40 names the property's court for lease claims on buildings, commercial leases included; the Commercial Code's commercial-lease chapter names the same court (194 ¶1, 197 ¶1, 198 ¶1) and sends the rent and conditions of an accepted renewal to the president of that court under the urgent-matters procedure (195 ¶1). Its periods (summons within three months of the refusal, 197 ¶3; limitation, 198 ¶1) belong to the deadline modules, not to this one."
+      "note": "Article 40 names the property's court for lease claims on buildings, commercial leases included; the Commercial Code's commercial-lease chapter names the same court (194 ¶1, 197 ¶1, 198 ¶1) and sends the rent and conditions of an accepted renewal to the president of that court under the urgent-matters procedure (195 ¶1). When the tenant claims eviction compensation, 194 ¶2 lets the hastening party go, before the period of ¶1 ends, to the president of the court ruling on urgent matters for the expertise (b100; verifier, flag flag-f-b94-p2). Its periods (summons within three months of the refusal, 197 ¶3; limitation, 198 ¶1) belong to the deadline modules, not to this one."
     },
     {
       "id": "k37",
@@ -1228,6 +1229,36 @@
       ],
       "answer": "doesNotApply",
       "note": "Code of Criminal Procedure (ordinance 66-155) art. 3 ¶1, original wording read by the verifier in OJ 1966 no. 48, p. 622: «يجوز مباشرة الدعوى المدنية مع الدعوى العمومية في وقت واحد امام الجهة القضائية نفسها»; arts. 4 and 5 deal with a civil claim brought separately. It is a choice between the civil and the criminal court, not a rule of the court by place, so it belongs to the exits module, not to this one. Not in the store and later amendments not checked: requested."
+    },
+    {
+      "id": "k78",
+      "item": "Neighbour flag: cpca 900 مكرر 5 ¶1, after an article cited (b88).",
+      "from": [
+        "derivationA",
+        "derivationB"
+      ],
+      "answer": "doesNotApply",
+      "note": "Article 900 bis 5 sets the bench of the administrative appeal courts (a collegiate bench of at least three judges, «ما لم ينص القانون على خلاف ذلك»); its exception concerns the bench's composition, not which court by place hears the claim (verifier, flag flag-f-b88-next)."
+    },
+    {
+      "id": "k79",
+      "item": "Neighbour flag: commercial-code 197 ¶5, after a paragraph cited (b96).",
+      "from": [
+        "derivationA",
+        "derivationB"
+      ],
+      "answer": "doesNotApply",
+      "note": "Commercial Code 197 ¶5 allows judgments given in last resort to be taken to the Supreme Court; it concerns the remedy against the judgment, not the court by place where the tenant's claim is brought, which 197 ¶1 fixes (b96) (verifier, flag flag-f-b96-p5)."
+    },
+    {
+      "id": "k80",
+      "item": "Neighbour flag: commercial-code 197 ¶6, after a paragraph cited (b96).",
+      "from": [
+        "derivationA",
+        "derivationB"
+      ],
+      "answer": "doesNotApply",
+      "note": "Commercial Code 197 ¶6 lets the owner who lost the case escape paying the compensation by accepting renewal within a period after the judgment; it is the landlord's option after judgment, not a rule of the court by place (verifier, flag flag-f-b96-p6)."
     }
   ],
   "basis": [
@@ -4312,6 +4343,35 @@
         ],
         "ledgerClean": true
       }
+    },
+    {
+      "id": "b100",
+      "role": "procedure",
+      "cite": {
+        "code": "commercial-code",
+        "article": "194",
+        "paragraphs": [
+          2
+        ]
+      },
+      "says": {
+        "ar": "غير أنه إذا طالب المستأجر بتعويض الإخلاء، جاز للطرف الذي يهمه التعجيل أن يرفع دعواه أمام رئيس المحكمة الناظرة في القضايا المستعجلة ليأمر بإجراءات الخبرة اللازمة، قبل انتهاء الأجل المنصوص عليه في الفقرة الأولى.",
+        "en": "However, when the tenant claims eviction compensation, the party wishing to hasten may bring its claim before the president of the court ruling on urgent matters, for him to order the necessary expert examination, before the period set in the first paragraph ends."
+      },
+      "quote": [
+        {
+          "paragraph": 2,
+          "text": "غير أنه، اذا طالب المستأجر بتعويض الاخلاء، جاز للطرف الذي يهمه التعجيل أن يتم دعواه أمام رئيس المحكمة الناظرة في القضايا المستعجلة ليأمر باجراءات الخبرة اللازمة، وذلك قبل انتهاء الاجل المنصوص عليه في الفقرة السابقة .",
+          "sha256": "1020a3632b3d6e36536910de9a4c22059c0370ee82ca3d53d275526c92ad3f0a"
+        }
+      ],
+      "source": {
+        "tier": 1,
+        "store": "delta",
+        "textAsOf": "2026-11-10",
+        "ledgerRefs": [],
+        "ledgerClean": false
+      }
     }
   ],
   "court": {
@@ -4352,8 +4412,8 @@
       {
         "id": "t4",
         "rule": {
-          "ar": "العقار والأشغال المتعلقة به وإيجار العقارات بما فيها الإيجارات التجارية والأشغال العمومية: محكمة موقع العقار أو مكان تنفيذ الأشغال دون سواها (المادتان 40 و518)؛ وفي الإيجارات التجارية يعين القانون التجاري المحكمة التي يتبعها موقع العمارة، ويرفع الخلاف حول بدل الإيجار أو مدته أو شروطه عند قبول التجديد أمام رئيس هذه المحكمة الذي يفصل حسب إجراءات الأمور المستعجلة (المواد 194 و195 و197 و198 من القانون التجاري).",
-          "en": "Real property, works on it, leases of buildings including commercial leases, and public works: the court where the property lies or where the works are carried out, and no other (articles 40 and 518); for commercial leases the Commercial Code names the court of the place of the building, and a dispute on the rent, term or conditions of an accepted renewal goes to the president of that court under the urgent-matters procedure (Commercial Code articles 194, 195, 197 and 198)."
+          "ar": "العقار والأشغال المتعلقة به وإيجار العقارات بما فيها الإيجارات التجارية والأشغال العمومية: محكمة موقع العقار أو مكان تنفيذ الأشغال دون سواها (المادتان 40 و518)؛ وفي الإيجارات التجارية يعين القانون التجاري المحكمة التي يتبعها موقع العمارة، ويرفع الخلاف حول بدل الإيجار أو مدته أو شروطه عند قبول التجديد أمام رئيس هذه المحكمة الذي يفصل حسب إجراءات الأمور المستعجلة (المواد 194 و195 و197 و198 من القانون التجاري)؛ وإذا طالب المستأجر بتعويض الإخلاء جاز للطرف الذي يهمه التعجيل، قبل انتهاء الأجل المنصوص عليه في الفقرة الأولى من المادة 194، أن يرفع دعواه أمام رئيس المحكمة الناظرة في القضايا المستعجلة ليأمر بالخبرة (المادة 194 الفقرة 2 من القانون التجاري).",
+          "en": "Real property, works on it, leases of buildings including commercial leases, and public works: the court where the property lies or where the works are carried out, and no other (articles 40 and 518); for commercial leases the Commercial Code names the court of the place of the building, and a dispute on the rent, term or conditions of an accepted renewal goes to the president of that court under the urgent-matters procedure (Commercial Code articles 194, 195, 197 and 198); when the tenant claims eviction compensation, the party wishing to hasten may, before the period of article 194 ¶1 ends, bring its claim before the president of the court ruling on urgent matters for him to order the expert examination (Commercial Code article 194 ¶2)."
         },
         "basis": [
           "b9",
@@ -4362,7 +4422,8 @@
           "b94",
           "b95",
           "b96",
-          "b97"
+          "b97",
+          "b100"
         ],
         "when": {
           "any": [
@@ -7250,6 +7311,44 @@
         "questions": [
           "marital_home_in_algeria"
         ]
+      }
+    },
+    {
+      "id": "ex42",
+      "by": "verifier",
+      "title": "Flag flag-f-b94-p2: commercial lease, the tenant claims eviction compensation: court of the building (t4, now also naming the urgent-matters president for the expertise under Commercial Code 194 ¶2); the property warning.",
+      "petitionDate": "2026-11-18",
+      "slots": {
+        "estate_claim": "no",
+        "claim_challenges_administrative_decision": "no",
+        "jurisdiction_clause_relied_on": "no",
+        "defendant_resides_abroad": "no",
+        "public_body_party": "no",
+        "national_public_body_party": "no",
+        "public_vehicle_damage": "no",
+        "dispute_concerns_real_property": "no",
+        "commercial_lease": "yes",
+        "dispute_is_commercial": "yes",
+        "partition_of_estate": "no",
+        "dispute_is_family": "no",
+        "dispute_is_social": "no",
+        "party_is_serving_judge": "no",
+        "specialised_commercial_subject": "no",
+        "specialised_commercial_matter": "none",
+        "defendant_domicile_known": "yes"
+      },
+      "expect": {
+        "findings": [
+          {
+            "ref": "n7",
+            "effect": "warn"
+          },
+          {
+            "ref": "n4",
+            "effect": "none"
+          }
+        ],
+        "questions": []
       }
     }
   ],

@@ -2069,6 +2069,20 @@
       "readFromNote": false,
       "origin": "custody-forfeiture",
       "why": "Request r4 and boundaries n14 and n16 read it: family-code 72 ¶1 binds the father; family-code 66 ¶1 forfeits by marriage the right of the female custodian (الحاضنة) and 70 ¶1 that of the grandmother or maternal aunt (verifier, adv-2, adv-3, adv-5)."
+    },
+    {
+      "id": "petition_deposited_for_publication",
+      "type": "yesNoUnknown",
+      "question": {
+        "ar": "هل أودعت عريضة افتتاح الدعوى لدى المحافظة العقارية بغرض إشهارها (أو أشهرت فعلا)، وهل بيد المحامي ما يثبت الإيداع أو الإشهار لتقديمه في أول جلسة؟",
+        "en": "Has the petition opening the claim been deposited at the land registry for publication (or already published there), and does the lawyer hold proof of the deposit or publication to produce at the first hearing?"
+      },
+      "askedFor": [
+        "*"
+      ],
+      "readFromNote": false,
+      "origin": "land-registry-publication",
+      "why": "Prior step p1 reads it as its own slot (was the step done?). CPCA article 17 paragraph 3 requires a petition about a property and/or real right published under the law to be published at the land registry and produced at the first hearing, on pain of inadmissibility in form, unless its deposit for publication is proven; the question covers both accepted means (m1 publication, m2 proven deposit). Merges derivation A's petition_published_at_land_registry and derivation B's petition_deposited_for_publication."
     }
   ]
 }

@@ -1,0 +1,313 @@
+{
+  "unit": "commercial-lease-regimes",
+  "attacks": [
+    {
+      "id": "flag-f-b70-p1",
+      "who": "neighbourFlag",
+      "target": "b70",
+      "kind": "exception",
+      "claim": "[cpca 800 ¶1] is next to what b70 cites, opens with «باستثناء», and the record neither cites it nor says why it does not apply.",
+      "verdict": "fixed",
+      "verifierQuote": "المحاكم الإدارية هي جهات الولاية العامة في المنازعات الإدارية، باستثناء المنازعات الموكلة إلى جهات قضائية أخرى.",
+      "quoteRef": "cpca 800 ¶1 (version law-22-13, store)",
+      "change": "The exception changes a rule: it is the ground of x2's interpretive status and of o13's second reading (the ordinary court named by Commercial Code 194 ¶1 and 197 ¶1). Added statement b84 (cpca 800 ¶1, role limit); b84 added to x2's basis (its interpretiveNote now names it) and to the basis of o13's second reading. Example exV21."
+    },
+    {
+      "id": "values-b74",
+      "who": "values",
+      "target": "b74",
+      "kind": "misreading",
+      "claim": "check-values: {\"item\": \"b74\", \"problem\": \"numberNotInQuote\", \"lang\": \"en\", \"numbers\": [1]}",
+      "verdict": "refuted",
+      "verifierQuote": "وعندما يتضمن الإيجار عدة مراحل فإنه يجب التنبيه بالإخلاء في الآجال المنصوص عليها في الفقرة الأولى أعلاه، إذا فسخ المؤجر الإيجار في نهاية إحدى هذه المراحل.",
+      "quoteRef": "commercial-code 173 ¶4",
+      "change": "None: the «one» of b74's English («at the end of one of them») renders «في نهاية إحدى هذه المراحل»; the number is in the text."
+    },
+    {
+      "id": "values-b81",
+      "who": "values",
+      "target": "b81",
+      "kind": "misreading",
+      "claim": "check-values: {\"item\": \"b81\", \"problem\": \"numberNotInQuote\", \"lang\": \"en\", \"numbers\": [1]}",
+      "verdict": "fixed",
+      "verifierQuote": "أو عندما تشكل المحلات التجارية والمحلات السكنية كلا مشاعا ·",
+      "quoteRef": "commercial-code 182 ¶3 (the French text, JO 1975 No. 101 p. 1087: «forment un tout indivisible»)",
+      "change": "The text has no number: it says «كلا مشاعا» (an undivided whole), which «one whole» rendered incompletely. b81's English says now «form an undivided whole» (Arabic says unchanged). Example exV22."
+    },
+    {
+      "id": "sup-3",
+      "who": "support",
+      "target": "b54",
+      "kind": "notSupported",
+      "claim": "The losing owner may escape the compensation by accepting renewal and bearing the costs within fifteen days of the judgment becoming final, while the lessee is still in the premises and has not leased or bought another building. | no: «ولا يجوز ممارسة هذا الحق مادام المستأجر مازال موجودا في الاماكن وما دام لم يؤجر أو لم يشتر عمارة أخرى» prohibits exercise in the stated situation. For a judicial-council judgment, the period starts «ابتداء من يوم صدور الحكم», rather than when it becomes final.",
+      "verdict": "open",
+      "verifierQuote": "ولا يجوز ممارسة هذا الحق مادام المستأجر مازال موجودا في الاماكن وما دام لم يؤجر أو لم يشتر عمارة أخرى . / «Ce droit ne peut être exercé qu'autant que le locataire est encore dans les lieux et n'a pas déjà loué ou acheté un autre immeuble.» / ابتداء من اليوم الذي يصبح فيه الحكم نهائيا اذا كان الامر يتعلق بحكم ابتدائي أو ابتداء من يوم صدور الحكم اذا كان الامر يتعلق بالمجلس القضائي",
+      "quoteRef": "commercial-code 197 ¶7 and ¶6 (Arabic, store); French text of ordinance 75-59 art. 197, Official Journal 1975 No. 101 (19 Dec 1975) p. 1088, file F1975101.pdf sha256 c16f48912a422ffb27c4b1ab80288c02c85b2cd2ab77f424fb44452c1b6bb271 (scan, read from the page image)",
+      "change": "The start-point part is already met: b54 carries both start points since atk-12. The condition part: the Arabic text reads «not while» the lessee is in the premises, the French text of the same ordinance in the Journal reads «only while»; the official texts allow both readings. b54 is now interpretive with both wordings in its note and its says (ar, en) states the Arabic words and the French condition as two readings; new open point o15 (grade C, refs b54, r9) with the protective reading (build nothing on either; tell both lawyers). No item's outcome turns on b54."
+    },
+    {
+      "id": "sup-9",
+      "who": "support",
+      "target": "section",
+      "kind": "partlySupported",
+      "claim": "The commercial section of the court hears this claim. | partly: The TEXT gives general jurisdiction rules but does not identify 'this claim' or establish that it falls within the commercial section's jurisdiction.",
+      "verdict": "refuted",
+      "verifierQuote": "يختص القسم التجاري بالنظر في المنازعات التجارية، باستثناء تلك المذكورة في المادة 536 مكرر من هذا القانون. / 10 - في إيجار السكنات والمحلات المهنية،",
+      "quoteRef": "cpca 531 ¶1 (version law-22-13); cpca 512 ¶11",
+      "change": "None: the record already says no text names the section for a commercial-lease dispute; court.section is interpretive with three readings, only warns when the lawyer's section differs, and o8 holds the question. The proposal is a reading of 531 ¶1, as stated."
+    },
+    {
+      "id": "sup-12",
+      "who": "support",
+      "target": "d2",
+      "kind": "partlySupported",
+      "claim": "The time limit is 2 years, running from the date of lease action arose on; it is a limitation period, counted by the method excludeFirstDay; it applies when commercial lease is yes and lease chapter action other than refusal is yes. | partly: The TEXT does not state that the two years start when the lease action arose. It excludes actions under articles 196 and 197 without identifying those exceptions as equivalent to 'refusal' actions.",
+      "verdict": "fixed",
+      "verifierQuote": "ترفع جميع الدعاوى الممارسة وفقا لما ورد في هذا الباب ماعدا الدعاوى المشار اليها في المادتين 196 و 197 أعلاه، أمام محكمة موقع العمارة ويشملها التقادم بعد مرور سنتين. / يتعين على المستأجر طيلة مدة الدعوى الاستمرار في سداد بدلات الايجار ... من طرف الجهة القضائية التى طرحت أمامها القضية وفقا للمادة السابقة / ويحكم فى القضية وفقا لاحكام المادتين 195 و 196 .",
+      "quoteRef": "commercial-code 198 ¶1, 196 ¶1, 192 ¶3 (also 195 ¶1, 178 ¶5, 179 ¶2)",
+      "change": "Start: refuted, the record already says the text does not name the starting event (startsFrom description, interpretiveNote, readings). Exceptions: fixed. 198 ¶1 also excepts the actions of 196, i.e. the president's proceeding of 195 on the rent, duration or terms of an accepted renewal, to which rent revision (192 ¶3) and the terms of the new leases (178 ¶5, 179 ¶2) are sent; the d2 slot named only the 197 refusal. d2's when now also requires not(dispute_only_on_renewal_terms_or_rent_revision yes); b49 and b44 added to d2's basis; its interpretiveNote explains; the slot lease_chapter_action_other_than_refusal (question and why) now excludes those disputes. Examples exA19, exA20, exA21, exB10, exB11, exB12, exR4 and exV20 now state dispute_only_on_renewal_terms_or_rent_revision no (a fact the new condition reads; expectations unchanged). New example exV23."
+    },
+    {
+      "id": "sup-14",
+      "who": "support",
+      "target": "b17",
+      "kind": "partlySupported",
+      "claim": "The lessor's answer must restate the content of the article on the dispute procedure, or it is void. | partly: The supplied paragraph does not identify the notification as the lessor's answer or state that article 194 concerns the dispute procedure.",
+      "verdict": "refuted",
+      "verifierQuote": "ويتعين على المؤجر فى اجل ثلاثة اشهر من تاريخ تبليغ طلب التجديد ان يحيط الطالب علما بنفسه الاجراء ان كان يرفض التجديد مع ايضاح دوافع هذا الرفض / ويجب ان يذكر فى التبليغ المنصوص عليه فى الفقرة السابقة مضمون المادة 194 والا كان باطلا . / الفصل السادس في الإجراءات / في حالة عدم اتفاق الطرفين عند انتهاء مهلة ثلاثة أشهر من تاريخ التبليغ ... ترفع كل النزعات المتعلقة بتطبيق هذا الباب لدى الجهة القضائية المختصة",
+      "quoteRef": "commercial-code 174 ¶4, ¶5; chapter VI heading and 194 ¶1 (French, JO 1975 No. 101 p. 1088: «Chapitre VI De la procédure»)",
+      "change": "None: the notification of ¶5 is the lessor's answer of ¶4, and 194 opens the procedure chapter and sets how disputes are brought."
+    },
+    {
+      "id": "sup-18",
+      "who": "support",
+      "target": "b26",
+      "kind": "partlySupported",
+      "claim": "When the lessor offers substitute premises, the lessee either accepts by extrajudicial act within three months or sues on the conditions set for a refusal to renew. | partly: The supplied paragraph does not identify the situation as an offer of substitute premises; it refers to paragraph 2 without supplying its content.",
+      "verdict": "refuted",
+      "verifierQuote": "غير أنه يجوز للمؤجر أن يتخلص من دفع هذا التعويض بعرضه على المستأجر المخلى محلا موافقا لحاجاته وامكانياته وموجودا بمكان مماثل . / واذا تمسك المؤجر بالاستفادة من هذه المادة يتعين عليه أن يشير فى عقد رفض التجديد أو التنبيه بالاخلاء الى أحكام الفقرة الثانية ... ويتعين على المستأجر بعد ذلك اما أن يعلن بعقد غير قضائى عن موافقته فى مدة ثلاثة أشهر، واما أن يرفع الدعوى أمام الجهة القضائية المختصة ضمن الشروط المنصوص عليها فى المادة 197.",
+      "quoteRef": "commercial-code 178 ¶2, ¶4",
+      "change": "None: the paragraph 2 that ¶4 refers to is the offer of substitute premises (also cited in b25)."
+    },
+    {
+      "id": "sup-20",
+      "who": "support",
+      "target": "b44",
+      "kind": "partlySupported",
+      "claim": "Failing agreement within the following three months, the request goes to the competent court and is decided under the procedure for fixing the lease terms. | partly: The TEXT refers to articles 195 and 196 but does not state that they prescribe the procedure for fixing lease terms.",
+      "verdict": "refuted",
+      "verifierQuote": "ويحكم فى القضية وفقا لاحكام المادتين 195 و 196 . / اذا وافق المؤجر على تجديد الايجار وكان أمر الخلاف يتعلق ببدل الايجار أو المدة أو الشروط اللاحقة أو بمجموع هذه العناصر، وجب على الطرفين الحضور أمام رئيس المحكمة المختصة",
+      "quoteRef": "commercial-code 192 ¶3, 195 ¶1 (also 195 ¶4: «شروط الايجار الجديد»)",
+      "change": "None: 195 is the proceeding on the rent, duration and terms of the renewed lease, as b44 says."
+    },
+    {
+      "id": "sup-21",
+      "who": "support",
+      "target": "b5",
+      "kind": "partlySupported",
+      "claim": "The provisions also apply, subject to the special compensation provisions, to leases of premises owned by the State, wilayas, communes or public bodies when they meet the scope conditions. | partly: The TEXT refers to articles 185 and 186 but does not identify them as special compensation provisions.",
+      "verdict": "refuted",
+      "verifierQuote": "لايجوز رفض تجديد الايجارات الخاصة بالعمارات التابعة للدولة ... دون أن تكون الجماعة المالكة ملزمة بسداد تعويض الاخلاء المنصوص عليه فى المادة 176 / فانه يبقى للمستأجر الحق فى قبض تعويض يكون مساويا لمبلغ الضرر الذى لحق به",
+      "quoteRef": "commercial-code 185 ¶1, 186 ¶1",
+      "change": "None: 185 and 186 are both compensation provisions (eviction compensation owed by public owners; compensation for fraud), as b5 says."
+    },
+    {
+      "id": "sup-22",
+      "who": "support",
+      "target": "b23",
+      "kind": "partlySupported",
+      "claim": "Renewal may also be refused without compensation if total or partial demolition for officially recognised unfitness, or the impossibility of safe occupation, is proven. | partly: The TEXT states the demolition, officially recognised unfitness and unsafe-occupation conditions, but does not state the consequence of permitting refusal of renewal without compensation.",
+      "verdict": "refuted",
+      "verifierQuote": "يجوز للمؤجر أن يرفض تجديد الايجار دون أن يلزم بسداد أى تعويض، اذا برهن عن سبب خطير ومشروع تجاه المستأجر المخلى المحل . / ـ اذا أثبت وجود هدم كامل العمارة أو جزء منها لعدم صلاحيتها للسكن المعترف به من السلطة الادارية، أو اذا أثبت أنه يستحيل شغل العمارة دون خطر نظرا لحالتها.",
+      "quoteRef": "commercial-code 177 ¶1, ¶3",
+      "change": "None: ¶3 is a conditional clause with no main clause of its own, set out as a second case («ـ اذا») of ¶1's refusal without any compensation; ¶4 then gives the priority right in the rebuilt building. The consequence is ¶1's."
+    },
+    {
+      "id": "sup-28",
+      "who": "support",
+      "target": "p5",
+      "kind": "partlySupported",
+      "claim": "Before a claim in which commercial lease is yes and contract date is before 2005-02-09 and priority right in issue is yes, a prior step must have been taken. | partly: No contract-date cutoff of 2005-02-09 is stated. The TEXT requires notice to benefit from the priority right, but does not expressly make it a prerequisite to filing a claim.",
+      "verdict": "refuted",
+      "verifierQuote": "يجب على المستأجر لكى يستفيد من حق الاولوية المنصوص عليه فى المادة 177 أن يبلغ، عند اخلائه للاماكن التى كان يشغلها أو على الاكثر فى خلال الثلاثة أشهر التالية لذلك ، عن نيته فى الاستفادة الى المالك بعقد غير قضائى / العدد 11 ... الموافق 9 فبراير سنة 2005 م / يبقى تجديد عقود الإيجار المبرمة قبل النشر المذكور في المادة 187 مكرر أعلاه، خاضعا للتشريع الساري المفعول بتاريخ إبرام عقد الإيجار.",
+      "quoteRef": "commercial-code 179 ¶1; Official Journal 2005 No. 11 p. 1 (masthead, issue date) and p. 9 (Law 05-02 art. 3, 187 مكرر 1), file A2005011.pdf sha256 85a7e8d258ca720d396c51d6dd59fd9f91ca2d10e5a4ca8edb9b87fd3136e806",
+      "change": "None: the cutoff is the date of the Journal issue that published Law 05-02 (9 February 2005; its effect elsewhere is o1's reading). 179 ¶1 makes the notice the condition of the right; p5 is interpretive and only warns, and its note already says what a late or missing notice does to a claim is a reading."
+    },
+    {
+      "id": "sup-29",
+      "who": "support",
+      "target": "b37",
+      "kind": "partlySupported",
+      "claim": "Leases made from the date the amending law was published must be in official form on pain of nullity, for a term the parties set freely. | partly: The TEXT refers to 'this law' («هذا القانون») but does not identify it as an amending law.",
+      "verdict": "refuted",
+      "verifierQuote": "قانون رقم 05 – 02 مؤرخ في 27 ذي الحجة عام 1425 الموافق 6 فبراير سنة 2005، يعدل ويتمم الأمر رقم 75 – 59 ... والمتضمن القانون التجاري. / المادة 3 : يتمم الأمر رقم 75-59 ... بمادتين 187 مكرر و187 مكرر 1 تحرران كما يأتي: «المادة 187 مكرر: تحرر عقود الإيجار المبرمة ابتداء من تاريخ نشر هذا القانون في الجريدة الرسمية",
+      "quoteRef": "Official Journal 2005 No. 11 pp. 8-9 (Law 05-02, title and art. 3), file A2005011.pdf sha256 85a7e8d258ca720d396c51d6dd59fd9f91ca2d10e5a4ca8edb9b87fd3136e806 (read from the page images; the text layer is not Unicode)",
+      "change": "None: «هذا القانون» in 187 مكرر is Law 05-02, which amends and completes the Commercial Code."
+    },
+    {
+      "id": "sup-32",
+      "who": "support",
+      "target": "p4",
+      "kind": "partlySupported",
+      "claim": "Before a claim in which commercial lease is yes and contract date is before 2005-02-09 and lessee contests refusal or claims eviction compensation is yes and notice to quit valid is no, a prior step must have been taken. | partly: The TEXT does not state the 2005-02-09 cutoff, equate an invalid notice with absence of notice, or make a renewal request a prerequisite to every action contesting refusal or claiming eviction compensation.",
+      "verdict": "open",
+      "verifierQuote": "ويجب أن يتم التنبيه بالإخلاء بعقد غير قضائي ... وإلا اعتبر باطلا. / فى حالة عدم التنبيه بالاخلاء يتعين على المستأجر الذى يرغب فى الحصول على تجديد ايجاره ان يتقدم بطلبه / غير انه عندما يبلغ المؤجر عن طريق التنبيه بالاخلاء او عن طريق رفض التجديد عن نيته فى عدم تجديد الايجار",
+      "quoteRef": "commercial-code 173 ¶5, 174 ¶1, 175 ¶3 (also 178 ¶4, 197 ¶1); cutoff: Official Journal 2005 No. 11 p. 1 and p. 9, file A2005011.pdf sha256 85a7e8d258ca720d396c51d6dd59fd9f91ca2d10e5a4ca8edb9b87fd3136e806",
+      "change": "Cutoff: refuted (9 February 2005, the Journal issue of Law 05-02). The request as the route to renewal when no notice was given: stated by 174 ¶1, and p4 is already interpretive (warn, never block). Void notice = no notice: the texts allow both readings (173 ¶5 voids it and 174 ¶1 speaks of «عدم التنبيه»; 175 ¶3 and 178 ¶4 make the notice the lessor's way of notifying the refusal, which 197 lets the lessee contest directly). Rule kept (the protective one: warn); p4's interpretiveNote now gives both readings; new open point o16 (grade C, refs p4)."
+    },
+    {
+      "id": "sup-45",
+      "who": "support",
+      "target": "b22",
+      "kind": "notSupported",
+      "claim": "A failure to perform or a cessation of operation may be invoked only if it continued for more than a month after a warning by extrajudicial act stating the ground and restating the paragraph; otherwise the warning is void. | no: «تواصل ارتكابها أو تجديدها لاكثر من شهر» allows continuation or recurrence of the breach; the STATEMENT makes continuation alone necessary.",
+      "verdict": "fixed",
+      "verifierQuote": "فانه لا يجوز الادعاء بالمخالفة المقترفة من قبل المستأجر نظرا لاحكام المادة 172، الا اذا تواصل ارتكابها أو تجديدها لاكثر من شهر بعد انذار المؤجر بتوقفها.",
+      "quoteRef": "commercial-code 177 ¶2",
+      "change": "b22 itself already says «continued or recurred» (atk-6); the same omission remained in p2: its message (ar, en) and its accepted means m1 label said only «continued». Both now say «continued or recurred» («استمرت المخالفة أو تجددت»). Example exV24."
+    },
+    {
+      "id": "sup-47",
+      "who": "support",
+      "target": "x1",
+      "kind": "partlySupported",
+      "claim": "When commercial lease is yes and dispute only on renewal terms or rent revision is yes, the case leaves the ordinary courts (otherSection). | partly: The TEXT provides proceedings before the president of the competent court under the urgent procedure. It does not state that the case leaves the ordinary courts or assign it to 'otherSection'.",
+      "verdict": "refuted",
+      "verifierQuote": "وجب على الطرفين الحضور أمام رئيس المحكمة المختصة، التي يكون موقع العمارة تابعا لها ، وذلك مهما كان مبلغ الايجار والذي يقوم بالبت فيها حسب الاجراء المقرر في قضايا الامور المستعجلة.",
+      "quoteRef": "commercial-code 195 ¶1 (also 192 ¶3, 178 ¶5, 179 ¶2)",
+      "change": "None: the text takes the dispute away from the section's ordinary claim to the court president under the summary procedure, which is what x1's message says; otherSection is the nearest value of the schema's exit list, and «leaves the ordinary courts» is the guide's general label for every exit, not a statement of x1."
+    },
+    {
+      "id": "sup-50",
+      "who": "support",
+      "target": "b36",
+      "kind": "partlySupported",
+      "claim": "Exception: where substitute premises were offered, the lessee leaves as soon as the provisional compensation fixed by the court president on an expert report is paid. | partly: The TEXT refers to the situation in article 178 paragraph 2 but does not state that this situation involves an offer of substitute premises.",
+      "verdict": "refuted",
+      "verifierQuote": "يلزم المستأجر بمغادرة الاماكن فى الحالة المنصوص عليها فى الفقرة الثانية من المادة 178، فور سداد التعويض المؤقت الذى يحدده رئيس المحكمة / غير أنه يجوز للمؤجر أن يتخلص من دفع هذا التعويض بعرضه على المستأجر المخلى محلا موافقا لحاجاته وامكانياته وموجودا بمكان مماثل .",
+      "quoteRef": "commercial-code 187 ¶2, 178 ¶2",
+      "change": "None: 178 ¶2 is the offer of substitute premises."
+    },
+    {
+      "id": "sup-53",
+      "who": "support",
+      "target": "d1",
+      "kind": "partlySupported",
+      "claim": "The time limit is 3 months, running from the date of renewal refusal notified on; it is a procedural period; it applies when commercial lease is yes and contract date is before 2005-02-09 and lessee contests refusal or claims eviction compensation is yes. | partly: The TEXT gives no publication date of 2005-02-09, so that contract-date cutoff is unsupported. It sets a summons-service deadline but does not expressly classify the period as procedural.",
+      "verdict": "refuted",
+      "verifierQuote": "ويجب في هذه الحالة تبليغ التكليف بالحضور في الثلاثة أشهر من تاريخ تبليغ رفض التجديد . / العدد 11 ... الموافق 9 فبراير سنة 2005 م",
+      "quoteRef": "commercial-code 197 ¶3, 187 مكرر 1 ¶1; Official Journal 2005 No. 11 p. 1, file A2005011.pdf sha256 85a7e8d258ca720d396c51d6dd59fd9f91ca2d10e5a4ca8edb9b87fd3136e806",
+      "change": "None: the cutoff is the issue date of the Journal that published Law 05-02 (o1 keeps the local-effect reading). The period targets a procedural act, the service of the summons; d1 is interpretive and its readings already keep forfeiture and directory open, so «procedural» classifies the act, not the sanction."
+    },
+    {
+      "id": "sup-59",
+      "who": "support",
+      "target": "b35",
+      "kind": "partlySupported",
+      "claim": "A lessee entitled to eviction compensation cannot be made to leave before receiving it and stays on the terms of the expired lease; the occupation indemnity is fixed under the rent provisions. | partly: The TEXT says the occupation indemnity is fixed under Chapter V, but does not identify that chapter as the rent provisions.",
+      "verdict": "refuted",
+      "verifierQuote": "غير أن التعويض الخاص بالشغل يحدد طبقا لاحكام الفصل الخامس / الفصل الخامس في الإيجار / يجب أن يطابق مبلغ بدل الايجار الذى يراد تجديده أو اعادة النظر فيه، القيمة الايجارية العادية .",
+      "quoteRef": "commercial-code 187 ¶1; chapter V heading and 190 ¶1 (store); French text, JO 1975 No. 101 p. 1087: «Chapitre V Du loyer»",
+      "change": "None: chapter V (articles 190 to 193) is the rent chapter."
+    },
+    {
+      "id": "sup-63",
+      "who": "support",
+      "target": "p3",
+      "kind": "partlySupported",
+      "claim": "Before a claim in which commercial lease is yes and resolutory clause for unpaid rent relied on is yes, the debtor must first be put on notice (formal notice). | partly: The TEXT makes an unheeded payment demand a condition for the termination clause to take effect after one month. It does not expressly make notice a prerequisite to filing a claim.",
+      "verdict": "refuted",
+      "verifierQuote": "كل اشتراط مدرج فى الايجار ينص على الفسخ بقوة القانون فى حالة عدم دفع بدل الايجار فى الاستحقاقات المتفق عليها، لا ينتج أثره الا بعد مرور شهر واحد من الاخطار بالدفع الذى يبقى بدون نتيجة. / ويجب أن يشار فى هذا الاخطار الى هذه المهلة.",
+      "quoteRef": "commercial-code 191 ¶1, ¶2",
+      "change": "None: p3 fires only when the lessor relies on the clause, which has no effect without the unheeded demand; p3 is interpretive, only warns, and its note already says the text does not bar a claim on other grounds."
+    },
+    {
+      "id": "sup-64",
+      "who": "support",
+      "target": "b31",
+      "kind": "notSupported",
+      "claim": "The beneficiary of the take-back must occupy the premises within six months of the lessee leaving and for at least six years, failing which the evicted lessee keeps his right to eviction compensation. | no: «باستثناء السبب المشروع» qualifies the occupancy obligation with an exception for a legitimate reason; the STATEMENT presents the obligation and consequence unconditionally.",
+      "verdict": "refuted",
+      "verifierQuote": "ويتعين على المستفيد من حق الاسترجاع ، باستثناء السبب المشروع، اذا لم يوجد أن يشغل بنفسه الاماكن فى مهلة ستة أشهر ابتداء من تاريخ مغادرة المستأجر المخلى ولمدة ست سنوات على الاقل والا يبقى للمستأجر المطرود حقه فى تسلم تعويض اخلاء تساوى نسبته أهمية المحلات المسترجعة ·",
+      "quoteRef": "commercial-code 182 ¶7",
+      "change": "None: the attack reads an earlier wording; b31's says (ar, en) already carry «إلا لسبب مشروع» / «Save for a legitimate reason» and the proportional compensation (atk-13)."
+    },
+    {
+      "id": "sup-73",
+      "who": "support",
+      "target": "b52",
+      "kind": "partlySupported",
+      "claim": "The same applies when the lessor refuses renewal on the terms fixed by the court. | partly: The TEXT refers to terms fixed under article 195 but does not state in this extract that the court fixes those terms.",
+      "verdict": "refuted",
+      "verifierQuote": "ويجرى مجرى ذلك اذا رفض المؤجر تجديد الايجار حسب الشروط المحددة وفقا للمادة 195 أعلاه . / وجب على الطرفين الحضور أمام رئيس المحكمة المختصة ... والذي يقوم بالبت فيها / يفصل رئيس المحكمة في الدعوى بموجب أمر مسبب .",
+      "quoteRef": "commercial-code 197 ¶2, 195 ¶1, ¶5",
+      "change": "None: under 195 the court president fixes the terms by a reasoned order."
+    },
+    {
+      "id": "sup-79",
+      "who": "support",
+      "target": "b67",
+      "kind": "partlySupported",
+      "claim": "The commercial section hears commercial disputes other than those given to the specialised commercial court. | partly: The TEXT excludes disputes mentioned in article 536 bis but does not state that those disputes are assigned to the specialised commercial court.",
+      "verdict": "refuted",
+      "verifierQuote": "يختص القسم التجاري بالنظر في المنازعات التجارية، باستثناء تلك المذكورة في المادة 536 مكرر من هذا القانون. / تختص المحكمة التجارية المتخصصة بالنظر في المنازعات المذكورة أدناه :",
+      "quoteRef": "cpca 531 ¶1, 536 مكرر ¶1 (version law-22-13)",
+      "change": "None: the disputes of 536 مكرر are those of the specialised commercial court."
+    },
+    {
+      "id": "sup-82",
+      "who": "support",
+      "target": "p1",
+      "kind": "partlySupported",
+      "claim": "Before a claim in which commercial lease is yes and contract date is before 2005-02-09 and the petition asks for eviction and not (the petition asks for rescission), a notice to quit must have been given. | partly: The TEXT gives no publication date of 2005-02-09 and does not distinguish eviction petitions from rescission petitions. It requires notice to end the lease under article 173, rather than expressly stating the claimed prerequisite to filing suit.",
+      "verdict": "refuted",
+      "verifierQuote": "لا ينتهي إيجار المحلات الخاصة بهذه الأحكام إلا بأثر تنبيه بالإخلاء حسبما جرت عليه العادات المحلية وفي مدة ستة أشهر قبل الأجل على الأقل. / يلزم المستأجر بمغادرة الأمكنة المستأجرة بانتهاء الأجل المحدد في العقد دون حاجة إلى توجيه تنبيه بالإخلاء / العدد 11 ... الموافق 9 فبراير سنة 2005 م",
+      "quoteRef": "commercial-code 173 ¶1, 187 مكرر ¶2; Official Journal 2005 No. 11 p. 1 and p. 9, file A2005011.pdf sha256 85a7e8d258ca720d396c51d6dd59fd9f91ca2d10e5a4ca8edb9b87fd3136e806",
+      "change": "None: the cutoff is the publication of Law 05-02 (9 February 2005); 173 ¶1 concerns the lease's end at its term («قبل الأجل»), not rescission for breach (191), hence the carve-out; p1 is interpretive and only warns (o12 holds what a missing notice does to the claim)."
+    },
+    {
+      "id": "sup-83",
+      "who": "support",
+      "target": "b27",
+      "kind": "partlySupported",
+      "claim": "The lessee notifies the owner by extrajudicial act of his intent to use the priority right when leaving or within three months after, then has three months after the owner's offer to answer or sue. | partly: The TEXT grants the later three-month period but does not state that it runs from the owner's offer; the paragraph describing the relevant notification is not supplied.",
+      "verdict": "refuted",
+      "verifierQuote": "وعلى المالك عند تسلمه لثمن هذا التبليغ أن يعلم بنفس الطريقة المستأجر عن استعداده لمنحه ايجارا جديدا / وللمستأجر مهلة ثلاثة أشهر للافصاح عن رغبته أو رفع الدعوى أمام الجهة القضائية المختصة. ويجب أن تتم الاشارة الى هذه المهلة فى التبليغ المنصوص عليه فى الفقرة السابقة، والا كان باطلا",
+      "quoteRef": "commercial-code 179 ¶2, ¶3",
+      "change": "None: the three months answer the owner's notification of ¶2, which must state them on pain of nullity; the owner is free once they end."
+    },
+    {
+      "id": "sup-90",
+      "who": "support",
+      "target": "p2",
+      "kind": "partlySupported",
+      "claim": "Before a claim in which commercial lease is yes and contract date is before 2005-02-09 and refusal without compensation for breach is yes, the debtor must first be put on notice (formal notice). | partly: The TEXT does not state the 2005-02-09 cutoff or expressly make the warning a prerequisite to filing a claim. It makes the warning a condition for invoking the continuing or renewed breach.",
+      "verdict": "refuted",
+      "verifierQuote": "فانه لا يجوز الادعاء بالمخالفة المقترفة من قبل المستأجر نظرا لاحكام المادة 172، الا اذا تواصل ارتكابها أو تجديدها لاكثر من شهر بعد انذار المؤجر بتوقفها. / العدد 11 ... الموافق 9 فبراير سنة 2005 م",
+      "quoteRef": "commercial-code 177 ¶2; Official Journal 2005 No. 11 p. 1, file A2005011.pdf sha256 85a7e8d258ca720d396c51d6dd59fd9f91ca2d10e5a4ca8edb9b87fd3136e806",
+      "change": "None: the cutoff is the publication of Law 05-02 (o5 holds the doubt on the gate); p2 fires only when the breach is relied on, which the text forbids without the warning; p2 is interpretive, only warns, and its note says the text does not make the petition inadmissible."
+    },
+    {
+      "id": "sup-92",
+      "who": "support",
+      "target": "b43",
+      "kind": "partlySupported",
+      "claim": "A rent revision request is made by extrajudicial act or registered letter with acknowledgement of receipt and must, on pain of nullity, state the rent asked or offered. | partly: The supplied paragraph states the request's form and required rent amount but does not identify it as a rent revision request.",
+      "verdict": "refuted",
+      "verifierQuote": "يجوز إعادة النظر في بدلات إيجار العمارات أو المحلات ، مجددا كان أم لا، والخاضعة لهذه الأحكام، بناء على طلب أحد الأطراف / ويجب أن يقدم الطلب بعقد غير قضائي أو برسالة موصى عليها مع طلب العلم بالوصول. ويجب تحت طائلة البطلان، أن يحدد بدل الإيجار المطلوب أو المعروض.",
+      "quoteRef": "commercial-code 192 ¶1, ¶2 (version law-05-02)",
+      "change": "None: «الطلب» of ¶2 is the revision request of ¶1."
+    },
+    {
+      "id": "sup-96",
+      "who": "support",
+      "target": "b13",
+      "kind": "partlySupported",
+      "claim": "The notice to quit must be an extrajudicial act stating its reasons and restating the content of the article on the dispute procedure, or it is void. | partly: The TEXT requires restating article 194 but does not state in this extract that article 194 concerns the dispute procedure.",
+      "verdict": "refuted",
+      "verifierQuote": "ويجب أن يتم التنبيه بالإخلاء بعقد غير قضائي وأن تبين فيه الأسباب التي أدت إلى توجيهه مع إعادة ذكر مضمون المادة 194، وإلا اعتبر باطلا. / الفصل السادس في الإجراءات / ترفع كل النزعات المتعلقة بتطبيق هذا الباب لدى الجهة القضائية المختصة والتي يكون موقع العمارة تابعا لها، وذلك عن طريق تكليف بالحضور",
+      "quoteRef": "commercial-code 173 ¶5; chapter VI heading and 194 ¶1 (French, JO 1975 No. 101 p. 1088: «Chapitre VI De la procédure»)",
+      "change": "None: 194 opens the procedure chapter and sets how disputes under the title are brought."
+    }
+  ]
+}

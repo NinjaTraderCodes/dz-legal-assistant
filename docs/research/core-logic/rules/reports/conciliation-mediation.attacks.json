@@ -1,0 +1,505 @@
+{
+  "unit": "conciliation-mediation",
+  "attacks": [
+    {
+      "id": "adv-1", "who": "adversary",
+      "target": "p1, n7, t1, o1, k70, k67, doc1, proposedSlots.specialised_commercial_court_installed",
+      "kind": "specialLaw",
+      "claim": "Executive Decrees 23-53 and 26-133 cover the whole territory and extend installed specialised commercial courts to the areas of new courts not yet installed; a lawyer answering that 'the court whose area covers the dispute' is not installed wrongly exempts p1.",
+      "verdict": "fixed",
+      "verifierQuote": "المادة 2 مكرر : تنصب المحاكم التجارية المتخصصة الجديدة تدريجيا، عند توفر جميع الشروط الضرورية لسيرها. المادة 2 مكرر 1 : يمتد الاختصاص الإقليمي للمحاكم التجارية المتخصصة المنصبة قبل صدور هذا المرسوم، إلى دائرة الاختصاص الإقليمي للمحاكم التجارية المتخصصة الجديدة إلى حين تنصيب هذه الأخيرة. المادة 2 مكرر 2 : تبقى الإجراءات القائمة أمام المحاكم التجارية المتخصصة المختصة قبل صدور هذا المرسوم، من اختصاص نفس هذه الجهة القضائية دون تحويلها إلى المحكمة التجارية المتخصصة الجديدة، المختصة إقليميا. — (المرسوم 23-53) المادة 2 : يحدد عدد المحاكم التجارية المتخصصة باثنتي عشرة (12) محكمة عبر كامل التراب الوطني",
+      "quoteRef": "Executive Decree 26-133 of 30 March 2026, arts. 3 (new arts. 2 مكرر to 2 مكرر 2), Official Journal 2026 no. 27, p. 10 (A2026027.pdf, sha256 099f3ad407e7b85a7546b1d29f0e274c45df08d253076c80965c3f68abaf0c0c); Executive Decree 23-53, art. 2, Official Journal 2023 no. 2, p. 19 (A2023002.pdf, sha256 6747daf0e1dcfd886661272c3c4bdf9a2a11575e36ee2b683e8769a111ce3137). Both read as page images.",
+      "change": "Slot specialised_commercial_court_installed reworded to ask whether any installed specialised commercial court has territorial jurisdiction over the dispute, directly or by the extension until the new court is installed; p1's first exemption note, n7 (telling fact and message), t1 rule, k67, k70 and o1 updated; new open point o13 (grade D: which installed court covers which area, and the fate of a conciliation pending when the new court is installed); both decrees appended to requests.jsonl; worked example exV1."
+    },
+    {
+      "id": "adv-2", "who": "adversary",
+      "target": "p1, b25, k24, k48, o4",
+      "kind": "specialLaw",
+      "claim": "In intellectual-property matters a seizure lapses after one month (marks) or must be followed by seizing the court within thirty days (copyright), while the prior conciliation may last more than three months; the record says nothing.",
+      "verdict": "fixed",
+      "verifierQuote": "(الأمر 03-06) المادة 35 : يعد الوصف أو الحجز باطلا بقوة القانون إذا لم يلتمس المدعي الطريق المدني أو الجزائي خلال أجل شهر و ذلك بصرف النظر عن تعويضات الأضرار التي يمكن طلبها. — (الأمر 03-05) المادة 149 : يجب على المستفيد من التدابير التحفظية المذكورة أعلاه أن يقوم خلال الثلاثين (30) يوما ابتداء من تاريخ الأمرين المنصوص عليهما في المادتين 146 و147 من هذا الأمر بإخطار الجهة القضائية المختصة.",
+      "quoteRef": "Ordinance 03-06 art. 35, Official Journal 2003 no. 44, p. 27; Ordinance 03-05 art. 149, same issue, p. 20 (A2003044.pdf, sha256 bf0fb3ccc1451799ad8422e4b0000aa4740cbc6dc0be89515eee0f156db50ca1). Later amendments not checked.",
+      "change": "Texts not in the store: new open point o14 (grade D) with both readings (does the conciliation request keep the seizure or not) and a protective reading (warn that the period runs from the order and may end before the conciliation); checklist line k77 and a note on k51; both ordinances appended to requests.jsonl; worked example exV2. No condition changed until step 2 has read the texts."
+    },
+    {
+      "id": "adv-3", "who": "adversary",
+      "target": "p1 (acceptedMeans m1), proposedSlots.commercial_nonconciliation_record, doc1, b26",
+      "kind": "missing",
+      "claim": "A notified party who does not attend cannot sign the record; the slot as worded forces 'no' and a block, and the text does not say which record then satisfies the requirement.",
+      "verdict": "open",
+      "verifierQuote": "ويبلغ طالب الصلح باقي أطراف النزاع بتاريخ جلسة الصلح. ... لإجراء الصلح الذي ينتهي بتحرير محضر يوقع من القاضي وأطراف النزاع وأمين الضبط ... في حالة فشل محاولة الصلح، ترفع الدعوى ... مرفقة، تحت طائلة عدم قبول الدعوى شكلا، بمحضر عدم الصلح.",
+      "quoteRef": "cpca 536 مكرر 4 ¶1, ¶2, ¶3 (store, version law-22-13); same words in Official Journal 2022 no. 48, p. 4",
+      "change": "The text does not settle it; both readings kept in new open point o15 (grade C). Protective reading made the rule: new proposed slot commercial_nonconciliation_party_absent; p1 gets a third exemption on it whose note says it is a reading; new boundary n10 warns (fires only when the slot is answered yes); nothing blocks on the reading. Examples ex2, ex5, exB2, exR4 answer the new slot no so that they keep testing what they tested; worked example exV3."
+    },
+    {
+      "id": "adv-4", "who": "adversary",
+      "target": "p1, proposedSlots.commercial_nonconciliation_record, doc1",
+      "kind": "missing",
+      "claim": "The record never asks whether every defendant named in the petition was a party to the conciliation; a record against one defendant lets a petition against two export clean.",
+      "verdict": "fixed",
+      "verifierQuote": "يسبق قيد الدعوى إجراء الصلح الذي يتم بطلب من أحد الخصوم ... ويبلغ طالب الصلح باقي أطراف النزاع بتاريخ جلسة الصلح.",
+      "quoteRef": "cpca 536 مكرر 4 ¶1 (store, version law-22-13)",
+      "change": "The record slot commercial_nonconciliation_record and accepted means m1 now require that every defendant named in the petition was notified of the session date and that the record is signed by all the parties to the dispute; p1's message asks to check that the record covers every defendant; new open point o16 (grade C) on whether the inadmissibility touches the whole claim or the claim against the left-out defendant; checklist k79; worked example exV4 (bank against trader and guarantor, record against the trader only: block)."
+    },
+    {
+      "id": "adv-5", "who": "adversary",
+      "target": "p1, b24, k29",
+      "kind": "missing",
+      "claim": "Judicial settlement and bankruptcy can be opened on the debtor's own declaration or by the court of its own motion, with no adverse party with whom to conciliate; p1 would block such a filing. Source was memory (tier 3).",
+      "verdict": "fixed",
+      "verifierQuote": "المادة 215 : يتعين على كل تاجر أو شخص معنوي خاضع للقانون الخاص ولو لم يكن تاجرا، اذا توقف عن الدفع أن يدلي باقرار في مدى خمسة عشر يوما قصد افتتاح اجراءات التسوية القضائية أو الافلاس. المادة 216 : يجوز أيضا افتتاح التسوية القضائية أو الافلاس بناء على تكليف بالحضور صادر من دائن مهما كانت طبيعة الدين. فللمحكمة أن تحكم في الامر دائما وتلقائيا بعد الاستماع الى المدين أو استدعائه قانونا. — (ق.إ.م.إ 536 مكرر 4 ¶1) يسبق قيد الدعوى إجراء الصلح الذي يتم بطلب من أحد الخصوم ... ويبلغ طالب الصلح باقي أطراف النزاع",
+      "quoteRef": "Commercial Code (Ordinance 75-59) arts. 215 and 216, Official Journal 1975 no. 101, p. 1328 (A1975101.pdf, sha256 9cfd01fdbdedb027b5ac1cc535b98ef5e280262ebc484b9285f45ece311fe7ab, image scan; 1975 wording, later amendments not checked); cpca 536 مكرر 4 ¶1 (store)",
+      "change": "Confirmed in the Official Journal. New proposed slot specialised_commercial_no_opposing_party; p1 gets a fourth exemption on it (basis cpca 536 مكرر 4 ¶1, note: a reading); new boundary n11 warns when it is answered yes; new open point o17 (grade D, the Commercial Code articles are not in the store); checklist k78; arts. 215 and 216 appended to requests.jsonl; worked example exV5."
+    },
+    {
+      "id": "adv-6", "who": "adversary",
+      "target": "k2, b1, b2",
+      "kind": "exception",
+      "claim": "k2 says conciliation is open in any matter; the Civil Code's compromise chapter forbids compromise on personal status or public order. Source was memory; the adversary's fetch failed.",
+      "verdict": "fixed",
+      "verifierQuote": "المادة 461 : لا يجوز الصلح في المسائل المتعلقة بالحالة الشخصية أو بالنظام العام ولكن يجوز الصلح على المصالح المالية الناجمة عن الحالة الشخصية.",
+      "quoteRef": "Civil Code (Ordinance 75-58) art. 461, Official Journal 1975 no. 78, Arabic p. 1017 (A1975078.pdf, sha256 ba213b5beef85fb30959320b817594324e043842446c953cd86e22a074630ee9, image scan); the ledger lists no instrument touching arts. 459 to 466",
+      "change": "k2 note corrected (the compromise is bounded by civil-code 461, not in the store); o6 rewritten to name arts. 459 to 466 with the Official Journal page, stays grade D until step 2 reads them; k69 note updated; civil-code 461 appended to requests.jsonl; worked example exV6. No petition gate changes."
+    },
+    {
+      "id": "adv-7", "who": "adversary",
+      "target": "k55, o9, k7, b64",
+      "kind": "missing",
+      "claim": "The regulation cpca 998 refers to exists: Executive Decree 09-100 (lists of mediators at each judicial council; fees fixed by the judge, advance, equal shares).",
+      "verdict": "fixed",
+      "verifierQuote": "المادة الأولى : تطبيقا لأحكام المادة 998 من القانون رقم 08-09 ... يهدف هذا المرسوم إلى تحديد كيفيات تعيين الوسيط القضائي. ... المادة 4 : يتم اختيار الوسيط القضائي من القوائم التي يتم إعدادها على مستوى كل مجلس قضائي. ... المادة 12 : يتقاضى الوسيط القضائي مقابل أتعاب، يحدد مقداره القاضي الذي عينه. يمكن الوسيط القضائي أن يطلب من القاضي تسبيقا، يخصم من أتعابه النهائية. يتحمل الأطراف مناصفة مقابل أتعاب الوسيط القضائي، ما لم يتفقوا على خلاف ذلك أو ما لم يقرر القاضي خلاف ذلك بالنظر إلى الوضعية الاجتماعية للأطراف.",
+      "quoteRef": "Executive Decree 09-100 of 10 March 2009, arts. 1, 4, 12, Official Journal 2009 no. 16, pp. 3-5 (A2009016.pdf, sha256 63fefae72f2bafba5d39e595c3b899e451464315e2fae1dc33856db1fd502fec). Later amendments not checked.",
+      "change": "k7 and k55 notes answer from the decree; o9 rewritten with its content and source, kept at grade D until step 2 has read it twice (the prompt's rule, not the adversary's proposal to drop D); decree appended to requests.jsonl; worked example exV7. No petition gate changes."
+    },
+    {
+      "id": "atk-1", "who": "attack",
+      "target": "b63",
+      "kind": "exception",
+      "claim": "b63 ignores labour-disputes 19 ¶3 (civil servants are outside the conciliation offices), so a public-servant plaintiff would be told the step is required.",
+      "verdict": "refuted",
+      "verifierQuote": "[labour-disputes 19 ¶1] يجب أن يكون كل خلاف فردي خاص بالعمل موضوع محاولة للصلح أمام مكتب المصالحة قبل مباشرة أي دعوى قضائية. [¶3] ويستثنى من مجال اختصاص مكاتب المصالحة الخلافات الفردية للعمل التي يكون طرفا فيها الموظفون والأعوان الخاضعون للقانون الأساسي للمؤسسات والإدارات العمومية.",
+      "quoteRef": "labour-disputes 19 ¶1 and ¶3 (store)",
+      "change": ""
+    },
+    {
+      "id": "atk-2", "who": "attack",
+      "target": "p1",
+      "kind": "wrongCondition",
+      "claim": "The exemption on commercial_conciliation_agreement = yes drops the requirement even for a partial settlement, though the remaining claim still needs a record of non-conciliation.",
+      "verdict": "fixed",
+      "verifierQuote": "في حالة فشل محاولة الصلح، ترفع الدعوى أمام المحكمة التجارية المتخصصة بعريضة افتتاح الدعوى طبقا للقواعد المنصوص عليها في هذا القانون مرفقة، تحت طائلة عدم قبول الدعوى شكلا، بمحضر عدم الصلح.",
+      "quoteRef": "cpca 536 مكرر 4 ¶3 (store, version law-22-13)",
+      "change": "Slot commercial_conciliation_agreement now asks whether the settlement covers everything the petition claims (answer no for a partial one); p1's second exemption note, n6's telling fact and message, and o12's protective reading say a partial settlement does not dispense with the record of non-conciliation for the rest; ex8 and exR3 titles updated; worked example exV8 (partial settlement, no record for the rest: block)."
+    },
+    {
+      "id": "atk-3", "who": "attack",
+      "target": "p1",
+      "kind": "wrongEffect",
+      "claim": "With the court not installed, p1 waives the step as a settled exception while its own note and n7 say the text does not settle it.",
+      "verdict": "refuted",
+      "verifierQuote": "[law-22-13 13 ¶1] تسري قواعد الاختصاص النوعي والإقليمي المنصوص عليها في هذا القانون، الخاصة بالجهات القضائية الإدارية والمحاكم التجارية المتخصصة ابتداء من تاريخ تنصيب الجهات القضائية الجديدة. [cpca 536 مكرر 4 ¶1] ويقدم إلى رئيس المحكمة التجارية المتخصصة ... [¶3] ترفع الدعوى أمام المحكمة التجارية المتخصصة ... بمحضر عدم الصلح.",
+      "quoteRef": "law-22-13 13 ¶1; cpca 536 مكرر 4 ¶1 and ¶3 (store)",
+      "change": "None to the rule. The step is requested from the president of the specialised court and the record attaches to a claim before that court, whose jurisdiction rules run only from installation; the exemption's note already marks it a reading, n7 warns in that case (never a block on a reading), and p1 does not say the step was done (n7 fires only without a record). With adv-1 the exemption now needs that no installed court covers the area, even by extension."
+    },
+    {
+      "id": "atk-4", "who": "attack",
+      "target": "p1",
+      "kind": "wrongCondition",
+      "claim": "p1, n6 and n7 read slots that are not in the declared slot list, so they can never be answered.",
+      "verdict": "refuted",
+      "verifierQuote": "يمكن القاضي المعين لهذا الغرض الاستعانة بأي شخص يراه مناسبا لمساعدته لإجراء الصلح الذي ينتهي بتحرير محضر يوقع من القاضي وأطراف النزاع وأمين الضبط",
+      "quoteRef": "cpca 536 مكرر 4 ¶2 (store): the record of the designated judge is another document than the labour office's record, so a separate slot is needed",
+      "change": "None. The three slots are listed in the record's slots and declared in proposedSlots, which rules check accepts; the same holds for the two slots the verifier added."
+    },
+    {
+      "id": "atk-5", "who": "attack",
+      "target": "p1",
+      "kind": "missing",
+      "claim": "Nothing handles a conciliation request that produces no record (no judge designated within five days, three months run out, the other party never attends).",
+      "verdict": "refuted",
+      "verifierQuote": "يعين خلال مدة خمسة (5) أيام، بموجب أمر على عريضة، أحد القضاة للقيام بإجراء الصلح في أجل لا يتجاوز ثلاثة (3) أشهر ... في حالة فشل محاولة الصلح، ترفع الدعوى ... مرفقة، تحت طائلة عدم قبول الدعوى شكلا، بمحضر عدم الصلح.",
+      "quoteRef": "cpca 536 مكرر 4 ¶1 and ¶3 (store)",
+      "change": "None for the periods: the text attaches no consequence to them and still requires the record; open point o3 already keeps both readings, uses the five days and three months, and keeps the step not done while no record exists. The absent-party case is handled under adv-3 (exemption, n10, o15)."
+    },
+    {
+      "id": "atk-6", "who": "attack",
+      "target": "b32",
+      "kind": "misreading",
+      "claim": "b32 drops the limit 'within articles 53 and 54' on divorce at the wife's request.",
+      "verdict": "fixed",
+      "verifierQuote": "مع مراعاة أحكام المادة 49 أدناه، يحل عقد الزواج بالطلاق الذي يتم بإرادة الزوج أو بتراضي الزوجين أو بطلب من الزوجة في حدود ما ورد في المادتين 53 و54 من هذا القانون.",
+      "quoteRef": "family-code 48 ¶1 (store)",
+      "change": "b32 says now states the limit (at the wife's request within the limits the code sets for tatliq and khul); worked example exV9."
+    },
+    {
+      "id": "atk-7", "who": "attack",
+      "target": "b13",
+      "kind": "misreading",
+      "claim": "b13 drops the civil-rights condition and speaks of a conviction where the text speaks of a penalty.",
+      "verdict": "fixed",
+      "verifierQuote": "1 - ألا يكون قد تعرض إلى عقوبة عن جريمة مخلة بالشرف، وألا يكون ممنوعا من حقوقه المدنية،",
+      "quoteRef": "cpca 998 ¶2 (store)",
+      "change": "b13 says rewritten: chosen among those known for good conduct and integrity, no penalty for a crime against honour, not deprived of civil rights, qualified, neutral and independent; worked example exV10."
+    },
+    {
+      "id": "atk-8", "who": "attack",
+      "target": "b55",
+      "kind": "misreading",
+      "claim": "b55 presents consultation at any time as a general power; 425 is the family-section article.",
+      "verdict": "fixed",
+      "verifierQuote": "[cpca 425 ¶1] يمارس رئيس قسم شؤون الأسرة الصلاحيات المخولة لقاضي الاستعجال ... [¶4] يمكن اللجوء إلى الاستشارة في أي وقت وحتى أثناء إجراءات الصلح.",
+      "quoteRef": "cpca 425 ¶1 and ¶4 (store), in the chapter on the family section",
+      "change": "b55 says now limits the rule to family-section cases and says consultation (not expert consultation); k73 note updated; worked example exV11."
+    },
+    {
+      "id": "atk-9", "who": "attack",
+      "target": "b35",
+      "kind": "misreading",
+      "claim": "b35 keeps only the first half of article 50.",
+      "verdict": "fixed",
+      "verifierQuote": "من راجع زوجته أثناء محاولة الصلح لا يحتاج إلى عقد جديد ومن راجعها بعد صدور الحكم بالطلاق يحتاج إلى عقد جديد.",
+      "quoteRef": "family-code 50 ¶1 (store)",
+      "change": "b35 says now carries both halves of the paragraph; worked example exV12."
+    },
+    {
+      "id": "atk-10", "who": "attack",
+      "target": "b64",
+      "kind": "specialLawSuspected",
+      "claim": "From memory: Executive Decree 09-100 sets how the judicial mediator is appointed; check it and any later replacement.",
+      "verdict": "fixed",
+      "verifierQuote": "مرسوم تنفيذي رقم 09-100 مؤرخ في 13 ربيع الأول عام 1430 الموافق 10 مارس سنة 2009، يحدد كيفيات تعيين الوسيط القضائي. ... المادة الأولى : تطبيقا لأحكام المادة 998 من القانون رقم 08-09 ... يهدف هذا المرسوم إلى تحديد كيفيات تعيين الوسيط القضائي.",
+      "quoteRef": "Official Journal 2009 no. 16, p. 3 (A2009016.pdf, sha256 63fefae72f2bafba5d39e595c3b899e451464315e2fae1dc33856db1fd502fec). A later replacing decree was not searched.",
+      "change": "As adv-7: k7, k55 and o9 name the decree (grade D until in the store); requested; worked example exV10."
+    },
+    {
+      "id": "sup-2", "who": "support",
+      "target": "p1",
+      "kind": "partlySupported",
+      "claim": "The text does not state p1's exceptions (installation, settlement) nor the n6/n7 warnings.",
+      "verdict": "fixed",
+      "verifierQuote": "[cpca 536 مكرر 4 ¶3] في حالة فشل محاولة الصلح، ترفع الدعوى ... بمحضر عدم الصلح. [law-22-13 13 ¶1] تسري قواعد الاختصاص النوعي والإقليمي ... الخاصة بالجهات القضائية الإدارية والمحاكم التجارية المتخصصة ابتداء من تاريخ تنصيب الجهات القضائية الجديدة.",
+      "quoteRef": "cpca 536 مكرر 4 ¶3; law-22-13 13 ¶1 (store)",
+      "change": "The settlement exemption was too wide and is narrowed to a settlement of everything claimed (see atk-2); the installation exemption is kept, its note says it is a reading and n7 warns (see atk-3); worked example exV8."
+    },
+    {
+      "id": "sup-5", "who": "support",
+      "target": "b55",
+      "kind": "partlySupported",
+      "claim": "The text permits consultation but does not say expert consultation.",
+      "verdict": "fixed",
+      "verifierQuote": "يمكن اللجوء إلى الاستشارة في أي وقت وحتى أثناء إجراءات الصلح.",
+      "quoteRef": "cpca 425 ¶4 (store)",
+      "change": "b55 says reworded to 'consultation', within family-section cases (with atk-8); worked example exV11."
+    },
+    {
+      "id": "sup-10", "who": "support",
+      "target": "b30",
+      "kind": "partlySupported",
+      "claim": "The cited excerpt lists the records but does not say they are executory titles.",
+      "verdict": "fixed",
+      "verifierQuote": "[cpca 600 ¶2] والسندات التنفيذية هي: [¶10] 8 - محاضر الصلح أو الاتفاق المؤشر عليها من طرف القضاة والمودعة بأمانة الضبط،",
+      "quoteRef": "cpca 600 ¶2 and ¶10 (store)",
+      "change": "b30 cite widened to paragraphs 2 and 10 so that the quoted words carry 'executory titles'; says reworded; worked example exV13."
+    },
+    {
+      "id": "sup-18", "who": "support",
+      "target": "b51",
+      "kind": "partlySupported",
+      "claim": "The excerpt does not identify this conciliation as administrative.",
+      "verdict": "refuted",
+      "verifierQuote": "الكتاب الرابع - في الإجراءات المتبعة أمام الجهات القضائية الإدارية / الباب الخامس - في الصلح و التحكيم / الفصل الأول - في الصلح ... [970 ¶1] يجوز للجهات القضائية الإدارية إجراء الصلح في مادة القضاء الكامل. [972 ¶1] يتم إجراء الصلح بسعي من الخصوم أو بمبادرة من رئيس تشكيلة الحكم بعد موافقة الخصوم.",
+      "quoteRef": "cpca Book IV, Title V, Chapter I heading; cpca 970 ¶1 and 972 ¶1 (store)",
+      "change": ""
+    },
+    {
+      "id": "sup-20", "who": "support",
+      "target": "p1",
+      "kind": "partlySupported",
+      "claim": "The text states no exemption from the prior step when the attempt ended in a record of conciliation.",
+      "verdict": "fixed",
+      "verifierQuote": "في حالة فشل محاولة الصلح، ترفع الدعوى أمام المحكمة التجارية المتخصصة بعريضة افتتاح الدعوى ... مرفقة، تحت طائلة عدم قبول الدعوى شكلا، بمحضر عدم الصلح.",
+      "quoteRef": "cpca 536 مكرر 4 ¶3 (store)",
+      "change": "The record is called for 'في حالة فشل'; the exemption is kept only for a settlement of everything claimed (no failure) and narrowed for a partial one (see atk-2); worked example exV8."
+    },
+    {
+      "id": "sup-21", "who": "support",
+      "target": "b23",
+      "kind": "partlySupported",
+      "claim": "The text excludes the disputes of article 536 مكرر without saying they are the specialised court's.",
+      "verdict": "refuted",
+      "verifierQuote": "[cpca 531 ¶1] يختص القسم التجاري بالنظر في المنازعات التجارية، باستثناء تلك المذكورة في المادة 536 مكرر من هذا القانون. [536 مكرر ¶1] تختص المحكمة التجارية المتخصصة بالنظر في المنازعات المذكورة أدناه :",
+      "quoteRef": "cpca 531 ¶1 and 536 مكرر ¶1 (store)",
+      "change": ""
+    },
+    {
+      "id": "sup-35", "who": "support",
+      "target": "b49",
+      "kind": "partlySupported",
+      "claim": "The excerpt does not identify the proceedings as divorce by mutual consent.",
+      "verdict": "refuted",
+      "verifierQuote": "القسم الثالث - في إجراءات الطلاق / الفرع الأول - في الطلاق بالتراضي ... [431 ¶1] يتأكد القاضي في التاريخ المحدد للحضور، من قبول العريضة، ويستمع إلى الزوجين على انفراد ثم مجتمعين، ويتأكد من رضائهما، ويحاول الصلح بينهما إذا كان ذلك ممكنا.",
+      "quoteRef": "cpca, heading of the sub-section on divorce by mutual consent; cpca 431 ¶1 (store)",
+      "change": ""
+    },
+    {
+      "id": "sup-43", "who": "support",
+      "target": "b32",
+      "kind": "partlySupported",
+      "claim": "The excerpt invokes article 49 without identifying it as a conciliation rule.",
+      "verdict": "refuted",
+      "verifierQuote": "[family-code 49 ¶1] لا يثبت الطلاق إلا بحكم بعد عدة محاولات صلح يجريها القاضي دون أن تتجاوز مدته ثلاثة (3) أشهر ابتداء من تاريخ رفع الدعوى.",
+      "quoteRef": "family-code 49 ¶1 (store), the article 48 ¶1 refers to",
+      "change": "None for this point; b32 was reworded for atk-6."
+    },
+    {
+      "id": "sup-51", "who": "support",
+      "target": "b60",
+      "kind": "partlySupported",
+      "claim": "The text does not mention wage attachment or name the attaching creditor and the debtor.",
+      "verdict": "refuted",
+      "verifierQuote": "الفصل السابع - في الحجز على الأجور والمداخيل والمرتبات ... [780 ¶1] يتولى المحضر القضائي دعوة الدائن الحاجز والمدين المحجوز عليه للحضور أمام رئيس المحكمة ... [780 ¶2] يقوم رئيس المحكمة بمحاولة الصلح بين الطرفين في أجل أقصاه شهر واحد (1)",
+      "quoteRef": "cpca Book III, Title V, Chapter VII heading; cpca 780 ¶1 and ¶2 (store)",
+      "change": ""
+    },
+    {
+      "id": "sup-53", "who": "support",
+      "target": "b37",
+      "kind": "partlySupported",
+      "claim": "The text does not identify the context as a divorce claim.",
+      "verdict": "refuted",
+      "verifierQuote": "القسم الثالث - في إجراءات الطلاق / الفرع الثالث - في الصلح ... [439 ¶1] محاولات الصلح وجوبية، وتتم في جلسة سرية.",
+      "quoteRef": "cpca, heading of the sub-section on conciliation in the divorce procedure; cpca 439 ¶1 (store)",
+      "change": ""
+    },
+    {
+      "id": "sup-71", "who": "support",
+      "target": "p1",
+      "kind": "partlySupported",
+      "claim": "The text does not mention prior conciliation or an exemption from it; its continued-competence rule concerns claims filed before installation.",
+      "verdict": "refuted",
+      "verifierQuote": "[law-22-13 13 ¶1] تسري قواعد الاختصاص النوعي والإقليمي المنصوص عليها في هذا القانون، الخاصة بالجهات القضائية الإدارية والمحاكم التجارية المتخصصة ابتداء من تاريخ تنصيب الجهات القضائية الجديدة. [¶2] وتبقى الجهات القضائية الإدارية والأقسام التجارية مختصة بالفصل في الدعاوى المرفوعة أمامها قبل تاريخ تنصيب الجهات القضائية الجديدة.",
+      "quoteRef": "law-22-13 13 ¶1 and ¶2 (store)",
+      "change": "None: the exemption's note already says the text does not settle it and n7 warns; the jurisdiction rules of 536 مكرر run from installation (¶1), which is what the exemption reads."
+    },
+    {
+      "id": "c-1", "who": "derivationC",
+      "target": "priorSteps",
+      "kind": "mechanicalDifference",
+      "claim": "C adds prior steps 'mediation' and 'reconciliationAttempt'.",
+      "verdict": "refuted",
+      "verifierQuote": "[cpca 994 ¶1] يجب على القاضي عرض إجراء الوساطة على الخصوم في جميع المواد ... [family-code 49 ¶1] لا يثبت الطلاق إلا بحكم بعد عدة محاولات صلح يجريها القاضي دون أن تتجاوز مدته ثلاثة (3) أشهر ابتداء من تاريخ رفع الدعوى.",
+      "quoteRef": "cpca 994 ¶1; family-code 49 ¶1 (store)",
+      "change": ""
+    },
+    {
+      "id": "c-2", "who": "derivationC",
+      "target": "exits",
+      "kind": "mechanicalDifference",
+      "claim": "C adds an exit to the specialised commercial court.",
+      "verdict": "refuted",
+      "verifierQuote": "تختص المحكمة التجارية المتخصصة بالنظر في المنازعات المذكورة أدناه :",
+      "quoteRef": "cpca 536 مكرر ¶1 (store): the text grounds the exit, which is ordinary-court-exits' item; this module cites the list only to condition p1 and imports nothing",
+      "change": ""
+    },
+    {
+      "id": "c-3", "who": "derivationC",
+      "target": "sections",
+      "kind": "mechanicalDifference",
+      "claim": "C adds section rules (commercial, family).",
+      "verdict": "refuted",
+      "verifierQuote": "يختص القسم التجاري بالنظر في المنازعات التجارية، باستثناء تلك المذكورة في المادة 536 مكرر من هذا القانون.",
+      "quoteRef": "cpca 531 ¶1 (store): a section rule, written by court-sections, not by this module",
+      "change": ""
+    },
+    {
+      "id": "c-4", "who": "derivationC",
+      "target": "cite [cpca 1000 ¶1]",
+      "kind": "mechanicalDifference",
+      "claim": "A and B cite cpca 1000 ¶1; C does not.",
+      "verdict": "refuted",
+      "verifierQuote": "بمجرد النطق بالأمر القاضي بتعيين الوسيط، يقوم أمين الضبط بتبليغ نسخة منه للخصوم والوسيط.",
+      "quoteRef": "cpca 1000 ¶1 (store): exists and says what b15 says",
+      "change": ""
+    },
+    {
+      "id": "c-5", "who": "derivationC",
+      "target": "cite [cpca 1000 ¶2]",
+      "kind": "mechanicalDifference",
+      "claim": "A and B cite cpca 1000 ¶2; C does not.",
+      "verdict": "refuted",
+      "verifierQuote": "يخطر الوسيط القاضي بقبوله مهمة الوساطة دون تأخير، ويدعو الخصوم إلى أول لقاء للوساطة.",
+      "quoteRef": "cpca 1000 ¶2 (store): exists and says what b15 says",
+      "change": ""
+    },
+    {
+      "id": "c-6", "who": "derivationC",
+      "target": "cite [cpca 998 ¶5]",
+      "kind": "mechanicalDifference",
+      "claim": "C cites cpca 998 ¶5, which neither A nor B cites.",
+      "verdict": "refuted",
+      "verifierQuote": "تحدد كيفيات تطبيق هذه المادة عن طريق التنظيم.",
+      "quoteRef": "cpca 998 ¶5 (store): already in the record as b64",
+      "change": ""
+    },
+    {
+      "id": "bc-bc1", "who": "boundaryCase",
+      "target": "b43, b33",
+      "kind": "wrongEffect",
+      "claim": "Divorce petition 15 June: expects 'unsettled' about the last day of the three months of attempts.",
+      "verdict": "refuted",
+      "verifierQuote": "[cpca 442 ¶2] في جميع الحالات، يجب ألا تتجاوز محاولات الصلح ثلاثة (3) أشهر من تاريخ رفع دعوى الطلاق. [family-code 49 ¶1] لا يثبت الطلاق إلا بحكم بعد عدة محاولات صلح يجريها القاضي",
+      "quoteRef": "cpca 442 ¶2; family-code 49 ¶1 (store): the limit binds the judge's attempts after filing, so no petition item can warn or ask on its last day",
+      "change": ""
+    },
+    {
+      "id": "bc-bc2", "who": "boundaryCase",
+      "target": "b43, b33",
+      "kind": "wrongEffect",
+      "claim": "Divorce petition 31 August: expects 'unsettled' about a month-end start.",
+      "verdict": "refuted",
+      "verifierQuote": "في جميع الحالات، يجب ألا تتجاوز محاولات الصلح ثلاثة (3) أشهر من تاريخ رفع دعوى الطلاق.",
+      "quoteRef": "cpca 442 ¶2 (store): a limit on the judge after filing, not a period of the petition",
+      "change": ""
+    },
+    {
+      "id": "bc-bc3", "who": "boundaryCase",
+      "target": "b43, b33",
+      "kind": "wrongEffect",
+      "claim": "Divorce petition 30 November: expects 'unsettled' about an end in February.",
+      "verdict": "refuted",
+      "verifierQuote": "في جميع الحالات، يجب ألا تتجاوز محاولات الصلح ثلاثة (3) أشهر من تاريخ رفع دعوى الطلاق.",
+      "quoteRef": "cpca 442 ¶2 (store): as bc1",
+      "change": ""
+    },
+    {
+      "id": "bc-bc4", "who": "boundaryCase",
+      "target": "b43, b33",
+      "kind": "wrongEffect",
+      "claim": "Divorce petition 29 May: expects 'unsettled' about an end on a Saturday.",
+      "verdict": "refuted",
+      "verifierQuote": "في جميع الحالات، يجب ألا تتجاوز محاولات الصلح ثلاثة (3) أشهر من تاريخ رفع دعوى الطلاق.",
+      "quoteRef": "cpca 442 ¶2 (store): as bc1",
+      "change": ""
+    },
+    {
+      "id": "bc-bc5", "who": "boundaryCase",
+      "target": "b43, b33",
+      "kind": "wrongEffect",
+      "claim": "Divorce petition 5 April: expects 'unsettled' about an end on a holiday.",
+      "verdict": "refuted",
+      "verifierQuote": "في جميع الحالات، يجب ألا تتجاوز محاولات الصلح ثلاثة (3) أشهر من تاريخ رفع دعوى الطلاق.",
+      "quoteRef": "cpca 442 ¶2 (store): as bc1",
+      "change": ""
+    },
+    {
+      "id": "bc-bc6", "who": "boundaryCase",
+      "target": "p1",
+      "kind": "wrongEffect",
+      "claim": "Specialised court, nonconciliation_record yes: expects stepDone; the record asks.",
+      "verdict": "refuted",
+      "verifierQuote": "يمكن القاضي المعين لهذا الغرض الاستعانة بأي شخص يراه مناسبا لمساعدته لإجراء الصلح الذي ينتهي بتحرير محضر يوقع من القاضي وأطراف النزاع وأمين الضبط",
+      "quoteRef": "cpca 536 مكرر 4 ¶2 (store): the record required is the designated judge's; the case answers the labour office's slot and leaves this one unknown, so p1 asks",
+      "change": ""
+    },
+    {
+      "id": "bc-bc7", "who": "boundaryCase",
+      "target": "p1",
+      "kind": "wrongEffect",
+      "claim": "Specialised court, nonconciliation_record no: expects stepMissing; the record asks.",
+      "verdict": "refuted",
+      "verifierQuote": "يمكن القاضي المعين لهذا الغرض الاستعانة بأي شخص يراه مناسبا لمساعدته لإجراء الصلح الذي ينتهي بتحرير محضر يوقع من القاضي وأطراف النزاع وأمين الضبط",
+      "quoteRef": "cpca 536 مكرر 4 ¶2 (store): as bc6; with the designated judge's record unknown the rule asks before blocking",
+      "change": ""
+    },
+    {
+      "id": "bc-bc10", "who": "boundaryCase",
+      "target": "p1",
+      "kind": "wrongEffect",
+      "claim": "Two non-conciliation records: expects stepDone; the record asks.",
+      "verdict": "refuted",
+      "verifierQuote": "يمكن القاضي المعين لهذا الغرض الاستعانة بأي شخص يراه مناسبا لمساعدته لإجراء الصلح الذي ينتهي بتحرير محضر يوقع من القاضي وأطراف النزاع وأمين الضبط",
+      "quoteRef": "cpca 536 مكرر 4 ¶2 (store): as bc6, the case answers the labour office's record slots",
+      "change": ""
+    },
+    {
+      "id": "bc-bc13", "who": "boundaryCase",
+      "target": "p1",
+      "kind": "wrongEffect",
+      "claim": "Bank against trader: expects leavesOrdinaryCourt about cpca 536 مكرر ¶5; it matches p1, not an exit.",
+      "verdict": "refuted",
+      "verifierQuote": "– منازعات البنوك والمؤسسات المالية مع التجار،",
+      "quoteRef": "cpca 536 مكرر ¶5 (store): right in law, but the exit is ordinary-court-exits' item; this module cites the paragraph only to condition p1",
+      "change": ""
+    },
+    {
+      "id": "bc-bc15", "who": "boundaryCase",
+      "target": "n3",
+      "kind": "wrongEffect",
+      "claim": "Divorce petition: expects stepExempt about cpca 439 ¶1; it matches n3, not a prior step.",
+      "verdict": "refuted",
+      "verifierQuote": "لا يثبت الطلاق إلا بحكم بعد عدة محاولات صلح يجريها القاضي دون أن تتجاوز مدته ثلاثة (3) أشهر ابتداء من تاريخ رفع الدعوى.",
+      "quoteRef": "family-code 49 ¶1 (store): the attempts are the judge's after filing; there is no prior step to be exempt from, boundary n3 says so",
+      "change": ""
+    },
+    {
+      "id": "bc-bc16", "who": "boundaryCase",
+      "target": "n3, b32",
+      "kind": "wrongEffect",
+      "claim": "Khul petition: expects 'unsettled' whether the compulsory attempts apply to khul.",
+      "verdict": "refuted",
+      "verifierQuote": "مع مراعاة أحكام المادة 49 أدناه، يحل عقد الزواج بالطلاق الذي يتم بإرادة الزوج أو بتراضي الزوجين أو بطلب من الزوجة في حدود ما ورد في المادتين 53 و54 من هذا القانون.",
+      "quoteRef": "family-code 48 ¶1 (store): khul (art. 54) is put under article 49; and the attempts follow filing, so nothing is unsettled for the petition",
+      "change": ""
+    },
+    {
+      "id": "bc-bc17", "who": "boundaryCase",
+      "target": "n1",
+      "kind": "wrongEffect",
+      "claim": "Custody petition: expects stepExempt about cpca 994 ¶1; it matches n1.",
+      "verdict": "refuted",
+      "verifierQuote": "يجب على القاضي عرض إجراء الوساطة على الخصوم في جميع المواد، باستثناء قضايا شؤون الأسرة والقضايا العمالية و كل ما من شأنه أن يمس بالنظام العام.",
+      "quoteRef": "cpca 994 ¶1 (store): mediation is the judge's offer during the proceedings; no prior mediation step exists",
+      "change": ""
+    },
+    {
+      "id": "bc-bc18", "who": "boundaryCase",
+      "target": "n1",
+      "kind": "wrongEffect",
+      "claim": "Wage claim: expects stepExempt about cpca 994 ¶1; it matches n1.",
+      "verdict": "refuted",
+      "verifierQuote": "يجب على القاضي عرض إجراء الوساطة على الخصوم في جميع المواد، باستثناء قضايا شؤون الأسرة والقضايا العمالية",
+      "quoteRef": "cpca 994 ¶1 (store): as bc17",
+      "change": ""
+    },
+    {
+      "id": "bc-bc19", "who": "boundaryCase",
+      "target": "n1",
+      "kind": "wrongEffect",
+      "claim": "Ordinary civil debt: expects stepExempt about cpca 994 ¶1; it matches n1.",
+      "verdict": "refuted",
+      "verifierQuote": "[994 ¶1] يجب على القاضي عرض إجراء الوساطة على الخصوم ... [994 ¶2] إذا قبل الخصوم هذا الإجراء، يعين القاضي وسيطا",
+      "quoteRef": "cpca 994 ¶1 and ¶2 (store): the offer comes after filing and needs the parties' acceptance; nothing is required before filing",
+      "change": ""
+    },
+    {
+      "id": "bc-bc20", "who": "boundaryCase",
+      "target": "n1",
+      "kind": "wrongEffect",
+      "claim": "Family slot unknown: expects 'ask' about cpca 994 ¶1.",
+      "verdict": "refuted",
+      "verifierQuote": "يجب على القاضي عرض إجراء الوساطة على الخصوم في جميع المواد، باستثناء قضايا شؤون الأسرة",
+      "quoteRef": "cpca 994 ¶1 (store): the exclusion limits the judge's offer after filing; nothing in the petition turns on it, so there is nothing to ask",
+      "change": ""
+    },
+    {
+      "id": "values-b65", "who": "values",
+      "target": "b65",
+      "kind": "misreading",
+      "claim": "check-values: the number 1 ('one of its members') in b65's English is not in the quoted text.",
+      "verdict": "fixed",
+      "verifierQuote": "عندما يكون الوسيط المعين جمعية، يقوم رئيسها بتعيين أحد أعضائها لتنفيذ الإجراء باسمها ويخطر القاضي بذلك.",
+      "quoteRef": "cpca 997 ¶2 (store)",
+      "change": "b65's English now says 'names a member', with no number; worked example exV10."
+    }
+  ]
+}

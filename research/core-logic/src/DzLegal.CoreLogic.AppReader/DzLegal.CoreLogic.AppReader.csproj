@@ -1,0 +1,13 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <OutputType>Exe</OutputType>
+    <AssemblyName>app-reader</AssemblyName>
+    <RootNamespace>DzLegal.CoreLogic.AppReader</RootNamespace>
+    <Description>The owner's evidence test 1 (19 November 2026): the app's own readers (GroundsAnalyzer stage 1 for the claim type, ClaimFactReader for the facts) with the app's Ollama settings, written in the scorer's format. Read-only use of the app's libraries.</Description>
+  </PropertyGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\..\..\..\src\DzLegal.Drafting\DzLegal.Drafting.csproj" />
+    <ProjectReference Include="..\..\..\..\src\DzLegal.Law\DzLegal.Law.csproj" />
+    <ProjectReference Include="..\..\..\..\src\DzLegal.ModelProviders.Ollama\DzLegal.ModelProviders.Ollama.csproj" />
+  </ItemGroup>
+</Project>

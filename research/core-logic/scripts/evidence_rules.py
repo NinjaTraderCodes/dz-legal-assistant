@@ -4,6 +4,14 @@ missing prior step, a wrong court or section, a missing document. Count them by 
 each."
 
     python evidence_rules.py --out <folder>
+    python evidence_rules.py --out <folder> --scenarios <dev.jsonl> <pilot.jsonl> [--seed n]
+
+The second form (the owner's addition of 19 November 2026: "repeat the count on 30 cases the rule writers never saw: the
+facts of dev or pilot scenarios for the nine final claim types, drawn by the sampler") takes the sampler's scenarios whose
+claim types are all final, 30 of them round robin over their first claim type in a seeded order. Each case is built as
+the sampler builds its own evaluator case (`ScenarioSampler.Outcome`): the scenario's known slots, its requests and its
+petition date; the four slots that slots.json fills from an event (`fromEvent`) are filled from it when the scenario left
+them unknown (stated: yes and its date; denied: no).
 
 The cases are the final records' own worked examples (fictitious, with their facts and petition date), 30 chosen round
 robin over the 9 claim types, each with at least one finding that warns or blocks; within a claim type the example that
@@ -99,13 +107,97 @@ def app_view(claim: str, finding: dict, cat: dict) -> str:
     return "nothing"
 
 
+def eval_case(rules: str, records: list[str], case: dict, path: str) -> dict:
+    with open(path, "w", encoding="utf-8") as f:
+        json.dump(case, f, ensure_ascii=False)
+    r = subprocess.run([rules, "eval", "--records", *records, "--case", path], capture_output=True, text=True, encoding="utf-8")
+    if r.returncode != 0:
+        raise RuntimeError(f"{path}: {r.stderr[-300:]}")
+    return json.loads(r.stdout)
+
+
+def scenario_case(sc: dict, from_event: dict) -> dict:
+    slots = {k: v for k, v in sc.get("slots", {}).items() if v not in (None, "unknown")}
+    for slot, (stype, kind) in from_event.items():
+        if slot in slots:
+            continue
+        ev = next((e for e in sc.get("events", []) if e.get("kind") == kind), None)
+        if ev is None:
+            continue
+        if stype == "yesNoUnknown" and ev.get("polarity") in ("stated", "denied"):
+            slots[slot] = "yes" if ev["polarity"] == "stated" else "no"
+        elif stype == "date" and ev.get("polarity") == "stated" and ev.get("date"):
+            slots[slot] = ev["date"]
+    case = {"petitionDate": sc["petitionDate"], "slots": slots, "claimIds": sc["claims"]}
+    if sc.get("requests"):
+        case["slots"]["requests"] = [r["kind"] for r in sc["requests"]]
+    return case
+
+
+def scenarios_run(a, rules: str, cat: dict) -> int:
+    import random
+    with open(os.path.join(REPO, "docs", "research", "core-logic", "slots.json"), encoding="utf-8") as f:
+        from_event = {x["id"]: (x["type"], x["fromEvent"]) for x in json.load(f)["slots"] if x.get("fromEvent")}
+    pool = []
+    for path in a.scenarios:
+        with open(path, encoding="utf-8") as f:
+            pool += [json.loads(line) for line in f if line.strip()]
+    pool = [sc for sc in pool if sc.get("claims") and all(c in CLAIMS for c in sc["claims"])]
+    random.Random(a.seed).shuffle(pool)
+    by_first = defaultdict(list)
+    for sc in pool:
+        by_first[sc["claims"][0]].append(sc)
+    chosen = []
+    while len(chosen) < a.cases and any(by_first.values()):
+        for claim in CLAIMS:
+            if len(chosen) < a.cases and by_first[claim]:
+                chosen.append(by_first[claim].pop(0))
+    rows, warnings, asks, questions = [], [], 0, 0
+    for sc in chosen:
+        records = [os.path.join(FINAL, c + ".json") for c in sc["claims"]]
+        items = {}
+        for c in sc["claims"]:
+            with open(os.path.join(FINAL, c + ".json"), encoding="utf-8") as f:
+                items[c] = items_of(json.load(f))
+        out = eval_case(rules, records, scenario_case(sc, from_event), os.path.join(a.out, f"case-{sc['id']}.json"))
+        asks += sum(1 for f in out["findings"] if f["effect"] == "ask")
+        questions += len(out.get("questions", []))
+        hits, refs = [], set()
+        for f in out["findings"]:  # one finding per rule: an imported block two claim types share is counted once
+            if f["effect"] in ("warn", "blockCleanExport") and f["kind"] in KINDS and f["ref"] not in refs:
+                refs.add(f["ref"])
+                hits.append(f)
+        for f in hits:
+            claim = f.get("recordId") if f.get("recordId") in CLAIMS else sc["claims"][0]
+            ref = f["ref"].split(".")[-1] if "." in f["ref"] else f["ref"]
+            warnings.append({"scenario": sc["id"], "claim": claim, "ref": f["ref"], "kind": f["kind"], "declared": f["declaredEffect"],
+                             "shown": f["effect"], "articles": sorted({f"{b.get('code', '')} {b.get('article', '')}".strip() for b in f.get("basis", [])}),
+                             "message": f["message"]["en"], "daysLeft": f.get("daysLeft"), "lastDay": f.get("lastDay"),
+                             "severity": severity(f, items[claim].get(ref) if claim in items else None), "app": app_view(claim, f, cat)})
+        rows.append({"scenario": sc["id"], "set": sc.get("set"), "claims": sc["claims"], "petitionDate": sc["petitionDate"],
+                     "warnings": len(hits), "asks": sum(1 for f in out["findings"] if f["effect"] == "ask")})
+    with open(os.path.join(a.out, "scenarios.json"), "w", encoding="utf-8") as f:
+        json.dump({"cases": rows, "warnings": warnings}, f, ensure_ascii=False, indent=1)
+    through = [w for w in warnings if w["app"] == "nothing" or w["app"].startswith("article cited")]
+    print(f"{len(chosen)} scenarios ({Counter(c for sc in chosen for c in sc['claims'])}); warnings (warn or block): {len(warnings)}"
+          f" in {sum(1 for r in rows if r['warnings'])} cases; let through by the app: {len(through)}; asks: {asks}; questions: {questions}")
+    print("by kind:", dict(Counter(KINDS[w["kind"]] for w in through)))
+    print("by severity:", dict(sorted(Counter(w["severity"][:2].strip(":") for w in through).items())))
+    print("app view:", dict(Counter(w["app"] for w in warnings)))
+    return 0
+
+
 def main(argv=None) -> int:
     p = argparse.ArgumentParser()
     p.add_argument("--out", required=True)
     p.add_argument("--cases", type=int, default=30)
+    p.add_argument("--scenarios", nargs="*")
+    p.add_argument("--seed", type=int, default=20261119)
     a = p.parse_args(argv)
     os.makedirs(a.out, exist_ok=True)
     rules, cat = tool(), catalogue()
+    if a.scenarios:
+        return scenarios_run(a, rules, cat)
     per_claim = {}
     for claim in CLAIMS:
         with open(os.path.join(FINAL, claim + ".json"), encoding="utf-8") as f:

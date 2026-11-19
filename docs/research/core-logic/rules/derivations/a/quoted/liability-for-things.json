@@ -1,0 +1,2421 @@
+{
+  "schemaVersion": "1.0",
+  "kind": "claim",
+  "id": "liability-for-things",
+  "label": {
+    "ar": "مسؤولية حارس الشيء",
+    "en": "Liability of the custodian of a thing"
+  },
+  "verified": false,
+  "stage": "derivationA",
+  "derivedBy": {
+    "role": "derivationA",
+    "model": "claude-opus-5-5",
+    "date": "2026-11-19"
+  },
+  "area": "civil",
+  "imports": [
+    {
+      "module": "court-sections",
+      "blocks": [
+        "b1",
+        "b2",
+        "b3",
+        "b4",
+        "b5"
+      ],
+      "how": {
+        "ar": "تجدول دعوى المسؤولية عن الأشياء أمام القسم الذي يناسب طبيعة النزاع؛ تستورد نصوص المادة 32 لتأسيس القسم المقترح في هذا السجل.",
+        "en": "A claim for liability for things is listed before the section that fits the nature of the dispute; the statements on article 32 are imported to ground this record's own section rule."
+      }
+    },
+    {
+      "module": "territorial-jurisdiction",
+      "blocks": [
+        "t1",
+        "t2",
+        "t6",
+        "t28",
+        "n2",
+        "n3",
+        "n11"
+      ],
+      "how": {
+        "ar": "دعوى تعويض عن فعل تقصيري: محكمة مكان وقوع الفعل الضار، مع القاعدة العامة لموطن المدعى عليه، وتعدد المدعى عليهم، والدفع بعدم الاختصاص الإقليمي، وحالات المدعى عليه المقيم في الخارج أو مجهول الموطن أو الطرف العمومي.",
+        "en": "A tort compensation claim: the court of the place of the harmful act, with the general rule of the defendant's domicile, several defendants, the plea of territorial incompetence, and the cases of a defendant abroad, of unknown domicile, or a public party."
+      }
+    },
+    {
+      "module": "ordinary-court-exits",
+      "blocks": [
+        "x1",
+        "x6",
+        "n1",
+        "n2",
+        "n7"
+      ],
+      "how": {
+        "ar": "يخرج النزاع من المحاكم العادية إذا كان حارس الشيء أو مالك البناء شخصا عموميا إداريا، إلا أضرار مركباته؛ وقد تكون للوقائع متابعة جزائية (هجوم حيوان، انهيار بناء).",
+        "en": "The dispute leaves the ordinary courts when the custodian or the building owner is a public administrative body, except damage by its vehicles; the facts may also be the subject of criminal proceedings (an animal attack, a building collapse)."
+      }
+    },
+    {
+      "module": "periods",
+      "blocks": [
+        "d2",
+        "doc2",
+        "doc3"
+      ],
+      "how": {
+        "ar": "دعوى التعويض عن الفعل الضار تخضع لأجل المادة 133 من القانون المدني ابتداء من يوم وقوع الفعل الضار.",
+        "en": "The compensation claim for a harmful act is subject to the period of Civil Code article 133, from the day of the harmful act."
+      }
+    },
+    {
+      "module": "formal-notice",
+      "blocks": [
+        "p1",
+        "b8"
+      ],
+      "how": {
+        "ar": "طلب التعويض يخضع لقاعدة الإعذار، ومحل الالتزام هنا تعويض ترتب عن عمل مضر، وهي حالة إعفاء من الإعذار تنص عليها المادة 181.",
+        "en": "A damages request falls under the notice rule; here the obligation is compensation arising from a harmful act, a case exempted from notice by article 181."
+      }
+    },
+    {
+      "module": "petition-formal-elements",
+      "blocks": [
+        "p1",
+        "p2",
+        "p3",
+        "p4",
+        "p5",
+        "p6",
+        "p7",
+        "p8",
+        "p9",
+        "p10",
+        "p11",
+        "p12",
+        "p13",
+        "p14",
+        "p15",
+        "p19",
+        "doc1",
+        "doc2",
+        "doc3",
+        "doc4",
+        "doc7"
+      ],
+      "how": {
+        "ar": "البيانات الإلزامية للعريضة، والصفة والمصلحة والأهلية والتمثيل، والرسوم واللغة، تنطبق على كل عريضة افتتاح دعوى.",
+        "en": "The petition's mandatory particulars, standing, interest, capacity and representation, fees and language apply to every opening petition."
+      }
+    }
+  ],
+  "checklist": [
+    {
+      "id": "k1",
+      "item": "Basis: civil code article 138 - whoever has the use, management and control of a thing is its custodian and answers for the harm it causes; check the paragraph that sets the presumption and the paragraph that frees the custodian (external cause: act of the victim, of a third party, unforeseeable event, force majeure).",
+      "from": [
+        "derivationA"
+      ],
+      "answer": "applies",
+      "refs": [
+        "b1",
+        "b2",
+        "e1",
+        "e5"
+      ],
+      "note": "Paragraph 1 sets the liability of the custodian who has the power of use, management and control; paragraph 2 frees him if he proves an unforeseen cause, such as the act of the victim or of a third party, a sudden event or force majeure."
+    },
+    {
+      "id": "k2",
+      "item": "Custody: establish that the defendant had use, management and control (usage, direction, controle) of the thing at the time of the harm; owner is presumed custodian but custody may have passed (theft, lease, loan, employee use).",
+      "from": [
+        "derivationA"
+      ],
+      "answer": "applies",
+      "refs": [
+        "b1",
+        "e1"
+      ],
+      "note": "The text defines custody by the power of use, management and control; it says nothing of a presumption that the owner is the custodian or of a transfer of custody (open point o3)."
+    },
+    {
+      "id": "k3",
+      "item": "Element: the harm itself (material or moral) and its date; the thing's active role (positive intervention) in producing it.",
+      "from": [
+        "derivationA"
+      ],
+      "answer": "applies",
+      "refs": [
+        "e1",
+        "e4",
+        "b9"
+      ],
+      "note": "The harm and that the thing caused it are in the text; an 'active role' requirement is not in the store's texts and is not made a rule."
+    },
+    {
+      "id": "k4",
+      "item": "Element: causal link between the thing and the harm; the defendant may rebut only by proving an external cause that he could not foresee.",
+      "from": [
+        "derivationA"
+      ],
+      "answer": "applies",
+      "refs": [
+        "b2",
+        "e5"
+      ]
+    },
+    {
+      "id": "k5",
+      "item": "Burden of proof: the victim proves custody, the harm and the thing's intervention; fault need not be proved; the custodian bears the proof of the external cause.",
+      "from": [
+        "derivationA"
+      ],
+      "answer": "applies",
+      "refs": [
+        "b21",
+        "e1",
+        "e5",
+        "b2"
+      ],
+      "note": "Paragraph 1 of article 138 does not mention fault; paragraph 2 puts the proof of the unforeseen cause on the custodian. Applying article 323 to the elements of a tort is a reading."
+    },
+    {
+      "id": "k6",
+      "item": "Animals: civil code article 139 - the keeper of an animal (owner or user) answers for the harm it causes even if it strayed or escaped, unless he proves an external cause; check its exact paragraphs.",
+      "from": [
+        "derivationA"
+      ],
+      "answer": "applies",
+      "refs": [
+        "b3",
+        "e2"
+      ],
+      "note": "Article 139 has a single paragraph: the keeper, even if not the owner, answers even if the animal strayed or escaped, unless he proves a cause not attributable to him."
+    },
+    {
+      "id": "k7",
+      "item": "Buildings: civil code article 140 - the owner of a building answers for its collapse, total or partial, unless he proves it is not due to lack of maintenance, age or a construction defect; check also the paragraph on the neighbour threatened by a building who may ask for preventive measures.",
+      "from": [
+        "derivationA"
+      ],
+      "answer": "applies",
+      "refs": [
+        "b4",
+        "e3",
+        "b5",
+        "n6"
+      ],
+      "note": "Paragraph 2 names the owner, not the custodian, and paragraph 3 gives the threatened person a claim for preventive measures."
+    },
+    {
+      "id": "k8",
+      "item": "Fire: civil code article 140 bis (or the fire paragraph of article 140) - whoever holds a property in which a fire starts answers to third parties only if fault is proved; this is a boundary, not strict liability.",
+      "from": [
+        "derivationA"
+      ],
+      "answer": "applies",
+      "refs": [
+        "b6",
+        "n1"
+      ],
+      "note": "The fire rule is paragraph 1 of article 140, not article 140 مكرر, which concerns producers."
+    },
+    {
+      "id": "k9",
+      "item": "Boundary: harm by a person's own act - civil code article 124 (fault-based tort), not custody of a thing.",
+      "from": [
+        "derivationA"
+      ],
+      "answer": "applies",
+      "refs": [
+        "b18",
+        "n4"
+      ]
+    },
+    {
+      "id": "k10",
+      "item": "Boundary: liability for others (minors, employees) - civil code articles 134 to 137; employee driving the employer's vehicle.",
+      "from": [
+        "derivationA"
+      ],
+      "answer": "applies",
+      "refs": [
+        "b19",
+        "b20",
+        "n5"
+      ],
+      "note": "Article 135 is repealed in the store; articles 134, 136 and 137 are in force."
+    },
+    {
+      "id": "k11",
+      "item": "Boundary: road traffic accidents - ordinance 74-15 on compulsory motor insurance and the compensation regime for road accident victims; a car accident is not claimed under article 138 against the insurer.",
+      "from": [
+        "derivationA"
+      ],
+      "answer": "searchedNotFound",
+      "refs": [
+        "n8",
+        "o2"
+      ],
+      "note": "Searched the store's codes (civil-code, commercial-code, cpca, family-code, labour-disputes, labour-relations, law-22-13) and the text views for the ordinance on compulsory motor insurance and road-accident compensation: not in the store. Requested (need: basis)."
+    },
+    {
+      "id": "k12",
+      "item": "Boundary: defective products - civil code article 140 bis (producer liability) since law 05-10.",
+      "from": [
+        "derivationA"
+      ],
+      "answer": "applies",
+      "refs": [
+        "b14",
+        "n3"
+      ]
+    },
+    {
+      "id": "k13",
+      "item": "Boundary: contractual relation between the parties (tenant against landlord for water leak, lessee duty under lease articles; contractor and architect ten-year liability, civil code article 554) - contractual liability excludes the tort regime.",
+      "from": [
+        "derivationA"
+      ],
+      "answer": "applies",
+      "refs": [
+        "b16",
+        "b17",
+        "n2",
+        "o1"
+      ],
+      "note": "Articles 554 and 557 are in the store. No text in the store says whether a contract between the parties excludes the custody regime (open point o1)."
+    },
+    {
+      "id": "k14",
+      "item": "Boundary: work accidents - social security law 83-13, not civil custody liability against the employer.",
+      "from": [
+        "derivationA"
+      ],
+      "answer": "searchedNotFound",
+      "refs": [
+        "o5"
+      ],
+      "note": "Searched the store for the law on work accidents and occupational illnesses: not in the store; only the territorial rules of cpca 40 and 501 and labour-disputes 24 mention work accidents. Requested (need: context)."
+    },
+    {
+      "id": "k15",
+      "item": "Boundary: damage caused by a public body's thing or vehicle - administrative jurisdiction (code of civil and administrative procedure articles 800 and 801), except vehicle damage of article 802 which stays with the ordinary courts.",
+      "from": [
+        "derivationA"
+      ],
+      "answer": "applies",
+      "refs": [
+        "ordinary-court-exits.x1",
+        "ordinary-court-exits.n1",
+        "ordinary-court-exits.n2",
+        "territorial-jurisdiction.n3"
+      ],
+      "note": "Imported from the ordinary-court-exits module."
+    },
+    {
+      "id": "k16",
+      "item": "Compensation: civil code articles 131 and 182 - the judge assesses the harm under articles 182 and 182 bis (actual loss and lost gain, moral damage); check whether 131 allows reserving the right to revise the assessment.",
+      "from": [
+        "derivationA"
+      ],
+      "answer": "applies",
+      "refs": [
+        "b7",
+        "b8",
+        "b9",
+        "r5"
+      ],
+      "note": "Article 131 does allow the judge to reserve the victim's right to ask for a new assessment within a fixed time."
+    },
+    {
+      "id": "k17",
+      "item": "Compensation: civil code article 132 - form of compensation (money, instalments, rent, restoration in kind).",
+      "from": [
+        "derivationA"
+      ],
+      "answer": "applies",
+      "refs": [
+        "b10",
+        "b11",
+        "r1"
+      ]
+    },
+    {
+      "id": "k18",
+      "item": "Contributory fault of the victim: civil code article 177 - the judge may reduce or refuse compensation where the victim contributed to the harm.",
+      "from": [
+        "derivationA"
+      ],
+      "answer": "applies",
+      "refs": [
+        "b12",
+        "o4"
+      ],
+      "note": "Article 177 sits in the chapter on performance by compensation and speaks of the creditor; its reach to a tort is a reading."
+    },
+    {
+      "id": "k19",
+      "item": "Limitation: civil code article 133 - the tort damages claim is time-barred after fifteen years from the day of the harmful act; check whether there is a shorter period and whether the court raises it of its own motion (civil code article 321: not raised by the court).",
+      "from": [
+        "derivationA"
+      ],
+      "answer": "applies",
+      "refs": [
+        "periods.d2"
+      ],
+      "note": "Imported from the periods module, which keeps the readings on its nature and on who raises it. The three-year period of article 557 concerns the contractor's guarantee (boundary n2), not this claim."
+    },
+    {
+      "id": "k20",
+      "item": "Limitation counting: civil code articles 314 onward on counting by days, suspension and interruption (claim filed, acknowledgement).",
+      "from": [
+        "derivationA"
+      ],
+      "answer": "applies",
+      "refs": [
+        "periods.d2"
+      ],
+      "note": "The counting and the interruption are carried by the imported deadline."
+    },
+    {
+      "id": "k21",
+      "item": "Criminal case on the same facts: if the harm results from an offence (e.g. dog attack, injury), the civil action may follow the criminal one; criminal-holds-civil rule; limitation of the civil action not before the public action (code of criminal procedure article 10).",
+      "from": [
+        "derivationA"
+      ],
+      "answer": "applies",
+      "refs": [
+        "ordinary-court-exits.x6",
+        "ordinary-court-exits.n7"
+      ],
+      "note": "The Code of Criminal Procedure is not in the store; the module already records it as requested (its open point o3). Not requested again here."
+    },
+    {
+      "id": "k22",
+      "item": "Formal notice: no formal notice needed for tort compensation (civil code article 181); check the formal-notice module.",
+      "from": [
+        "derivationA"
+      ],
+      "answer": "applies",
+      "refs": [
+        "formal-notice.p1",
+        "formal-notice.b8"
+      ],
+      "note": "Imported: the step is exempted when the obligation is compensation for a harmful act."
+    },
+    {
+      "id": "k23",
+      "item": "Court: the civil section of the tribunal (code of civil and administrative procedure article 32 and the court-sections module).",
+      "from": [
+        "derivationA"
+      ],
+      "answer": "applies",
+      "refs": [
+        "court-sections.b1",
+        "court-sections.b3",
+        "court-sections.b4"
+      ]
+    },
+    {
+      "id": "k24",
+      "item": "Territory: in tort matters, the court of the place where the harmful act occurred (code of civil and administrative procedure article 39), otherwise the defendant's domicile (article 37).",
+      "from": [
+        "derivationA"
+      ],
+      "answer": "applies",
+      "refs": [
+        "territorial-jurisdiction.t6",
+        "territorial-jurisdiction.t1",
+        "territorial-jurisdiction.t28"
+      ]
+    },
+    {
+      "id": "k25",
+      "item": "Exits: administrative courts when the custodian is a public administrative body; criminal judge when the plaintiff joins as civil party; commercial court only if a commercial dispute.",
+      "from": [
+        "derivationA"
+      ],
+      "answer": "applies",
+      "refs": [
+        "ordinary-court-exits.x1",
+        "ordinary-court-exits.x6"
+      ],
+      "note": "The specialised commercial court exit is not imported: none of its listed matters is a custody liability claim as such."
+    },
+    {
+      "id": "k26",
+      "item": "Prior steps: none required by law; an expert finding (constat by a bailiff) is evidence, not a condition of admissibility.",
+      "from": [
+        "derivationA"
+      ],
+      "answer": "applies",
+      "refs": [
+        "doc1",
+        "b24",
+        "b25",
+        "formal-notice.p1"
+      ],
+      "note": "No text in the store makes a prior step a condition of this claim; a finding of the state of things may be asked of the court president or ordered before the claim, as evidence."
+    },
+    {
+      "id": "k27",
+      "item": "Documents: bailiff's report of findings (constat), photographs, expert report if any, proof of ownership or custody of the thing (title, lease, vehicle card), medical certificates for bodily injury, invoices or estimates of repair.",
+      "from": [
+        "derivationA"
+      ],
+      "answer": "applies",
+      "refs": [
+        "doc1",
+        "doc2",
+        "doc3",
+        "doc4",
+        "doc5",
+        "doc6"
+      ]
+    },
+    {
+      "id": "k28",
+      "item": "Requests: damages with an amount; repair in kind; in the alternative appointment of an expert to assess the harm (code of civil and administrative procedure articles 125 onward).",
+      "from": [
+        "derivationA"
+      ],
+      "answer": "applies",
+      "refs": [
+        "r1",
+        "r2"
+      ],
+      "note": "The request kind damages of the brief is carried by r1."
+    },
+    {
+      "id": "k29",
+      "item": "Accessory requests: costs, provisional execution, interest only from the judgment; check the accessory-requests module.",
+      "from": [
+        "derivationA"
+      ],
+      "answer": "applies",
+      "refs": [
+        "r3",
+        "r4",
+        "r5",
+        "o6"
+      ],
+      "note": "The accessory-requests module has no final record yet; costs and provisional execution rest on cpca texts in the store. No text in the store on interest on a tort compensation was found (searched civil-code 182 to 187 and cpca 417 to 422)."
+    },
+    {
+      "id": "k30",
+      "item": "Petition formalities: code of civil and administrative procedure article 15 and the petition-formal-elements module (identities, facts, grounds, documents, fees, Arabic).",
+      "from": [
+        "derivationA"
+      ],
+      "answer": "applies",
+      "refs": [
+        "petition-formal-elements.p1",
+        "petition-formal-elements.p5",
+        "petition-formal-elements.p19"
+      ]
+    },
+    {
+      "id": "k31",
+      "item": "Standing: the victim himself or his heirs; insurer subrogated after paying the victim.",
+      "from": [
+        "derivationA"
+      ],
+      "answer": "applies",
+      "refs": [
+        "petition-formal-elements.p12"
+      ],
+      "note": "Standing is imported; the insurer's subrogation rests on insurance law, which is not in the store, and is not made a rule."
+    },
+    {
+      "id": "k32",
+      "item": "Amendments: law 05-10 of 20 June 2005 amended articles 124 onward and added 140 bis and 182 bis; check the version in force of articles 131, 138, 140.",
+      "from": [
+        "derivationA"
+      ],
+      "answer": "applies",
+      "refs": [
+        "b1",
+        "b4",
+        "b7",
+        "b14"
+      ],
+      "note": "The store gives articles 138, 139 and 140 in the ordinance 75-58 version, and articles 131, 132, 133, 140 مكرر and 140 مكرر 1 in the law 05-10 version; both are the versions in force in the store."
+    },
+    {
+      "id": "k33",
+      "item": "The store carries a note on articles 124, 126, 131, 132, 133, 134, 136, 137, 140 مكرر and 140 مكرر 1: the text is a current snapshot at the discovery cut-off, without commencement dates or historical regimes. Does it matter for a harmful act that occurred before the amending law?",
+      "from": [
+        "derivationA"
+      ],
+      "answer": "applies",
+      "refs": [
+        "b7",
+        "b14",
+        "o7"
+      ],
+      "note": "The record cites the version in force; for a harmful act older than the amending law, which wording governs is not settled by the store (open point o7)."
+    }
+  ],
+  "basis": [
+    {
+      "id": "b1",
+      "role": "basis",
+      "required": true,
+      "cite": {
+        "code": "civil-code",
+        "article": "138",
+        "paragraphs": [
+          1
+        ]
+      },
+      "says": {
+        "ar": "من تولى حراسة شيء وكانت له قدرة استعماله وتسييره ورقابته مسؤول عن الضرر الذي يحدثه ذلك الشيء.",
+        "en": "Whoever has custody of a thing, with the power to use, manage and control it, answers for the harm the thing causes."
+      },
+      "quote": [
+        {
+          "paragraph": 1,
+          "text": "كل من تولى حراسة شيء وكانت له قدرة الاستعمال والتسيير، والرقابة، يعتبر مسؤولا عن الضرر الذي يحدثه ذلك الشيء.",
+          "sha256": "b4f00de7a25b0bf749885023eff5f6e8868f8aa5fb6023f28e7ab7ca6ba365a8"
+        }
+      ],
+      "source": {
+        "tier": 2,
+        "store": "library",
+        "textAsOf": "2026-11-10",
+        "ledgerRefs": [],
+        "ledgerClean": true
+      }
+    },
+    {
+      "id": "b2",
+      "role": "proof",
+      "cite": {
+        "code": "civil-code",
+        "article": "138",
+        "paragraphs": [
+          2
+        ]
+      },
+      "says": {
+        "ar": "يعفى الحارس إذا أثبت أن الضرر حدث بسبب لم يكن يتوقعه كعمل الضحية أو عمل الغير أو الحالة الطارئة أو القوة القاهرة.",
+        "en": "The custodian is freed if he proves the harm came from a cause he could not foresee, such as the victim's act, a third party's act, a sudden event or force majeure."
+      },
+      "quote": [
+        {
+          "paragraph": 2,
+          "text": "ويعفي من هذه المسؤولية الحارس للشيء إذا أثبت أن ذلك الضرر حدث بسبب لم يكن يتوقعه مثل عمل الضحية، أو عمل الغير، أو الحالة الطارئة، أو القوة القاهرة.",
+          "sha256": "66205018f93d43ee5b0c1c6e6e70a94f39b394ddbed193c6a430a95609177052"
+        }
+      ],
+      "source": {
+        "tier": 2,
+        "store": "library",
+        "textAsOf": "2026-11-10",
+        "ledgerRefs": [],
+        "ledgerClean": true
+      }
+    },
+    {
+      "id": "b3",
+      "role": "basis",
+      "cite": {
+        "code": "civil-code",
+        "article": "139",
+        "paragraphs": [
+          1
+        ]
+      },
+      "says": {
+        "ar": "حارس الحيوان ولو لم يكن مالكه مسؤول عن ضرره ولو ضل أو تسرب، ما لم يثبت أن الحادث وقع بسبب لا ينسب إليه.",
+        "en": "The keeper of an animal, even if not its owner, answers for the harm it causes, even if it strayed or escaped, unless he proves the accident came from a cause not attributable to him."
+      },
+      "quote": [
+        {
+          "paragraph": 1,
+          "text": "حارس الحيوان، ولو لم يكن مالكا له، مسؤول عما يحدثه الحيوان من ضرر. ولو ضل الحيوان أو تسرب، مالم يثبت الحارس أن وقوع الحادث كان بسبب لا ينسب اليه.",
+          "sha256": "018fedcfb99171c690ecb137471b35b1261027ad737819287a3cfab615d43e81"
+        }
+      ],
+      "source": {
+        "tier": 1,
+        "store": "corpus",
+        "textAsOf": "2026-11-10",
+        "ledgerRefs": [],
+        "ledgerClean": true
+      }
+    },
+    {
+      "id": "b4",
+      "role": "basis",
+      "cite": {
+        "code": "civil-code",
+        "article": "140",
+        "paragraphs": [
+          2
+        ]
+      },
+      "says": {
+        "ar": "مالك البناء مسؤول عن ضرر انهدامه ولو جزئيا، ما لم يثبت أن الحادث لا يرجع إلى إهمال في الصيانة أو قدم في البناء أو عيب فيه.",
+        "en": "The owner of a building answers for the harm its collapse causes, even a partial one, unless he proves the accident is not due to neglect of maintenance, the building's age or a defect in it."
+      },
+      "quote": [
+        {
+          "paragraph": 2,
+          "text": "مالك البناء مسؤول عما يحدثه انهدام البناء من ضرر ولو كان انهداما جزئيا، مالم يثبت أن الحادث لا يرجع سببه الى اهمال فى الصيانة، أو قدم فى البناء، أو عيب فيه،",
+          "sha256": "9b99b0404ba557ff81b43763ecbcf098d8e2018bae629fbdd055517607dc91ee"
+        }
+      ],
+      "source": {
+        "tier": 1,
+        "store": "corpus",
+        "textAsOf": "2026-11-10",
+        "ledgerRefs": [],
+        "ledgerClean": true
+      }
+    },
+    {
+      "id": "b5",
+      "role": "limit",
+      "cite": {
+        "code": "civil-code",
+        "article": "140",
+        "paragraphs": [
+          3
+        ]
+      },
+      "says": {
+        "ar": "لمن يهدده ضرر من البناء أن يطالب المالك بالتدابير الضرورية للوقاية، فإن لم يقم بها جاز الإذن له من المحكمة باتخاذها على حساب المالك.",
+        "en": "A person threatened with harm from a building may require the owner to take the necessary preventive measures and, if he does not, obtain the court's leave to take them at the owner's expense."
+      },
+      "quote": [
+        {
+          "paragraph": 3,
+          "text": "ويجوز لمن كان مهددا بضرر يصيبه من البناء أن يطالب المالك باتخاذ مايلزم من التدابير الضرورية للوقاية من الخطر فان لم يقم المالك بذلك، جاز الحصول على اذن من المحكمة فى اتخاذ هذه التدابير على حسابه.",
+          "sha256": "52dcb5746042674efe62c7ba5d051133d49b63f78bf028b68c55c79b12f92174"
+        }
+      ],
+      "source": {
+        "tier": 1,
+        "store": "corpus",
+        "textAsOf": "2026-11-10",
+        "ledgerRefs": [],
+        "ledgerClean": true
+      }
+    },
+    {
+      "id": "b6",
+      "role": "limit",
+      "cite": {
+        "code": "civil-code",
+        "article": "140",
+        "paragraphs": [
+          1
+        ]
+      },
+      "says": {
+        "ar": "حائز العقار أو المنقول الذي شب فيه حريق لا يسأل نحو الغير عن أضراره إلا إذا ثبت أن الحريق ينسب إلى خطئه أو خطأ من هو مسؤول عنهم.",
+        "en": "The holder of an immovable or movables in which a fire broke out answers to others for its harm only if the fire is proved to be due to his fault or that of persons he answers for."
+      },
+      "quote": [
+        {
+          "paragraph": 1,
+          "text": "من كان حائزا بأى وجه كان لعقار أو جزء منه، أو منقولات، حدث فيها حريق لا يكون مسؤولا نحو الغير عن الاضرار التى سببها هذا الحريق الا اذا ثبت أن الحريق ينسب الى خطئه أو خطأ من هو مسؤول عنهم.",
+          "sha256": "9fa4d5e9c6b11977ae3b2d7906dbc262ca5c765572182c75bc85b24cb4da5c05"
+        }
+      ],
+      "source": {
+        "tier": 1,
+        "store": "corpus",
+        "textAsOf": "2026-11-10",
+        "ledgerRefs": [],
+        "ledgerClean": true
+      }
+    },
+    {
+      "id": "b7",
+      "role": "damages",
+      "cite": {
+        "code": "civil-code",
+        "article": "131",
+        "paragraphs": [
+          1
+        ]
+      },
+      "says": {
+        "ar": "يقدر القاضي مدى التعويض وفق أحكام التعويض عن الخسارة والكسب الفائت والضرر المعنوي مع مراعاة الظروف، وله أن يحتفظ للمضرور بحق طلب إعادة النظر في التقدير خلال مدة معينة.",
+        "en": "The judge assesses the extent of compensation under the rules on loss, lost gain and moral harm, taking account of the circumstances, and may reserve the victim's right to ask for a new assessment within a set time."
+      },
+      "quote": [
+        {
+          "paragraph": 1,
+          "text": "يقدر القاضي مدى التعويض عن الضرر الذي لحق المصاب طبقا لأحكام المادتين 182 و182 مكرر مع مراعاة الظروف الملابسة، فإن لم يتيسر له وقت الحكم أن يقدر مدى التعويض بصفة نهائية، فله أن يحتفظ للمضرور بالحق في أن يطالب خلال مدة معينة بالنظر من جديد في التقدير.",
+          "sha256": "3a983d876327f36e730005f4d7aab2b874b564f4291b6e38850d0bc920705a66"
+        }
+      ],
+      "source": {
+        "tier": 2,
+        "store": "library",
+        "textAsOf": "2026-11-10",
+        "ledgerRefs": [
+          "civil-code/law-05-10"
+        ],
+        "ledgerClean": true
+      }
+    },
+    {
+      "id": "b8",
+      "role": "damages",
+      "cite": {
+        "code": "civil-code",
+        "article": "182",
+        "paragraphs": [
+          1
+        ]
+      },
+      "says": {
+        "ar": "يشمل التعويض الذي يقدره القاضي ما لحق المضرور من خسارة وما فاته من كسب متى كان نتيجة طبيعية لا يستطيع توقيها ببذل جهد معقول.",
+        "en": "Compensation assessed by the judge covers the loss suffered and the gain missed, when it is a natural consequence that could not be avoided by reasonable effort."
+      },
+      "quote": [
+        {
+          "paragraph": 1,
+          "text": "إذا لم يكن التعويض مقدرا في العقد، أو في القانون فالقاضي هو الذي يقدره، ويشمل التعويض ما لحق الدائن من خسارة وما فاته من كسب، بشرط أن يكون هذا نتيجة طبيعية لعدم الوفاء بالالتزام أو للتأخر في الوفاء به. ويعتبر الضرر نتيجة طبيعية إذا لم يكن في استطاعة الدائن أن يتوقاه ببذل جهد معقول.",
+          "sha256": "fe977eb6f4a7487ea57058b2e93e284ad301c48fc7db5328445fd0a5ef676937"
+        }
+      ],
+      "source": {
+        "tier": 2,
+        "store": "library",
+        "textAsOf": "2026-11-10",
+        "ledgerRefs": [],
+        "ledgerClean": true
+      }
+    },
+    {
+      "id": "b9",
+      "role": "damages",
+      "cite": {
+        "code": "civil-code",
+        "article": "182 مكرر",
+        "paragraphs": [
+          1
+        ]
+      },
+      "says": {
+        "ar": "يشمل التعويض عن الضرر المعنوي كل مساس بالحرية أو الشرف أو السمعة.",
+        "en": "Compensation for moral harm covers any harm to liberty, honour or reputation."
+      },
+      "quote": [
+        {
+          "paragraph": 1,
+          "text": "يشمل التعويض عن الضرر المعنوي كل مساس بالحرية أو الشرف أو السمعة.",
+          "sha256": "53d624d6b4b796a935e6a6747a0b56dc59db01718b85a6e045254c9ad885fa10"
+        }
+      ],
+      "source": {
+        "tier": 2,
+        "store": "library",
+        "textAsOf": "2026-11-10",
+        "ledgerRefs": [
+          "civil-code/law-05-10"
+        ],
+        "ledgerClean": true
+      }
+    },
+    {
+      "id": "b10",
+      "role": "damages",
+      "cite": {
+        "code": "civil-code",
+        "article": "132",
+        "paragraphs": [
+          1
+        ]
+      },
+      "says": {
+        "ar": "يعين القاضي طريقة التعويض، ويجوز أن يكون مقسطا أو إيرادا مرتبا مع إلزام المدين بتقديم تأمين.",
+        "en": "The judge sets the manner of compensation, which may be paid in instalments or as an annuity, with security from the debtor."
+      },
+      "quote": [
+        {
+          "paragraph": 1,
+          "text": "يعين القاضي طريقة التعويض تبعا للظروف، ويصح أن يكون التعويض مقسطا، كما يصح أن يكون إيرادا مرتبا، ويجوز في هاتين الحالتين إلزام المدين بأن يقدر تأمينا.",
+          "sha256": "c41d6e5c9f229ec846c22bfc6007c804492307423eca363bcb62926b9d5518ca"
+        }
+      ],
+      "source": {
+        "tier": 1,
+        "store": "corpus",
+        "textAsOf": "2026-11-10",
+        "ledgerRefs": [
+          "civil-code/law-05-10"
+        ],
+        "ledgerClean": true
+      }
+    },
+    {
+      "id": "b11",
+      "role": "damages",
+      "cite": {
+        "code": "civil-code",
+        "article": "132",
+        "paragraphs": [
+          2
+        ]
+      },
+      "says": {
+        "ar": "يقدر التعويض بالنقد، ويجوز للقاضي بناء على طلب المضرور أن يأمر بإعادة الحالة إلى ما كانت عليه أو بأداء إعانات متصلة بالفعل غير المشروع.",
+        "en": "Compensation is assessed in money; at the victim's request the judge may order the former state restored, or certain payments in kind linked to the wrongful act."
+      },
+      "quote": [
+        {
+          "paragraph": 2,
+          "text": "ويقدر التعويض بالنقد، على أنه يجوز للقاضي، تبعا للظروف وبناء على طلب المضرور، أن يأمر بإعادة الحالة إلى ما كانت عليه، أو أن يحكم وذلك على سبيل التعويض، بأداء بعض الإعانات تتصل بالفعل غير المشروع.",
+          "sha256": "83ca91d6817cfaad6a71ecb806c63e458677e6ae85ce68af894c106cfcf95f6a"
+        }
+      ],
+      "source": {
+        "tier": 1,
+        "store": "corpus",
+        "textAsOf": "2026-11-10",
+        "ledgerRefs": [
+          "civil-code/law-05-10"
+        ],
+        "ledgerClean": true
+      }
+    },
+    {
+      "id": "b12",
+      "role": "damages",
+      "interpretive": true,
+      "interpretiveNote": "The article sits in the chapter on performance by way of compensation and speaks of the creditor; applying it to the victim of a thing in custody is a reading. Article 138 itself treats the victim's act as a ground that frees the custodian entirely when unforeseeable.",
+      "cite": {
+        "code": "civil-code",
+        "article": "177",
+        "paragraphs": [
+          1
+        ]
+      },
+      "says": {
+        "ar": "يجوز للقاضي أن ينقص التعويض أو لا يحكم به إذا اشترك الدائن بخطئه في إحداث الضرر أو زاد فيه.",
+        "en": "The judge may reduce compensation, or award none, when the creditor's fault contributed to the harm or increased it."
+      },
+      "quote": [
+        {
+          "paragraph": 1,
+          "text": "يجوز للقاضى أن ينقص مقدار التعويض، أو لا يحكم بالتعويض اذا كان الدائن بخطئه قد اشترك فى احداث الضرر أو زاد فيه.",
+          "sha256": "cddf910cfad8154f11646b91b9e53e6f36537fa59fbf99d308622988cae8d680"
+        }
+      ],
+      "source": {
+        "tier": 1,
+        "store": "delta",
+        "textAsOf": "2026-11-10",
+        "ledgerRefs": [],
+        "ledgerClean": true
+      }
+    },
+    {
+      "id": "b13",
+      "role": "damages",
+      "interpretive": true,
+      "interpretiveNote": "The article speaks of several persons responsible for a harmful act; that it covers several custodians, or a custodian and a person at fault, is a reading.",
+      "cite": {
+        "code": "civil-code",
+        "article": "126",
+        "paragraphs": [
+          1
+        ]
+      },
+      "says": {
+        "ar": "إذا تعدد المسؤولون عن فعل ضار كانوا متضامنين في التعويض، وتوزع المسؤولية بينهم بالتساوي ما لم يعين القاضي نصيب كل منهم.",
+        "en": "When several persons are responsible for a harmful act they are jointly bound to compensate, sharing equally unless the judge sets each one's share."
+      },
+      "quote": [
+        {
+          "paragraph": 1,
+          "text": "إذا تعدد المسؤولون عن فعل ضار كانوا متضامنين في التزامهم بتعويض الضرر، وتكون المسؤولية فيما بينهم بالتساوي إلا إذا عين القاضي نصيب كل منهم في الالتزام بالتعويض.",
+          "sha256": "0a96ff4b009b0a91f5d2f1c592e94854f993a762577668dae99fabbcd0f62b57"
+        }
+      ],
+      "source": {
+        "tier": 1,
+        "store": "corpus",
+        "textAsOf": "2026-11-10",
+        "ledgerRefs": [
+          "civil-code/law-05-10"
+        ],
+        "ledgerClean": true
+      }
+    },
+    {
+      "id": "b14",
+      "role": "limit",
+      "cite": {
+        "code": "civil-code",
+        "article": "140 مكرر",
+        "paragraphs": [
+          1
+        ]
+      },
+      "says": {
+        "ar": "المنتج مسؤول عن الضرر الناتج عن عيب في منتوجه ولو لم تربطه بالمتضرر علاقة تعاقدية.",
+        "en": "A producer answers for harm caused by a defect in his product, even without a contract with the victim."
+      },
+      "quote": [
+        {
+          "paragraph": 1,
+          "text": "يكون المنتج مسؤولا عن الضرر الناتج عن عيب في منتوجه حتى ولو لم تربطه بالمتضرر علاقة تعاقدية.",
+          "sha256": "2c7279b1e1905603e59d581137b762e6b7f73432d44e684df3fa01d82f258886"
+        }
+      ],
+      "source": {
+        "tier": 1,
+        "store": "corpus",
+        "textAsOf": "2026-11-10",
+        "ledgerRefs": [
+          "civil-code/law-05-10"
+        ],
+        "ledgerClean": true
+      }
+    },
+    {
+      "id": "b15",
+      "role": "limit",
+      "cite": {
+        "code": "civil-code",
+        "article": "140 مكرر 1",
+        "paragraphs": [
+          1
+        ]
+      },
+      "says": {
+        "ar": "إذا انعدم المسؤول عن الضرر الجسماني ولم تكن للمتضرر يد فيه تكفلت الدولة بتعويضه.",
+        "en": "When there is no one liable for bodily harm and the victim had no hand in it, the State bears its compensation."
+      },
+      "quote": [
+        {
+          "paragraph": 1,
+          "text": "إذا انعدم المسؤول عن الضرر الجسماني ولم تكن للمتضرر يد فيه، تتكفل الدولة بالتعويض عن هذا الضرر.",
+          "sha256": "8d5ca7a8b9f1f54a23eac4c7350af74b7bb1131e9a8589e55227f9b4870569b8"
+        }
+      ],
+      "source": {
+        "tier": 1,
+        "store": "corpus",
+        "textAsOf": "2026-11-10",
+        "ledgerRefs": [
+          "civil-code/law-05-10"
+        ],
+        "ledgerClean": true
+      }
+    },
+    {
+      "id": "b16",
+      "role": "limit",
+      "cite": {
+        "code": "civil-code",
+        "article": "554",
+        "paragraphs": [
+          1
+        ]
+      },
+      "says": {
+        "ar": "يضمن المهندس المعماري والمقاول متضامنين ما يحدث خلال عشر سنوات من تهدم كلي أو جزئي فيما شيداه من مبان أو منشآت ثابتة.",
+        "en": "The architect and the contractor jointly guarantee any total or partial collapse, within ten years, of the buildings or fixed structures they erected."
+      },
+      "quote": [
+        {
+          "paragraph": 1,
+          "text": "يضمن المهندس المعماري والمقاول متضامنين ما يحدث خلال عشر سنوات من تهدم كلي أو جزئي فيما شيداه من مبان أو أقاماه من منشآت ثابتة أخرى ولو كان التهدم ناشئا عن عيب في الأرض ويشمل الضمان المنصوص عليه في الفقرة السابقة ما يوجد في المباني والمنشآت من عيوب يترتب عليها تهديد متانة البناء وسلامته.",
+          "sha256": "c04b12729e6d847f96f608654082665d95a08cd066abd147d7a480225e4d2683"
+        }
+      ],
+      "source": {
+        "tier": 1,
+        "store": "corpus",
+        "textAsOf": "2026-11-10",
+        "ledgerRefs": [],
+        "ledgerClean": true
+      }
+    },
+    {
+      "id": "b17",
+      "role": "limit",
+      "cite": {
+        "code": "civil-code",
+        "article": "557",
+        "paragraphs": [
+          1
+        ]
+      },
+      "says": {
+        "ar": "تتقادم دعاوى هذا الضمان بانقضاء ثلاث سنوات من حصول التهدم أو اكتشاف العيب.",
+        "en": "Claims under that guarantee are time-barred three years after the collapse or the discovery of the defect."
+      },
+      "quote": [
+        {
+          "paragraph": 1,
+          "text": "تتقادم دعاوى الضمان المذكورة أعلاه بانقضاء ثلاث سنوات من وقت حصول التهدم أو اكتشاف العيب.",
+          "sha256": "84dedfb8d07034030f23cbdededc13b8b8d500f4ce2e843d2f7087dab0db83b8"
+        }
+      ],
+      "source": {
+        "tier": 1,
+        "store": "corpus",
+        "textAsOf": "2026-11-10",
+        "ledgerRefs": [],
+        "ledgerClean": true
+      }
+    },
+    {
+      "id": "b18",
+      "role": "limit",
+      "cite": {
+        "code": "civil-code",
+        "article": "124",
+        "paragraphs": [
+          1
+        ]
+      },
+      "says": {
+        "ar": "كل فعل يرتكبه الشخص بخطئه ويسبب ضررا للغير يلزم من كان سببا فيه بالتعويض.",
+        "en": "Any act committed by a person through his fault that causes harm to another obliges him to compensate."
+      },
+      "quote": [
+        {
+          "paragraph": 1,
+          "text": "كل فعل أيا كان يرتكبه الشخص بخطئه، ويسبب ضررا للغير يلزم من كان سببا في حدوثه بالتعويض.",
+          "sha256": "812a7bc5c8f091a9db83990e0a67b4aaeadd1b88ce749447b2badb7b62b0c0b7"
+        }
+      ],
+      "source": {
+        "tier": 2,
+        "store": "library",
+        "textAsOf": "2026-11-10",
+        "ledgerRefs": [
+          "civil-code/law-05-10"
+        ],
+        "ledgerClean": true
+      }
+    },
+    {
+      "id": "b19",
+      "role": "limit",
+      "cite": {
+        "code": "civil-code",
+        "article": "136",
+        "paragraphs": [
+          1
+        ]
+      },
+      "says": {
+        "ar": "المتبوع مسؤول عن الضرر الذي يحدثه تابعه بفعله الضار أثناء تأدية وظيفته أو بسببها أو بمناسبتها.",
+        "en": "A principal answers for the harm his agent causes by a harmful act in, because of, or on the occasion of his duties."
+      },
+      "quote": [
+        {
+          "paragraph": 1,
+          "text": "يكون المتبوع مسؤولا عن الضرر الذي يحدثه تابعه بفعله الضار متى كان واقعا منه في حالة تأدية وظيفته أو بسببها أو بمناسبتها.",
+          "sha256": "f0e024a8d9c1fcc7cfbd4b6603e00df5ceee666775775c624c6214ba5a8c9a1c"
+        }
+      ],
+      "source": {
+        "tier": 1,
+        "store": "corpus",
+        "textAsOf": "2026-11-10",
+        "ledgerRefs": [
+          "civil-code/law-05-10"
+        ],
+        "ledgerClean": true
+      }
+    },
+    {
+      "id": "b20",
+      "role": "limit",
+      "cite": {
+        "code": "civil-code",
+        "article": "134",
+        "paragraphs": [
+          1
+        ]
+      },
+      "says": {
+        "ar": "من وجبت عليه رقابة شخص لقصره أو لحالته العقلية أو الجسمية ملزم بتعويض ما يحدثه ذلك الشخص للغير من ضرر.",
+        "en": "Whoever must supervise a person because of minority or mental or physical condition is bound to compensate the harm that person causes to others."
+      },
+      "quote": [
+        {
+          "paragraph": 1,
+          "text": "كل من يجب عليه قانونا أو اتفاقا رقابة شخص في حاجة إلى الرقابة بسبب قصره أو بسبب حالته العقلية أو الجسمية، يكون ملزما بتعويض الضرر الذي يحدثه ذلك الشخص للغير بفعله الضار.",
+          "sha256": "72f71d2904d01521b7b983bef7021b456c84f204fa959209bb49a3cf8b4fd1f6"
+        }
+      ],
+      "source": {
+        "tier": 1,
+        "store": "corpus",
+        "textAsOf": "2026-11-10",
+        "ledgerRefs": [
+          "civil-code/law-05-10"
+        ],
+        "ledgerClean": true
+      }
+    },
+    {
+      "id": "b21",
+      "role": "proof",
+      "interpretive": true,
+      "interpretiveNote": "The paragraph speaks of proving an obligation; that the victim therefore proves custody, the harm and the causal role of the thing is a reading.",
+      "cite": {
+        "code": "civil-code",
+        "article": "323",
+        "paragraphs": [
+          1
+        ]
+      },
+      "says": {
+        "ar": "على الدائن إثبات الالتزام وعلى المدين إثبات التخلص منه.",
+        "en": "The creditor proves the obligation; the debtor proves his release."
+      },
+      "quote": [
+        {
+          "paragraph": 1,
+          "text": "على الدائن اثبات الالتزام وعلى المدين اثبات التخلص منه.",
+          "sha256": "ebb8762aac4c3d8159864a5a63be8505f0bf4de22b6f8f532a048a910d9ad268"
+        }
+      ],
+      "source": {
+        "tier": 2,
+        "store": "library",
+        "textAsOf": "2026-11-10",
+        "ledgerRefs": [],
+        "ledgerClean": true
+      }
+    },
+    {
+      "id": "b22",
+      "role": "procedure",
+      "cite": {
+        "code": "cpca",
+        "article": "126",
+        "paragraphs": [
+          1
+        ]
+      },
+      "says": {
+        "ar": "يجوز للقاضي تلقائيا أو بطلب أحد الخصوم تعيين خبير أو عدة خبراء.",
+        "en": "The judge may, of his own motion or at a party's request, appoint one or more experts."
+      },
+      "quote": [
+        {
+          "paragraph": 1,
+          "text": "يجوز للقاضي من تلقاء نفسه أو بطلب أحد الخصوم، تعيين خبير أو عدة خبراء من نفس التخصص أو من تخصصات مختلفة.",
+          "sha256": "df5cac041122fd10adc58ac1e0b050fc805aeb35301f2804c31fce2ffe26fa75"
+        }
+      ],
+      "source": {
+        "tier": 1,
+        "store": "library",
+        "textAsOf": "2026-11-10",
+        "ledgerRefs": [],
+        "ledgerClean": true
+      }
+    },
+    {
+      "id": "b23",
+      "role": "procedure",
+      "cite": {
+        "code": "cpca",
+        "article": "125",
+        "paragraphs": [
+          1
+        ]
+      },
+      "says": {
+        "ar": "تهدف الخبرة إلى توضيح واقعة مادية تقنية أو علمية محضة للقاضي.",
+        "en": "An expert report serves to clarify a purely technical or scientific material fact for the judge."
+      },
+      "quote": [
+        {
+          "paragraph": 1,
+          "text": "تهدف الخبرة إلى توضيح واقعة مادية تقنية أو علمية محضة للقاضي.",
+          "sha256": "db35ee03a9fdf37a3d13295e0977a85c7bace467b34df6e7ad2d8434525b972a"
+        }
+      ],
+      "source": {
+        "tier": 1,
+        "store": "library",
+        "textAsOf": "2026-11-10",
+        "ledgerRefs": [],
+        "ledgerClean": true
+      }
+    },
+    {
+      "id": "b24",
+      "role": "procedure",
+      "cite": {
+        "code": "cpca",
+        "article": "310",
+        "paragraphs": [
+          2
+        ]
+      },
+      "says": {
+        "ar": "تقدم طلبات إثبات الحالة في موضوع لا يمس بحقوق الأطراف إلى رئيس الجهة القضائية المختصة بأمر على عريضة.",
+        "en": "Requests to record a state of things, in a matter that does not affect the parties' rights, go to the president of the competent court by order on petition."
+      },
+      "quote": [
+        {
+          "paragraph": 2,
+          "text": "تقدم الطلبات الرامية إلى إثبات الحالة أو توجيه إنذار أو إجراء استجواب في موضوع لا يمس بحقوق الأطراف، إلى رئيس الجهة القضائية المختصة، ليفصل فيها خلال أجل أقصاه ثلاثة (3) أيام من تاريخ إيداع الطلب.",
+          "sha256": "bf25ce1ff6ea247da5c86025125969026b5cabf1c0f4ab97b8242e55224e0e13"
+        }
+      ],
+      "source": {
+        "tier": 1,
+        "store": "library",
+        "textAsOf": "2026-11-10",
+        "ledgerRefs": [],
+        "ledgerClean": true
+      }
+    },
+    {
+      "id": "b25",
+      "role": "procedure",
+      "cite": {
+        "code": "cpca",
+        "article": "77",
+        "paragraphs": [
+          1
+        ]
+      },
+      "says": {
+        "ar": "يجوز للقاضي قبل مباشرة الدعوى ولسبب مشروع أن يأمر بإجراء تحقيق بطلب ذي مصلحة لإقامة الدليل والاحتفاظ به.",
+        "en": "Before a claim is brought, and for a legitimate reason, the judge may order a measure of inquiry at an interested party's request to establish and preserve evidence."
+      },
+      "quote": [
+        {
+          "paragraph": 1,
+          "text": "يمكن للقاضي، ولسبب مشروع وقبل مباشرة الدعوى، أن يأمر بأي إجراء من إجراءات التحقيق، بناء على طلب كل ذي مصلحة، قصد إقامة الدليل والاحتفاظ به لإثبات الوقائع التي قد تحدد مآل النزاع.",
+          "sha256": "77b4a33574ac76032a6b2228fde75fb87b124fc46c878ac36d572164e5524994"
+        }
+      ],
+      "source": {
+        "tier": 1,
+        "store": "library",
+        "textAsOf": "2026-11-10",
+        "ledgerRefs": [],
+        "ledgerClean": true
+      }
+    },
+    {
+      "id": "b26",
+      "role": "procedure",
+      "cite": {
+        "code": "cpca",
+        "article": "419",
+        "paragraphs": [
+          1
+        ]
+      },
+      "says": {
+        "ar": "يتحمل الخصم الخاسر المصاريف ما لم يقرر القاضي تحميلها لخصم آخر مع التسبيب.",
+        "en": "The losing party bears the costs unless the judge, giving reasons, puts them on another party."
+      },
+      "quote": [
+        {
+          "paragraph": 1,
+          "text": "يتحمل الخصم الذي خسر الدعوى المصاريف المترتبة عليها، ما لم يقرر القاضي تحميلها كليا أو جزئيا لخصم آخر مع تسبيب ذلك.",
+          "sha256": "a58e0d6566bf1ea9eac92343c5b19bb937aa405099dbc9eb4b2fd442debc6b74"
+        }
+      ],
+      "source": {
+        "tier": 1,
+        "store": "library",
+        "textAsOf": "2026-11-10",
+        "ledgerRefs": [],
+        "ledgerClean": true
+      }
+    },
+    {
+      "id": "b27",
+      "role": "procedure",
+      "cite": {
+        "code": "cpca",
+        "article": "323",
+        "paragraphs": [
+          3
+        ]
+      },
+      "says": {
+        "ar": "يجوز للقاضي في غير الحالات الوجوبية أن يأمر بالنفاذ المعجل في حالة الاستعجال بكفالة أو بدونها.",
+        "en": "Outside the mandatory cases, the judge may order provisional execution in case of urgency, with or without security."
+      },
+      "quote": [
+        {
+          "paragraph": 3,
+          "text": "يجوز للقاضي في جميع الأحوال الأخرى، أن يأمر في حالة الاستعجال بالنفاذ المعجل بكفالة أو بدون كفالة.",
+          "sha256": "70a204fd42f6ac4088047179b89f5396bf562d76973fee8fcb753014037abba4"
+        }
+      ],
+      "source": {
+        "tier": 1,
+        "store": "library",
+        "textAsOf": "2026-11-10",
+        "ledgerRefs": [],
+        "ledgerClean": true
+      }
+    },
+    {
+      "id": "b28",
+      "role": "proof",
+      "interpretive": true,
+      "interpretiveNote": "The paragraph limits witness proof of a legal act; that the harm, the custody and the causal facts, which are material facts and not legal acts, fall outside it is a reading.",
+      "cite": {
+        "code": "civil-code",
+        "article": "333",
+        "paragraphs": [
+          1
+        ]
+      },
+      "says": {
+        "ar": "في غير المواد التجارية لا يجوز الإثبات بالشهود في التصرف القانوني الذي تزيد قيمته على الحد المذكور أو غير محدد القيمة ما لم يوجد نص مخالف.",
+        "en": "Outside commercial matters, witness proof is not allowed for a legal act above the stated value, or of undetermined value, unless a text provides otherwise."
+      },
+      "quote": [
+        {
+          "paragraph": 1,
+          "text": "في غير المواد التجارية إذا كان التصرف القانوني تزيد قيمته على 100.000 دينار جزائري أو كان غير محدد القيمة فلا يجوز الإثبات بالشهود في وجوده أو انقضائه ما لم يوجد نص يقضي بغير ذلك.",
+          "sha256": "d7bf5b2ce82c8df68be58c0a4e051b85cc6af7fa59e2f13e6b3fc1e35ea3868c"
+        }
+      ],
+      "source": {
+        "tier": 2,
+        "store": "library",
+        "textAsOf": "2026-11-10",
+        "ledgerRefs": [
+          "civil-code/law-05-10"
+        ],
+        "ledgerClean": true
+      }
+    }
+  ],
+  "elements": [
+    {
+      "id": "e1",
+      "toProve": {
+        "ar": "أن شيئا كان في حراسة المدعى عليه، أي كانت له عليه قدرة الاستعمال والتسيير والرقابة وقت الحادث، وأن هذا الشيء أحدث الضرر.",
+        "en": "That a thing was in the defendant's custody, meaning he had the power to use, manage and control it at the time, and that this thing caused the harm."
+      },
+      "factsToState": [
+        {
+          "ar": "الشيء الذي أحدث الضرر (تسرب مياه من قناة، آلة، مركبة…) ومكانه.",
+          "en": "The thing that caused the harm (a water leak from a pipe, a machine, a vehicle…) and where it was."
+        },
+        {
+          "ar": "صلة المدعى عليه بالشيء التي تجعله حارسا له (مالك يستعمله، مستعمل، مسير…).",
+          "en": "The defendant's link with the thing that makes him its custodian (owner using it, user, manager…)."
+        },
+        {
+          "ar": "تاريخ الحادث وكيف أحدث الشيء الضرر.",
+          "en": "The date of the incident and how the thing caused the harm."
+        }
+      ],
+      "events": [
+        "harm_by_thing"
+      ],
+      "slots": [
+        "harmful_act_date"
+      ],
+      "burden": "plaintiff",
+      "proof": [
+        {
+          "means": "any means of proof of material facts: a finding of the state of things, photographs, witnesses, an expert report",
+          "basis": [
+            "b21",
+            "b28",
+            "b24"
+          ],
+          "note": {
+            "ar": "الحراسة والضرر والسببية وقائع مادية؛ إثباتها بكل الوسائل قراءة.",
+            "en": "Custody, harm and causation are material facts; proving them by any means is a reading."
+          }
+        }
+      ],
+      "basis": [
+        "b1",
+        "b21"
+      ]
+    },
+    {
+      "id": "e2",
+      "toProve": {
+        "ar": "أن حيوانا كان في حراسة المدعى عليه، ولو لم يكن مالكه، وأنه أحدث الضرر ولو بعد أن ضل أو تسرب.",
+        "en": "That an animal was in the defendant's keeping, even if he is not its owner, and that it caused the harm, even after straying or escaping."
+      },
+      "factsToState": [
+        {
+          "ar": "الحيوان وصلة المدعى عليه به (حارس أو مالك يحرسه).",
+          "en": "The animal and the defendant's link with it (keeper, or owner keeping it)."
+        },
+        {
+          "ar": "تاريخ الحادث (هجوم، عض، إتلاف…) والضرر الناتج.",
+          "en": "The date of the incident (attack, bite, damage…) and the resulting harm."
+        }
+      ],
+      "events": [
+        "harm_by_animal"
+      ],
+      "slots": [
+        "harmful_act_date"
+      ],
+      "burden": "plaintiff",
+      "proof": [
+        {
+          "means": "medical certificates, a finding of the state of things, witnesses",
+          "basis": [
+            "b21",
+            "b28"
+          ]
+        }
+      ],
+      "basis": [
+        "b3",
+        "b21"
+      ]
+    },
+    {
+      "id": "e3",
+      "toProve": {
+        "ar": "أن المدعى عليه مالك البناء، وأن البناء أو جزءا منه انهدم، وأن الانهدام أحدث الضرر.",
+        "en": "That the defendant owns the building, that the building or part of it collapsed, and that the collapse caused the harm."
+      },
+      "factsToState": [
+        {
+          "ar": "البناء وموقعه وسند ملكية المدعى عليه له.",
+          "en": "The building, where it is, and the defendant's title to it."
+        },
+        {
+          "ar": "تاريخ الانهدام الكلي أو الجزئي والضرر الناتج عنه.",
+          "en": "The date of the total or partial collapse and the harm it caused."
+        }
+      ],
+      "events": [
+        "harm_by_building"
+      ],
+      "slots": [
+        "harmful_act_date"
+      ],
+      "burden": "plaintiff",
+      "proof": [
+        {
+          "means": "title or land-register extract, a finding of the state of things, an expert report",
+          "basis": [
+            "b21",
+            "b24",
+            "b23"
+          ]
+        }
+      ],
+      "basis": [
+        "b4",
+        "b21"
+      ]
+    },
+    {
+      "id": "e4",
+      "toProve": {
+        "ar": "الضرر ومداه: ما لحق المضرور من خسارة وما فاته من كسب، والضرر المعنوي عند الاقتضاء.",
+        "en": "The harm and its extent: the loss suffered and the gain missed, and moral harm where there is any."
+      },
+      "factsToState": [
+        {
+          "ar": "عناصر الضرر المادي (تكلفة الإصلاح، القيمة، الكسب الفائت) والضرر المعنوي، وتقدير المبلغ المطلوب.",
+          "en": "The items of material harm (cost of repair, value, gain missed) and of moral harm, and the amount claimed."
+        }
+      ],
+      "events": [
+        "harm_by_thing",
+        "harm_by_animal",
+        "harm_by_building"
+      ],
+      "burden": "plaintiff",
+      "proof": [
+        {
+          "means": "invoices, repair estimates, medical certificates, an expert report",
+          "basis": [
+            "b7",
+            "b8",
+            "b22"
+          ]
+        }
+      ],
+      "basis": [
+        "b7",
+        "b8",
+        "b9"
+      ]
+    },
+    {
+      "id": "e5",
+      "toProve": {
+        "ar": "دفع المدعى عليه: سبب لم يكن يتوقعه (عمل الضحية أو الغير، حالة طارئة، قوة قاهرة)، أو سبب لا ينسب إليه في الحيوان، أو أن الانهدام لا يرجع إلى إهمال الصيانة أو القدم أو العيب.",
+        "en": "The defendant's defence: a cause he could not foresee (the victim's or a third party's act, a sudden event, force majeure), a cause not attributable to him for an animal, or that the collapse is not due to neglect of maintenance, age or defect."
+      },
+      "factsToState": [
+        {
+          "ar": "ما يرد به المدعي مسبقا على سبب الإعفاء المحتمل، إن كان معروفا.",
+          "en": "The plaintiff's answer, in advance, to any likely ground of release, if known."
+        }
+      ],
+      "burden": "defendant",
+      "basis": [
+        "b2",
+        "b3",
+        "b4"
+      ]
+    }
+  ],
+  "requests": [
+    {
+      "id": "r1",
+      "kind": "damages",
+      "accessory": false,
+      "amount": true,
+      "text": {
+        "ar": "إلزام المدعى عليه بأن يؤدي للمدعي مبلغ (...) دج تعويضا عن الأضرار المادية والمعنوية اللاحقة به، أو احتياطيا وبناء على طلب المدعي إلزامه بإعادة الحالة إلى ما كانت عليه على نفقته.",
+        "en": "Order the defendant to pay the plaintiff (...) DZD as compensation for the material and moral harm suffered or, in the alternative and at the plaintiff's request, to restore the former state at his own expense."
+      },
+      "basis": [
+        "b1",
+        "b7",
+        "b8",
+        "b9",
+        "b11"
+      ]
+    },
+    {
+      "id": "r2",
+      "kind": "other",
+      "accessory": true,
+      "amount": false,
+      "text": {
+        "ar": "احتياطيا: تعيين خبير مختص لمعاينة الأضرار وتحديد سببها وتقدير قيمتها.",
+        "en": "In the alternative: appoint an expert to inspect the harm, establish its cause and assess its value."
+      },
+      "basis": [
+        "b22",
+        "b23"
+      ]
+    },
+    {
+      "id": "r3",
+      "kind": "other",
+      "accessory": true,
+      "amount": false,
+      "text": {
+        "ar": "تحميل المدعى عليه المصاريف القضائية.",
+        "en": "Order the defendant to bear the costs."
+      },
+      "basis": [
+        "b26"
+      ]
+    },
+    {
+      "id": "r4",
+      "kind": "provisional_execution",
+      "accessory": true,
+      "amount": false,
+      "text": {
+        "ar": "شمول الحكم بالنفاذ المعجل لحالة الاستعجال (...).",
+        "en": "Order provisional execution of the judgment because of urgency (...)."
+      },
+      "basis": [
+        "b27"
+      ]
+    },
+    {
+      "id": "r5",
+      "kind": "other",
+      "accessory": true,
+      "amount": false,
+      "text": {
+        "ar": "الاحتفاظ للمدعي بالحق في المطالبة بإعادة النظر في تقدير التعويض خلال مدة يحددها الحكم، إن تعذر تقدير الضرر نهائيا وقت الحكم.",
+        "en": "Reserve the plaintiff's right to ask for a new assessment of compensation within a period set by the judgment, if the harm cannot be finally assessed at that time."
+      },
+      "basis": [
+        "b7"
+      ]
+    }
+  ],
+  "court": {
+    "section": {
+      "value": "civil",
+      "basis": [
+        "court-sections.b1",
+        "court-sections.b2",
+        "court-sections.b3",
+        "court-sections.b4",
+        "court-sections.b5"
+      ],
+      "message": {
+        "ar": "المادة 32 من قانون الإجراءات المدنية والإدارية: تجدول القضايا أمام الأقسام حسب طبيعة النزاع، ودعوى التعويض عن ضرر الشيء أو الحيوان أو البناء نزاع مدني، وفي المحاكم التي لم تنشأ فيها الأقسام ينظر فيها القسم المدني. القسم المختار يختلف عن المقترح؛ تحقق من طبيعة النزاع.",
+        "en": "CPCA article 32: cases are listed before the sections by the nature of the dispute; a claim for harm caused by a thing, an animal or a building is a civil dispute, and in courts without sections the civil section hears it. The section chosen differs from the one proposed; check the nature of the dispute."
+      },
+      "interpretive": true,
+      "interpretiveNote": "Article 32 lists civil matters among those the court decides and lists cases by the nature of the dispute; no text names the section for a custody-liability claim, so 'civil' is a reading (the court-sections module's open point on the residual section)."
+    }
+  },
+  "documents": [
+    {
+      "id": "doc1",
+      "name": {
+        "ar": "محضر معاينة (إثبات حالة) للأضرار والشيء أو الحيوان أو البناء الذي أحدثها",
+        "en": "A record of findings (statement of the state of things) of the harm and of the thing, animal or building that caused it"
+      },
+      "why": {
+        "ar": "يثبت الضرر وسببه وتاريخه، ويمكن طلبه من رئيس المحكمة بأمر على عريضة أو بإجراء تحقيق قبل الدعوى؛ وهو وسيلة إثبات لا شرط لقبول الدعوى.",
+        "en": "It proves the harm, its cause and its date, and may be asked of the court president by order on petition or by a measure of inquiry before the claim; it is evidence, not a condition of admissibility."
+      },
+      "basis": [
+        "b24",
+        "b25",
+        "b1"
+      ]
+    },
+    {
+      "id": "doc2",
+      "name": {
+        "ar": "صور الأضرار",
+        "en": "Photographs of the harm"
+      },
+      "why": {
+        "ar": "تثبت الضرر ومداه وصلته بالشيء.",
+        "en": "They show the harm, its extent and its link with the thing."
+      },
+      "basis": [
+        "b1",
+        "b8"
+      ]
+    },
+    {
+      "id": "doc3",
+      "name": {
+        "ar": "تقرير خبرة إن وجد",
+        "en": "An expert report, if there is one"
+      },
+      "why": {
+        "ar": "يوضح السبب التقني للضرر وتقدير قيمته؛ وللقاضي أن يعين خبيرا بطلب المدعي.",
+        "en": "It explains the technical cause of the harm and its value; the judge may also appoint an expert at the plaintiff's request."
+      },
+      "basis": [
+        "b23",
+        "b22",
+        "b8"
+      ]
+    },
+    {
+      "id": "doc4",
+      "name": {
+        "ar": "ما يثبت صلة المدعى عليه بالشيء أو الحيوان أو البناء (سند ملكية، عقد إيجار، بطاقة رمادية، شهادة…)",
+        "en": "Proof of the defendant's link with the thing, animal or building (title deed, lease, vehicle registration card, certificate…)"
+      },
+      "why": {
+        "ar": "تقوم مسؤولية الحارس على الحراسة، ومسؤولية انهدام البناء على ملكيته.",
+        "en": "The custodian's liability rests on custody, and liability for a collapse rests on ownership of the building."
+      },
+      "basis": [
+        "b1",
+        "b3",
+        "b4"
+      ]
+    },
+    {
+      "id": "doc5",
+      "name": {
+        "ar": "شهادات طبية عند وقوع ضرر جسماني",
+        "en": "Medical certificates where there is bodily harm"
+      },
+      "why": {
+        "ar": "تثبت الضرر الجسماني ومداه لتقدير التعويض.",
+        "en": "They prove bodily harm and its extent for the assessment of compensation."
+      },
+      "basis": [
+        "b7",
+        "b8"
+      ]
+    },
+    {
+      "id": "doc6",
+      "name": {
+        "ar": "فواتير أو كشوف تقديرية لتكلفة الإصلاح",
+        "en": "Invoices or estimates of the cost of repair"
+      },
+      "why": {
+        "ar": "تثبت الخسارة اللاحقة التي يشملها التعويض.",
+        "en": "They prove the loss suffered that compensation covers."
+      },
+      "basis": [
+        "b8",
+        "b11"
+      ]
+    }
+  ],
+  "boundaries": [
+    {
+      "id": "n1",
+      "looksLike": {
+        "ar": "ضرر سببه شيء في حراسة المدعى عليه",
+        "en": "Harm caused by a thing in the defendant's custody"
+      },
+      "isActually": "outside:fire-fault-liability",
+      "tellingFacts": [
+        {
+          "ar": "الضرر ناتج عن حريق شب في عقار أو منقولات يحوزها المدعى عليه.",
+          "en": "The harm results from a fire that broke out in an immovable or movables the defendant holds."
+        }
+      ],
+      "when": {
+        "slot": "harm_caused_by_fire",
+        "is": "yes"
+      },
+      "slots": [
+        "harm_caused_by_fire"
+      ],
+      "message": {
+        "ar": "المادة 140 من القانون المدني: حائز العقار أو المنقولات التي شب فيها حريق لا يسأل نحو الغير عن أضراره إلا إذا ثبت أن الحريق ينسب إلى خطئه أو خطأ من هو مسؤول عنهم. تحقق من مصدر الضرر ومن إثبات الخطأ.",
+        "en": "Civil Code article 140: the holder of an immovable or movables in which a fire broke out answers to others for its harm only if the fire is proved to be due to his fault or that of persons he answers for. Check the source of the harm and the proof of fault."
+      },
+      "basis": [
+        "b6"
+      ]
+    },
+    {
+      "id": "n2",
+      "looksLike": {
+        "ar": "انهدام بناء أحدث ضررا",
+        "en": "A building collapse that caused harm"
+      },
+      "isActually": "outside:builders-ten-year-guarantee",
+      "tellingFacts": [
+        {
+          "ar": "الدعوى موجهة إلى المهندس المعماري أو المقاول بسبب تهدم ما شيداه، لا إلى مالك البناء.",
+          "en": "The claim is against the architect or the contractor for the collapse of what they built, not against the building's owner."
+        }
+      ],
+      "message": {
+        "ar": "المادتان 554 و557 من القانون المدني: يضمن المهندس المعماري والمقاول متضامنين تهدم ما شيداه خلال عشر سنوات، وتتقادم دعاوى هذا الضمان بانقضاء ثلاث سنوات من التهدم أو اكتشاف العيب. تحقق من الشخص المدعى عليه ومن أساس الدعوى.",
+        "en": "Civil Code articles 554 and 557: the architect and the contractor jointly guarantee the collapse of what they built within ten years, and claims under that guarantee are time-barred three years after the collapse or the discovery of the defect. Check who the defendant is and the ground of the claim."
+      },
+      "basis": [
+        "b16",
+        "b17"
+      ]
+    },
+    {
+      "id": "n3",
+      "looksLike": {
+        "ar": "ضرر سببه شيء",
+        "en": "Harm caused by a thing"
+      },
+      "isActually": "outside:producer-liability",
+      "tellingFacts": [
+        {
+          "ar": "الضرر ناتج عن عيب في منتوج، والمدعى عليه منتجه لا حارسه.",
+          "en": "The harm results from a defect in a product, and the defendant is its producer, not its custodian."
+        }
+      ],
+      "message": {
+        "ar": "المادة 140 مكرر من القانون المدني: المنتج مسؤول عن الضرر الناتج عن عيب في منتوجه ولو لم تربطه بالمتضرر علاقة تعاقدية. تحقق من أساس الدعوى ومن صفة المدعى عليه.",
+        "en": "Civil Code article 140 مكرر: a producer answers for harm caused by a defect in his product, even without a contract with the victim. Check the ground of the claim and the defendant's capacity."
+      },
+      "basis": [
+        "b14"
+      ]
+    },
+    {
+      "id": "n4",
+      "looksLike": {
+        "ar": "ضرر سببه شيء",
+        "en": "Harm caused by a thing"
+      },
+      "isActually": "outside:personal-fault-liability",
+      "tellingFacts": [
+        {
+          "ar": "الضرر ناتج عن فعل شخصي للمدعى عليه، والشيء مجرد أداة في يده.",
+          "en": "The harm results from the defendant's own act, the thing being a mere tool in his hand."
+        }
+      ],
+      "message": {
+        "ar": "المادتان 124 و138 من القانون المدني: المسؤولية عن الفعل الشخصي تقوم على الخطأ، ومسؤولية الحارس تقوم على الحراسة. تحقق من الأساس الذي تبنى عليه الدعوى.",
+        "en": "Civil Code articles 124 and 138: liability for one's own act rests on fault, the custodian's liability on custody. Check which ground the claim is built on."
+      },
+      "basis": [
+        "b18",
+        "b1"
+      ]
+    },
+    {
+      "id": "n5",
+      "looksLike": {
+        "ar": "ضرر سببه شيء يستعمله شخص آخر",
+        "en": "Harm caused by a thing used by someone else"
+      },
+      "isActually": "outside:liability-for-others",
+      "tellingFacts": [
+        {
+          "ar": "الشيء كان بيد تابع للمدعى عليه أثناء عمله، أو بيد قاصر أو شخص تحت رقابته.",
+          "en": "The thing was in the hands of the defendant's agent at work, or of a minor or person under his supervision."
+        }
+      ],
+      "message": {
+        "ar": "المادتان 134 و136 من القانون المدني: يسأل المكلف بالرقابة عن ضرر من هو تحت رقابته، والمتبوع عن ضرر تابعه أثناء الوظيفة أو بسببها أو بمناسبتها. تحقق من الحارس الفعلي ومن الأساس الملائم.",
+        "en": "Civil Code articles 134 and 136: the supervisor answers for the harm caused by the person he must supervise, and the principal for his agent's harm in, because of, or on the occasion of his duties. Check who actually had custody and which ground fits."
+      },
+      "basis": [
+        "b20",
+        "b19",
+        "b1"
+      ]
+    },
+    {
+      "id": "n6",
+      "looksLike": {
+        "ar": "دعوى ضد مالك بناء آيل للسقوط",
+        "en": "A claim against the owner of a building in danger of collapse"
+      },
+      "isActually": "outside:building-preventive-measures",
+      "tellingFacts": [
+        {
+          "ar": "لم يقع انهدام بعد، والمدعي مهدد بضرر ويطلب اتخاذ تدابير الوقاية.",
+          "en": "No collapse has happened yet; the plaintiff is threatened with harm and asks for preventive measures."
+        }
+      ],
+      "message": {
+        "ar": "المادة 140 من القانون المدني: لمن يهدده ضرر من البناء أن يطالب المالك بالتدابير الضرورية للوقاية، وإلا استأذن المحكمة في اتخاذها على حساب المالك. تحقق من وقوع الضرر ومن الطلب الملائم.",
+        "en": "Civil Code article 140: a person threatened with harm from a building may require the owner to take the necessary preventive measures, or else seek the court's leave to take them at the owner's expense. Check whether harm has occurred and which request fits."
+      },
+      "basis": [
+        "b5"
+      ]
+    },
+    {
+      "id": "n7",
+      "looksLike": {
+        "ar": "ضرر جسماني لا يعرف حارس الشيء الذي أحدثه",
+        "en": "Bodily harm where the custodian of the thing that caused it is unknown"
+      },
+      "isActually": "outside:state-compensation",
+      "tellingFacts": [
+        {
+          "ar": "لا يوجد مسؤول عن الضرر الجسماني، ولا يد للمتضرر فيه.",
+          "en": "No one is liable for the bodily harm, and the victim had no hand in it."
+        }
+      ],
+      "message": {
+        "ar": "المادة 140 مكرر 1 من القانون المدني: إذا انعدم المسؤول عن الضرر الجسماني ولم تكن للمتضرر يد فيه تتكفل الدولة بالتعويض. تحقق من وجود حارس يمكن مقاضاته.",
+        "en": "Civil Code article 140 مكرر 1: when there is no one liable for bodily harm and the victim had no hand in it, the State bears its compensation. Check whether there is a custodian who can be sued."
+      },
+      "basis": [
+        "b15"
+      ]
+    },
+    {
+      "id": "n8",
+      "looksLike": {
+        "ar": "ضرر سببته مركبة في حراسة المدعى عليه",
+        "en": "Harm caused by a vehicle in the defendant's custody"
+      },
+      "isActually": "outside:road-accident-compensation",
+      "tellingFacts": [
+        {
+          "ar": "حادث مرور تسببت فيه مركبة برية ذات محرك، يخضع التعويض عنه لنظام خاص بالتأمين الإلزامي على السيارات.",
+          "en": "A road accident caused by a motor vehicle, compensated under a special compulsory motor insurance regime."
+        }
+      ],
+      "message": {
+        "ar": "المادة 138 من القانون المدني نص عام في مسؤولية الحارس؛ أما حوادث المرور فيحكمها نص خاص بالتأمين الإلزامي على السيارات وتعويض الضحايا غير موجود في مخزن النصوص. تحقق من النظام الواجب التطبيق ومن الطرف الواجب مقاضاته.",
+        "en": "Civil Code article 138 is the general rule on the custodian's liability; road accidents are governed by a special law on compulsory motor insurance and victim compensation that is not in the article store. Check which regime applies and whom to sue."
+      },
+      "basis": [
+        "b1"
+      ]
+    }
+  ],
+  "slots": [
+    "requests",
+    "harmful_act_date",
+    "harm_caused_by_fire",
+    "obligation_is_tort_compensation",
+    "damage_caused_by_offence",
+    "criminal_case_on_same_facts",
+    "public_body_party",
+    "national_public_body_party",
+    "public_vehicle_damage",
+    "defendant_resides_abroad",
+    "defendant_domicile_known",
+    "notice_served",
+    "notice_means",
+    "notice_date",
+    "notice_before_petition_day",
+    "default_on_due_date_agreed",
+    "performance_impossible_or_useless_by_debtor",
+    "return_of_thing_known_stolen_or_unduly_received",
+    "debtor_refused_in_writing",
+    "court_has_section_for_matter",
+    "petition_names_court",
+    "petition_gives_plaintiff_identity",
+    "petition_gives_defendant_identity",
+    "party_is_legal_person",
+    "petition_gives_legal_person_details",
+    "petition_states_facts_claims_grounds",
+    "petition_lists_documents",
+    "petition_signed_dated",
+    "petition_copies_for_each_party",
+    "court_fees_paid",
+    "fee_exemption_applies",
+    "party_lacks_capacity",
+    "incapable_party_represented",
+    "plaintiff_acts_through_representative",
+    "representative_has_authority",
+    "plaintiff_has_standing",
+    "plaintiff_has_interest",
+    "suit_authorisation_required",
+    "suit_authorisation_obtained",
+    "foreign_language_documents",
+    "foreign_documents_officially_translated",
+    "petition_in_arabic"
+  ],
+  "proposedSlots": [
+    {
+      "id": "harm_caused_by_fire",
+      "type": "yesNoUnknown",
+      "question": {
+        "ar": "هل نتج الضرر عن حريق شب في عقار أو منقولات يحوزها المدعى عليه؟",
+        "en": "Did the harm result from a fire that broke out in an immovable or movables the defendant holds?"
+      },
+      "why": "Boundary n1 reads it: civil-code 140 paragraph 1 makes the holder liable for a fire's harm only on proof of his fault, a regime that differs from the custodian's liability of article 138."
+    }
+  ],
+  "examples": [
+    {
+      "id": "ex1",
+      "by": "derivationA",
+      "title": "Water leak from the upstairs flat, everything in order: nothing to report.",
+      "petitionDate": "2026-11-19",
+      "slots": {
+        "requests": [
+          "damages"
+        ],
+        "harmful_act_date": "2025-03-10",
+        "harm_caused_by_fire": "no",
+        "obligation_is_tort_compensation": "yes",
+        "damage_caused_by_offence": "no",
+        "criminal_case_on_same_facts": "no",
+        "public_body_party": "no",
+        "national_public_body_party": "no",
+        "public_vehicle_damage": "no",
+        "defendant_resides_abroad": "no",
+        "defendant_domicile_known": "yes",
+        "notice_served": "no",
+        "court_has_section_for_matter": "yes",
+        "petition_names_court": "yes",
+        "petition_gives_plaintiff_identity": "yes",
+        "petition_gives_defendant_identity": "yes",
+        "party_is_legal_person": "no",
+        "petition_states_facts_claims_grounds": "yes",
+        "petition_lists_documents": "yes",
+        "petition_signed_dated": "yes",
+        "petition_copies_for_each_party": "yes",
+        "court_fees_paid": "yes",
+        "party_lacks_capacity": "no",
+        "plaintiff_acts_through_representative": "no",
+        "plaintiff_has_standing": "yes",
+        "plaintiff_has_interest": "yes",
+        "suit_authorisation_required": "no",
+        "foreign_language_documents": "no",
+        "petition_in_arabic": "yes"
+      },
+      "expect": {
+        "section": "civil",
+        "findings": [
+          {
+            "ref": "n1",
+            "effect": "none"
+          }
+        ],
+        "questions": []
+      }
+    },
+    {
+      "id": "ex2",
+      "by": "derivationA",
+      "title": "Wall collapse of a neighbour's building, owner sued, no fire: the fire boundary stays silent; the section is civil.",
+      "petitionDate": "2026-11-19",
+      "slots": {
+        "requests": [
+          "damages"
+        ],
+        "harmful_act_date": "2025-09-02",
+        "obligation_is_tort_compensation": "yes",
+        "harm_caused_by_fire": "no"
+      },
+      "expect": {
+        "section": "civil",
+        "findings": [
+          {
+            "ref": "n1",
+            "effect": "none"
+          }
+        ],
+        "questions": []
+      }
+    },
+    {
+      "id": "ex3",
+      "by": "derivationA",
+      "title": "Fire unknown: the fire boundary asks.",
+      "petitionDate": "2026-11-19",
+      "slots": {
+        "requests": [
+          "damages"
+        ],
+        "harmful_act_date": "2026-02-01",
+        "harm_caused_by_fire": "unknown"
+      },
+      "expect": {
+        "findings": [
+          {
+            "ref": "n1",
+            "effect": "ask"
+          }
+        ],
+        "questions": [
+          "harm_caused_by_fire"
+        ]
+      }
+    },
+    {
+      "id": "ex4",
+      "by": "derivationA",
+      "title": "Dog attack, no fire: the fire boundary stays silent; the section is civil.",
+      "petitionDate": "2026-11-19",
+      "slots": {
+        "requests": [
+          "damages"
+        ],
+        "harmful_act_date": "2026-06-15",
+        "obligation_is_tort_compensation": "yes",
+        "harm_caused_by_fire": "no"
+      },
+      "expect": {
+        "section": "civil",
+        "findings": [
+          {
+            "ref": "n1",
+            "effect": "none"
+          }
+        ]
+      }
+    },
+    {
+      "id": "ex5",
+      "by": "derivationA",
+      "title": "Court without sections: the civil section is still proposed.",
+      "petitionDate": "2026-11-19",
+      "slots": {
+        "requests": [
+          "damages"
+        ],
+        "harmful_act_date": "2026-05-04",
+        "court_has_section_for_matter": "no",
+        "harm_caused_by_fire": "no"
+      },
+      "expect": {
+        "section": "civil",
+        "findings": [
+          {
+            "ref": "n1",
+            "effect": "none"
+          }
+        ]
+      }
+    },
+    {
+      "id": "ex6",
+      "by": "derivationA",
+      "title": "Fire started in the defendant's flat and spread: the fire boundary warns even though a water leak followed.",
+      "petitionDate": "2026-11-19",
+      "slots": {
+        "requests": [
+          "damages"
+        ],
+        "harmful_act_date": "2026-03-30",
+        "obligation_is_tort_compensation": "yes",
+        "harm_caused_by_fire": "yes"
+      },
+      "expect": {
+        "findings": [
+          {
+            "ref": "n1",
+            "effect": "warn"
+          }
+        ]
+      }
+    },
+    {
+      "id": "ex7",
+      "by": "derivationA",
+      "title": "Nothing known but the damages request: the fire boundary asks.",
+      "petitionDate": "2026-11-19",
+      "slots": {
+        "requests": [
+          "damages"
+        ]
+      },
+      "expect": {
+        "findings": [
+          {
+            "ref": "n1",
+            "effect": "ask"
+          }
+        ],
+        "questions": [
+          "harm_caused_by_fire"
+        ]
+      }
+    },
+    {
+      "id": "ex8",
+      "by": "derivationA",
+      "title": "Harm from a fire that started in the neighbour's warehouse: the fire boundary warns.",
+      "petitionDate": "2026-11-19",
+      "slots": {
+        "requests": [
+          "damages"
+        ],
+        "harmful_act_date": "2026-07-20",
+        "obligation_is_tort_compensation": "yes",
+        "harm_caused_by_fire": "yes"
+      },
+      "expect": {
+        "findings": [
+          {
+            "ref": "n1",
+            "effect": "warn"
+          }
+        ],
+        "questions": []
+      }
+    }
+  ],
+  "openPoints": [
+    {
+      "id": "o1",
+      "question": {
+        "ar": "هل يمنع وجود عقد بين المضرور والحارس (كالإيجار في تسرب المياه) الرجوع على أساس مسؤولية الحارس؟",
+        "en": "Does a contract between the victim and the custodian (a lease, in a water-leak case) bar a claim based on the custodian's liability?"
+      },
+      "why": {
+        "ar": "لا يوجد في مخزن النصوص نص يحسم الجمع أو الخيرة بين المسؤوليتين العقدية والتقصيرية؛ والمادة 182 تقصر التعويض في الالتزام العقدي على الضرر المتوقع.",
+        "en": "No text in the store settles whether contractual and tort liability can be combined or chosen between; article 182 limits contractual damages to foreseeable harm."
+      },
+      "readings": [
+        {
+          "reading": {
+            "ar": "يجوز للمضرور التمسك بمسؤولية الحارس ولو ربطه به عقد.",
+            "en": "The victim may rely on the custodian's liability even if a contract binds them."
+          },
+          "basis": [
+            "b1"
+          ]
+        },
+        {
+          "reading": {
+            "ar": "يتعين الرجوع على أساس العقد متى نشأ الضرر عن تنفيذه.",
+            "en": "The claim must rest on the contract when the harm arises from its performance."
+          },
+          "basis": [
+            "b8"
+          ]
+        }
+      ],
+      "protectiveReading": {
+        "ar": "تنبيه المحامي إلى التحقق من وجود عقد بين الطرفين وإلى أساس الدعوى؛ لا قاعدة مانعة.",
+        "en": "Prompt the lawyer to check whether a contract binds the parties and on which ground the claim rests; no blocking rule."
+      },
+      "grade": "C",
+      "refs": [
+        "n2",
+        "b8"
+      ]
+    },
+    {
+      "id": "o2",
+      "question": {
+        "ar": "هل تخضع أضرار المركبات ذات المحرك للمادة 138 أم لنظام التعويض الخاص بحوادث المرور؟",
+        "en": "Is harm caused by motor vehicles governed by article 138 or by the special road-accident compensation regime?"
+      },
+      "why": {
+        "ar": "يذكر من الذاكرة أن الأمر المتعلق بإلزامية التأمين على السيارات ونظام تعويض الأضرار يحكم حوادث المرور؛ وهو غير موجود في مخزن النصوص.",
+        "en": "From memory, the ordinance on compulsory motor insurance and the damage compensation regime governs road accidents; it is not in the store."
+      },
+      "protectiveReading": {
+        "ar": "حد غير مشروط (n8) يذكر النظام الخاص دون قاعدة.",
+        "en": "An unconditioned boundary (n8) names the special regime, without a rule."
+      },
+      "grade": "D",
+      "refs": [
+        "n8"
+      ]
+    },
+    {
+      "id": "o3",
+      "question": {
+        "ar": "من هو الحارس حين يختلف المالك عن المستعمل، وهل يفترض أن المالك حارس؟ ومن يقاضى في انهدام بناء مؤجر: المالك أم الحائز؟",
+        "en": "Who is the custodian when the owner and the user differ, and is the owner presumed to be the custodian? Who is sued for the collapse of a leased building: the owner or the holder?"
+      },
+      "why": {
+        "ar": "تعرف المادة 138 الحارس بقدرة الاستعمال والتسيير والرقابة دون قرينة على المالك، والمادة 140 تسمي مالك البناء؛ ولا يحسم النص انتقال الحراسة.",
+        "en": "Article 138 defines the custodian by the power of use, management and control without a presumption on the owner, and article 140 names the building's owner; the texts do not settle transfers of custody."
+      },
+      "readings": [
+        {
+          "reading": {
+            "ar": "الحارس من له السيطرة الفعلية وقت الحادث.",
+            "en": "The custodian is whoever had actual control at the time."
+          },
+          "basis": [
+            "b1"
+          ]
+        },
+        {
+          "reading": {
+            "ar": "في انهدام البناء يسأل المالك وحده بنص المادة 140.",
+            "en": "For a building collapse, the owner alone is liable under article 140."
+          },
+          "basis": [
+            "b4"
+          ]
+        }
+      ],
+      "protectiveReading": {
+        "ar": "عرض العنصر الملائم (e1 أو e3) وطلب بيان صلة المدعى عليه بالشيء دون حكم.",
+        "en": "Show the fitting element (e1 or e3) and ask for the defendant's link with the thing, without deciding."
+      },
+      "grade": "C",
+      "refs": [
+        "e1",
+        "e3"
+      ]
+    },
+    {
+      "id": "o4",
+      "question": {
+        "ar": "هل يجوز إنقاص التعويض لخطأ المضرور المشترك في مسؤولية الحارس؟",
+        "en": "May compensation be reduced for the victim's contributory fault in custodian liability?"
+      },
+      "why": {
+        "ar": "المادة 177 واردة في التنفيذ بطريق التعويض وتذكر الدائن، والمادة 138 تجعل عمل الضحية غير المتوقع سببا للإعفاء الكلي.",
+        "en": "Article 177 sits in performance by compensation and speaks of the creditor, while article 138 makes the victim's unforeseeable act a ground of total release."
+      },
+      "readings": [
+        {
+          "reading": {
+            "ar": "تطبق المادة 177 فينقص التعويض بقدر خطأ المضرور.",
+            "en": "Article 177 applies and compensation is reduced by the victim's share of fault."
+          },
+          "basis": [
+            "b12"
+          ]
+        },
+        {
+          "reading": {
+            "ar": "لا يعتد بعمل الضحية إلا إذا كان غير متوقع فيعفي كليا.",
+            "en": "The victim's act counts only when unforeseeable, and then frees entirely."
+          },
+          "basis": [
+            "b2"
+          ]
+        }
+      ],
+      "protectiveReading": {
+        "ar": "ذكر المادة 177 كقراءة في الأساس دون قاعدة.",
+        "en": "Keep article 177 as an interpretive statement, with no rule."
+      },
+      "grade": "C",
+      "refs": [
+        "b12",
+        "b2"
+      ]
+    },
+    {
+      "id": "o5",
+      "question": {
+        "ar": "هل يجوز للعامل المضرور بشيء في حراسة صاحب العمل أن يرفع دعوى المسؤولية عن الأشياء؟",
+        "en": "May a worker harmed by a thing in the employer's custody bring a claim for liability for things?"
+      },
+      "why": {
+        "ar": "يذكر من الذاكرة أن قانون حوادث العمل والأمراض المهنية ينظم تعويض العامل؛ وهو غير موجود في مخزن النصوص.",
+        "en": "From memory, the law on work accidents and occupational illnesses governs the worker's compensation; it is not in the store."
+      },
+      "protectiveReading": {
+        "ar": "لا قاعدة؛ يبقى على المحامي التحقق من النظام الخاص.",
+        "en": "No rule; the lawyer checks the special regime."
+      },
+      "grade": "D",
+      "refs": [
+        "b1"
+      ]
+    },
+    {
+      "id": "o6",
+      "question": {
+        "ar": "هل تستحق فوائد أو تعويض عن التأخير على مبلغ التعويض عن الفعل الضار؟",
+        "en": "Is interest, or compensation for delay, due on a tort compensation award?"
+      },
+      "why": {
+        "ar": "المادة 186 تخص مبلغا معين المقدار وقت رفع الدعوى، والتعويض عن الفعل الضار يقدره القاضي؛ ووحدة الطلبات التبعية لم تكتمل.",
+        "en": "Article 186 concerns a sum fixed when the claim is filed, whereas tort compensation is assessed by the judge; the accessory-requests module is not final."
+      },
+      "protectiveReading": {
+        "ar": "عدم اقتراح طلب فوائد.",
+        "en": "Do not propose an interest request."
+      },
+      "grade": "C",
+      "refs": [
+        "r3",
+        "r4",
+        "r5"
+      ]
+    },
+    {
+      "id": "o7",
+      "question": {
+        "ar": "أي صيغة تطبق على فعل ضار وقع قبل نفاذ التعديل الذي أدخل الصيغة الحالية للمواد 131 و132 و133 و140 مكرر؟",
+        "en": "Which wording governs a harmful act that occurred before the amendment that introduced the current wording of articles 131, 132, 133 and 140 مكرر?"
+      },
+      "why": {
+        "ar": "ينبه مخزن النصوص إلى أن النص لقطة حالية دون تواريخ نفاذ ولا الأنظمة السابقة.",
+        "en": "The store notes that the text is a current snapshot, without commencement dates or earlier regimes."
+      },
+      "protectiveReading": {
+        "ar": "اعتماد الصيغة السارية مع تنبيه المحامي إلى تاريخ الفعل.",
+        "en": "Use the wording in force and draw the lawyer's attention to the date of the act."
+      },
+      "grade": "C",
+      "refs": [
+        "b7",
+        "b10",
+        "b11",
+        "b14"
+      ]
+    }
+  ]
+}

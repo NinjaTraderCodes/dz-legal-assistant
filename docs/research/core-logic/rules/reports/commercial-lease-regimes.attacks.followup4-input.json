@@ -1,0 +1,19 @@
+{
+ "unit": "commercial-lease-regimes",
+ "attacks": [
+  {
+   "id": "bc-bc16",
+   "who": "boundaryCase",
+   "target": "no matched item asks",
+   "kind": "wrongEffect",
+   "claim": "Blind boundary case bc16 (Pre-reform lease; notice to quit by bailiff, but the end of the term is not known; petition 2026-06-15; slots {\"commercial_lease\": \"yes\", \"contract_date\": \"1998-04-10\", \"notice_served\": \"yes\", \"notice_means\": \"bailiff\", \"notice_date\": \"2025-05-15\", \"requests\": [\"eviction\"]}) expects «ask» about [commercial-code 173 ¶1], because: The form is right ('عقد غير قضائي'), but the notice must come 'قبل الأجل' by at least six months, and no slot holds the date the term ends. The rule cannot say the step is done and must ask for that date (a rule must not say 'done' while the timing is still open). Reasons stated in the notice and the reproduction of 194 also cannot be set by a slot. The runner says: no matched item asks: the outcome Ask needs one that does"
+  },
+  {
+   "id": "bc-bc19",
+   "who": "boundaryCase",
+   "target": "no matched item asks",
+   "kind": "wrongEffect",
+   "claim": "Blind boundary case bc19 (Pre-reform lease; whether a notice to quit was served is unknown; petition 2026-06-15; slots {\"commercial_lease\": \"yes\", \"contract_date\": \"1998-04-10\", \"notice_served\": \"unknown\", \"requests\": [\"eviction\"]}) expects «ask» about [commercial-code 173 ¶1], because: The regime applies (contract of 1998) and the notice to quit is required for the lease to end; whether it was served is unknown, and an unknown fact is not a 'no': the rule asks. The runner says: no matched item asks: the outcome Ask needs one that does"
+  }
+ ]
+}

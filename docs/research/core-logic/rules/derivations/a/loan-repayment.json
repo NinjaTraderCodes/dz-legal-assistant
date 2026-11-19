@@ -1,0 +1,992 @@
+{
+  "schemaVersion": "1.0",
+  "kind": "claim",
+  "id": "loan-repayment",
+  "label": { "ar": "استرداد مبلغ قرض", "en": "Repayment of a loan" },
+  "verified": false,
+  "stage": "derivationA",
+  "derivedBy": { "role": "derivationA", "model": "claude-opus-5-5", "date": "2026-11-19" },
+  "area": "civil",
+  "imports": [
+    {
+      "module": "formal-notice",
+      "blocks": ["b1", "b5", "b6", "b14", "b15", "b36", "p1", "p3", "doc1", "doc2", "doc3", "doc4", "n1", "n6", "n10", "n11", "n12"],
+      "how": {
+        "ar": "يطلب المقرض عادة تعويضا عن التأخر في الرد، ولا يستحق التعويض إلا بعد إعذار المدين؛ ويطالب برد المبلغ نفسه، وهي مطالبة بتنفيذ الالتزام. تطبق خطوة الإعذار قبل التعويض وخطوة الإعذار قبل طلب التنفيذ، ووثائقهما وحدودهما.",
+        "en": "The lender usually asks damages for the delay, and damages are due only after notice to the debtor; he also claims the sum itself, a claim for performance. The notice step before damages and the notice step before a claim for performance apply, with their documents and boundaries."
+      }
+    },
+    {
+      "module": "periods",
+      "blocks": ["b1", "b7", "b11", "b12", "b13", "b18", "b19", "b22", "b23", "b42", "d1", "doc2", "doc3"],
+      "how": {
+        "ar": "دين القرض لا نص خاص بتقادمه، فيخضع للتقادم العام من يوم حلول أجل الرد، وينقطع بإقرار المقترض أو بالمطالبة القضائية، ولا تقضي به المحكمة تلقائيا. ويستعمل بيان عبء الإثبات من الوحدة نفسها.",
+        "en": "No special text sets the limitation of a loan debt, so the general period applies from the day repayment fell due; the borrower's acknowledgement or a judicial claim interrupts it, and the court does not raise it of its own motion. The statement on the burden of proof is taken from the same module."
+      }
+    },
+    {
+      "module": "ordinary-court-exits",
+      "blocks": ["x1", "x4", "x6", "x7", "d3", "d4", "doc1", "n3", "n4"],
+      "how": {
+        "ar": "دين القرض مبلغ من النقود؛ إذا كان ثابتا بالكتابة ومعين المقدار وحالا جاز طريق الأمر بالأداء. وتخرج الدعوى من المحكمة العادية إذا كان أحد الأطراف جهة إدارية، أو كان النزاع من مواد المحكمة التجارية المتخصصة، وترجأ إذا وجدت متابعة جزائية على الوقائع نفسها.",
+        "en": "A loan debt is a sum of money; when it is proved in writing, fixed and payable, the order-to-pay route is open. The claim leaves the ordinary court when a public administrative body is a party or the dispute is a matter of the specialised commercial court, and waits when a criminal case is pending on the same facts."
+      }
+    },
+    {
+      "module": "territorial-jurisdiction",
+      "blocks": ["t1", "t2", "t3", "t8", "t13", "t26", "t27", "t28", "t29", "n1", "n2", "n5", "n8", "n11"],
+      "how": {
+        "ar": "لا يعين النص محكمة خاصة لدعوى القرض المدني، فتطبق القاعدة العامة لموطن المدعى عليه وقواعد تعدد المدعى عليهم وشرط الاختصاص والمدعى عليه في الخارج والتركة والأمر بالأداء.",
+        "en": "No text names a special court for a civil loan claim, so the general rule of the defendant's domicile applies, with the rules on several defendants, jurisdiction clauses, a defendant abroad, estates and the order to pay."
+      }
+    },
+    {
+      "module": "court-sections",
+      "blocks": ["b2", "b3", "b4", "b5", "b21"],
+      "how": {
+        "ar": "تستعمل بيانات توزيع القضايا على الأقسام أساسا لاقتراح القسم في هذه الدعوى.",
+        "en": "The statements on how cases are listed before the sections ground the section proposed for this claim."
+      }
+    },
+    {
+      "module": "petition-formal-elements",
+      "blocks": ["p1", "p2", "p3", "p4", "p5", "p6", "p7", "p8", "p9", "p10", "p11", "p12", "p13", "p14", "p15", "p19"],
+      "how": {
+        "ar": "تسري على عريضة استرداد القرض البيانات الإلزامية والصفة والمصلحة والأهلية والرسوم ولغة العريضة والوثائق.",
+        "en": "The mandatory elements, standing, interest, capacity, fees, the language of the petition and of the documents apply to a loan-repayment petition."
+      }
+    },
+    {
+      "module": "conciliation-mediation",
+      "blocks": ["b1", "b6", "b7", "p1", "doc1"],
+      "how": {
+        "ar": "للقاضي أن يجري الصلح وأن يعرض الوساطة؛ وإذا كان القرض من منازعات البنوك مع التجار أمام المحكمة التجارية المتخصصة وجب الصلح المسبق.",
+        "en": "The judge may conciliate and offer mediation; where the loan is a bank-and-trader dispute before the specialised commercial court, the prior conciliation is required."
+      }
+    }
+  ],
+  "slots": [
+    "requests",
+    "contract_date",
+    "debt_due_date",
+    "notice_served",
+    "notice_date",
+    "notice_means",
+    "dispute_is_commercial",
+    "court_has_section_for_matter",
+    "lender_is_credit_institution",
+    "loan_interest_stipulated"
+  ],
+  "proposedSlots": [
+    {
+      "id": "lender_is_credit_institution",
+      "type": "yesNoUnknown",
+      "question": {
+        "ar": "هل المقرض بنك أو مؤسسة مالية أو مؤسسة قرض؟",
+        "en": "Is the lender a bank, a financial institution or a credit institution?"
+      },
+      "why": "Boundary n7 reads it: the ban on any return for a loan applies to loans between individuals, while credit institutions may take interest set by the finance minister; such a loan falls outside this claim type's rules."
+    },
+    {
+      "id": "loan_interest_stipulated",
+      "type": "yesNoUnknown",
+      "question": {
+        "ar": "هل يتضمن عقد القرض شرطا بفائدة أو بأي مقابل يدفعه المقترض زيادة على المبلغ المقترض؟",
+        "en": "Does the loan contract contain a clause for interest or any other return the borrower pays on top of the sum lent?"
+      },
+      "why": "Boundary n8 reads it: a loan between individuals is always without return and any contrary clause is void, only that part being void unless the contract would not have been made without it."
+    }
+  ],
+  "basis": [
+    {
+      "id": "b1", "role": "basis", "required": true,
+      "cite": { "code": "civil-code", "article": "450", "paragraphs": [1] },
+      "says": {
+        "ar": "قرض الاستهلاك عقد ينقل به المقرض إلى المقترض ملكية مبلغ من النقود أو شيء مثلي، على أن يرد المقترض عند نهاية القرض نظيره نوعا وقدرا وصفة.",
+        "en": "A loan for consumption transfers to the borrower ownership of a sum of money or another fungible thing, the borrower returning its equivalent in kind, quantity and quality at the end of the loan."
+      }
+    },
+    {
+      "id": "b2", "role": "basis",
+      "cite": { "code": "civil-code", "article": "451", "paragraphs": [1] },
+      "says": {
+        "ar": "يسلم المقرض المقترض الشيء محل العقد، ولا يطالبه برد نظيره إلا عند انتهاء القرض.",
+        "en": "The lender hands over the thing lent, and may claim its equivalent back only when the loan ends."
+      }
+    },
+    {
+      "id": "b3", "role": "basis",
+      "cite": { "code": "civil-code", "article": "457", "paragraphs": [1] },
+      "says": {
+        "ar": "ينتهي قرض الاستهلاك بانتهاء الأجل المتفق عليه.",
+        "en": "A loan for consumption ends when the agreed term ends."
+      }
+    },
+    {
+      "id": "b4", "role": "limit",
+      "cite": { "code": "civil-code", "article": "458", "paragraphs": [1] },
+      "says": {
+        "ar": "للمقترض بعد مضي ستة أشهر على القرض أن يعلن رغبته في إلغاء العقد ورد ما اقترضه في أجل لا يجاوز ستة أشهر من الإعلان.",
+        "en": "Once six months have passed on the loan, the borrower may declare that he ends the contract and return what he borrowed within no more than six months of the declaration."
+      }
+    },
+    {
+      "id": "b5", "role": "limit",
+      "cite": { "code": "civil-code", "article": "458", "paragraphs": [2] },
+      "says": {
+        "ar": "لا يجوز بالاتفاق إسقاط حق المقترض في الرد أو تقييده.",
+        "en": "The borrower's right to repay cannot be waived or limited by agreement."
+      }
+    },
+    {
+      "id": "b6", "role": "limit", "required": true,
+      "cite": { "code": "civil-code", "article": "454", "paragraphs": [1] },
+      "says": {
+        "ar": "القرض بين الأفراد يكون دائما بدون أجر، ويبطل كل شرط يخالف ذلك.",
+        "en": "A loan between individuals is always without any return to the lender, and any clause to the contrary is void."
+      }
+    },
+    {
+      "id": "b7", "role": "limit",
+      "cite": { "code": "civil-code", "article": "456", "paragraphs": [1] },
+      "says": {
+        "ar": "يجوز لمؤسسات القرض التي تمنح قروضا لتشجيع النشاط الاقتصادي الوطني أن تأخذ فائدة يحدد قدرها بقرار من الوزير المكلف بالمالية.",
+        "en": "Credit institutions lending to encourage national economic activity may take interest at a rate set by decision of the finance minister."
+      }
+    },
+    {
+      "id": "b8", "role": "basis",
+      "cite": { "code": "civil-code", "article": "107", "paragraphs": [1] },
+      "says": {
+        "ar": "يجب تنفيذ العقد طبقا لما اشتمل عليه وبحسن نية.",
+        "en": "A contract must be performed as it provides and in good faith."
+      }
+    },
+    {
+      "id": "b9", "role": "proof",
+      "cite": { "code": "civil-code", "article": "324 مكرر 5", "paragraphs": [1] },
+      "says": {
+        "ar": "ما ورد في العقد الرسمي حجة حتى يثبت تزويره، وهو نافذ في كامل التراب الوطني.",
+        "en": "What an official deed states is proof until it is shown to be forged, and it is enforceable throughout the national territory."
+      }
+    },
+    {
+      "id": "b10", "role": "proof",
+      "cite": { "code": "civil-code", "article": "327", "paragraphs": [1] },
+      "says": {
+        "ar": "يعتبر المحرر العرفي صادرا ممن كتبه أو وقعه أو بصم عليه ما لم ينكره صراحة، ويكفي ورثته أو خلفه أن يحلفوا أنهم لا يعلمون أن الخط أو الإمضاء أو البصمة لمن تلقوا عنه الحق.",
+        "en": "A private writing is taken as coming from whoever wrote, signed or fingerprinted it unless he expressly denies it; his heirs or successors need only swear that they do not know the writing, signature or print to be their predecessor's."
+      }
+    },
+    {
+      "id": "b11", "role": "proof",
+      "cite": { "code": "civil-code", "article": "333", "paragraphs": [1] },
+      "says": {
+        "ar": "في غير المواد التجارية لا يجوز الإثبات بالشهود في وجود التصرف القانوني أو انقضائه إذا زادت قيمته على 100.000 دينار جزائري أو كانت غير محددة، ما لم يوجد نص يقضي بغير ذلك.",
+        "en": "Outside commercial matters, witnesses may not prove the existence or extinction of a legal act worth more than 100.000 Algerian dinars or of undetermined value, unless a text provides otherwise."
+      }
+    },
+    {
+      "id": "b12", "role": "proof",
+      "cite": { "code": "civil-code", "article": "333", "paragraphs": [2] },
+      "says": {
+        "ar": "تقدر قيمة الالتزام وقت صدور التصرف، ولا يمنع الإثبات بالشهود أن تأتي الزيادة على 100.000 دينار جزائري من ضم الملحقات إلى الأصل.",
+        "en": "The obligation is valued when the act was made, and witnesses remain allowed when the excess over 100.000 Algerian dinars comes only from adding the accessories to the principal."
+      }
+    },
+    {
+      "id": "b13", "role": "proof",
+      "cite": { "code": "civil-code", "article": "334", "paragraphs": [1, 3] },
+      "says": {
+        "ar": "لا يجوز الإثبات بالشهود ولو لم تزد القيمة على 100.000 دينار جزائري إذا كان المطلوب هو الباقي أو جزءا من حق لا يثبت إلا بالكتابة.",
+        "en": "Witnesses may not be used, even for a value not above 100.000 Algerian dinars, when what is claimed is the balance or a part of a right that can only be proved in writing."
+      }
+    },
+    {
+      "id": "b14", "role": "proof",
+      "cite": { "code": "civil-code", "article": "335", "paragraphs": [1, 2] },
+      "says": {
+        "ar": "يجوز الإثبات بالشهود فيما يجب إثباته بالكتابة إذا وجد مبدأ ثبوت بالكتابة، وهو كل كتابة من الخصم تجعل التصرف المدعى به قريب الاحتمال.",
+        "en": "Witnesses may prove what must be proved in writing when there is a beginning of proof in writing, meaning any writing from the opponent that makes the alleged act likely."
+      }
+    },
+    {
+      "id": "b15", "role": "proof",
+      "cite": { "code": "civil-code", "article": "336", "paragraphs": [1, 2, 3] },
+      "says": {
+        "ar": "يجوز الإثبات بالشهود فيما يجب إثباته بالكتابة إذا وجد مانع مادي أو أدبي يحول دون الحصول على دليل كتابي، أو إذا فقد الدائن سنده الكتابي لسبب أجنبي عن إرادته.",
+        "en": "Witnesses may prove what must be proved in writing when a material or moral obstacle prevented obtaining written proof, or when the creditor lost his written title through a cause outside his control."
+      }
+    },
+    {
+      "id": "b16", "role": "proof",
+      "cite": { "code": "civil-code", "article": "342", "paragraphs": [1] },
+      "says": {
+        "ar": "الإقرار حجة قاطعة على المقر.",
+        "en": "An admission is conclusive proof against the one who makes it."
+      }
+    },
+    {
+      "id": "b17", "role": "proof",
+      "cite": { "code": "civil-code", "article": "343", "paragraphs": [1] },
+      "says": {
+        "ar": "يجوز لكل خصم أن يوجه اليمين الحاسمة إلى خصمه، وللقاضي منع توجيهها إذا كان الخصم متعسفا.",
+        "en": "Either party may put the decisive oath to the other, and the judge may refuse it when the party is abusive."
+      }
+    },
+    {
+      "id": "b18", "role": "proof",
+      "cite": { "code": "commercial-code", "article": "30", "paragraphs": [1, 7] },
+      "says": {
+        "ar": "يثبت العقد التجاري بطرق منها البينة أو أية وسيلة أخرى إذا رأت المحكمة وجوب قبولها.",
+        "en": "A commercial contract may be proved by means that include witnesses or any other means the court sees fit to accept."
+      }
+    },
+    {
+      "id": "b19", "role": "damages",
+      "cite": { "code": "civil-code", "article": "182", "paragraphs": [1] },
+      "says": {
+        "ar": "إذا لم يقدر التعويض في العقد أو القانون قدره القاضي، ويشمل ما لحق الدائن من خسارة وما فاته من كسب متى كان نتيجة طبيعية لعدم الوفاء أو للتأخر فيه.",
+        "en": "Where neither the contract nor the law fixes the damages, the judge assesses them; they cover the creditor's loss and lost profit when these are the natural result of non-performance or of late performance."
+      }
+    },
+    {
+      "id": "b20", "role": "damages",
+      "cite": { "code": "civil-code", "article": "182", "paragraphs": [2] },
+      "says": {
+        "ar": "إذا كان مصدر الالتزام العقد فلا يلزم المدين الذي لم يرتكب غشا أو خطأ جسيما إلا بالضرر الذي كان يمكن توقعه عادة وقت التعاقد.",
+        "en": "Where the obligation comes from a contract, a debtor who committed no fraud or gross fault answers only for the harm that could normally be foreseen when the contract was made."
+      }
+    },
+    {
+      "id": "b21", "role": "procedure",
+      "cite": { "code": "cpca", "article": "419", "paragraphs": [1] },
+      "says": {
+        "ar": "يتحمل الخصم الذي خسر الدعوى مصاريفها، ما لم يقرر القاضي مسببا تحميلها كليا أو جزئيا لخصم آخر.",
+        "en": "The losing party bears the costs of the claim, unless the judge, giving reasons, puts all or part of them on another party."
+      }
+    },
+    {
+      "id": "b22", "role": "procedure",
+      "cite": { "code": "cpca", "article": "323", "paragraphs": [2] },
+      "says": {
+        "ar": "يؤمر بالنفاذ المعجل رغم المعارضة أو الاستئناف عند طلبه إذا حكم بناء على عقد رسمي أو وعد معترف به أو حكم سابق حائز لقوة الشيء المقضي به.",
+        "en": "Provisional execution despite opposition or appeal is ordered on request where the judgment rests on an official deed, an acknowledged promise or an earlier final judgment."
+      }
+    },
+    {
+      "id": "b23", "role": "procedure",
+      "cite": { "code": "cpca", "article": "323", "paragraphs": [3] },
+      "says": {
+        "ar": "في غير ذلك يجوز للقاضي في حالة الاستعجال أن يأمر بالنفاذ المعجل بكفالة أو بدونها.",
+        "en": "In other cases the judge may, in urgency, order provisional execution with or without security."
+      }
+    },
+    {
+      "id": "b24", "role": "limit",
+      "cite": { "code": "civil-code", "article": "351", "paragraphs": [1] },
+      "says": {
+        "ar": "البيع عقد ينقل به البائع إلى المشتري ملكية شيء أو حق مالي مقابل ثمن نقدي.",
+        "en": "A sale transfers to the buyer ownership of a thing or another property right in return for a price in money."
+      }
+    },
+    {
+      "id": "b25", "role": "limit",
+      "cite": { "code": "civil-code", "article": "467", "paragraphs": [1] },
+      "says": {
+        "ar": "الإيجار عقد يمكن به المؤجر المستأجر من الانتفاع بشيء لمدة محددة مقابل بدل إيجار معلوم.",
+        "en": "A lease lets the tenant use a thing for a fixed period in return for a known rent."
+      }
+    },
+    {
+      "id": "b26", "role": "limit",
+      "cite": { "code": "civil-code", "article": "538", "paragraphs": [1] },
+      "says": {
+        "ar": "العارية عقد يسلم به المعير المستعير شيئا غير قابل للاستهلاك ليستعمله بلا عوض مدة معينة أو لغرض معين ثم يرده بعد الاستعمال.",
+        "en": "A loan for use hands the borrower a non-consumable thing to use free of charge for a time or a purpose, and he returns that thing after use."
+      }
+    },
+    {
+      "id": "b27", "role": "limit",
+      "cite": { "code": "family-code", "article": "202", "paragraphs": [1] },
+      "says": {
+        "ar": "الهبة تمليك بلا عوض.",
+        "en": "A gift transfers ownership without anything in return."
+      }
+    },
+    {
+      "id": "b28", "role": "basis",
+      "cite": { "code": "civil-code", "article": "108", "paragraphs": [1] },
+      "says": {
+        "ar": "ينصرف أثر العقد إلى المتعاقدين والخلف العام ما لم يتبين خلاف ذلك، مع مراعاة قواعد الميراث.",
+        "en": "A contract binds the parties and their general successors unless the contrary appears, subject to the rules of inheritance."
+      }
+    },
+    {
+      "id": "b29", "role": "limit",
+      "cite": { "code": "civil-code", "article": "104", "paragraphs": [1] },
+      "says": {
+        "ar": "إذا كان العقد في شق منه باطلا فهذا الشق وحده يبطل، إلا إذا تبين أن العقد ما كان ليتم بغيره فيبطل كله.",
+        "en": "Where part of a contract is void, only that part falls, unless it appears that the contract would not have been made without it, in which case the whole is void."
+      }
+    }
+  ],
+  "elements": [
+    {
+      "id": "e1",
+      "toProve": {
+        "ar": "أن المدعي سلم المدعى عليه مبلغا من النقود على سبيل القرض، أي على أن يرد نظيره.",
+        "en": "That the plaintiff handed the defendant a sum of money as a loan, that is, to be returned in equivalent."
+      },
+      "factsToState": [
+        { "ar": "تاريخ القرض ومبلغه.", "en": "The date and amount of the loan." },
+        { "ar": "وسيلة التسليم (نقدا أو بتحويل) وتاريخه.", "en": "How the sum was handed over (cash or transfer) and when." },
+        { "ar": "الاتفاق على الرد، وما يميز القرض عن الهبة أو ثمن المبيع أو الأجرة.", "en": "The agreement to repay, and what sets the loan apart from a gift, a sale price or a rent." }
+      ],
+      "events": ["money_lent", "contract_concluded"],
+      "slots": ["contract_date"],
+      "burden": "plaintiff",
+      "proof": [
+        { "means": "official deed", "basis": ["b9"], "note": { "ar": "حجة حتى يثبت تزويره.", "en": "Proof until shown to be forged." } },
+        { "means": "private writing signed by the borrower", "basis": ["b10"], "note": { "ar": "حجة على من وقعه ما لم ينكره صراحة.", "en": "Proof against the signer unless he expressly denies it." } },
+        { "means": "witnesses, only within the limits of the written-proof rule", "basis": ["b11", "b12", "b13", "b14", "b15"], "note": { "ar": "فوق 100.000 دينار جزائري أو لقيمة غير محددة تلزم الكتابة، إلا مع مبدأ ثبوت بالكتابة أو مانع أو فقد السند.", "en": "Above 100.000 Algerian dinars or for an undetermined value writing is needed, save a beginning of proof in writing, an obstacle, or a lost title." } },
+        { "means": "judicial admission or decisive oath", "basis": ["b16", "b17"] }
+      ],
+      "basis": ["b1", "b2", "periods.b42"]
+    },
+    {
+      "id": "e2",
+      "toProve": {
+        "ar": "اعتراف المدعى عليه بالدين، كتابة أو بإقرار، مع تاريخه ومبلغه.",
+        "en": "The defendant's acknowledgement of the debt, in writing or by admission, with its date and amount."
+      },
+      "factsToState": [
+        { "ar": "تاريخ الاعتراف ومضمونه والمبلغ المعترف به.", "en": "The date, content and amount of the acknowledgement." }
+      ],
+      "events": ["debt_acknowledged"],
+      "slots": [],
+      "burden": "plaintiff",
+      "proof": [
+        { "means": "written acknowledgement of debt", "basis": ["b10", "b9"] },
+        { "means": "judicial admission", "basis": ["b16"] }
+      ],
+      "basis": ["b10", "b16", "periods.b19"]
+    },
+    {
+      "id": "e3",
+      "toProve": {
+        "ar": "حلول أجل الرد المتفق عليه، إذ لا يطالب المقرض بالرد إلا عند انتهاء القرض.",
+        "en": "That the agreed repayment term has arrived, since the lender may claim repayment only when the loan ends."
+      },
+      "factsToState": [
+        { "ar": "أجل الرد المتفق عليه وتاريخ حلوله.", "en": "The agreed repayment term and the date it fell due." },
+        { "ar": "إن لم يتفق على أجل: ما يحدد نهاية القرض (نقطة مفتوحة).", "en": "If no term was agreed: what fixes the end of the loan (open point)." }
+      ],
+      "events": ["deadline_passed"],
+      "slots": ["debt_due_date"],
+      "burden": "plaintiff",
+      "basis": ["b2", "b3", "b4"]
+    },
+    {
+      "id": "e4",
+      "toProve": {
+        "ar": "ما دفعه المقترض من المبلغ، إن ادعى الوفاء كليا أو جزئيا؛ وعليه هو إثبات التخلص من الدين، ويطالب المدعي بالباقي.",
+        "en": "What the borrower repaid, if he claims full or partial payment; he bears the proof of release, and the plaintiff claims the balance."
+      },
+      "factsToState": [
+        { "ar": "امتناع المدعى عليه عن الرد، والمبالغ التي دفعها وتواريخها، والباقي المطالب به.", "en": "The defendant's failure to repay, the sums he paid and when, and the balance claimed." }
+      ],
+      "events": ["debt_unpaid", "payment_made"],
+      "slots": [],
+      "burden": "defendant",
+      "proof": [
+        { "means": "receipts or transfer records of payments", "basis": ["periods.b42"] },
+        { "means": "for the balance of a right that needs writing, no witnesses", "basis": ["b13"] }
+      ],
+      "basis": ["periods.b42", "b13"]
+    },
+    {
+      "id": "e5",
+      "toProve": {
+        "ar": "إعذار المدعى عليه بالرد قبل رفع الدعوى، أو حالة تعفي منه، لاستحقاق التعويض.",
+        "en": "That the defendant was put on notice to repay before the claim, or a case exempting from notice, for damages to be due."
+      },
+      "factsToState": [
+        { "ar": "تاريخ الإعذار ووسيلته، واستمرار الامتناع بعده.", "en": "The date and means of the notice, and the continued failure after it." }
+      ],
+      "events": ["notice_served"],
+      "slots": ["notice_served", "notice_date", "notice_means"],
+      "burden": "plaintiff",
+      "basis": ["formal-notice.b1", "formal-notice.b5", "formal-notice.b6"]
+    },
+    {
+      "id": "e6",
+      "toProve": {
+        "ar": "الضرر الذي لحق المقرض من تأخر المقترض في رد مبلغ معين المقدار.",
+        "en": "The harm the lender suffered from the borrower's delay in returning a fixed sum."
+      },
+      "factsToState": [
+        { "ar": "مدة التأخر وعناصر الضرر (خسارة لحقت وكسب فات) وصلتها بالتأخر.", "en": "How long the delay lasted and the elements of harm (loss suffered, profit lost) and their link to the delay." }
+      ],
+      "events": ["debt_unpaid", "other"],
+      "slots": [],
+      "burden": "plaintiff",
+      "basis": ["formal-notice.b15", "b19", "b20"]
+    }
+  ],
+  "requests": [
+    {
+      "id": "r1", "kind": "payment", "accessory": false, "amount": true,
+      "text": {
+        "ar": "إلزام المدعى عليه بأن يؤدي للمدعي مبلغ القرض المقدر بـ (...) دج",
+        "en": "Order the defendant to pay the plaintiff the loan amount of (...) DZD"
+      },
+      "basis": ["b1", "b2", "b3"]
+    },
+    {
+      "id": "r2", "kind": "damages", "accessory": true, "amount": true,
+      "text": {
+        "ar": "إلزام المدعى عليه بأن يؤدي للمدعي تعويضا عن التماطل قدره (...) دج",
+        "en": "Order the defendant to pay the plaintiff damages for the delay of (...) DZD"
+      },
+      "basis": ["formal-notice.b15", "formal-notice.b1", "b19", "b20"]
+    },
+    {
+      "id": "r3", "kind": "other", "accessory": true, "amount": false,
+      "text": {
+        "ar": "تحميل المدعى عليه المصاريف القضائية",
+        "en": "Order the defendant to bear the court costs"
+      },
+      "basis": ["b21"]
+    },
+    {
+      "id": "r4", "kind": "provisional_execution", "accessory": true, "amount": false,
+      "text": {
+        "ar": "شمول الحكم بالنفاذ المعجل رغم المعارضة أو الاستئناف (...)",
+        "en": "Order provisional execution of the judgment despite opposition or appeal (...)"
+      },
+      "basis": ["b22", "b23"]
+    }
+  ],
+  "court": {
+    "section": {
+      "value": "civil",
+      "basis": ["court-sections.b2", "court-sections.b3", "court-sections.b4", "court-sections.b5", "court-sections.b21"],
+      "alternatives": [
+        {
+          "when": {
+            "all": [
+              { "slot": "dispute_is_commercial", "is": "yes" },
+              { "slot": "court_has_section_for_matter", "is": "yes" }
+            ]
+          },
+          "value": "commercial",
+          "basis": ["court-sections.b21", "court-sections.b4"]
+        }
+      ],
+      "message": {
+        "ar": "المادة 32 من قانون الإجراءات المدنية والإدارية: تجدول القضايا أمام الأقسام حسب طبيعة النزاع، والقرض بين الأفراد نزاع مدني؛ والمادة 531: يختص القسم التجاري بالمنازعات التجارية. تحقق من طبيعة القرض ومن أقسام المحكمة.",
+        "en": "CPCA article 32: cases are listed before the sections by the nature of the dispute, and a loan between individuals is a civil dispute; article 531: the commercial section hears commercial disputes. Check the nature of the loan and the court's sections."
+      },
+      "interpretive": true,
+      "interpretiveNote": "No text names the section for a loan claim; the civil section is proposed by reading article 32 (listing by the nature of the dispute) with the civil character of a loan between individuals. The commercial section is proposed only when the court has the section concerned: in a court without sections the civil section hears every dispute but social ones (article 32 as carried by court-sections b4). Which acts are commercial (commercial code articles 2 to 4) is not in the store, so the commercial alternative rests on the lawyer's answer to dispute_is_commercial (open point o3)."
+    }
+  },
+  "documents": [
+    {
+      "id": "doc1",
+      "name": { "ar": "سند القرض أو الاعتراف بالدين", "en": "The loan deed or the acknowledgement of debt" },
+      "why": {
+        "ar": "يثبت القرض ومبلغه وأجل رده؛ والكتابة لازمة إذا زادت القيمة على 100.000 دينار جزائري في غير المواد التجارية (المادة 333 من القانون المدني).",
+        "en": "Proves the loan, its amount and its term; writing is needed above 100.000 Algerian dinars outside commercial matters (Civil Code article 333)."
+      },
+      "basis": ["b9", "b10", "b11"]
+    },
+    {
+      "id": "doc2",
+      "name": { "ar": "وصولات التحويل أو التسليم إن وجدت", "en": "Transfer or delivery receipts, if any" },
+      "why": {
+        "ar": "تثبت تسليم المبلغ إلى المقترض، وهو التزام المقرض في عقد القرض (المادتان 450 و451 من القانون المدني).",
+        "en": "Prove that the sum was handed to the borrower, the lender's duty under the loan (Civil Code articles 450 and 451)."
+      },
+      "basis": ["b1", "b2"]
+    }
+  ],
+  "boundaries": [
+    {
+      "id": "n1",
+      "looksLike": { "ar": "مطالبة برد قرض", "en": "A claim to repay a loan" },
+      "isActually": "outside:loan-not-yet-due",
+      "tellingFacts": [
+        { "ar": "أجل الرد المتفق عليه لم يحل في تاريخ العريضة.", "en": "The agreed repayment term has not arrived at the petition's date." }
+      ],
+      "when": { "slot": "debt_due_date", "afterSlot": "petition_date" },
+      "slots": ["debt_due_date"],
+      "message": {
+        "ar": "المادتان 451 و457 من القانون المدني: لا يطالب المقرض برد النظير إلا عند انتهاء القرض، وينتهي القرض بانتهاء الأجل المتفق عليه. تاريخ الاستحقاق المذكور لا يسبق تاريخ العريضة؛ تحقق من الأجل ومن سبب المطالبة قبل حلوله.",
+        "en": "Civil Code articles 451 and 457: the lender may claim the equivalent back only when the loan ends, and the loan ends with the agreed term. The due date given is not before the petition's date; check the term and the ground for claiming before it."
+      },
+      "basis": ["b2", "b3"]
+    },
+    {
+      "id": "n2",
+      "looksLike": { "ar": "مطالبة بمبلغ مستحق", "en": "A claim for a sum owed" },
+      "isActually": "claim:unpaid-sale-price",
+      "tellingFacts": [
+        { "ar": "المبلغ ثمن شيء بيع وسلم، لا مبلغ سلم على أن يرد نظيره.", "en": "The sum is the price of a thing sold and delivered, not a sum handed over to be returned." }
+      ],
+      "message": {
+        "ar": "المادة 351 من القانون المدني: البيع ينقل ملكية شيء مقابل ثمن نقدي، فالمطالبة بالثمن ليست استردادا لقرض. تحقق من سبب الدين.",
+        "en": "Civil Code article 351: a sale transfers ownership of a thing for a price in money, so a claim for the price is not the repayment of a loan. Check the cause of the debt."
+      },
+      "basis": ["b24"]
+    },
+    {
+      "id": "n3",
+      "looksLike": { "ar": "مطالبة بمبلغ مستحق", "en": "A claim for a sum owed" },
+      "isActually": "claim:unpaid-rent",
+      "tellingFacts": [
+        { "ar": "المبلغ بدل إيجار مقابل الانتفاع بشيء.", "en": "The sum is rent for the use of a thing." }
+      ],
+      "message": {
+        "ar": "المادة 467 من القانون المدني: بدل الإيجار مقابل الانتفاع بالشيء المؤجر وليس ردا لقرض. تحقق من سبب الدين.",
+        "en": "Civil Code article 467: rent is paid for the use of the leased thing and is not the repayment of a loan. Check the cause of the debt."
+      },
+      "basis": ["b25"]
+    },
+    {
+      "id": "n4",
+      "looksLike": { "ar": "مطالبة بمبلغ مستحق", "en": "A claim for a sum owed" },
+      "isActually": "claim:unpaid-wages",
+      "tellingFacts": [
+        { "ar": "المبلغ أجر مستحق للمدعي مقابل عمله.", "en": "The sum is pay owed to the plaintiff for his work." }
+      ],
+      "message": {
+        "ar": "المادة 312 من القانون المدني تخص المبالغ المستحقة للعمال مقابل عملهم بأحكام تقادم خاصة؛ الأجر ليس ردا لقرض. تحقق من سبب الدين.",
+        "en": "Civil Code article 312 gives sums owed to workers for their work their own limitation rules; pay is not the repayment of a loan. Check the cause of the debt."
+      },
+      "basis": ["periods.b7"]
+    },
+    {
+      "id": "n5",
+      "looksLike": { "ar": "استرداد شيء أقرض", "en": "Recovering a thing lent" },
+      "isActually": "outside:loan-for-use",
+      "tellingFacts": [
+        { "ar": "الشيء المسلم غير قابل للاستهلاك، ويطلب رده بعينه بعد الاستعمال.", "en": "The thing handed over is not consumable, and the same thing is to be returned after use." }
+      ],
+      "message": {
+        "ar": "المادة 538 من القانون المدني: العارية ترد على شيء غير قابل للاستهلاك يرد بعينه، بخلاف قرض الاستهلاك الذي يرد نظيره. تحقق من طبيعة الشيء المسلم.",
+        "en": "Civil Code article 538: a loan for use concerns a non-consumable thing returned itself, unlike a loan for consumption, where the equivalent is returned. Check what was handed over."
+      },
+      "basis": ["b26", "b1"]
+    },
+    {
+      "id": "n6",
+      "looksLike": { "ar": "مبلغ سلم إلى المدعى عليه", "en": "A sum handed to the defendant" },
+      "isActually": "outside:gift",
+      "tellingFacts": [
+        { "ar": "سلم المبلغ دون اتفاق على رده، أو يدفع المدعى عليه بأنه هبة.", "en": "The sum was handed over with no agreement to return it, or the defendant says it was a gift." }
+      ],
+      "message": {
+        "ar": "المادة 202 من قانون الأسرة: الهبة تمليك بلا عوض، والمادة 450 من القانون المدني تجعل الرد عنصرا في القرض. تحقق مما يثبت الاتفاق على الرد.",
+        "en": "Family Code article 202: a gift transfers ownership without return, and Civil Code article 450 makes repayment part of a loan. Check what proves the agreement to repay."
+      },
+      "basis": ["b27", "b1"]
+    },
+    {
+      "id": "n7",
+      "looksLike": { "ar": "استرداد مبلغ قرض", "en": "Repayment of a loan" },
+      "isActually": "outside:credit-institution-or-commercial-loan",
+      "tellingFacts": [
+        { "ar": "المقرض بنك أو مؤسسة قرض، أو القرض تجاري (بين تجار أو لحاجات تجارتهم).", "en": "The lender is a bank or credit institution, or the loan is commercial (between traders or for their trade)." }
+      ],
+      "when": {
+        "any": [
+          { "slot": "lender_is_credit_institution", "is": "yes" },
+          { "slot": "dispute_is_commercial", "is": "yes" }
+        ]
+      },
+      "slots": ["lender_is_credit_institution", "dispute_is_commercial"],
+      "message": {
+        "ar": "المادة 456 من القانون المدني تجيز لمؤسسات القرض أخذ فائدة يحدد قدرها بقرار وزاري، والمادة 30 من القانون التجاري تجيز إثبات العقد التجاري بالبينة أو بأية وسيلة أخرى. تحقق من صفة المقرض وطبيعة القرض، ومن القسم والجهة المختصين.",
+        "en": "Civil Code article 456 lets credit institutions take interest at a rate set by ministerial decision, and Commercial Code article 30 lets a commercial contract be proved by witnesses or any other means. Check the lender's status and the nature of the loan, and the competent section and court."
+      },
+      "basis": ["b7", "b18", "b6"]
+    },
+    {
+      "id": "n8",
+      "looksLike": { "ar": "قرض بين أفراد بفائدة", "en": "A loan between individuals with interest" },
+      "isActually": "outside:interest-clause-void",
+      "tellingFacts": [
+        { "ar": "عقد القرض بين أفراد يشترط فائدة أو مقابلا زيادة على المبلغ المقترض.", "en": "The loan between individuals stipulates interest or a return on top of the sum lent." }
+      ],
+      "when": {
+        "all": [
+          { "slot": "loan_interest_stipulated", "is": "yes" },
+          { "slot": "lender_is_credit_institution", "is": "no" }
+        ]
+      },
+      "slots": ["loan_interest_stipulated", "lender_is_credit_institution"],
+      "message": {
+        "ar": "المادة 454 من القانون المدني: القرض بين الأفراد يكون دائما بدون أجر ويقع باطلا كل نص يخالف ذلك، والمادة 104 تقصر البطلان على الشق الباطل ما لم يتبين أن العقد ما كان ليتم بغيره. تحقق من الشرط ومن أثره في الطلبات.",
+        "en": "Civil Code article 454: a loan between individuals is always without return and any contrary clause is void; article 104 limits the nullity to the void part unless the contract would not have been made without it. Check the clause and its effect on the requests."
+      },
+      "basis": ["b6", "b29"]
+    }
+  ],
+  "openPoints": [
+    {
+      "id": "o1",
+      "question": {
+        "ar": "ما الذي يجوز طلبه تعويضا عن التأخر في رد قرض بين أفراد، مع منع كل أجر على القرض؟",
+        "en": "What may be claimed as damages for late repayment of a loan between individuals, given that any return on the loan is barred?"
+      },
+      "why": {
+        "ar": "المادة 186 من القانون المدني توجب تعويض الضرر اللاحق من تأخر المدين في الوفاء بمبلغ نقدي بين أفراد، والمادة 454 تبطل كل شرط بأجر على القرض بين الأفراد. ولا يبين النصان هل يجوز تقدير التعويض بنسبة من المبلغ عن مدة التأخر.",
+        "en": "Civil Code article 186 makes the debtor compensate the harm caused by late payment of a sum of money between individuals, and article 454 voids any clause giving a return on a loan between individuals. Neither says whether the damages may be measured as a rate on the sum over the delay."
+      },
+      "readings": [
+        { "reading": { "ar": "يطلب تعويض عن ضرر يثبت فعلا، دون نسبة مئوية عن المدة.", "en": "Damages for harm actually proved, without a rate over time." }, "basis": ["formal-notice.b15", "b19", "b6"] },
+        { "reading": { "ar": "يجوز تقدير التعويض بحسب مدة التأخر لأن المادة 186 تخص الديون النقدية بين الأفراد.", "en": "Damages may be measured by the length of the delay, since article 186 is written for money debts between individuals." }, "basis": ["formal-notice.b15"] }
+      ],
+      "protectiveReading": {
+        "ar": "صياغة طلب التعويض على أساس ضرر يبين ويثبت، لا على أساس فائدة.",
+        "en": "Frame the damages request on harm stated and proved, not as interest."
+      },
+      "grade": "C",
+      "refs": ["r2", "e6", "n8"]
+    },
+    {
+      "id": "o2",
+      "question": {
+        "ar": "متى يحل رد القرض إذا لم يتفق على أجل، ومتى يسقط حق المقترض في الأجل؟",
+        "en": "When does repayment fall due when no term was agreed, and when does the borrower lose the benefit of the term?"
+      },
+      "why": {
+        "ar": "المادة 457 تنهي القرض بانتهاء الأجل المتفق عليه، والمادة 458 تمنح المقترض بعد ستة أشهر حق إلغاء العقد والرد، ولا يبين نص في المخزن حلول الدين دون أجل أو سقوط الأجل؛ ونصوص الأجل في القانون المدني ليست في المخزن.",
+        "en": "Article 457 ends the loan at the agreed term, and article 458 gives the borrower, after six months, the right to end the contract and repay; no text in the store says when a debt with no term falls due or when the term is lost, and the Civil Code's articles on the term are not in the store."
+      },
+      "protectiveReading": {
+        "ar": "يسأل المحامي عن تاريخ الاستحقاق، وينبه إذا لم يحل في تاريخ العريضة.",
+        "en": "Ask the lawyer for the due date, and warn when it has not arrived at the petition's date."
+      },
+      "grade": "D",
+      "refs": ["e3", "n1"]
+    },
+    {
+      "id": "o3",
+      "question": {
+        "ar": "متى يكون القرض عملا تجاريا يرفع أمام القسم التجاري، ولا سيما قرض البنك لغير التاجر؟",
+        "en": "When is a loan a commercial act heard by the commercial section, in particular a bank loan to a non-trader?"
+      },
+      "why": {
+        "ar": "المواد التي تعدد الأعمال التجارية في القانون التجاري ليست في المخزن، والمادة 456 من القانون المدني تخص مؤسسات القرض دون بيان القسم.",
+        "en": "The Commercial Code articles listing commercial acts are not in the store, and Civil Code article 456 concerns credit institutions without naming a section."
+      },
+      "protectiveReading": {
+        "ar": "ينبه الحد n7 عند كون المقرض مؤسسة قرض أو كون النزاع تجاريا، ويقترح القسم التجاري عند جواب المحامي بأن النزاع تجاري.",
+        "en": "Boundary n7 warns when the lender is a credit institution or the dispute is commercial, and the commercial section is proposed when the lawyer answers that the dispute is commercial."
+      },
+      "grade": "D",
+      "refs": ["n7"]
+    },
+    {
+      "id": "o4",
+      "question": {
+        "ar": "ما الذي يحكم استرداد مبلغ دفع دون أن يثبت اتفاق على القرض (دفع غير المستحق أو الإثراء بلا سبب)؟",
+        "en": "What governs recovering a sum paid when no loan agreement can be proved (payment of what is not due, or unjust enrichment)?"
+      },
+      "why": {
+        "ar": "نصوص الإثراء بلا سبب ودفع غير المستحق في القانون المدني ليست في المخزن.",
+        "en": "The Civil Code's texts on unjust enrichment and on payment of what is not due are not in the store."
+      },
+      "protectiveReading": {
+        "ar": "لا قاعدة؛ يذكر الحد n6 أن الرد عنصر في القرض ويطلب ما يثبت الاتفاق عليه.",
+        "en": "No rule; boundary n6 notes that repayment is part of a loan and asks for what proves the agreement."
+      },
+      "grade": "D",
+      "refs": ["n6"]
+    },
+    {
+      "id": "o5",
+      "question": {
+        "ar": "هل الاعتراف العرفي بالدين وعد معترف به يوجب النفاذ المعجل عند طلبه؟",
+        "en": "Is a private acknowledgement of debt an acknowledged promise that calls for provisional execution when requested?"
+      },
+      "why": {
+        "ar": "المادة 323 من قانون الإجراءات المدنية والإدارية تذكر الوعد المعترف به دون تعريفه.",
+        "en": "CPCA article 323 names an acknowledged promise without defining it."
+      },
+      "readings": [
+        { "reading": { "ar": "الاعتراف بالدين الذي لا ينكره المدين وعد معترف به.", "en": "An acknowledgement of debt the debtor does not deny is an acknowledged promise." }, "basis": ["b22", "b10"] },
+        { "reading": { "ar": "لا يدخل إلا ما أقر به المدين أمام القضاء، وفي غيره يتوقف النفاذ المعجل على الاستعجال.", "en": "Only what the debtor admits in court qualifies; otherwise provisional execution depends on urgency." }, "basis": ["b22", "b23", "b16"] }
+      ],
+      "protectiveReading": {
+        "ar": "يقترح الطلب ويترك تقديره للمحامي، دون جزم بوجوبه.",
+        "en": "Offer the request and leave its assessment to the lawyer, without stating that it must be granted."
+      },
+      "grade": "C",
+      "refs": ["r4"]
+    }
+  ],
+  "checklist": [
+    { "id": "k1", "item": "Basis: the civil code's loan for consumption (the article defining it): the lender transfers ownership of a sum of money or fungible things, the borrower must return the equivalent in kind, quantity and quality at the end of the loan.", "from": ["derivationA"], "answer": "applies", "refs": ["b1", "r1"] },
+    { "id": "k2", "item": "Element 1 (money_lent): the plaintiff handed the defendant a sum of money as a loan or advance (not as a gift, a price, a wage or a deposit); date and amount of the handover.", "from": ["derivationA"], "answer": "applies", "refs": ["e1", "b1", "b2", "doc2"] },
+    { "id": "k3", "item": "Element 2 (the duty to return and its term): was a term agreed for repayment; has it passed (deadline_passed)? If no term was agreed, what the civil code says about the time of return (the loan articles, and the general rule that a judge may fix a term).", "from": ["derivationA"], "answer": "applies", "refs": ["e3", "b2", "b3", "b4", "n1", "o2"], "note": "The loan articles settle the agreed term; the general rule on a debt without a term is not in the store (k37)." },
+    { "id": "k4", "item": "Element 3 (debt_unpaid): the sum or its balance has not been returned; deduct every partial payment (payment_made) and state the balance claimed.", "from": ["derivationA"], "answer": "applies", "refs": ["e4", "b13", "periods.b42"] },
+    { "id": "k5", "item": "Acknowledgement of debt (debt_acknowledged): a written acknowledgement or an admission proves the debt and also interrupts limitation; check its date and amount.", "from": ["derivationA"], "answer": "applies", "refs": ["e2", "b10", "b16", "periods.b19"] },
+    { "id": "k6", "item": "Burden of proof: the creditor proves the obligation, the debtor proves its discharge (civil code, start of the proof chapter).", "from": ["derivationA"], "answer": "applies", "refs": ["periods.b42", "e1", "e4"] },
+    { "id": "k7", "item": "Proof in writing: outside commercial matters, a legal act above the threshold (100,000 DZD since the 2005 amendment) cannot be proved by witnesses; check the exceptions (beginning of proof in writing, material or moral impossibility, loss of the writing).", "from": ["derivationA"], "answer": "applies", "refs": ["b11", "b12", "b13", "b14", "b15"] },
+    { "id": "k8", "item": "Force of the documents: an official (notarised) deed is proof until forgery is shown; a private document is proof against its signer unless he denies his signature; registered or not, its fixed date against third parties.", "from": ["derivationA"], "answer": "applies", "refs": ["b9", "b10"], "note": "The fixed-date rule concerns third parties and is not needed against the borrower himself." },
+    { "id": "k9", "item": "Other means of proof: judicial admission, decisive oath when the plaintiff has no writing; presumptions.", "from": ["derivationA"], "answer": "applies", "refs": ["b16", "b17"], "note": "Presumptions not fixed by law are allowed only where witnesses are allowed; not cited separately." },
+    { "id": "k10", "item": "Interest: a loan between individuals is always without interest; any clause stipulating interest is void (the contract stands); do not ask for contractual interest. Check whether the lender is a bank or credit institution (different regime).", "from": ["derivationA"], "answer": "applies", "refs": ["b6", "b7", "b29", "n7", "n8"], "note": "No request for interest is proposed; the request-kind list has no interest kind." },
+    { "id": "k11", "item": "Damages for delay in paying a sum of money: the civil code article on late payment of a sum fixed in amount at the date of the claim; conditions (formal notice, harm, bad faith?) and how it sits with the ban on interest between individuals.", "from": ["derivationA"], "answer": "applies", "refs": ["formal-notice.b15", "formal-notice.b1", "r2", "e6", "o1"], "note": "No bad-faith condition appears in the text; the tension with the ban on any return is open point o1." },
+    { "id": "k12", "item": "Formal notice: damages are not due until the debtor has been put on notice; form of the notice (bailiff's act or equivalent writing); cases where notice is not needed (agreed default on due date, written refusal, impossibility). Notice is not a condition of admissibility of the main payment claim.", "from": ["derivationA"], "answer": "applies", "refs": ["formal-notice.p1", "formal-notice.p3", "e5", "formal-notice.b5", "formal-notice.b6"], "note": "The module keeps notice before a claim for performance as a reading that only warns (formal-notice p3)." },
+    { "id": "k13", "item": "Assessment of damages: loss suffered and profit lost, foreseeable harm in contract.", "from": ["derivationA"], "answer": "applies", "refs": ["b19", "b20"] },
+    { "id": "k14", "item": "Limitation of the repayment claim: general period of the civil code (fifteen years), starts from the date the debt fell due; interruption by judicial claim and by the debtor's acknowledgement; suspension; the court may not raise limitation of its own motion, the debtor must plead it.", "from": ["derivationA"], "answer": "applies", "refs": ["periods.d1", "periods.b1", "periods.b12", "periods.b13", "periods.b18", "periods.b19", "periods.b23"] },
+    { "id": "k15", "item": "Check that none of the short limitation periods applies (professional fees, trader supplies, periodic rights such as rent or wages): a loan is not one of them, but a mislabelled claim may be.", "from": ["derivationA"], "answer": "applies", "refs": ["periods.d1", "n3", "n4"], "note": "The imported deadline stays general unless the lawyer says the debt is one of the short-period kinds; the loan articles name no special period." },
+    { "id": "k16", "item": "Counting of the period: by calendar, the day of the starting event excluded, last day included (civil code limitation chapter and the procedural counting rules).", "from": ["derivationA"], "answer": "applies", "refs": ["periods.b11", "periods.d1"] },
+    { "id": "k17", "item": "Competent section: the civil section of the first-instance court (tribunal); a loan between merchants or for commercial purposes goes to the commercial section; a bank loan to a trader may belong to the specialised commercial court.", "from": ["derivationA"], "answer": "applies", "refs": ["court-sections.b3", "court-sections.b4", "court-sections.b21", "ordinary-court-exits.x4", "n7", "o3"] },
+    { "id": "k18", "item": "Territorial jurisdiction: the court of the defendant's domicile as the general rule; in contract matters the plaintiff may choose the place of the contract or of performance (check the code of civil and administrative procedure); jurisdiction clauses valid only between traders.", "from": ["derivationA"], "answer": "applies", "refs": ["territorial-jurisdiction.t1", "territorial-jurisdiction.t2", "territorial-jurisdiction.t3", "territorial-jurisdiction.t8", "territorial-jurisdiction.n1"], "note": "The procedure code's special venues of contract or performance cover supplies, works and services and commercial matters, not a civil loan; the general rule applies." },
+    { "id": "k19", "item": "Defendant abroad or domicile unknown: last known domicile; Algerian courts' international jurisdiction for obligations contracted in Algeria.", "from": ["derivationA"], "answer": "applies", "refs": ["territorial-jurisdiction.t26", "territorial-jurisdiction.n2", "territorial-jurisdiction.n11"] },
+    { "id": "k20", "item": "Exit to the order-to-pay procedure: when the debt is a sum of money, due, fixed and proved in writing (acknowledgement of debt), the creditor may ask the court president for an order to pay instead of a full claim; check whether an order to pay was already issued (opposition period).", "from": ["derivationA"], "answer": "applies", "refs": ["ordinary-court-exits.x7", "ordinary-court-exits.d3", "ordinary-court-exits.d4", "ordinary-court-exits.n4", "territorial-jurisdiction.t29", "formal-notice.n6"] },
+    { "id": "k21", "item": "Exit to the administrative court if a party is the State, a wilaya, a commune or a public administrative body.", "from": ["derivationA"], "answer": "applies", "refs": ["ordinary-court-exits.x1"] },
+    { "id": "k22", "item": "Exit to criminal proceedings: if the facts amount to a breach of trust or fraud, check whether a criminal case on the same facts is pending (the civil judge stays the case).", "from": ["derivationA"], "answer": "applies", "refs": ["ordinary-court-exits.x6"], "note": "The criminal texts on breach of trust and fraud are not in the store; the imported exit asks whether a criminal case exists on the same facts." },
+    { "id": "k23", "item": "Prior steps: no compulsory conciliation before an ordinary civil claim; the judge may propose mediation or conciliation; formal notice only for damages.", "from": ["derivationA"], "answer": "applies", "refs": ["conciliation-mediation.b1", "conciliation-mediation.b6", "conciliation-mediation.p1", "formal-notice.p1", "formal-notice.p3"], "note": "Conciliation is required only before the specialised commercial court (conciliation-mediation p1)." },
+    { "id": "k24", "item": "Petition formal elements: court, parties' identity and domicile, brief facts, requests and grounds, documents listed, signature and date, Arabic language, official translation of foreign-language documents, court fees.", "from": ["derivationA"], "answer": "applies", "refs": ["petition-formal-elements.p1", "petition-formal-elements.p5", "petition-formal-elements.p9", "petition-formal-elements.p15", "petition-formal-elements.p19"] },
+    { "id": "k25", "item": "Standing and interest: the plaintiff is the lender (or his heirs or assignee); the defendant is the borrower (or his heirs, then the estate rules on territory).", "from": ["derivationA"], "answer": "applies", "refs": ["petition-formal-elements.p12", "petition-formal-elements.p13", "b28"] },
+    { "id": "k26", "item": "Requests: payment of the principal (or balance); damages for delay with their legal basis; costs on the losing party; provisional execution only within its legal conditions.", "from": ["derivationA"], "answer": "applies", "refs": ["r1", "r2", "r3", "r4"], "note": "Both request kinds of the brief (payment, damages) appear." },
+    { "id": "k27", "item": "Required documents: the loan deed or acknowledgement of debt, proof of the handover (transfer or delivery receipts), the formal notice report (if damages are asked), proof of partial payments.", "from": ["derivationA"], "answer": "applies", "refs": ["doc1", "doc2", "formal-notice.doc1", "formal-notice.doc2", "periods.doc2", "periods.doc3", "ordinary-court-exits.doc1"], "note": "Proof of partial payments is the debtor's to produce; the plaintiff states them in the facts (e4)." },
+    { "id": "k28", "item": "Boundary: price of a sale (seller's claim for the price) is not a loan.", "from": ["derivationA"], "answer": "applies", "refs": ["n2"] },
+    { "id": "k29", "item": "Boundary: rent and wages are not loans (their own short limitation periods and procedures).", "from": ["derivationA"], "answer": "applies", "refs": ["n3", "n4"] },
+    { "id": "k30", "item": "Boundary: a loan for use (borrowing a thing to return the same thing) is a different contract; a deposit of money is a different contract.", "from": ["derivationA"], "answer": "applies", "refs": ["n5"], "note": "Deposit: not found in the store (k40)." },
+    { "id": "k31", "item": "Boundary: payment made without a debt (undue payment) or unjust enrichment, when no loan agreement can be proved; a gift (no duty to return).", "from": ["derivationA"], "answer": "applies", "refs": ["n6", "o4"], "note": "Gift found; undue payment and unjust enrichment not in the store (k38)." },
+    { "id": "k32", "item": "Boundary: a bank or credit-institution loan, or a commercial loan, falls under commercial rules (interest allowed, commercial proof, possibly the specialised commercial court).", "from": ["derivationA"], "answer": "applies", "refs": ["n7", "b7", "b18", "ordinary-court-exits.x4", "conciliation-mediation.p1"], "note": "The list of commercial acts is not in the store (k39)." },
+    { "id": "k33", "item": "Early repayment: the borrower may repay before the term if no interest is stipulated; the lender cannot demand before the agreed term unless the debtor lost the benefit of the term (insolvency, diminished securities).", "from": ["derivationA"], "answer": "applies", "refs": ["b2", "b4", "b5", "n1"], "note": "The store gives the borrower a right to end the loan after six months and return within six months, not tied to interest; loss of the term is not in the store (k37)." },
+    { "id": "k34", "item": "Amendments to recall: civil code amended by law 05-10 of 2005 (proof threshold, electronic writing) and law 88-14 (official deeds); check the version in force.", "from": ["derivationA"], "answer": "applies", "refs": ["b11", "b9", "b7"], "note": "The store gives the proof threshold in its law 05-10 version, the official-deed article in its law 88-14 version, and the credit-institution articles in their law 84-21 version." },
+    { "id": "k35", "item": "Death of the borrower: the claim is brought against the heirs within the estate; check standing and the estate's territorial rule.", "from": ["derivationA"], "answer": "applies", "refs": ["b28", "b10", "territorial-jurisdiction.t13", "territorial-jurisdiction.n8"] },
+    { "id": "k36", "item": "The store notes on every civil-code article cited that its text is a snapshot at the 2026-10-26 cut-off, without full history or lawyer verification: has a later amendment reached the loan or proof articles?", "from": ["derivationA"], "answer": "applies", "refs": ["b1", "b6", "b11"], "note": "Nothing in the store shows a later version; the grading script checks the Official Journal search." },
+    { "id": "k37", "item": "The civil code's articles on the term of an obligation (a debt without a fixed term, the judge fixing a term, loss of the benefit of the term).", "from": ["derivationA"], "answer": "searchedNotFound", "note": "Searched the civil-code text view: no article between 186 and 308 is in the store; requested civil-code 209 to 212." },
+    { "id": "k38", "item": "The civil code's articles on unjust enrichment and payment of what is not due.", "from": ["derivationA"], "answer": "searchedNotFound", "note": "Searched the civil-code text view for articles 141 to 143: absent; requested." },
+    { "id": "k39", "item": "The commercial code's articles listing commercial acts (bank operations, acts by form, accessory acts).", "from": ["derivationA"], "answer": "searchedNotFound", "note": "Searched the commercial-code text view for articles 1 to 4: absent; requested." },
+    { "id": "k40", "item": "The civil code's articles on deposit (a deposit of money as distinct from a loan).", "from": ["derivationA"], "answer": "searchedNotFound", "note": "Searched the civil-code text view for the deposit chapter and the word الوديعة: absent; requested." }
+  ],
+  "examples": [
+    {
+      "id": "ex1", "by": "derivationA",
+      "title": "Clean case: loan due in 2024, bailiff notice before the petition, payment and damages asked.",
+      "petitionDate": "2026-11-19",
+      "slots": {
+        "requests": ["payment", "damages"],
+        "notice_served": "yes", "notice_means": "bailiff", "notice_date": "2026-09-15",
+        "contract_date": "2023-06-30", "debt_due_date": "2024-06-30",
+        "dispute_is_commercial": "no", "court_has_section_for_matter": "yes", "lender_is_credit_institution": "no", "loan_interest_stipulated": "no"
+      },
+      "expect": {
+        "section": "civil",
+        "findings": [
+          { "ref": "n1", "effect": "none" },
+          { "ref": "n7", "effect": "none" },
+          { "ref": "n8", "effect": "none" }
+        ],
+        "questions": []
+      }
+    },
+    {
+      "id": "ex2", "by": "derivationA",
+      "title": "Repayment fell due long ago (March 2009): the not-yet-due boundary is silent (the limitation is the imported periods deadline).",
+      "petitionDate": "2026-11-19",
+      "slots": {
+        "requests": ["payment"],
+        "debt_due_date": "2009-03-01",
+        "lender_is_credit_institution": "no",
+        "loan_interest_stipulated": "no",
+        "dispute_is_commercial": "no"
+      },
+      "expect": {
+        "section": "civil",
+        "findings": [
+          { "ref": "n1", "effect": "none" },
+          { "ref": "n7", "effect": "none" },
+          { "ref": "n8", "effect": "none" }
+        ],
+        "questions": []
+      }
+    },
+    {
+      "id": "ex3", "by": "derivationA",
+      "title": "The agreed term ends on the petition's own day: the boundary warns (on or after).",
+      "petitionDate": "2026-11-19",
+      "slots": {
+        "requests": ["payment"],
+        "debt_due_date": "2026-11-19"
+      },
+      "expect": {
+        "findings": [
+          { "ref": "n1", "effect": "warn" }
+        ]
+      }
+    },
+    {
+      "id": "ex4", "by": "derivationA",
+      "title": "The term ended the day before the petition: the boundary is silent.",
+      "petitionDate": "2026-11-19",
+      "slots": {
+        "requests": ["payment"],
+        "debt_due_date": "2026-11-18"
+      },
+      "expect": {
+        "findings": [
+          { "ref": "n1", "effect": "none" }
+        ]
+      }
+    },
+    {
+      "id": "ex5", "by": "derivationA",
+      "title": "Due date unknown: the not-yet-due boundary asks for it.",
+      "petitionDate": "2026-11-19",
+      "slots": {
+        "requests": ["payment"],
+        "lender_is_credit_institution": "no",
+        "loan_interest_stipulated": "no",
+        "dispute_is_commercial": "no"
+      },
+      "expect": {
+        "findings": [
+          { "ref": "n1", "effect": "ask" },
+          { "ref": "n7", "effect": "none" },
+          { "ref": "n8", "effect": "none" }
+        ],
+        "questions": ["debt_due_date"]
+      }
+    },
+    {
+      "id": "ex6", "by": "derivationA",
+      "title": "Court without sections, dispute said to be commercial: the civil section is proposed, and the commercial-loan boundary warns.",
+      "petitionDate": "2026-11-19",
+      "slots": {
+        "requests": ["payment"],
+        "court_has_section_for_matter": "no",
+        "dispute_is_commercial": "yes",
+        "lender_is_credit_institution": "no",
+        "loan_interest_stipulated": "no",
+        "debt_due_date": "2025-01-31"
+      },
+      "expect": {
+        "section": "civil",
+        "findings": [
+          { "ref": "n7", "effect": "warn" },
+          { "ref": "n8", "effect": "none" },
+          { "ref": "n1", "effect": "none" }
+        ]
+      }
+    },
+    {
+      "id": "ex7", "by": "derivationA",
+      "title": "Lender is a credit institution, dispute not said to be commercial: the boundary warns on the lender alone.",
+      "petitionDate": "2026-11-19",
+      "slots": {
+        "requests": ["payment"],
+        "lender_is_credit_institution": "yes",
+        "dispute_is_commercial": "no",
+        "loan_interest_stipulated": "yes",
+        "debt_due_date": "2025-01-31"
+      },
+      "expect": {
+        "section": "civil",
+        "findings": [
+          { "ref": "n7", "effect": "warn" },
+          { "ref": "n8", "effect": "none" }
+        ]
+      }
+    },
+    {
+      "id": "ex8", "by": "derivationA",
+      "title": "The agreed term has not arrived: the not-yet-due boundary warns.",
+      "petitionDate": "2026-11-19",
+      "slots": {
+        "requests": ["payment"],
+        "debt_due_date": "2027-01-31"
+      },
+      "expect": {
+        "findings": [
+          { "ref": "n1", "effect": "warn" }
+        ]
+      }
+    },
+    {
+      "id": "ex9", "by": "derivationA",
+      "title": "Bank loan to a trader, lawyer says the dispute is commercial: boundary warns, commercial section proposed.",
+      "petitionDate": "2026-11-19",
+      "slots": {
+        "requests": ["payment"],
+        "lender_is_credit_institution": "yes",
+        "dispute_is_commercial": "yes",
+        "court_has_section_for_matter": "yes",
+        "loan_interest_stipulated": "yes",
+        "debt_due_date": "2025-01-31"
+      },
+      "expect": {
+        "section": "commercial",
+        "findings": [
+          { "ref": "n7", "effect": "warn" },
+          { "ref": "n8", "effect": "none" }
+        ]
+      }
+    },
+    {
+      "id": "ex10", "by": "derivationA",
+      "title": "Loan between individuals with an interest clause: the void-clause boundary warns.",
+      "petitionDate": "2026-11-19",
+      "slots": {
+        "requests": ["payment"],
+        "lender_is_credit_institution": "no",
+        "dispute_is_commercial": "no",
+        "loan_interest_stipulated": "yes",
+        "debt_due_date": "2025-01-31"
+      },
+      "expect": {
+        "section": "civil",
+        "findings": [
+          { "ref": "n8", "effect": "warn" },
+          { "ref": "n7", "effect": "none" }
+        ]
+      }
+    },
+    {
+      "id": "ex11", "by": "derivationA",
+      "title": "Nothing known but the requests: the rules ask.",
+      "petitionDate": "2026-11-19",
+      "slots": {
+        "requests": ["payment", "damages"]
+      },
+      "expect": {
+        "findings": [
+          { "ref": "n1", "effect": "ask" },
+          { "ref": "n7", "effect": "ask" },
+          { "ref": "n8", "effect": "ask" }
+        ],
+        "questions": ["debt_due_date", "lender_is_credit_institution", "dispute_is_commercial", "loan_interest_stipulated", "court_has_section_for_matter"]
+      }
+    },
+    {
+      "id": "ex12", "by": "derivationA",
+      "title": "Interest clause stipulated, lender's status unknown: the void-clause boundary asks.",
+      "petitionDate": "2026-11-19",
+      "slots": {
+        "requests": ["payment"],
+        "loan_interest_stipulated": "yes",
+        "dispute_is_commercial": "no",
+        "debt_due_date": "2025-01-31"
+      },
+      "expect": {
+        "findings": [
+          { "ref": "n8", "effect": "ask" },
+          { "ref": "n7", "effect": "ask" },
+          { "ref": "n1", "effect": "none" }
+        ],
+        "questions": ["lender_is_credit_institution"]
+      }
+    }
+  ]
+}

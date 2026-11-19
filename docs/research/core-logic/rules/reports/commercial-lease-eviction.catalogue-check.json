@@ -1,0 +1,227 @@
+{
+  "unit": "commercial-lease-eviction",
+  "finalModules": [
+    "conciliation-mediation",
+    "court-sections",
+    "formal-notice",
+    "labour-prelitigation",
+    "land-registry-publication",
+    "ordinary-court-exits",
+    "periods",
+    "petition-formal-elements",
+    "territorial-jurisdiction"
+  ],
+  "articles": [
+    {
+      "code": "commercial-code",
+      "number": "173",
+      "role": "procedure",
+      "required": false,
+      "inStore": true,
+      "status": "inForce",
+      "version": "ordinance-75-59",
+      "verified": true,
+      "verifiedBy": "libraryProof",
+      "proof": "mechanical",
+      "paragraphs": 5,
+      "tier": 2,
+      "frenchCheck": null,
+      "ledgerClean": false,
+      "ledgerReason": "notCovered",
+      "inModules": [
+        {
+          "module": "formal-notice",
+          "statements": [
+            "b31",
+            "b32"
+          ],
+          "items": [
+            "boundary:n3"
+          ]
+        }
+      ],
+      "inUnitTexts": true
+    },
+    {
+      "code": "commercial-code",
+      "number": "176",
+      "role": "damages",
+      "required": false,
+      "inStore": true,
+      "status": "inForce",
+      "version": "ordinance-75-59",
+      "verified": true,
+      "verifiedBy": "libraryProof",
+      "proof": "mechanical",
+      "paragraphs": 2,
+      "tier": 2,
+      "frenchCheck": null,
+      "ledgerClean": false,
+      "ledgerReason": "notCovered",
+      "inModules": [],
+      "inUnitTexts": true
+    },
+    {
+      "code": "commercial-code",
+      "number": "187 مكرر",
+      "role": "basis",
+      "required": false,
+      "inStore": true,
+      "status": "inForce",
+      "version": "law-05-02",
+      "verified": true,
+      "verifiedBy": "libraryProofAndCorpus",
+      "proof": "mechanical",
+      "paragraphs": 2,
+      "tier": 2,
+      "frenchCheck": null,
+      "ledgerClean": false,
+      "ledgerReason": "notCovered",
+      "inModules": [
+        {
+          "module": "formal-notice",
+          "statements": [
+            "b33"
+          ],
+          "items": [
+            "boundary:n3"
+          ]
+        }
+      ],
+      "inUnitTexts": true
+    }
+  ],
+  "prerequisites": [],
+  "documents": [
+    {
+      "document": "عقد الإيجار التجاري (الرسمي)",
+      "inModules": [
+        {
+          "module": "formal-notice",
+          "item": "documents:doc3",
+          "sharedWords": [
+            "عقد"
+          ],
+          "strength": "weak"
+        },
+        {
+          "module": "petition-formal-elements",
+          "item": "documents:doc5",
+          "sharedWords": [
+            "عقد"
+          ],
+          "strength": "weak"
+        },
+        {
+          "module": "petition-formal-elements",
+          "item": "documents:doc7",
+          "sharedWords": [
+            "عقد"
+          ],
+          "strength": "weak"
+        }
+      ]
+    },
+    {
+      "document": "محضر التنبيه بالإخلاء",
+      "inModules": [
+        {
+          "module": "conciliation-mediation",
+          "item": "documents:doc1",
+          "sharedWords": [
+            "محضر"
+          ],
+          "strength": "weak"
+        },
+        {
+          "module": "formal-notice",
+          "item": "documents:doc2",
+          "sharedWords": [
+            "محضر"
+          ],
+          "strength": "weak"
+        },
+        {
+          "module": "labour-prelitigation",
+          "item": "documents:doc1",
+          "sharedWords": [
+            "محضر"
+          ],
+          "strength": "weak"
+        },
+        {
+          "module": "periods",
+          "item": "documents:doc1",
+          "sharedWords": [
+            "محضر"
+          ],
+          "strength": "weak"
+        },
+        {
+          "module": "periods",
+          "item": "documents:doc2",
+          "sharedWords": [
+            "تنبيه"
+          ],
+          "strength": "weak"
+        },
+        {
+          "module": "periods",
+          "item": "documents:doc3",
+          "sharedWords": [
+            "محضر"
+          ],
+          "strength": "weak"
+        },
+        {
+          "module": "petition-formal-elements",
+          "item": "documents:doc7",
+          "sharedWords": [
+            "محضر"
+          ],
+          "strength": "weak"
+        },
+        {
+          "module": "petition-formal-elements",
+          "item": "documents:doc9",
+          "sharedWords": [
+            "محضر"
+          ],
+          "strength": "weak"
+        }
+      ]
+    },
+    {
+      "document": "مستخرج السجل التجاري",
+      "inModules": [
+        {
+          "module": "land-registry-publication",
+          "item": "documents:doc2",
+          "sharedWords": [
+            "مستخرج"
+          ],
+          "strength": "weak"
+        }
+      ]
+    }
+  ],
+  "summary": {
+    "articles": 3,
+    "notInStore": [],
+    "repealedOrNotInForce": [],
+    "notVerified": [],
+    "proofLabels": {
+      "mechanical": 3,
+      "twoFamilies": 0,
+      "oneFamily": 0
+    },
+    "carriedByModules": [
+      "commercial-code 173",
+      "commercial-code 187 مكرر"
+    ],
+    "documentsMatchedInModules": 0,
+    "prerequisitesMatchedInModules": 0,
+    "outsideUnitTexts": []
+  },
+  "rule": "facts read by script from the article store and the final module records; a module match by shared words is a lead for the deriver, never a finding"
+}

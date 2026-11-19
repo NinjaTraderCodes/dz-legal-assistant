@@ -1,0 +1,949 @@
+{
+  "schemaVersion": "1.0",
+  "kind": "claim",
+  "id": "commercial-debt",
+  "label": { "ar": "المطالبة بدين تجاري", "en": "Commercial debt" },
+  "verified": false,
+  "stage": "derivationA",
+  "derivedBy": { "role": "derivationA", "model": "claude-opus-5-5", "date": "2026-11-19" },
+  "area": "commercial",
+  "imports": [
+    {
+      "module": "formal-notice",
+      "blocks": ["b1", "b4", "b5", "b14", "b15", "b36", "p1", "p3", "doc1", "doc2", "doc3", "doc4", "n1", "n10", "n11", "n12"],
+      "how": {
+        "ar": "يطلب المورد الوفاء بالثمن والتعويض عن التأخر: يجبر المدين على التنفيذ بعد إعذاره، ولا يستحق التعويض إلا بعد الإعذار ما لم يوجد نص مخالف أو حالة إعفاء؛ تستورد قواعد الإعذار ووسائله ووثائقه وحدوده كما هي.",
+        "en": "The supplier claims the price and damages for delay: the debtor is compelled to perform after notice, and damages are due only after notice unless a text provides otherwise or an exemption applies; the rules on the notice, its means, its documents and its boundaries are imported as they stand."
+      }
+    },
+    {
+      "module": "periods",
+      "blocks": ["b1", "b6", "b8", "b11", "b12", "b18", "b19", "b23", "b42", "d1", "d6", "d7", "d8", "doc2", "doc3"],
+      "how": {
+        "ar": "يتقادم الدين التجاري بالمدة العامة من يوم استحقاقه ما لم يرد نص خاص، ويتقادم بسنة إذا ورد التاجر أشياء لمن لا يتجر فيها، وبسنتين إذا كان أتعاب سمسار أو مهني، وبخمس سنوات إذا كان حقا دوريا متجددا؛ وعلى الدائن إثبات الالتزام وعلى المدين إثبات التخلص منه.",
+        "en": "A commercial debt is time-barred after the general period from its due date unless a special text applies; after one year when a trader supplied things to a person who does not trade in them, after two years for a broker's or a professional's fees, and after five years for a periodic renewable right; the creditor proves the obligation and the debtor proves his release."
+      }
+    },
+    {
+      "module": "ordinary-court-exits",
+      "blocks": ["b26", "b27", "b39", "x1", "x4", "x7", "t2", "t3", "t5", "d3", "d4", "doc1", "n2", "n3", "n4", "n5", "n6"],
+      "how": {
+        "ar": "قد يخرج الدين التجاري من القسم التجاري: إلى المحكمة الإدارية إذا كان أحد الأطراف شخصا عموميا إداريا، وإلى المحكمة التجارية المتخصصة في المواد المسندة إليها (ومنها البنوك مع التجار والتجارة الدولية والتسوية القضائية والإفلاس)، وإلى أمر الأداء إذا كان الدين نقديا مستحقا معين المقدار ثابتا بالكتابة كالفاتورة المؤشر عليها من المدين.",
+        "en": "A commercial debt may leave the commercial section: for the administrative court when a public administrative person is a party, for the specialised commercial court in its matters (among them banks with traders, international trade, judicial settlement and bankruptcy), and for an order to pay when the debt is a sum of money that is due, fixed and proved in writing, such as an invoice endorsed by the debtor."
+      }
+    },
+    {
+      "module": "court-sections",
+      "blocks": ["b3", "b4", "b21", "b43"],
+      "how": {
+        "ar": "تجدول القضايا حسب طبيعة النزاع، ويختص القسم التجاري بالمنازعات التجارية غير المسندة إلى المحكمة التجارية المتخصصة، وفي المحاكم التي لم تنشأ فيها الأقسام ينظر القسم المدني فيها؛ يكتب هذا السجل قاعدة القسم الخاصة به على هذه البيانات.",
+        "en": "Cases are listed by the nature of the dispute; the commercial section hears commercial disputes not given to the specialised commercial court, and in courts without sections the civil section hears them; this record writes its own section rule on these statements."
+      }
+    },
+    {
+      "module": "territorial-jurisdiction",
+      "blocks": ["t1", "t2", "t3", "t7", "t8", "t12", "t26", "t28", "t29", "n1", "n2", "n11"],
+      "how": {
+        "ar": "الأصل محكمة موطن المدعى عليه، وفي المواد التجارية يجوز أيضا رفع الدعوى أمام محكمة مكان الوعد أو تسليم البضاعة أو مكان الوفاء، وفي التوريدات محكمة مكان إبرام الاتفاق أو تنفيذه؛ وشرط الاختصاص لا يصح إلا بين التجار.",
+        "en": "The rule is the court of the defendant's domicile; in commercial matters the claim may also go to the court of the place of the promise, of delivery of the goods or of payment, and for supplies to the court where the agreement was made or performed; a jurisdiction clause is valid only between traders."
+      }
+    },
+    {
+      "module": "conciliation-mediation",
+      "blocks": ["p1", "doc1", "t1", "n2", "n6", "n7", "n10", "n11"],
+      "how": {
+        "ar": "لا يشترط صلح قبل رفع الدعوى أمام القسم التجاري، أما إذا كان النزاع من مواد المحكمة التجارية المتخصصة فيسبق قيد الدعوى صلح ويرفق محضر عدم الصلح بالعريضة.",
+        "en": "No conciliation is required before a claim at the commercial section; when the dispute is one of the specialised commercial court's matters, a conciliation precedes filing and the record of non-conciliation is attached to the petition."
+      }
+    },
+    {
+      "module": "petition-formal-elements",
+      "blocks": ["p1", "p2", "p3", "p4", "p5", "p6", "p7", "p8", "p9", "p10", "p11", "p12", "p13", "p14", "p15", "p19", "doc1", "doc2", "doc3", "doc4", "doc6", "doc7"],
+      "how": {
+        "ar": "تخضع عريضة المطالبة بدين تجاري للبيانات الوجوبية للعريضة، ومنها بيانات الشخص المعنوي وصفة ممثله لأن الطرفين في الغالب شركتان، ولشروط الصفة والمصلحة والرسوم واللغة العربية.",
+        "en": "The petition for a commercial debt is subject to the mandatory particulars of a petition, the legal person's details and its representative's capacity among them since the parties are usually companies, and to the conditions of standing, interest, fees and the Arabic language."
+      }
+    }
+  ],
+  "basis": [
+    {
+      "id": "b1",
+      "role": "proof",
+      "required": true,
+      "cite": { "code": "commercial-code", "article": "30", "paragraphs": [1] },
+      "says": { "ar": "يثبت كل عقد تجاري بالوسائل التي تعددها المادة.", "en": "Every commercial contract is proved by the means the article lists." }
+    },
+    {
+      "id": "b2",
+      "role": "proof",
+      "cite": { "code": "commercial-code", "article": "30", "paragraphs": [2, 3] },
+      "says": { "ar": "من وسائل إثبات العقد التجاري السندات الرسمية والسندات العرفية.", "en": "Official deeds and private deeds are among the means of proving a commercial contract." }
+    },
+    {
+      "id": "b3",
+      "role": "proof",
+      "cite": { "code": "commercial-code", "article": "30", "paragraphs": [4] },
+      "says": { "ar": "يثبت العقد التجاري بفاتورة مقبولة.", "en": "A commercial contract is proved by an accepted invoice." }
+    },
+    {
+      "id": "b4",
+      "role": "proof",
+      "cite": { "code": "commercial-code", "article": "30", "paragraphs": [5, 6] },
+      "says": { "ar": "يثبت العقد التجاري بالرسائل وبدفاتر الطرفين.", "en": "A commercial contract is proved by letters and by the parties' books." }
+    },
+    {
+      "id": "b5",
+      "role": "proof",
+      "cite": { "code": "commercial-code", "article": "30", "paragraphs": [7] },
+      "says": { "ar": "يثبت العقد التجاري بالبينة أو بأي وسيلة أخرى إذا رأت المحكمة وجوب قبولها.", "en": "A commercial contract may be proved by witnesses or by any other means if the court decides they should be accepted." }
+    },
+    {
+      "id": "b6",
+      "role": "basis",
+      "required": true,
+      "cite": { "code": "civil-code", "article": "107", "paragraphs": [1] },
+      "says": { "ar": "يجب تنفيذ العقد طبقا لما اشتمل عليه وبحسن نية.", "en": "A contract must be performed as it provides and in good faith." }
+    },
+    {
+      "id": "b7",
+      "role": "basis",
+      "cite": { "code": "civil-code", "article": "59", "paragraphs": [1] },
+      "says": { "ar": "يتم العقد بمجرد تبادل الطرفين التعبير عن إرادتين متطابقتين.", "en": "A contract is made as soon as the parties exchange matching expressions of will." }
+    },
+    {
+      "id": "b8",
+      "role": "basis",
+      "cite": { "code": "civil-code", "article": "388", "paragraphs": [1] },
+      "says": { "ar": "يستحق ثمن المبيع وقت تسليم المبيع ما لم يوجد اتفاق أو عرف بخلاف ذلك.", "en": "The price of a thing sold falls due when the thing is delivered, unless an agreement or custom provides otherwise." }
+    },
+    {
+      "id": "b9",
+      "role": "basis",
+      "cite": { "code": "civil-code", "article": "387", "paragraphs": [1, 2] },
+      "says": { "ar": "يدفع الثمن في مكان تسليم المبيع ما لم يوجد اتفاق أو عرف بخلافه، فإن لم يكن مستحقا وقت التسلم دفع في موطن المشتري وقت استحقاقه.", "en": "The price is paid where the thing is delivered unless an agreement or custom provides otherwise; if it is not due at delivery, it is paid at the buyer's domicile when it falls due." }
+    },
+    {
+      "id": "b10",
+      "role": "proof",
+      "cite": { "code": "civil-code", "article": "330", "paragraphs": [2] },
+      "says": { "ar": "دفاتر التجار حجة على هؤلاء التجار، ولا يجوز لمن يستدل بدفاتر منتظمة أن يجزئ ما ورد فيها.", "en": "Traders' books are evidence against those traders, and a party relying on regular books may not split their entries." }
+    },
+    {
+      "id": "b11",
+      "role": "proof",
+      "cite": { "code": "civil-code", "article": "330", "paragraphs": [1] },
+      "says": { "ar": "دفاتر التجار لا تكون حجة على غير التجار، غير أنه إذا تضمنت بيانات عن توريدات جاز للقاضي توجيه اليمين المتممة لأحد الطرفين فيما يثبت بالبينة.", "en": "Traders' books are not evidence against non-traders, but where they record supplies the judge may put the supplementary oath to either party in what may be proved by witnesses." }
+    },
+    {
+      "id": "b12",
+      "role": "proof",
+      "cite": { "code": "civil-code", "article": "333", "paragraphs": [1] },
+      "says": { "ar": "في غير المواد التجارية لا يجوز الإثبات بالشهود في تصرف تزيد قيمته على 100.000 دينار جزائري أو غير محدد القيمة ما لم يوجد نص بخلافه.", "en": "Outside commercial matters, a legal act worth more than 100.000 Algerian dinars, or of undetermined value, may not be proved by witnesses unless a text provides otherwise." }
+    },
+    {
+      "id": "b13",
+      "role": "damages",
+      "cite": { "code": "civil-code", "article": "182", "paragraphs": [1] },
+      "says": { "ar": "يقدر القاضي التعويض غير المقدر في العقد أو القانون، ويشمل ما لحق الدائن من خسارة وما فاته من كسب إذا كان نتيجة طبيعية لعدم الوفاء أو للتأخر فيه.", "en": "The judge assesses damages not fixed by the contract or the law; they cover the creditor's loss and lost gain that are the natural result of the non-performance or of the delay in performing." }
+    },
+    {
+      "id": "b14",
+      "role": "damages",
+      "cite": { "code": "civil-code", "article": "182", "paragraphs": [2] },
+      "says": { "ar": "في الالتزام العقدي لا يلتزم المدين الذي لم يرتكب غشا أو خطأ جسيما إلا بتعويض الضرر الذي كان يمكن توقعه عادة وقت التعاقد.", "en": "In a contractual obligation, a debtor who committed no fraud or gross fault owes only the damage that could normally be foreseen when the contract was made." }
+    },
+    {
+      "id": "b15",
+      "role": "basis",
+      "cite": { "code": "civil-code", "article": "365", "paragraphs": [2] },
+      "says": { "ar": "إذا زاد قدر المبيع على ما ذكر في العقد وكان الثمن مقدرا بحسب الوحدة، وجب على المشتري دفع ثمن زائد إذا كان المبيع غير قابل للتقسيم، إلا إذا كانت الزيادة فاحشة فله طلب الفسخ، ما لم يوجد اتفاق يخالف ذلك.", "en": "Where the quantity sold exceeds the quantity stated in the contract and the price is fixed per unit, the buyer must pay more if the thing is not divisible, unless the excess is gross, in which case he may ask rescission, absent an agreement to the contrary." }
+    },
+    {
+      "id": "b16",
+      "role": "limit",
+      "cite": { "code": "civil-code", "article": "366", "paragraphs": [1] },
+      "says": { "ar": "يسقط حق البائع في طلب تكملة الثمن لزيادة قدر المبيع بالتقادم بعد مضي سنة من وقت تسليم المبيع تسليما فعليا.", "en": "The seller's right to claim a price supplement for an excess in quantity falls by limitation one year after the thing sold was actually delivered." }
+    },
+    {
+      "id": "b17",
+      "role": "limit",
+      "cite": { "code": "civil-code", "article": "383", "paragraphs": [1] },
+      "says": { "ar": "تسقط بالتقادم دعوى ضمان العيب بعد انقضاء سنة من يوم تسليم المبيع، ما لم يلتزم البائع بالضمان لمدة أطول.", "en": "The action on the warranty against defects is time-barred one year after delivery of the thing sold, unless the seller undertook a longer warranty." }
+    },
+    {
+      "id": "b18",
+      "role": "procedure",
+      "cite": { "code": "cpca", "article": "323", "paragraphs": [2] },
+      "says": { "ar": "يؤمر بالنفاذ المعجل عند طلبه رغم المعارضة أو الاستئناف إذا حكم بناء على عقد رسمي أو وعد معترف به أو حكم سابق حائز لقوة الشيء المقضي به.", "en": "Provisional execution, when asked, is ordered despite opposition or appeal where judgment rests on an official deed, an acknowledged promise or an earlier final judgment." }
+    },
+    {
+      "id": "b19",
+      "role": "procedure",
+      "cite": { "code": "cpca", "article": "323", "paragraphs": [3] },
+      "says": { "ar": "في الأحوال الأخرى يجوز للقاضي في حالة الاستعجال أن يأمر بالنفاذ المعجل بكفالة أو بدونها.", "en": "In other cases the judge may, in urgency, order provisional execution with or without security." }
+    },
+    {
+      "id": "b20",
+      "role": "procedure",
+      "cite": { "code": "cpca", "article": "419", "paragraphs": [1] },
+      "says": { "ar": "يتحمل الخصم الخاسر المصاريف ما لم يقرر القاضي مسببا تحميلها كلها أو بعضها لخصم آخر.", "en": "The losing party bears the costs, unless the judge, giving reasons, puts all or part of them on another party." }
+    },
+    {
+      "id": "b21",
+      "role": "limit",
+      "cite": { "code": "civil-code", "article": "312", "paragraphs": [1, 2] },
+      "says": { "ar": "تتقادم بسنة واحدة حقوق التجار والصناع عن أشياء وردوها لأشخاص لا يتجرون فيها.", "en": "The claims of traders and craftsmen for things they supplied to persons who do not trade in them are time-barred after one year." }
+    },
+    {
+      "id": "b22",
+      "role": "procedure",
+      "cite": { "code": "civil-code", "article": "314", "paragraphs": [1] },
+      "says": { "ar": "تحسب مدة التقادم بالأيام لا بالساعات، ولا يحسب اليوم الأول، وتكمل المدة بانقضاء آخر يوم منها.", "en": "A limitation period is counted in days, not hours; the first day is not counted and the period is complete when its last day ends." }
+    },
+    {
+      "id": "b23",
+      "role": "limit",
+      "cite": { "code": "civil-code", "article": "321", "paragraphs": [1] },
+      "says": { "ar": "لا تقضي المحكمة بالتقادم من تلقاء نفسها، بل بطلب المدين أو أحد دائنيه أو أي ذي مصلحة.", "en": "The court does not apply limitation of its own motion, only at the request of the debtor, one of his creditors or any interested person." }
+    }
+  ],
+  "elements": [
+    {
+      "id": "e1",
+      "toProve": { "ar": "قيام علاقة تعاقدية تجارية بين المدعية والمدعى عليها (بيع أو توريد بضائع أو تقديم خدمات).", "en": "A commercial contractual relation between the plaintiff and the defendant (sale or supply of goods, or provision of services)." },
+      "factsToState": [
+        { "ar": "صفة الطرفين (تاجران أو شركتان تجاريتان) وطبيعة نشاطهما.", "en": "The parties' status (traders or commercial companies) and their line of business." },
+        { "ar": "مصدر الالتزام: عقد مكتوب أو سندات طلب أو تعامل متكرر، وتاريخه.", "en": "The source of the obligation: a written contract, purchase orders or a course of dealing, and its date." }
+      ],
+      "events": ["contract_concluded"],
+      "slots": ["contract_date", "dispute_is_commercial"],
+      "burden": "plaintiff",
+      "proof": [
+        { "means": "official or private deed, accepted invoice, letters, the parties' books", "basis": ["b1", "b2", "b3", "b4"], "note": { "ar": "يثبت العقد التجاري بهذه الوسائل.", "en": "A commercial contract is proved by these means." } },
+        { "means": "witnesses or any other means", "basis": ["b5"], "note": { "ar": "متى رأت المحكمة وجوب قبولها.", "en": "Where the court decides they should be accepted." } }
+      ],
+      "basis": ["formal-notice.b36", "b6", "b7", "b1"]
+    },
+    {
+      "id": "e2",
+      "toProve": { "ar": "أن المدعية سلمت البضائع أو قدمت الخدمات المتفق عليها، وتواريخ ذلك وقيمته.", "en": "That the plaintiff delivered the goods or provided the services agreed, with the dates and the value." },
+      "factsToState": [
+        { "ar": "البضائع أو الخدمات المسلمة وكمياتها وتواريخ تسليمها وأرقام سندات التسليم والفواتير.", "en": "The goods or services delivered, their quantities, delivery dates, and the numbers of the delivery notes and invoices." }
+      ],
+      "events": ["goods_delivered"],
+      "slots": ["goods_actually_delivered_on"],
+      "burden": "plaintiff",
+      "proof": [
+        { "means": "delivery notes and purchase orders (private deeds), accepted invoices", "basis": ["b2", "b3"] },
+        { "means": "letters and the parties' books", "basis": ["b4", "b10", "b11"], "note": { "ar": "دفاتر التجار حجة على التجار، لا على غير التجار.", "en": "Traders' books are evidence against traders, not against non-traders." } }
+      ],
+      "basis": ["b6", "b8", "b1"]
+    },
+    {
+      "id": "e3",
+      "toProve": { "ar": "المبلغ الذي بقي في ذمة المدعى عليها بعد خصم ما دفعته، وأنه حل أجل الوفاء به.", "en": "The sum still owed by the defendant after deducting what it paid, and that it has fallen due." },
+      "factsToState": [
+        { "ar": "مجموع الفواتير، والمبالغ المدفوعة وتواريخها، والرصيد المتبقي.", "en": "The total of the invoices, the sums paid and their dates, and the balance left." },
+        { "ar": "تاريخ استحقاق الثمن (وقت التسليم ما لم يتفق على أجل) ومكان الوفاء.", "en": "The date the price fell due (at delivery unless a term was agreed) and the place of payment." }
+      ],
+      "events": ["price_unpaid", "debt_unpaid", "payment_made"],
+      "slots": ["debt_due_date"],
+      "burden": "plaintiff",
+      "proof": [
+        { "means": "statement of account drawn from the parties' books, accepted invoices", "basis": ["b3", "b4", "b10"] },
+        { "means": "proof of payment", "basis": ["periods.b42"], "note": { "ar": "على المدين إثبات الوفاء الذي يدعيه.", "en": "The debtor must prove any payment he relies on." } }
+      ],
+      "basis": ["periods.b42", "b8", "b9"]
+    },
+    {
+      "id": "e4",
+      "toProve": { "ar": "إعذار المدعى عليها قبل رفع الدعوى، أو قيام حالة تعفي منه.", "en": "That the defendant was put on notice before the claim, or that an exemption from notice applies." },
+      "factsToState": [
+        { "ar": "تاريخ الإعذار ووسيلته واستمرار الامتناع عن الدفع بعده.", "en": "The date and means of the notice and the continued failure to pay after it." }
+      ],
+      "events": ["notice_served"],
+      "slots": ["notice_served", "notice_date", "notice_means"],
+      "burden": "plaintiff",
+      "basis": ["formal-notice.b1", "formal-notice.b4", "formal-notice.b5"]
+    }
+  ],
+  "requests": [
+    {
+      "id": "r1",
+      "kind": "payment",
+      "accessory": false,
+      "text": { "ar": "إلزام المدعى عليها بأن تؤدي للمدعية مبلغ (...) دج قيمة الفواتير غير المسددة", "en": "Order the defendant to pay the plaintiff DZD (...), the amount of the unpaid invoices" },
+      "amount": true,
+      "basis": ["formal-notice.b36", "b6", "b8", "formal-notice.b4"]
+    },
+    {
+      "id": "r2",
+      "kind": "damages",
+      "accessory": true,
+      "text": { "ar": "إلزام المدعى عليها بأن تؤدي للمدعية تعويضا قدره (...) دج عن التأخر في الوفاء", "en": "Order the defendant to pay the plaintiff DZD (...) in damages for the delay in payment" },
+      "amount": true,
+      "basis": ["formal-notice.b14", "formal-notice.b15", "formal-notice.b1", "b13", "b14"]
+    },
+    {
+      "id": "r3",
+      "kind": "provisional_execution",
+      "accessory": true,
+      "text": { "ar": "شمول الحكم بالنفاذ المعجل", "en": "Order provisional execution of the judgment" },
+      "amount": false,
+      "basis": ["b18", "b19"]
+    },
+    {
+      "id": "r4",
+      "kind": "other",
+      "accessory": true,
+      "text": { "ar": "تحميل المدعى عليها المصاريف القضائية", "en": "Order the defendant to bear the costs" },
+      "amount": false,
+      "basis": ["b20"]
+    },
+    {
+      "id": "r5",
+      "kind": "payment",
+      "accessory": false,
+      "text": { "ar": "إلزام المدعى عليها بأن تؤدي للمدعية مبلغ (...) دج تكملة للثمن عن الزيادة في قدر المبيع", "en": "Order the defendant to pay the plaintiff DZD (...) as a price supplement for the excess in the quantity sold" },
+      "amount": true,
+      "when": { "slot": "price_supplement_for_excess_quantity", "is": "yes" },
+      "basis": ["b15", "b16"]
+    }
+  ],
+  "court": {
+    "section": {
+      "value": "commercial",
+      "basis": ["court-sections.b21", "court-sections.b3"],
+      "alternatives": [
+        { "when": { "slot": "court_has_section_for_matter", "is": "no" }, "value": "civil", "basis": ["court-sections.b4"] },
+        { "when": { "slot": "dispute_is_commercial", "is": "no" }, "value": "civil", "basis": ["court-sections.b3", "court-sections.b21"] }
+      ],
+      "message": {
+        "ar": "المادة 531 من قانون الإجراءات المدنية والإدارية: يختص القسم التجاري بالمنازعات التجارية غير المسندة إلى المحكمة التجارية المتخصصة، والمادة 32: تجدول القضايا حسب طبيعة النزاع، وفي المحاكم التي لم تنشأ فيها الأقسام ينظر القسم المدني في النزاع. تحقق من الطابع التجاري للنزاع ومن أقسام المحكمة.",
+        "en": "CPCA article 531: the commercial section hears commercial disputes not given to the specialised commercial court; article 32: cases are listed by the nature of the dispute, and in courts without sections the civil section hears it. Check the commercial character of the dispute and the court's sections."
+      },
+      "interpretive": true,
+      "interpretiveNote": "Which section hears a debt that is commercial for the supplier only (the debtor not a trader, or the act not commercial for him) is not settled by the texts in the store; the commercial character of acts is defined by Commercial Code articles that are not in the store (open points o1 and o4). The record proposes the civil section when the lawyer says the dispute is not commercial."
+    }
+  },
+  "deadlines": [
+    {
+      "id": "d1",
+      "kind": "limitation",
+      "period": { "value": 1, "unit": "year" },
+      "startsFrom": {
+        "slot": "goods_actually_delivered_on",
+        "event": "goods_delivered",
+        "description": { "ar": "يوم تسليم المبيع تسليما فعليا.", "en": "The day the thing sold was actually delivered." }
+      },
+      "counting": { "method": "excludeFirstDay", "extendToWorkingDay": false, "basis": ["b22"] },
+      "raisedBy": "pleaOnly",
+      "when": { "slot": "price_supplement_for_excess_quantity", "is": "yes" },
+      "effectWhenExpired": "warn",
+      "warnBandDays": 16,
+      "message": {
+        "ar": "المادة 366 من القانون المدني: يسقط حق البائع في طلب تكملة الثمن لزيادة قدر المبيع بالتقادم بعد مضي سنة من وقت تسليم المبيع تسليما فعليا، وتحسب المدة بالأيام دون اليوم الأول (المادة 314)، ولا تقضي به المحكمة تلقائيا (المادة 321). وطريقة حساب السنة بالتقويم أو بعدد ثابت من الأيام محل قراءتين. تحقق من تاريخ التسليم الفعلي.",
+        "en": "Civil Code article 366: the seller's right to a price supplement for an excess in quantity falls by limitation one year after actual delivery; the period is counted in days without the first day (article 314), and the court does not apply it of its own motion (article 321). Whether the year is counted by the calendar or as a fixed number of days is open to two readings. Check the date of actual delivery."
+      },
+      "basis": ["b16", "b15", "b22", "b23"],
+      "extract": { "period": "مضي سنة", "sanction": "يسقطان بالتقادم" },
+      "interpretive": true,
+      "interpretiveNote": "Article 314 counts limitation in days without the first day, but does not say whether a year is a calendar year or a fixed number of days; the shared periods module keeps the same question open for every yearly limitation. The rule counts by the calendar and widens the band so that the other count also warns; an expired limitation only warns.",
+      "readings": [
+        { "reading": { "ar": "تحسب السنة بالتقويم من يوم التسليم إلى مثله.", "en": "The year is counted by the calendar, from the delivery day to the same day a year later." }, "basis": ["b22"] },
+        { "reading": { "ar": "تحسب السنة بعدد ثابت من الأيام، فقد تنتهي قبل ذلك بيوم.", "en": "The year is a fixed number of days, so it may end a day earlier." }, "basis": ["b22"] }
+      ]
+    }
+  ],
+  "documents": [
+    {
+      "id": "doc1",
+      "name": { "ar": "الفواتير، مع ما يثبت قبول المدعى عليها لها", "en": "The invoices, with proof that the defendant accepted them" },
+      "why": { "ar": "يثبت العقد التجاري بفاتورة مقبولة (المادة 30 من القانون التجاري).", "en": "A commercial contract is proved by an accepted invoice (Commercial Code article 30)." },
+      "basis": ["b3"]
+    },
+    {
+      "id": "doc2",
+      "name": { "ar": "سندات الطلب والتسليم والمراسلات بين الطرفين", "en": "Purchase orders, delivery notes and correspondence between the parties" },
+      "why": { "ar": "سندات عرفية ورسائل يثبت بها العقد التجاري والتسليم (المادة 30 من القانون التجاري).", "en": "Private deeds and letters by which the commercial contract and the delivery are proved (Commercial Code article 30)." },
+      "basis": ["b2", "b4"]
+    },
+    {
+      "id": "doc3",
+      "name": { "ar": "كشف الحساب المستخرج من الدفاتر التجارية", "en": "The statement of account drawn from the commercial books" },
+      "why": { "ar": "يثبت العقد التجاري بدفاتر الطرفين، ودفاتر التجار حجة عليهم (المادة 30 من القانون التجاري والمادة 330 من القانون المدني).", "en": "A commercial contract is proved by the parties' books, and traders' books are evidence against them (Commercial Code article 30, Civil Code article 330)." },
+      "basis": ["b4", "b10"]
+    },
+    {
+      "id": "doc4",
+      "name": { "ar": "مستخرج السجل التجاري للطرفين", "en": "Extract of the commercial register for both parties" },
+      "why": { "ar": "يبين صفة الطرفين التجارية التي تتوقف عليها قواعد الإثبات (المادة 333 من القانون المدني) والقسم المختص، وبيانات الشخص المعنوي. النص الذي ينظم السجل التجاري غير موجود في مخزن النصوص.", "en": "Shows the parties' trader status, on which the proof rules (Civil Code article 333) and the competent section depend, and the legal person's particulars. The text governing the commercial register is not in the article store." },
+      "basis": ["b12", "court-sections.b21"]
+    },
+    {
+      "id": "doc5",
+      "name": { "ar": "العقد المكتوب أو الاتفاق الإطاري إن وجد", "en": "The written contract or framework agreement, if any" },
+      "why": { "ar": "العقد شريعة المتعاقدين ويثبت بالسند الرسمي أو العرفي (المادة 30 من القانون التجاري).", "en": "The contract binds the parties and is proved by an official or private deed (Commercial Code article 30)." },
+      "basis": ["b2", "formal-notice.b36"]
+    }
+  ],
+  "boundaries": [
+    {
+      "id": "n1",
+      "looksLike": { "ar": "دين تاجر عن بضائع وردها", "en": "A trader's debt for goods he supplied" },
+      "isActually": "outside:supply-to-non-trader",
+      "tellingFacts": [
+        { "ar": "المدعى عليه لا يتجر في الأشياء الموردة إليه (مستهلك أو مهني من غير هذا النشاط).", "en": "The defendant does not trade in the things supplied to him (a consumer or a business outside that trade)." }
+      ],
+      "when": { "slot": "claim_is_trader_supply_or_hotel", "is": "yes" },
+      "slots": ["claim_is_trader_supply_or_hotel"],
+      "message": {
+        "ar": "المادة 312 من القانون المدني: تتقادم بسنة واحدة حقوق التجار عن أشياء وردوها لأشخاص لا يتجرون فيها، والمادة 330: دفاتر التجار لا تكون حجة على غير التجار. تحقق من صفة المدعى عليه ومن تاريخ الاستحقاق ومن وسائل الإثبات.",
+        "en": "Civil Code article 312: traders' claims for things supplied to persons who do not trade in them are time-barred after one year; article 330: traders' books are not evidence against non-traders. Check the defendant's status, the due date and the means of proof."
+      },
+      "basis": ["b21", "b11"]
+    },
+    {
+      "id": "n2",
+      "looksLike": { "ar": "امتناع المشتري عن دفع الثمن بسبب عيب في البضاعة", "en": "A buyer refusing to pay the price because the goods are defective" },
+      "isActually": "outside:sale-warranty",
+      "tellingFacts": [
+        { "ar": "المدعى عليها تتمسك بعيب في البضاعة أو بتخلف صفة تعهد بها البائع.", "en": "The defendant relies on a defect in the goods or on a missing quality the seller undertook." }
+      ],
+      "message": {
+        "ar": "المادة 383 من القانون المدني: تسقط بالتقادم دعوى ضمان العيب بعد سنة من تسليم المبيع ما لم يلتزم البائع بضمان أطول. دعوى الضمان دعوى المشتري، وتختلف عن مطالبة البائع بالثمن.",
+        "en": "Civil Code article 383: the warranty action against defects is time-barred one year after delivery unless the seller undertook a longer warranty. The warranty action is the buyer's, distinct from the seller's claim for the price."
+      },
+      "basis": ["b17"]
+    },
+    {
+      "id": "n4",
+      "looksLike": { "ar": "مطالبة بثمن بضائع أو خدمات بين طرفين", "en": "A claim for the price of goods or services between two parties" },
+      "isActually": "outside:civil-debt",
+      "tellingFacts": [
+        { "ar": "العقد ليس تجاريا بالنسبة إلى المدعى عليه، أو أحد الطرفين ليس تاجرا.", "en": "The contract is not commercial for the defendant, or one of the parties is not a trader." }
+      ],
+      "when": { "slot": "dispute_is_commercial", "is": "no" },
+      "slots": ["dispute_is_commercial"],
+      "message": {
+        "ar": "المادة 30 من القانون التجاري تخص إثبات العقد التجاري، والمادة 333 من القانون المدني تمنع في غير المواد التجارية الإثبات بالشهود فيما تزيد قيمته على 100.000 دينار جزائري. تحقق من الطابع التجاري للعقد بالنسبة إلى كل طرف، ومن وسائل الإثبات والقسم المختص.",
+        "en": "Commercial Code article 30 governs the proof of a commercial contract, and Civil Code article 333 bars proof by witnesses, outside commercial matters, of acts worth more than 100.000 Algerian dinars. Check the commercial character of the contract for each party, the means of proof and the competent section."
+      },
+      "basis": ["b1", "b12"]
+    }
+  ],
+  "slots": [
+    "requests", "notice_served", "notice_date", "notice_means", "notice_before_petition_day",
+    "default_on_due_date_agreed", "performance_impossible_or_useless_by_debtor", "obligation_is_tort_compensation",
+    "return_of_thing_known_stolen_or_unduly_received", "debtor_refused_in_writing", "contract_sets_notice_terms",
+    "claim_is_professional_fees", "claim_is_trader_supply_or_hotel", "claim_is_periodic_renewable_right", "debt_due_date",
+    "public_body_party", "public_vehicle_damage", "specialised_commercial_matter", "specialised_commercial_court_installed",
+    "commercial_nonconciliation_record", "commercial_conciliation_agreement", "commercial_nonconciliation_party_absent",
+    "specialised_commercial_no_opposing_party", "debt_written_fixed_due", "payment_order_issued",
+    "dispute_is_commercial", "court_has_section_for_matter", "price_supplement_for_excess_quantity", "goods_actually_delivered_on",
+    "jurisdiction_clause_relied_on", "clause_parties_all_merchants", "defendant_resides_abroad", "defendant_domicile_known", "contract_date",
+    "petition_names_court", "petition_gives_plaintiff_identity", "petition_gives_defendant_identity", "party_is_legal_person",
+    "petition_gives_legal_person_details", "petition_states_facts_claims_grounds", "petition_lists_documents", "petition_signed_dated",
+    "petition_copies_for_each_party", "court_fees_paid", "fee_exemption_applies", "party_lacks_capacity", "incapable_party_represented",
+    "plaintiff_acts_through_representative", "representative_has_authority", "plaintiff_has_standing", "plaintiff_has_interest",
+    "suit_authorisation_required", "suit_authorisation_obtained", "foreign_language_documents", "foreign_documents_officially_translated",
+    "petition_in_arabic"
+  ],
+  "openPoints": [
+    {
+      "id": "o1",
+      "question": { "ar": "متى يكون الدين تجاريا بالنسبة إلى كل من الطرفين؟", "en": "When is the debt commercial for each party?" },
+      "why": { "ar": "المواد التي تعرف الأعمال التجارية بحسب موضوعها وشكلها والأعمال التجارية بالتبعية غير موجودة في مخزن النصوص، وعليها يتوقف تطبيق المادة 30 من القانون التجاري والقسم المختص.", "en": "The articles defining commercial acts by subject, by form and by accessory character are not in the article store, and the application of Commercial Code article 30 and the competent section depend on them." },
+      "readings": [
+        { "reading": { "ar": "يكفي أن يكون العمل تجاريا بالنسبة إلى المدين لتطبيق حرية الإثبات عليه.", "en": "It is enough that the act is commercial for the debtor for freedom of proof to apply against him." } },
+        { "reading": { "ar": "يلزم أن يكون العمل تجاريا بالنسبة إلى الطرفين لعرضه على القسم التجاري.", "en": "The act must be commercial for both parties to go to the commercial section." } }
+      ],
+      "protectiveReading": { "ar": "يسأل المحامي عن الطابع التجاري للنزاع، وينبه إذا لم يكن تجاريا.", "en": "Ask the lawyer whether the dispute is commercial, and warn when it is not." },
+      "grade": "D",
+      "refs": ["n4", "e1"]
+    },
+    {
+      "id": "o2",
+      "question": { "ar": "هل تسري المادة 186 من القانون المدني، الخاصة بالتأخر في دفع مبلغ نقدي «بين أفراد»، على دين بين شركتين تجاريتين؟", "en": "Does Civil Code article 186, on delay in paying a sum of money 'between individuals', apply to a debt between two commercial companies?" },
+      "why": { "ar": "عبارة «بين أفراد» لا يحدد النص مداها، والتعويض عن التأخر يجد أساسه أيضا في المادتين 176 و182.", "en": "The text does not define the reach of 'between individuals', and damages for delay also rest on articles 176 and 182." },
+      "readings": [
+        { "reading": { "ar": "تشمل العبارة كل شخص طبيعي أو معنوي.", "en": "The phrase covers every natural or legal person." } },
+        { "reading": { "ar": "تقتصر العبارة على الأشخاص الطبيعيين، ويؤسس التعويض بين الشركات على المادتين 176 و182 مع إثبات الضرر.", "en": "The phrase covers natural persons only, and damages between companies rest on articles 176 and 182 with proof of the harm." } }
+      ],
+      "protectiveReading": { "ar": "يؤسس طلب التعويض على المادتين 176 و182 مع إثبات الضرر، وتذكر المادة 186 احتياطا.", "en": "Base the damages request on articles 176 and 182 with proof of the harm, citing article 186 in the alternative." },
+      "grade": "C",
+      "refs": ["r2"]
+    },
+    {
+      "id": "o3",
+      "question": { "ar": "هل يخضع الدين التجاري لمدة تقادم خاصة، أو الدين الثابت في سفتجة أو شيك لتقادم صرفي أقصر؟", "en": "Is a commercial debt subject to a special limitation period, or a debt embodied in a bill of exchange or a cheque to a shorter exchange-law limitation?" },
+      "why": { "ar": "أحكام الأوراق التجارية في القانون التجاري غير موجودة في مخزن النصوص؛ ويذكر من الذاكرة فقط أن دعاوى السفتجة تتقادم بمدد قصيرة.", "en": "The Commercial Code provisions on commercial papers are not in the article store; it is recalled from memory only that actions on bills of exchange have short periods." },
+      "protectiveReading": { "ar": "تطبق المدة العامة مع تنبيه المحامي إلى التحقق من وجود ورقة تجارية.", "en": "Apply the general period and tell the lawyer to check whether a commercial paper exists." },
+      "grade": "D",
+      "refs": ["periods.d1"]
+    },
+    {
+      "id": "o4",
+      "question": { "ar": "أي قسم ينظر في دين تجاري بالنسبة إلى أحد الطرفين فقط؟", "en": "Which section hears a debt that is commercial for one party only?" },
+      "why": { "ar": "المادتان 32 و531 من قانون الإجراءات المدنية والإدارية تحيلان على طبيعة النزاع ولا تحسمان العمل المختلط.", "en": "CPCA articles 32 and 531 refer to the nature of the dispute and do not settle the mixed act." },
+      "readings": [
+        { "reading": { "ar": "القسم التجاري.", "en": "The commercial section." } },
+        { "reading": { "ar": "القسم المدني.", "en": "The civil section." } }
+      ],
+      "protectiveReading": { "ar": "يقترح القسم المدني إذا قال المحامي إن النزاع غير تجاري، وينبه الحد n4، والإحالة بين الأقسام تتم عن طريق أمانة الضبط.", "en": "Propose the civil section when the lawyer says the dispute is not commercial, with boundary n4 warning; a case listed before the wrong section is transferred through the registry." },
+      "grade": "C",
+      "refs": ["n4"]
+    },
+    {
+      "id": "o5",
+      "question": { "ar": "كيف تحسب السنة في تقادم تكملة الثمن؟", "en": "How is the year counted in the limitation of the price supplement?" },
+      "why": { "ar": "المادة 314 تحسب المدة بالأيام دون اليوم الأول ولا تبين هل السنة سنة تقويمية أو عدد ثابت من الأيام.", "en": "Article 314 counts in days without the first day and does not say whether a year is a calendar year or a fixed number of days." },
+      "protectiveReading": { "ar": "الحساب بالتقويم مع هامش تنبيه يغطي القراءة الأخرى؛ وانقضاء المدة لا يؤدي إلا إلى تنبيه.", "en": "Count by the calendar with a warning band that covers the other reading; expiry only warns." },
+      "grade": "C",
+      "refs": ["d1"]
+    },
+    {
+      "id": "o6",
+      "question": { "ar": "ما أثر إفلاس المدين التاجر أو تسويته القضائية على الدعوى الفردية للمطالبة بالدين؟", "en": "What is the effect of the trader debtor's bankruptcy or judicial settlement on an individual claim for the debt?" },
+      "why": { "ar": "أحكام الإفلاس والتسوية القضائية في القانون التجاري غير موجودة في مخزن النصوص؛ ويذكر من الذاكرة فقط أنها توقف الدعاوى الفردية للدائنين.", "en": "The Commercial Code provisions on bankruptcy and judicial settlement are not in the article store; it is recalled from memory only that they stay creditors' individual actions." },
+      "protectiveReading": { "ar": "ينبه المخرج المستورد نحو المحكمة التجارية المتخصصة عند اختيار مادة التسوية القضائية والإفلاس.", "en": "The imported exit towards the specialised commercial court warns when the judicial settlement and bankruptcy matter is chosen." },
+      "grade": "D",
+      "refs": ["ordinary-court-exits.x4"]
+    }
+  ],
+  "checklist": [
+    { "id": "k1", "item": "Basis: the contract (sale or supply of goods or services) binds the parties and must be performed in good faith (civil code on the effects of contracts); the claim is for the price of goods or services delivered and unpaid.", "from": ["derivationA"], "answer": "applies", "refs": ["formal-notice.b36", "b6", "b8", "e1", "r1"] },
+    { "id": "k2", "item": "Commercial character: check that the debt is commercial for both parties (acts of trade by nature or by form under the commercial code, both parties traders or companies); if the debtor is not a trader the act is mixed and civil rules (proof, limitation) may apply to him.", "from": ["derivationA"], "answer": "searchedNotFound", "refs": ["n4", "n1", "o1"], "note": "Searched the commercial-code text view: only articles 30 and 169 to 202 are in the store; the articles defining commercial acts (1 to 4) are not. Requested. The civil consequences that are in the store (civil-code 312, 330, 333) are carried by n1 and n4." },
+    { "id": "k3", "item": "Element: the contract or the commercial relation between the parties (orders, framework agreement, course of dealing), and its date.", "from": ["derivationA"], "answer": "applies", "refs": ["e1", "b7"] },
+    { "id": "k4", "item": "Element: delivery of the goods or performance of the services by the plaintiff, with dates and amounts (delivery notes, invoices).", "from": ["derivationA"], "answer": "applies", "refs": ["e2"] },
+    { "id": "k5", "item": "Element: the amount still unpaid after any part payments (statement of account), and that the debt is due (term arrived).", "from": ["derivationA"], "answer": "applies", "refs": ["e3", "b8"] },
+    { "id": "k6", "item": "Burden of proof: the creditor proves the obligation; the debtor proves payment or another cause of discharge (civil code on proof).", "from": ["derivationA"], "answer": "applies", "refs": ["periods.b42", "e3"] },
+    { "id": "k7", "item": "Proof: freedom of proof in commercial matters (commercial code, proof of commercial contracts by invoices, books, correspondence); the writing requirement above a sum in civil matters does not bind a commercial creditor against a trader, but may against a non-trader.", "from": ["derivationA"], "answer": "applies", "refs": ["b1", "b2", "b3", "b4", "b5", "b12", "n4"] },
+    { "id": "k8", "item": "Traders' books: their probative force for and against a trader (commercial code) and the invoice accepted by the debtor.", "from": ["derivationA"], "answer": "applies", "refs": ["b10", "b11", "b3", "doc3"], "note": "The civil code carries the force of traders' books (civil-code 330); the commercial code's own articles on books are not in the store." },
+    { "id": "k9", "item": "Formal notice: compelled performance requires a prior notice to the debtor (civil code); how the notice is made (bailiff act or equivalent writing, or contract clause on default by the mere due date).", "from": ["derivationA"], "answer": "applies", "refs": ["formal-notice.p3", "formal-notice.p1", "formal-notice.b4", "formal-notice.b5", "e4"] },
+    { "id": "k10", "item": "Formal notice: cases where no notice is needed (performance impossible or useless by the debtor's act, debtor's written refusal, tort compensation, return of stolen thing).", "from": ["derivationA"], "answer": "applies", "refs": ["formal-notice.p1", "formal-notice.p3"] },
+    { "id": "k11", "item": "Damages for delay: no damages before notice; for a sum of money, damages for delay and their conditions (civil code on delay in paying a sum of money); prohibition of interest between individuals and its scope between traders.", "from": ["derivationA"], "answer": "applies", "refs": ["r2", "formal-notice.b1", "formal-notice.b15", "o2"], "note": "The interest prohibition was not searched further: no request kind for interest exists, and the damages request rests on articles 176, 182 and 186." },
+    { "id": "k12", "item": "Amount of damages: loss suffered and gain lost, foreseeable damage in contract unless fraud or gross fault.", "from": ["derivationA"], "answer": "applies", "refs": ["b13", "b14", "r2"] },
+    { "id": "k13", "item": "Limitation: general limitation of fifteen years (civil code); special short periods: one year for prices of things supplied by a trader to a non-trader; periodic rights five years; check which applies; start from the due date.", "from": ["derivationA"], "answer": "applies", "refs": ["periods.d1", "periods.d6", "periods.d7", "periods.d8", "n1"] },
+    { "id": "k14", "item": "Limitation: counted in days, not hours, excluding the first day; interruption by judicial claim, acknowledgement of debt, attachment; not raised by the court of its own motion, only on the debtor's plea.", "from": ["derivationA"], "answer": "applies", "refs": ["periods.b11", "periods.b18", "periods.b19", "periods.b23", "b22", "b23"] },
+    { "id": "k15", "item": "Presumption of payment for short limitations: the creditor may put the oath to the debtor that he has paid.", "from": ["derivationA"], "answer": "applies", "refs": ["periods.b8"], "note": "The text puts the oath on the party relying on the one-year limitation." },
+    { "id": "k16", "item": "Commercial papers: if the debt is embodied in a bill of exchange or cheque, the cambiary claim has its own short limitation (commercial code) distinct from the underlying debt claim.", "from": ["derivationA"], "answer": "searchedNotFound", "refs": ["o3"], "note": "Searched the commercial-code text view for the bills of exchange and cheque chapters: not in the store. Requested." },
+    { "id": "k17", "item": "Competent section: the commercial section of the ordinary court (code of civil and administrative procedure, sections of the court); listing before the wrong section is not a ground of inadmissibility.", "from": ["derivationA"], "answer": "applies", "refs": ["court-sections.b21", "court-sections.b3", "court-sections.b4"] },
+    { "id": "k18", "item": "Territory: as a rule the court of the defendant's domicile (or registered seat for a company); in commercial matters other than bankruptcy and judicial settlement, also the court of the place of the promise and delivery, or of the place of payment.", "from": ["derivationA"], "answer": "applies", "refs": ["territorial-jurisdiction.t1", "territorial-jurisdiction.t8", "territorial-jurisdiction.t7", "b9"] },
+    { "id": "k19", "item": "Jurisdiction clause: a clause giving territorial jurisdiction is valid only between traders.", "from": ["derivationA"], "answer": "applies", "refs": ["territorial-jurisdiction.t3", "territorial-jurisdiction.n1"] },
+    { "id": "k20", "item": "Specialised commercial court (2022 reform of the code of civil and administrative procedure): disputes with banks and financial institutions against traders, international trade, maritime, companies, bankruptcy, intellectual property go there, with a mandatory prior conciliation and a record of non-conciliation attached to the petition.", "from": ["derivationA"], "answer": "applies", "refs": ["ordinary-court-exits.x4", "conciliation-mediation.p1", "conciliation-mediation.doc1"] },
+    { "id": "k21", "item": "Exit: an order to pay (injunction procedure) is available for a sum of money that is due, fixed and proven in writing; it replaces or precedes the ordinary claim; check whether one was already issued.", "from": ["derivationA"], "answer": "applies", "refs": ["ordinary-court-exits.x7", "ordinary-court-exits.d3", "ordinary-court-exits.d4", "ordinary-court-exits.n4"] },
+    { "id": "k22", "item": "Exit: if a party is the State, a wilaya, a commune or a public administrative body, the administrative courts hear the dispute.", "from": ["derivationA"], "answer": "applies", "refs": ["ordinary-court-exits.x1", "ordinary-court-exits.n2"] },
+    { "id": "k23", "item": "Exit: if the debtor is in judicial settlement or bankruptcy, individual claims are suspended and the creditor must declare the claim to the receiver.", "from": ["derivationA"], "answer": "searchedNotFound", "refs": ["o6", "ordinary-court-exits.x4"], "note": "Searched the commercial-code text view for the bankruptcy and judicial settlement book: not in the store. Requested; the specialised commercial court exit warns when that matter is chosen." },
+    { "id": "k24", "item": "Petition formal elements: court, parties' identity, legal person's name, nature, seat and representative, facts, requests and grounds, documents, signature and date, copies, Arabic language, fees paid.", "from": ["derivationA"], "answer": "applies", "refs": ["petition-formal-elements.p1", "petition-formal-elements.p4", "petition-formal-elements.p9", "petition-formal-elements.p19"] },
+    { "id": "k25", "item": "Standing and interest; representation of a company by its legal representative with authority.", "from": ["derivationA"], "answer": "applies", "refs": ["petition-formal-elements.p11", "petition-formal-elements.p12", "petition-formal-elements.p13", "petition-formal-elements.doc7"] },
+    { "id": "k26", "item": "Documents: invoices, purchase orders and delivery notes, statement of account, notice record (bailiff), extract of the commercial register of the parties, contract if any, correspondence; foreign-language documents need an official Arabic translation.", "from": ["derivationA"], "answer": "applies", "refs": ["doc1", "doc2", "doc3", "doc4", "doc5", "formal-notice.doc1", "formal-notice.doc2", "petition-formal-elements.doc3"] },
+    { "id": "k27", "item": "Requests: payment of the principal sum; damages for delay (conditional on notice); costs; provisional execution where the debt is acknowledged or proven by an official or acknowledged title.", "from": ["derivationA"], "answer": "applies", "refs": ["r1", "r2", "r3", "r4"] },
+    { "id": "k28", "item": "Boundary: loan of money (not goods delivered) is a different claim; a claim for delivery of goods by the buyer is a different claim; a sale between non-traders is a civil sale price claim.", "from": ["derivationA"], "answer": "applies", "refs": ["n4", "n1"], "note": "The sale between non-traders is carried by n4; a loan and a buyer's claim for delivery are other claim types of the catalogue and need no text here." },
+    { "id": "k29", "item": "Boundary: claim for price supplement for excess quantity in a sale has its own one-year limitation from delivery (civil code on sale).", "from": ["derivationA"], "answer": "applies", "refs": ["d1", "r5", "b15", "b16"] },
+    { "id": "k30", "item": "Boundary: if the dispute is between the buyer and the seller about defects, the guarantee claim and its short period apply, not this claim.", "from": ["derivationA"], "answer": "applies", "refs": ["n2", "b17"] },
+    { "id": "k31", "item": "Amendments remembered: civil code amended 2005 (writing threshold raised); code of civil and administrative procedure 2008 amended 2022 (specialised commercial courts and their prior conciliation); commercial code amended several times (1993, 1996, 2005).", "from": ["derivationA"], "answer": "applies", "refs": ["b12", "ordinary-court-exits.b26"], "note": "The store gives civil-code 333 in the wording of law 05-10 and cpca 536 مكرر in the wording of law 22-13; commercial-code 30 is in its 1975 wording, with no later version in the store." },
+    { "id": "k32", "item": "The store notes that civil-code 365, 366, 383, 387 and 388 are a current text snapshot whose commencement and history were not checked: does that leave a doubt on the wording relied on?", "from": ["derivationA"], "answer": "applies", "refs": ["d1", "b8", "b9", "b15", "b16", "b17"], "note": "The note concerns history and commencement, not the current wording; the items rest on the current wording and d1 only warns." }
+  ],
+  "examples": [
+    {
+      "id": "ex1",
+      "by": "derivationA",
+      "title": "Clean case: invoices unpaid, bailiff notice before the petition, commercial section.",
+      "petitionDate": "2026-12-01",
+      "slots": {
+        "requests": ["payment", "damages"],
+        "notice_served": "yes", "notice_means": "bailiff", "notice_date": "2026-09-15", "notice_before_petition_day": "yes",
+        "default_on_due_date_agreed": "no", "contract_sets_notice_terms": "no", "debtor_refused_in_writing": "no",
+        "obligation_is_tort_compensation": "no", "claim_is_professional_fees": "no", "claim_is_trader_supply_or_hotel": "no", "claim_is_periodic_renewable_right": "no",
+        "debt_due_date": "2026-03-31", "public_body_party": "no", "specialised_commercial_matter": "none", "debt_written_fixed_due": "no", "payment_order_issued": "no",
+        "dispute_is_commercial": "yes", "court_has_section_for_matter": "yes", "price_supplement_for_excess_quantity": "no",
+        "jurisdiction_clause_relied_on": "no", "defendant_resides_abroad": "no", "defendant_domicile_known": "yes",
+        "petition_names_court": "yes", "petition_gives_plaintiff_identity": "yes", "petition_gives_defendant_identity": "yes", "party_is_legal_person": "yes",
+        "petition_gives_legal_person_details": "yes", "petition_states_facts_claims_grounds": "yes", "petition_lists_documents": "yes", "petition_signed_dated": "yes",
+        "petition_copies_for_each_party": "yes", "court_fees_paid": "yes", "party_lacks_capacity": "no", "plaintiff_acts_through_representative": "yes",
+        "representative_has_authority": "yes", "plaintiff_has_standing": "yes", "plaintiff_has_interest": "yes", "suit_authorisation_required": "no",
+        "foreign_language_documents": "no", "petition_in_arabic": "yes"
+      },
+      "expect": {
+        "section": "commercial",
+        "findings": [
+          { "ref": "d1", "effect": "none" },
+          { "ref": "n1", "effect": "none" },
+          { "ref": "n4", "effect": "none" }
+        ],
+        "questions": []
+      }
+    },
+    {
+      "id": "ex2",
+      "by": "derivationA",
+      "title": "Price supplement claimed far outside the year from actual delivery: a warning, never a block.",
+      "petitionDate": "2026-12-01",
+      "slots": {
+        "requests": ["payment", "damages"],
+        "notice_served": "yes", "notice_means": "bailiff", "notice_date": "2026-09-15", "notice_before_petition_day": "yes",
+        "default_on_due_date_agreed": "no", "contract_sets_notice_terms": "no", "debtor_refused_in_writing": "no",
+        "obligation_is_tort_compensation": "no", "claim_is_professional_fees": "no", "claim_is_trader_supply_or_hotel": "no", "claim_is_periodic_renewable_right": "no",
+        "debt_due_date": "2026-03-31", "public_body_party": "no", "specialised_commercial_matter": "none", "debt_written_fixed_due": "no", "payment_order_issued": "no",
+        "dispute_is_commercial": "yes", "court_has_section_for_matter": "yes", "price_supplement_for_excess_quantity": "yes", "goods_actually_delivered_on": "2024-06-10",
+        "jurisdiction_clause_relied_on": "no", "defendant_resides_abroad": "no", "defendant_domicile_known": "yes",
+        "petition_names_court": "yes", "petition_gives_plaintiff_identity": "yes", "petition_gives_defendant_identity": "yes", "party_is_legal_person": "yes",
+        "petition_gives_legal_person_details": "yes", "petition_states_facts_claims_grounds": "yes", "petition_lists_documents": "yes", "petition_signed_dated": "yes",
+        "petition_copies_for_each_party": "yes", "court_fees_paid": "yes", "party_lacks_capacity": "no", "plaintiff_acts_through_representative": "yes",
+        "representative_has_authority": "yes", "plaintiff_has_standing": "yes", "plaintiff_has_interest": "yes", "suit_authorisation_required": "no",
+        "foreign_language_documents": "no", "petition_in_arabic": "yes"
+      },
+      "expect": {
+        "findings": [ { "ref": "d1", "effect": "warn" } ],
+        "questions": []
+      }
+    },
+    {
+      "id": "ex3",
+      "by": "derivationA",
+      "title": "Price supplement claimed well inside the year: nothing to show.",
+      "petitionDate": "2026-12-01",
+      "slots": {
+        "requests": ["payment", "damages"],
+        "notice_served": "yes", "notice_means": "bailiff", "notice_date": "2026-09-15", "notice_before_petition_day": "yes",
+        "default_on_due_date_agreed": "no", "contract_sets_notice_terms": "no", "debtor_refused_in_writing": "no",
+        "obligation_is_tort_compensation": "no", "claim_is_professional_fees": "no", "claim_is_trader_supply_or_hotel": "no", "claim_is_periodic_renewable_right": "no",
+        "debt_due_date": "2026-03-31", "public_body_party": "no", "specialised_commercial_matter": "none", "debt_written_fixed_due": "no", "payment_order_issued": "no",
+        "dispute_is_commercial": "yes", "court_has_section_for_matter": "yes", "price_supplement_for_excess_quantity": "yes", "goods_actually_delivered_on": "2026-10-01",
+        "jurisdiction_clause_relied_on": "no", "defendant_resides_abroad": "no", "defendant_domicile_known": "yes",
+        "petition_names_court": "yes", "petition_gives_plaintiff_identity": "yes", "petition_gives_defendant_identity": "yes", "party_is_legal_person": "yes",
+        "petition_gives_legal_person_details": "yes", "petition_states_facts_claims_grounds": "yes", "petition_lists_documents": "yes", "petition_signed_dated": "yes",
+        "petition_copies_for_each_party": "yes", "court_fees_paid": "yes", "party_lacks_capacity": "no", "plaintiff_acts_through_representative": "yes",
+        "representative_has_authority": "yes", "plaintiff_has_standing": "yes", "plaintiff_has_interest": "yes", "suit_authorisation_required": "no",
+        "foreign_language_documents": "no", "petition_in_arabic": "yes"
+      },
+      "expect": {
+        "findings": [ { "ref": "d1", "effect": "none" } ],
+        "questions": []
+      }
+    },
+    {
+      "id": "ex4",
+      "by": "derivationA",
+      "title": "Price supplement claimed four days before the year ends: inside the band, a warning.",
+      "petitionDate": "2026-12-01",
+      "slots": {
+        "requests": ["payment", "damages"],
+        "notice_served": "yes", "notice_means": "bailiff", "notice_date": "2026-09-15", "notice_before_petition_day": "yes",
+        "default_on_due_date_agreed": "no", "contract_sets_notice_terms": "no", "debtor_refused_in_writing": "no",
+        "obligation_is_tort_compensation": "no", "claim_is_professional_fees": "no", "claim_is_trader_supply_or_hotel": "no", "claim_is_periodic_renewable_right": "no",
+        "debt_due_date": "2026-03-31", "public_body_party": "no", "specialised_commercial_matter": "none", "debt_written_fixed_due": "no", "payment_order_issued": "no",
+        "dispute_is_commercial": "yes", "court_has_section_for_matter": "yes", "price_supplement_for_excess_quantity": "yes", "goods_actually_delivered_on": "2025-12-05",
+        "jurisdiction_clause_relied_on": "no", "defendant_resides_abroad": "no", "defendant_domicile_known": "yes",
+        "petition_names_court": "yes", "petition_gives_plaintiff_identity": "yes", "petition_gives_defendant_identity": "yes", "party_is_legal_person": "yes",
+        "petition_gives_legal_person_details": "yes", "petition_states_facts_claims_grounds": "yes", "petition_lists_documents": "yes", "petition_signed_dated": "yes",
+        "petition_copies_for_each_party": "yes", "court_fees_paid": "yes", "party_lacks_capacity": "no", "plaintiff_acts_through_representative": "yes",
+        "representative_has_authority": "yes", "plaintiff_has_standing": "yes", "plaintiff_has_interest": "yes", "suit_authorisation_required": "no",
+        "foreign_language_documents": "no", "petition_in_arabic": "yes"
+      },
+      "expect": {
+        "findings": [ { "ref": "d1", "effect": "warn" } ],
+        "questions": []
+      }
+    },
+    {
+      "id": "ex5",
+      "by": "derivationA",
+      "title": "Price supplement claimed, delivery date unknown: the rule asks for it.",
+      "petitionDate": "2026-12-01",
+      "slots": {
+        "requests": ["payment", "damages"],
+        "notice_served": "yes", "notice_means": "bailiff", "notice_date": "2026-09-15", "notice_before_petition_day": "yes",
+        "default_on_due_date_agreed": "no", "contract_sets_notice_terms": "no", "debtor_refused_in_writing": "no",
+        "obligation_is_tort_compensation": "no", "claim_is_professional_fees": "no", "claim_is_trader_supply_or_hotel": "no", "claim_is_periodic_renewable_right": "no",
+        "debt_due_date": "2026-03-31", "public_body_party": "no", "specialised_commercial_matter": "none", "debt_written_fixed_due": "no", "payment_order_issued": "no",
+        "dispute_is_commercial": "yes", "court_has_section_for_matter": "yes", "price_supplement_for_excess_quantity": "yes",
+        "jurisdiction_clause_relied_on": "no", "defendant_resides_abroad": "no", "defendant_domicile_known": "yes",
+        "petition_names_court": "yes", "petition_gives_plaintiff_identity": "yes", "petition_gives_defendant_identity": "yes", "party_is_legal_person": "yes",
+        "petition_gives_legal_person_details": "yes", "petition_states_facts_claims_grounds": "yes", "petition_lists_documents": "yes", "petition_signed_dated": "yes",
+        "petition_copies_for_each_party": "yes", "court_fees_paid": "yes", "party_lacks_capacity": "no", "plaintiff_acts_through_representative": "yes",
+        "representative_has_authority": "yes", "plaintiff_has_standing": "yes", "plaintiff_has_interest": "yes", "suit_authorisation_required": "no",
+        "foreign_language_documents": "no", "petition_in_arabic": "yes"
+      },
+      "expect": {
+        "findings": [ { "ref": "d1", "effect": "ask" } ],
+        "questions": ["goods_actually_delivered_on"]
+      }
+    },
+    {
+      "id": "ex6",
+      "by": "derivationA",
+      "title": "No notice served and no exemption: the claim's own items stay silent (the notice rule is the imported formal-notice module's, not checked here).",
+      "petitionDate": "2026-12-01",
+      "slots": {
+        "requests": ["payment", "damages"],
+        "notice_served": "no",
+        "default_on_due_date_agreed": "no", "performance_impossible_or_useless_by_debtor": "no", "return_of_thing_known_stolen_or_unduly_received": "no",
+        "contract_sets_notice_terms": "no", "debtor_refused_in_writing": "no",
+        "obligation_is_tort_compensation": "no", "claim_is_professional_fees": "no", "claim_is_trader_supply_or_hotel": "no", "claim_is_periodic_renewable_right": "no",
+        "debt_due_date": "2026-03-31", "public_body_party": "no", "specialised_commercial_matter": "none", "debt_written_fixed_due": "no", "payment_order_issued": "no",
+        "dispute_is_commercial": "yes", "court_has_section_for_matter": "yes", "price_supplement_for_excess_quantity": "no",
+        "jurisdiction_clause_relied_on": "no", "defendant_resides_abroad": "no", "defendant_domicile_known": "yes",
+        "petition_names_court": "yes", "petition_gives_plaintiff_identity": "yes", "petition_gives_defendant_identity": "yes", "party_is_legal_person": "yes",
+        "petition_gives_legal_person_details": "yes", "petition_states_facts_claims_grounds": "yes", "petition_lists_documents": "yes", "petition_signed_dated": "yes",
+        "petition_copies_for_each_party": "yes", "court_fees_paid": "yes", "party_lacks_capacity": "no", "plaintiff_acts_through_representative": "yes",
+        "representative_has_authority": "yes", "plaintiff_has_standing": "yes", "plaintiff_has_interest": "yes", "suit_authorisation_required": "no",
+        "foreign_language_documents": "no", "petition_in_arabic": "yes"
+      },
+      "expect": {
+        "findings": [
+          { "ref": "d1", "effect": "none" },
+          { "ref": "n1", "effect": "none" },
+          { "ref": "n4", "effect": "none" }
+        ],
+        "questions": []
+      }
+    },
+    {
+      "id": "ex7",
+      "by": "derivationA",
+      "title": "No notice, but the debtor refused in writing to pay: the claim's own items stay silent (the exemption is the imported module's).",
+      "petitionDate": "2026-12-01",
+      "slots": {
+        "requests": ["payment", "damages"],
+        "notice_served": "no",
+        "default_on_due_date_agreed": "no", "performance_impossible_or_useless_by_debtor": "no", "return_of_thing_known_stolen_or_unduly_received": "no",
+        "contract_sets_notice_terms": "no", "debtor_refused_in_writing": "yes",
+        "obligation_is_tort_compensation": "no", "claim_is_professional_fees": "no", "claim_is_trader_supply_or_hotel": "no", "claim_is_periodic_renewable_right": "no",
+        "debt_due_date": "2026-03-31", "public_body_party": "no", "specialised_commercial_matter": "none", "debt_written_fixed_due": "no", "payment_order_issued": "no",
+        "dispute_is_commercial": "yes", "court_has_section_for_matter": "yes", "price_supplement_for_excess_quantity": "no",
+        "jurisdiction_clause_relied_on": "no", "defendant_resides_abroad": "no", "defendant_domicile_known": "yes",
+        "petition_names_court": "yes", "petition_gives_plaintiff_identity": "yes", "petition_gives_defendant_identity": "yes", "party_is_legal_person": "yes",
+        "petition_gives_legal_person_details": "yes", "petition_states_facts_claims_grounds": "yes", "petition_lists_documents": "yes", "petition_signed_dated": "yes",
+        "petition_copies_for_each_party": "yes", "court_fees_paid": "yes", "party_lacks_capacity": "no", "plaintiff_acts_through_representative": "yes",
+        "representative_has_authority": "yes", "plaintiff_has_standing": "yes", "plaintiff_has_interest": "yes", "suit_authorisation_required": "no",
+        "foreign_language_documents": "no", "petition_in_arabic": "yes"
+      },
+      "expect": {
+        "findings": [
+          { "ref": "d1", "effect": "none" },
+          { "ref": "n4", "effect": "none" }
+        ],
+        "questions": []
+      }
+    },
+    {
+      "id": "ex8",
+      "by": "derivationA",
+      "title": "Whether a notice was served is unknown: the claim's own items, which do not read it, stay silent.",
+      "petitionDate": "2026-12-01",
+      "slots": {
+        "requests": ["payment", "damages"],
+        "default_on_due_date_agreed": "no", "contract_sets_notice_terms": "no", "debtor_refused_in_writing": "no",
+        "obligation_is_tort_compensation": "no", "claim_is_professional_fees": "no", "claim_is_trader_supply_or_hotel": "no", "claim_is_periodic_renewable_right": "no",
+        "debt_due_date": "2026-03-31", "public_body_party": "no", "specialised_commercial_matter": "none", "debt_written_fixed_due": "no", "payment_order_issued": "no",
+        "dispute_is_commercial": "yes", "court_has_section_for_matter": "yes", "price_supplement_for_excess_quantity": "no"
+      },
+      "expect": {
+        "findings": [
+          { "ref": "d1", "effect": "none" },
+          { "ref": "n1", "effect": "none" },
+          { "ref": "n4", "effect": "none" }
+        ]
+      }
+    },
+    {
+      "id": "ex9",
+      "by": "derivationA",
+      "title": "Bank and trader dispute without a conciliation record: the claim's own items stay silent and the section stays commercial (the exit and the conciliation step are imported).",
+      "petitionDate": "2026-12-01",
+      "slots": {
+        "requests": ["payment", "damages"],
+        "notice_served": "yes", "notice_means": "bailiff", "notice_date": "2026-09-15", "notice_before_petition_day": "yes",
+        "default_on_due_date_agreed": "no", "contract_sets_notice_terms": "no", "debtor_refused_in_writing": "no",
+        "obligation_is_tort_compensation": "no", "claim_is_professional_fees": "no", "claim_is_trader_supply_or_hotel": "no", "claim_is_periodic_renewable_right": "no",
+        "debt_due_date": "2026-03-31", "public_body_party": "no", "specialised_commercial_matter": "bank_with_merchant",
+        "specialised_commercial_court_installed": "yes", "commercial_nonconciliation_record": "no", "commercial_conciliation_agreement": "no",
+        "commercial_nonconciliation_party_absent": "no", "specialised_commercial_no_opposing_party": "no",
+        "debt_written_fixed_due": "no", "payment_order_issued": "no",
+        "dispute_is_commercial": "yes", "court_has_section_for_matter": "yes", "price_supplement_for_excess_quantity": "no",
+        "jurisdiction_clause_relied_on": "no", "defendant_resides_abroad": "no", "defendant_domicile_known": "yes",
+        "petition_names_court": "yes", "petition_gives_plaintiff_identity": "yes", "petition_gives_defendant_identity": "yes", "party_is_legal_person": "yes",
+        "petition_gives_legal_person_details": "yes", "petition_states_facts_claims_grounds": "yes", "petition_lists_documents": "yes", "petition_signed_dated": "yes",
+        "petition_copies_for_each_party": "yes", "court_fees_paid": "yes", "party_lacks_capacity": "no", "plaintiff_acts_through_representative": "yes",
+        "representative_has_authority": "yes", "plaintiff_has_standing": "yes", "plaintiff_has_interest": "yes", "suit_authorisation_required": "no",
+        "foreign_language_documents": "no", "petition_in_arabic": "yes"
+      },
+      "expect": {
+        "section": "commercial",
+        "findings": [
+          { "ref": "d1", "effect": "none" },
+          { "ref": "n4", "effect": "none" }
+        ],
+        "questions": []
+      }
+    },
+    {
+      "id": "ex10",
+      "by": "derivationA",
+      "title": "Invoice endorsed by the debtor: the claim's own items stay silent (the order-to-pay exit is imported).",
+      "petitionDate": "2026-12-01",
+      "slots": {
+        "requests": ["payment", "damages"],
+        "notice_served": "yes", "notice_means": "bailiff", "notice_date": "2026-09-15", "notice_before_petition_day": "yes",
+        "default_on_due_date_agreed": "no", "contract_sets_notice_terms": "no", "debtor_refused_in_writing": "no",
+        "obligation_is_tort_compensation": "no", "claim_is_professional_fees": "no", "claim_is_trader_supply_or_hotel": "no", "claim_is_periodic_renewable_right": "no",
+        "debt_due_date": "2026-03-31", "public_body_party": "no", "specialised_commercial_matter": "none", "debt_written_fixed_due": "yes", "payment_order_issued": "no",
+        "dispute_is_commercial": "yes", "court_has_section_for_matter": "yes", "price_supplement_for_excess_quantity": "no",
+        "jurisdiction_clause_relied_on": "no", "defendant_resides_abroad": "no", "defendant_domicile_known": "yes",
+        "petition_names_court": "yes", "petition_gives_plaintiff_identity": "yes", "petition_gives_defendant_identity": "yes", "party_is_legal_person": "yes",
+        "petition_gives_legal_person_details": "yes", "petition_states_facts_claims_grounds": "yes", "petition_lists_documents": "yes", "petition_signed_dated": "yes",
+        "petition_copies_for_each_party": "yes", "court_fees_paid": "yes", "party_lacks_capacity": "no", "plaintiff_acts_through_representative": "yes",
+        "representative_has_authority": "yes", "plaintiff_has_standing": "yes", "plaintiff_has_interest": "yes", "suit_authorisation_required": "no",
+        "foreign_language_documents": "no", "petition_in_arabic": "yes"
+      },
+      "expect": {
+        "findings": [
+          { "ref": "d1", "effect": "none" },
+          { "ref": "n4", "effect": "none" }
+        ],
+        "questions": []
+      }
+    },
+    {
+      "id": "ex11",
+      "by": "derivationA",
+      "title": "The debtor is a public administrative body: the claim's own items stay silent (the administrative exit is imported).",
+      "petitionDate": "2026-12-01",
+      "slots": {
+        "requests": ["payment", "damages"],
+        "notice_served": "yes", "notice_means": "bailiff", "notice_date": "2026-09-15", "notice_before_petition_day": "yes",
+        "default_on_due_date_agreed": "no", "contract_sets_notice_terms": "no", "debtor_refused_in_writing": "no",
+        "obligation_is_tort_compensation": "no", "claim_is_professional_fees": "no", "claim_is_trader_supply_or_hotel": "no", "claim_is_periodic_renewable_right": "no",
+        "debt_due_date": "2026-03-31", "public_body_party": "yes", "public_vehicle_damage": "no", "specialised_commercial_matter": "none", "debt_written_fixed_due": "no", "payment_order_issued": "no",
+        "dispute_is_commercial": "yes", "court_has_section_for_matter": "yes", "price_supplement_for_excess_quantity": "no",
+        "jurisdiction_clause_relied_on": "no", "defendant_resides_abroad": "no", "defendant_domicile_known": "yes",
+        "petition_names_court": "yes", "petition_gives_plaintiff_identity": "yes", "petition_gives_defendant_identity": "yes", "party_is_legal_person": "yes",
+        "petition_gives_legal_person_details": "yes", "petition_states_facts_claims_grounds": "yes", "petition_lists_documents": "yes", "petition_signed_dated": "yes",
+        "petition_copies_for_each_party": "yes", "court_fees_paid": "yes", "party_lacks_capacity": "no", "plaintiff_acts_through_representative": "yes",
+        "representative_has_authority": "yes", "plaintiff_has_standing": "yes", "plaintiff_has_interest": "yes", "suit_authorisation_required": "no",
+        "foreign_language_documents": "no", "petition_in_arabic": "yes"
+      },
+      "expect": {
+        "findings": [ { "ref": "n1", "effect": "none" }, { "ref": "n4", "effect": "none" } ],
+        "questions": []
+      }
+    },
+    {
+      "id": "ex12",
+      "by": "derivationA",
+      "title": "The lawyer says the dispute is not commercial: boundary warning and civil section.",
+      "petitionDate": "2026-12-01",
+      "slots": {
+        "requests": ["payment", "damages"],
+        "notice_served": "yes", "notice_means": "bailiff", "notice_date": "2026-09-15", "notice_before_petition_day": "yes",
+        "default_on_due_date_agreed": "no", "contract_sets_notice_terms": "no", "debtor_refused_in_writing": "no",
+        "obligation_is_tort_compensation": "no", "claim_is_professional_fees": "no", "claim_is_trader_supply_or_hotel": "no", "claim_is_periodic_renewable_right": "no",
+        "debt_due_date": "2026-03-31", "public_body_party": "no", "specialised_commercial_matter": "none", "debt_written_fixed_due": "no", "payment_order_issued": "no",
+        "dispute_is_commercial": "no", "court_has_section_for_matter": "yes", "price_supplement_for_excess_quantity": "no",
+        "jurisdiction_clause_relied_on": "no", "defendant_resides_abroad": "no", "defendant_domicile_known": "yes",
+        "petition_names_court": "yes", "petition_gives_plaintiff_identity": "yes", "petition_gives_defendant_identity": "yes", "party_is_legal_person": "yes",
+        "petition_gives_legal_person_details": "yes", "petition_states_facts_claims_grounds": "yes", "petition_lists_documents": "yes", "petition_signed_dated": "yes",
+        "petition_copies_for_each_party": "yes", "court_fees_paid": "yes", "party_lacks_capacity": "no", "plaintiff_acts_through_representative": "yes",
+        "representative_has_authority": "yes", "plaintiff_has_standing": "yes", "plaintiff_has_interest": "yes", "suit_authorisation_required": "no",
+        "foreign_language_documents": "no", "petition_in_arabic": "yes"
+      },
+      "expect": {
+        "section": "civil",
+        "findings": [ { "ref": "n4", "effect": "warn" } ],
+        "questions": []
+      }
+    },
+    {
+      "id": "ex13",
+      "by": "derivationA",
+      "title": "Goods supplied to a buyer who does not trade in them: the boundary warns.",
+      "petitionDate": "2026-12-01",
+      "slots": {
+        "requests": ["payment", "damages"],
+        "notice_served": "yes", "notice_means": "bailiff", "notice_date": "2026-09-15", "notice_before_petition_day": "yes",
+        "default_on_due_date_agreed": "no", "contract_sets_notice_terms": "no", "debtor_refused_in_writing": "no",
+        "obligation_is_tort_compensation": "no", "claim_is_professional_fees": "no", "claim_is_trader_supply_or_hotel": "yes", "claim_is_periodic_renewable_right": "no",
+        "debt_due_date": "2025-03-01", "public_body_party": "no", "specialised_commercial_matter": "none", "debt_written_fixed_due": "no", "payment_order_issued": "no",
+        "dispute_is_commercial": "yes", "court_has_section_for_matter": "yes", "price_supplement_for_excess_quantity": "no",
+        "jurisdiction_clause_relied_on": "no", "defendant_resides_abroad": "no", "defendant_domicile_known": "yes",
+        "petition_names_court": "yes", "petition_gives_plaintiff_identity": "yes", "petition_gives_defendant_identity": "yes", "party_is_legal_person": "yes",
+        "petition_gives_legal_person_details": "yes", "petition_states_facts_claims_grounds": "yes", "petition_lists_documents": "yes", "petition_signed_dated": "yes",
+        "petition_copies_for_each_party": "yes", "court_fees_paid": "yes", "party_lacks_capacity": "no", "plaintiff_acts_through_representative": "yes",
+        "representative_has_authority": "yes", "plaintiff_has_standing": "yes", "plaintiff_has_interest": "yes", "suit_authorisation_required": "no",
+        "foreign_language_documents": "no", "petition_in_arabic": "yes"
+      },
+      "expect": {
+        "findings": [
+          { "ref": "n1", "effect": "warn" },
+          { "ref": "n4", "effect": "none" }
+        ],
+        "questions": []
+      }
+    },
+    {
+      "id": "ex14",
+      "by": "derivationA",
+      "title": "The court has no commercial section: the civil section is proposed.",
+      "petitionDate": "2026-12-01",
+      "slots": {
+        "requests": ["payment", "damages"],
+        "notice_served": "yes", "notice_means": "bailiff", "notice_date": "2026-09-15", "notice_before_petition_day": "yes",
+        "default_on_due_date_agreed": "no", "contract_sets_notice_terms": "no", "debtor_refused_in_writing": "no",
+        "obligation_is_tort_compensation": "no", "claim_is_professional_fees": "no", "claim_is_trader_supply_or_hotel": "no", "claim_is_periodic_renewable_right": "no",
+        "debt_due_date": "2026-03-31", "public_body_party": "no", "specialised_commercial_matter": "none", "debt_written_fixed_due": "no", "payment_order_issued": "no",
+        "dispute_is_commercial": "yes", "court_has_section_for_matter": "no", "price_supplement_for_excess_quantity": "no",
+        "jurisdiction_clause_relied_on": "no", "defendant_resides_abroad": "no", "defendant_domicile_known": "yes",
+        "petition_names_court": "yes", "petition_gives_plaintiff_identity": "yes", "petition_gives_defendant_identity": "yes", "party_is_legal_person": "yes",
+        "petition_gives_legal_person_details": "yes", "petition_states_facts_claims_grounds": "yes", "petition_lists_documents": "yes", "petition_signed_dated": "yes",
+        "petition_copies_for_each_party": "yes", "court_fees_paid": "yes", "party_lacks_capacity": "no", "plaintiff_acts_through_representative": "yes",
+        "representative_has_authority": "yes", "plaintiff_has_standing": "yes", "plaintiff_has_interest": "yes", "suit_authorisation_required": "no",
+        "foreign_language_documents": "no", "petition_in_arabic": "yes"
+      },
+      "expect": {
+        "section": "civil",
+        "findings": [ { "ref": "n4", "effect": "none" } ],
+        "questions": []
+      }
+    },
+    {
+      "id": "ex15",
+      "by": "derivationA",
+      "title": "Debt fell due more than fifteen years ago: the claim's own items stay silent (the general limitation is the imported periods module's).",
+      "petitionDate": "2026-12-01",
+      "slots": {
+        "requests": ["payment", "damages"],
+        "notice_served": "yes", "notice_means": "bailiff", "notice_date": "2026-09-15", "notice_before_petition_day": "yes",
+        "default_on_due_date_agreed": "no", "contract_sets_notice_terms": "no", "debtor_refused_in_writing": "no",
+        "obligation_is_tort_compensation": "no", "claim_is_professional_fees": "no", "claim_is_trader_supply_or_hotel": "no", "claim_is_periodic_renewable_right": "no",
+        "debt_due_date": "2010-01-10", "public_body_party": "no", "specialised_commercial_matter": "none", "debt_written_fixed_due": "no", "payment_order_issued": "no",
+        "dispute_is_commercial": "yes", "court_has_section_for_matter": "yes", "price_supplement_for_excess_quantity": "no",
+        "jurisdiction_clause_relied_on": "no", "defendant_resides_abroad": "no", "defendant_domicile_known": "yes",
+        "petition_names_court": "yes", "petition_gives_plaintiff_identity": "yes", "petition_gives_defendant_identity": "yes", "party_is_legal_person": "yes",
+        "petition_gives_legal_person_details": "yes", "petition_states_facts_claims_grounds": "yes", "petition_lists_documents": "yes", "petition_signed_dated": "yes",
+        "petition_copies_for_each_party": "yes", "court_fees_paid": "yes", "party_lacks_capacity": "no", "plaintiff_acts_through_representative": "yes",
+        "representative_has_authority": "yes", "plaintiff_has_standing": "yes", "plaintiff_has_interest": "yes", "suit_authorisation_required": "no",
+        "foreign_language_documents": "no", "petition_in_arabic": "yes"
+      },
+      "expect": {
+        "findings": [ { "ref": "d1", "effect": "none" }, { "ref": "n1", "effect": "none" }, { "ref": "n4", "effect": "none" } ],
+        "questions": []
+      }
+    },
+    {
+      "id": "ex16",
+      "by": "derivationA",
+      "title": "Nothing known but the request for payment: the claim's own conditional items ask.",
+      "petitionDate": "2026-12-01",
+      "slots": { "requests": ["payment"] },
+      "expect": {
+        "findings": [
+          { "ref": "d1", "effect": "ask" },
+          { "ref": "n1", "effect": "ask" },
+          { "ref": "n4", "effect": "ask" }
+        ]
+      }
+    }
+  ]
+}

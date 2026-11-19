@@ -1,0 +1,340 @@
+{
+  "unit": "contract-damages",
+  "finalModules": [
+    "conciliation-mediation",
+    "court-sections",
+    "formal-notice",
+    "labour-prelitigation",
+    "land-registry-publication",
+    "ordinary-court-exits",
+    "periods",
+    "petition-formal-elements",
+    "territorial-jurisdiction"
+  ],
+  "articles": [
+    {
+      "code": "civil-code",
+      "number": "176",
+      "role": "basis",
+      "required": true,
+      "inStore": true,
+      "status": "inForce",
+      "version": "ordinance-75-58",
+      "verified": true,
+      "verifiedBy": "libraryProof",
+      "proof": "mechanical",
+      "paragraphs": 1,
+      "tier": 2,
+      "frenchCheck": null,
+      "ledgerClean": true,
+      "ledgerReason": null,
+      "inModules": [
+        {
+          "module": "formal-notice",
+          "statements": [
+            "b14"
+          ],
+          "items": []
+        }
+      ],
+      "inUnitTexts": true
+    },
+    {
+      "code": "civil-code",
+      "number": "179",
+      "role": "prerequisite",
+      "required": false,
+      "inStore": true,
+      "status": "inForce",
+      "version": "ordinance-75-58",
+      "verified": true,
+      "verifiedBy": "libraryProof",
+      "proof": "mechanical",
+      "paragraphs": 1,
+      "tier": 2,
+      "frenchCheck": null,
+      "ledgerClean": true,
+      "ledgerReason": null,
+      "inModules": [
+        {
+          "module": "formal-notice",
+          "statements": [
+            "b1"
+          ],
+          "items": [
+            "boundary:n12",
+            "element:e1",
+            "priorStep:p1"
+          ]
+        }
+      ],
+      "inUnitTexts": true
+    },
+    {
+      "code": "civil-code",
+      "number": "182",
+      "role": "damages",
+      "required": false,
+      "inStore": true,
+      "status": "inForce",
+      "version": "ordinance-75-58",
+      "verified": true,
+      "verifiedBy": "libraryProof",
+      "proof": "mechanical",
+      "paragraphs": 2,
+      "tier": 2,
+      "frenchCheck": null,
+      "ledgerClean": true,
+      "ledgerReason": null,
+      "inModules": [],
+      "inUnitTexts": true
+    },
+    {
+      "code": "civil-code",
+      "number": "107",
+      "role": "basis",
+      "required": false,
+      "inStore": true,
+      "status": "inForce",
+      "version": "ordinance-75-58",
+      "verified": true,
+      "verifiedBy": "libraryProofAndCorpus",
+      "proof": "mechanical",
+      "paragraphs": 3,
+      "tier": 2,
+      "frenchCheck": null,
+      "ledgerClean": true,
+      "ledgerReason": null,
+      "inModules": [],
+      "inUnitTexts": true
+    },
+    {
+      "code": "civil-code",
+      "number": "106",
+      "role": "basis",
+      "required": false,
+      "inStore": true,
+      "status": "inForce",
+      "version": "ordinance-75-58",
+      "verified": true,
+      "verifiedBy": "libraryProofAndCorpus",
+      "proof": "mechanical",
+      "paragraphs": 1,
+      "tier": 2,
+      "frenchCheck": null,
+      "ledgerClean": true,
+      "ledgerReason": null,
+      "inModules": [
+        {
+          "module": "formal-notice",
+          "statements": [
+            "b36"
+          ],
+          "items": [
+            "boundary:n10"
+          ]
+        }
+      ],
+      "inUnitTexts": true
+    }
+  ],
+  "prerequisites": [
+    {
+      "from": "articles",
+      "text": {
+        "ar": "لا يستحق التعويض إلا بعد إعذار المدين",
+        "en": "No damages before formal notice"
+      },
+      "article": "civil-code 179",
+      "inModules": [
+        {
+          "module": "formal-notice",
+          "items": [
+            "priorStep:p1"
+          ]
+        }
+      ]
+    }
+  ],
+  "documents": [
+    {
+      "document": "العقد",
+      "inModules": [
+        {
+          "module": "formal-notice",
+          "item": "documents:doc3",
+          "sharedWords": [
+            "عقد"
+          ],
+          "strength": "strong"
+        },
+        {
+          "module": "petition-formal-elements",
+          "item": "documents:doc5",
+          "sharedWords": [
+            "عقد"
+          ],
+          "strength": "strong"
+        },
+        {
+          "module": "petition-formal-elements",
+          "item": "documents:doc7",
+          "sharedWords": [
+            "عقد"
+          ],
+          "strength": "strong"
+        }
+      ]
+    },
+    {
+      "document": "ما يثبت الضرر ومقداره",
+      "inModules": [
+        {
+          "module": "land-registry-publication",
+          "item": "documents:doc2",
+          "sharedWords": [
+            "يثبت"
+          ],
+          "strength": "weak"
+        },
+        {
+          "module": "ordinary-court-exits",
+          "item": "documents:doc2",
+          "sharedWords": [
+            "يثبت"
+          ],
+          "strength": "weak"
+        },
+        {
+          "module": "ordinary-court-exits",
+          "item": "documents:doc3",
+          "sharedWords": [
+            "يثبت"
+          ],
+          "strength": "weak"
+        },
+        {
+          "module": "periods",
+          "item": "documents:doc2",
+          "sharedWords": [
+            "يثبت"
+          ],
+          "strength": "weak"
+        },
+        {
+          "module": "periods",
+          "item": "documents:doc3",
+          "sharedWords": [
+            "يثبت"
+          ],
+          "strength": "weak"
+        },
+        {
+          "module": "petition-formal-elements",
+          "item": "documents:doc4",
+          "sharedWords": [
+            "يثبت"
+          ],
+          "strength": "weak"
+        },
+        {
+          "module": "petition-formal-elements",
+          "item": "documents:doc7",
+          "sharedWords": [
+            "يثبت"
+          ],
+          "strength": "weak"
+        }
+      ]
+    },
+    {
+      "document": "محضر الإعذار",
+      "inModules": [
+        {
+          "module": "conciliation-mediation",
+          "item": "documents:doc1",
+          "sharedWords": [
+            "محضر"
+          ],
+          "strength": "weak"
+        },
+        {
+          "module": "formal-notice",
+          "item": "documents:doc1",
+          "sharedWords": [
+            "اعذار"
+          ],
+          "strength": "weak"
+        },
+        {
+          "module": "formal-notice",
+          "item": "documents:doc2",
+          "sharedWords": [
+            "محضر"
+          ],
+          "strength": "weak"
+        },
+        {
+          "module": "labour-prelitigation",
+          "item": "documents:doc1",
+          "sharedWords": [
+            "محضر"
+          ],
+          "strength": "weak"
+        },
+        {
+          "module": "periods",
+          "item": "documents:doc1",
+          "sharedWords": [
+            "محضر"
+          ],
+          "strength": "weak"
+        },
+        {
+          "module": "periods",
+          "item": "documents:doc3",
+          "sharedWords": [
+            "محضر"
+          ],
+          "strength": "weak"
+        },
+        {
+          "module": "petition-formal-elements",
+          "item": "documents:doc7",
+          "sharedWords": [
+            "محضر"
+          ],
+          "strength": "weak"
+        },
+        {
+          "module": "petition-formal-elements",
+          "item": "documents:doc9",
+          "sharedWords": [
+            "محضر"
+          ],
+          "strength": "weak"
+        }
+      ]
+    }
+  ],
+  "summary": {
+    "articles": 5,
+    "notInStore": [],
+    "repealedOrNotInForce": [],
+    "notVerified": [],
+    "proofLabels": {
+      "mechanical": 5,
+      "twoFamilies": 0,
+      "oneFamily": 0
+    },
+    "carriedByModules": [
+      "civil-code 176",
+      "civil-code 179",
+      "civil-code 106"
+    ],
+    "documentsMatchedInModules": 1,
+    "prerequisitesMatchedInModules": 1,
+    "outsideUnitTexts": []
+  },
+  "rule": "facts read by script from the article store and the final module records; a module match by shared words is a lead for the deriver, never a finding"
+}

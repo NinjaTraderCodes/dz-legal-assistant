@@ -1,0 +1,296 @@
+{
+  "unit": "sale-annulment-fraud",
+  "finalModules": [
+    "conciliation-mediation",
+    "court-sections",
+    "formal-notice",
+    "labour-prelitigation",
+    "land-registry-publication",
+    "ordinary-court-exits",
+    "periods",
+    "petition-formal-elements",
+    "territorial-jurisdiction"
+  ],
+  "articles": [
+    {
+      "code": "civil-code",
+      "number": "86",
+      "role": "basis",
+      "required": true,
+      "inStore": true,
+      "status": "inForce",
+      "version": "ordinance-75-58",
+      "verified": true,
+      "verifiedBy": "libraryProofAndCorpus",
+      "proof": "mechanical",
+      "paragraphs": 2,
+      "tier": 2,
+      "frenchCheck": null,
+      "ledgerClean": true,
+      "ledgerReason": null,
+      "inModules": [],
+      "inUnitTexts": true
+    },
+    {
+      "code": "civil-code",
+      "number": "103",
+      "role": "basis",
+      "required": true,
+      "inStore": true,
+      "status": "inForce",
+      "version": "law-05-10",
+      "verified": true,
+      "verifiedBy": "libraryProofAndCorpus",
+      "proof": "mechanical",
+      "paragraphs": 3,
+      "tier": 2,
+      "frenchCheck": null,
+      "ledgerClean": true,
+      "ledgerReason": null,
+      "inModules": [],
+      "inUnitTexts": true
+    },
+    {
+      "code": "cpca",
+      "number": "17",
+      "role": "procedure",
+      "required": false,
+      "inStore": true,
+      "status": "inForce",
+      "version": "law-08-09",
+      "verified": true,
+      "verifiedBy": "ojPageReread",
+      "proof": "twoFamilies",
+      "paragraphs": 3,
+      "tier": 1,
+      "frenchCheck": null,
+      "ledgerClean": true,
+      "ledgerReason": null,
+      "inModules": [
+        {
+          "module": "labour-prelitigation",
+          "statements": [
+            "b49"
+          ],
+          "items": []
+        },
+        {
+          "module": "land-registry-publication",
+          "statements": [
+            "b1"
+          ],
+          "items": [
+            "boundary:n1",
+            "document:doc1",
+            "document:doc2",
+            "priorStep:p1"
+          ]
+        },
+        {
+          "module": "petition-formal-elements",
+          "statements": [
+            "b15",
+            "b16",
+            "b17"
+          ],
+          "items": [
+            "document:doc4",
+            "priorStep:p17",
+            "priorStep:p9"
+          ]
+        }
+      ],
+      "inUnitTexts": true
+    },
+    {
+      "code": "civil-code",
+      "number": "324 مكرر 1",
+      "role": "proof",
+      "required": false,
+      "inStore": true,
+      "status": "inForce",
+      "version": "law-88-14",
+      "verified": true,
+      "verifiedBy": "libraryProof",
+      "proof": "mechanical",
+      "paragraphs": 2,
+      "tier": 2,
+      "frenchCheck": null,
+      "ledgerClean": true,
+      "ledgerReason": null,
+      "inModules": [],
+      "inUnitTexts": true
+    }
+  ],
+  "prerequisites": [],
+  "documents": [
+    {
+      "document": "العقد المطلوب إبطاله",
+      "inModules": [
+        {
+          "module": "formal-notice",
+          "item": "documents:doc3",
+          "sharedWords": [
+            "عقد"
+          ],
+          "strength": "weak"
+        },
+        {
+          "module": "petition-formal-elements",
+          "item": "documents:doc5",
+          "sharedWords": [
+            "عقد"
+          ],
+          "strength": "weak"
+        },
+        {
+          "module": "petition-formal-elements",
+          "item": "documents:doc7",
+          "sharedWords": [
+            "عقد"
+          ],
+          "strength": "weak"
+        }
+      ]
+    },
+    {
+      "document": "ما يثبت الواقعة المكتومة أو الحيل",
+      "inModules": [
+        {
+          "module": "land-registry-publication",
+          "item": "documents:doc2",
+          "sharedWords": [
+            "يثبت"
+          ],
+          "strength": "weak"
+        },
+        {
+          "module": "ordinary-court-exits",
+          "item": "documents:doc2",
+          "sharedWords": [
+            "يثبت"
+          ],
+          "strength": "weak"
+        },
+        {
+          "module": "ordinary-court-exits",
+          "item": "documents:doc3",
+          "sharedWords": [
+            "يثبت"
+          ],
+          "strength": "weak"
+        },
+        {
+          "module": "periods",
+          "item": "documents:doc2",
+          "sharedWords": [
+            "يثبت"
+          ],
+          "strength": "weak"
+        },
+        {
+          "module": "periods",
+          "item": "documents:doc3",
+          "sharedWords": [
+            "يثبت"
+          ],
+          "strength": "weak"
+        },
+        {
+          "module": "petition-formal-elements",
+          "item": "documents:doc4",
+          "sharedWords": [
+            "يثبت"
+          ],
+          "strength": "weak"
+        },
+        {
+          "module": "petition-formal-elements",
+          "item": "documents:doc7",
+          "sharedWords": [
+            "يثبت"
+          ],
+          "strength": "weak"
+        }
+      ]
+    },
+    {
+      "document": "شهادة إشهار العريضة لدى المحافظة العقارية (إن تعلق الأمر بعقار مشهر)",
+      "inModules": [
+        {
+          "module": "conciliation-mediation",
+          "item": "documents:doc1",
+          "sharedWords": [
+            "لدي"
+          ],
+          "strength": "weak"
+        },
+        {
+          "module": "land-registry-publication",
+          "item": "documents:doc1",
+          "sharedWords": [
+            "اشهار",
+            "شهاده",
+            "عريضه",
+            "عقاريه",
+            "محافظه"
+          ],
+          "strength": "strong"
+        },
+        {
+          "module": "land-registry-publication",
+          "item": "documents:doc2",
+          "sharedWords": [
+            "عقاريه",
+            "لدي",
+            "محافظه",
+            "مشهر"
+          ],
+          "strength": "strong"
+        },
+        {
+          "module": "petition-formal-elements",
+          "item": "documents:doc1",
+          "sharedWords": [
+            "عريضه"
+          ],
+          "strength": "weak"
+        },
+        {
+          "module": "petition-formal-elements",
+          "item": "documents:doc5",
+          "sharedWords": [
+            "شهاده"
+          ],
+          "strength": "weak"
+        },
+        {
+          "module": "petition-formal-elements",
+          "item": "documents:doc8",
+          "sharedWords": [
+            "عريضه"
+          ],
+          "strength": "weak"
+        }
+      ]
+    }
+  ],
+  "summary": {
+    "articles": 4,
+    "notInStore": [],
+    "repealedOrNotInForce": [],
+    "notVerified": [],
+    "proofLabels": {
+      "mechanical": 3,
+      "twoFamilies": 1,
+      "oneFamily": 0
+    },
+    "carriedByModules": [
+      "cpca 17"
+    ],
+    "documentsMatchedInModules": 1,
+    "prerequisitesMatchedInModules": 0,
+    "outsideUnitTexts": []
+  },
+  "rule": "facts read by script from the article store and the final module records; a module match by shared words is a lead for the deriver, never a finding"
+}

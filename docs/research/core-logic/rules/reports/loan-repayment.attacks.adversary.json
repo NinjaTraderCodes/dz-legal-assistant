@@ -1,0 +1,100 @@
+[
+  {
+    "id": "adv-1",
+    "target": "b9, b22, e1, r4, doc1, k8, k20",
+    "kind": "procedure",
+    "claim": "Under CPCA article 600 item 11, a notarial loan contract (عقد قرض توثيقي) is itself an executory title. The record treats an official deed only as proof (b9) and as a ground for asking provisional execution (b22, r4), and it proposes a full petition. A lender who holds a notarial loan deed that fixes the sum and the due date can go straight to enforcement through a bailiff, with no judgment. The record has no exit or warning for this.",
+    "source": {
+      "tier": 1,
+      "url": "https://www.joradp.dz/FTP/JO-ARABE/2008/A2008021.pdf",
+      "what": "Law 08-09 of 25 February 2008 (Code of Civil and Administrative Procedure), article 600, items 10 and 11, Official Journal No. 21 of 23 April 2008, page 50. Law 22-13 (Official Journal No. 48 of 2022) amended only item 7 of article 600; the article store's current version keeps item 11 word for word.",
+      "retrievedOn": "2026-11-19"
+    },
+    "quoteArabic": "المادة 600 : لا يجوز التنفيذ الجبري إلا بسند تنفيذي. والسندات التنفيذية هي: ... 11 - العقود التوثيقية، لاسيما المتعلقة بالإيجارات التجارية والسكنية المحددة المدة، وعقود القرض والعارية والهبة والوقف والبيع والرهن والوديعة،",
+    "consequence": "Ask whether the loan deed is notarial. If it is, warn that the deed is already an executory title (CPCA 600 item 11), so execution through a bailiff is available without a claim. Whether a court would then dismiss a payment claim for lack of interest under CPCA article 13 paragraph 1 (مصلحة قائمة أو محتملة) is my reading and is not settled by the text. In any case the lawyer should be told before drafting a petition. Request r4 (provisional execution on an official deed) is beside the point when the deed already allows execution."
+  },
+  {
+    "id": "adv-2",
+    "target": "doc1, doc2, e1, k20, k27",
+    "kind": "missing",
+    "claim": "A common case is that the borrower repaid, or promised to repay, with a cheque or bill of exchange that bounced. CPCA article 600 item 10 makes cheques and bills executory titles once the protest has been formally served on the debtor. The record mentions no cheque in its documents, proof means or exits. It would draft an ordinary loan petition and would not show the lawyer the enforcement route on the protested cheque.",
+    "source": {
+      "tier": 1,
+      "url": "https://www.joradp.dz/FTP/JO-ARABE/2008/A2008021.pdf",
+      "what": "Law 08-09 (CPCA), article 600 item 10, Official Journal No. 21 of 23 April 2008, page 50.",
+      "retrievedOn": "2026-11-19"
+    },
+    "quoteArabic": "10 - الشيكات والسفاتج، بعد التبليغ الرسمي للاحتجاجات إلى المدين، طبقا لأحكام القانون التجاري،",
+    "consequence": "Ask whether a cheque or bill was given for the loan and whether a protest was served. If so, warn about the executory-title route (item 10). The Commercial Code also sets its own short limitation periods for actions on cheques. This is a tier-3 lead from memory: Commercial Code article 527 is said to set six months from the end of the presentation period. It is not in the article store and I did not check it on joradp.dz. The record should keep the claim on the underlying loan, under the general period, separate from any action on the cheque itself."
+  },
+  {
+    "id": "adv-3",
+    "target": "n8, b6, b29, k10",
+    "kind": "misreading",
+    "claim": "Boundary n8 sends a loan between individuals that has an interest clause 'outside' (isActually: outside:interest-clause-void). But article 454 voids only the term (نص) that gives a return, and article 104, which the record itself cites as b29, keeps the rest of the contract. The lender's claim for the principal therefore stays a loan-repayment claim. The trigger is also wrong: n8 tests lender_is_credit_institution = no, although article 454 speaks of loans 'between individuals' (بين الأفراد). A non-bank company or another legal person that is not a credit institution is caught by the trigger without the text saying so.",
+    "source": {
+      "tier": 2,
+      "url": "C:\\Users\\TheShadow\\dz-core-research\\store\\text\\civil-code.txt",
+      "what": "Civil Code articles 454 and 104 as held in the project's article store (version ordinance 75-58; the record itself grades the article 104 entry tier 1 and the article 454 entry tier 2).",
+      "retrievedOn": "2026-11-19"
+    },
+    "quoteArabic": "القرض بين الافراد يكون دائما بدون أجر ويقع باطلا كل نص يخالف ذلك. / إذا كان العقد في شق منه باطلا أو قابلا للابطال، فهذا الشق وحده هو الذي يبطل، الا إذا تبين أن العقد ما كان ليتم بغير الشق الذي وقع باطلا",
+    "consequence": "n8 should warn inside the claim: request the principal, not the stipulated interest, and check whether the contract would have been made without the clause. It should not mark the case as falling outside this claim type. The trigger should ask whether both parties are natural persons rather than reading 'not a credit institution' as 'individuals'."
+  },
+  {
+    "id": "adv-4",
+    "target": "e3, n1, slot debt_due_date, ex1-ex12",
+    "kind": "missing",
+    "claim": "Loans repaid in instalments are very common, but the record has a single debt_due_date. Article 451 lets the lender claim only what has fallen due. If the lawyer enters the final instalment date, which is still in the future, n1 warns that the whole claim is not yet due, although the instalments already due can be claimed. If he enters the first missed instalment date, n1 stays silent while the petition may ask for instalments that are not yet due and are not covered by any acceleration clause. Limitation also runs from each instalment's own due date, which the single date cannot express.",
+    "source": {
+      "tier": 2,
+      "url": "C:\\Users\\TheShadow\\dz-core-research\\store\\text\\civil-code.txt",
+      "what": "Civil Code articles 451 paragraph 1 and 457 in the project's article store (version ordinance 75-58).",
+      "retrievedOn": "2026-11-19"
+    },
+    "quoteArabic": "يجب على المقرض أن يسلم إلى المقترض الشيء الذي يشتمل عليه العقد ولا يجوز له أن يطالبه برد نظيره الا عند انتهاء القرض. / ينتهي قرض الاستهلاك بانتهاء الأجل المتفق عليه.",
+    "consequence": "Ask whether repayment is in one sum or in instalments, and whether there is an acceleration clause. With instalments, claim only the instalments already due, or the whole sum if the clause applies. n1 should then judge each instalment, and limitation should run per instalment. Add an example with instalments, some past due and some in the future."
+  },
+  {
+    "id": "adv-5",
+    "target": "r1, b1, e1, n5",
+    "kind": "missing",
+    "claim": "The record frames every request as a dinar amount (r1: 'مبلغ القرض المقدر بـ (...) دج'). Article 450, cited as b1, covers a sum of money 'or any other fungible thing' and requires its equivalent in kind, quantity and quality to be returned. Loans of foreign currency, of gold or of other fungibles between individuals are common. For them, r1 would ask for a dinar sum the text does not give, and the record has no slot asking what was lent.",
+    "source": {
+      "tier": 2,
+      "url": "C:\\Users\\TheShadow\\dz-core-research\\store\\text\\civil-code.txt",
+      "what": "Civil Code article 450 in the project's article store (version ordinance 75-58); the record grades the same entry tier 2 (b1).",
+      "retrievedOn": "2026-11-19"
+    },
+    "quoteArabic": "ملكية مبلغ من النقود أو أي شيء مثلي آخر، على أن يرد إليه المقترض عند نهاية القرض نظيره في النوع، والقدر، والصفة.",
+    "consequence": "Ask what was lent (dinars, a foreign currency, gold or another fungible). When it is not dinars, word the request as the return of the equivalent in kind and quantity, or flag the conversion as a point for the lawyer. Tier-3 lead: foreign-exchange regulation may also limit settlement in foreign currency between residents; this was not checked."
+  },
+  {
+    "id": "adv-6",
+    "target": "k2, n4, court.section, conciliation-mediation import",
+    "kind": "specialLaw",
+    "claim": "Checklist k2 itself counts an 'advance' as a loan. An advance or loan an employer made to an employee and claims back in the course of the employment relationship can be an individual labour dispute. It would then need a prior conciliation before the conciliation office (Law 90-04 art. 19, mandatory before any action) and fall to the social section, which has exclusive jurisdiction (CPCA art. 500). The record proposes the civil section and no prior step, and no boundary separates this case. Whether a loan between employer and employee is 'about performing the employment relationship' is arguable, so I offer this as a case to flag, not a settled rule.",
+    "source": {
+      "tier": 2,
+      "url": "C:\\Users\\TheShadow\\dz-core-research\\store\\text\\labour-disputes.txt",
+      "what": "Law 90-04 on individual labour disputes, articles 2 and 19 paragraph 1, and CPCA article 500 paragraphs 1 and 3, as held in the project's article store.",
+      "retrievedOn": "2026-11-19"
+    },
+    "quoteArabic": "يعد نزاعا فرديا في العمل بحكم هذا القانون، كل خلاف في العمل قائم بين عامل أجير ومستخدم بشأن تنفيذ علاقة العمل ... / يجب أن يكون كل خلاف فردي خاص بالعمل موضوع محاولة للصلح أمام مكتب المصالحة قبل مباشرة أي دعوى قضائية. / يختص القسم الاجتماعي اختصاصا مانعا في المواد الآتية : ... 2 - تنفيذ وتعليق وإنهاء عقود العمل والتكوين والتمهين،",
+    "consequence": "Add a boundary or question: are the lender and borrower employer and employee, and is the sum an advance tied to the employment? If yes, warn about the social section and the mandatory conciliation before the conciliation office, and do not propose the civil section without that warning."
+  },
+  {
+    "id": "adv-7",
+    "target": "b7, n7, k10, k32",
+    "kind": "specialLaw",
+    "claim": "Under b7 and the n7 message, a credit institution takes interest 'at a rate set by decision of the finance minister' (Civil Code art. 456, version of Law 84-21). Banking legislation since Law 90-10, then Ordinance 03-11, and now the Monetary and Banking Law 23-09 of 21 June 2023 (Official Journal No. 43 of 2023), together with Bank of Algeria regulations, is said to leave bank lending rates to be set freely by the banks within the Bank's rules, for example Regulation 13-01 of 8 April 2013 on bank conditions. If so, the ministerial-decision wording in the record's message is displaced for bank loans.",
+    "source": {
+      "tier": 3,
+      "url": "https://www.bank-of-algeria.dz/ar/%D8%A7%D9%84%D8%A5%D8%B7%D8%A7%D8%B1-%D8%A7%D9%84%D8%AA%D8%B4%D8%B1%D9%8A%D8%B9%D9%8A-%D9%88-%D8%A7%D9%84%D8%AA%D9%86%D8%B8%D9%8A%D9%85%D9%8A/",
+      "what": "Lead only. From memory and a web search (the Bank of Algeria's legislation page and academic articles on Law 23-09). Not read on joradp.dz; the article numbers of Law 23-09 and of Regulation 13-01 on the freedom of rates are not verified.",
+      "retrievedOn": "2026-11-19"
+    },
+    "quoteArabic": "يجوز لمؤسسات القرض التي تمنح قروضا قصد تشجيع النشاط الاقتصادي الوطني أن تأخذ فائدة يحدد قدرها بموجب قرار من الوزير المكلف بالمالية.",
+    "consequence": "Check Law 23-09 and the Bank of Algeria regulations on joradp.dz. Until then, the n7 message should not tell the lawyer that a bank's rate is set by ministerial decision; it should only say that credit-institution loans follow banking law."
+  }
+]

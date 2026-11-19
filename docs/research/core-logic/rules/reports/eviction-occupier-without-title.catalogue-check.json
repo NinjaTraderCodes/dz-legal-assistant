@@ -1,0 +1,148 @@
+{
+  "unit": "eviction-occupier-without-title",
+  "finalModules": [
+    "conciliation-mediation",
+    "court-sections",
+    "formal-notice",
+    "labour-prelitigation",
+    "land-registry-publication",
+    "ordinary-court-exits",
+    "periods",
+    "petition-formal-elements",
+    "territorial-jurisdiction"
+  ],
+  "articles": [
+    {
+      "code": "civil-code",
+      "number": "674",
+      "role": "basis",
+      "required": false,
+      "inStore": true,
+      "status": "inForce",
+      "version": "ordinance-75-58",
+      "verified": true,
+      "verifiedBy": "libraryProof",
+      "proof": "mechanical",
+      "paragraphs": 1,
+      "tier": 2,
+      "frenchCheck": null,
+      "ledgerClean": true,
+      "ledgerReason": null,
+      "inModules": [],
+      "inUnitTexts": true
+    },
+    {
+      "code": "civil-code",
+      "number": "124",
+      "role": "damages",
+      "required": false,
+      "inStore": true,
+      "status": "inForce",
+      "version": "law-05-10",
+      "verified": true,
+      "verifiedBy": "libraryProofAndCorpus",
+      "proof": "mechanical",
+      "paragraphs": 1,
+      "tier": 2,
+      "frenchCheck": null,
+      "ledgerClean": true,
+      "ledgerReason": null,
+      "inModules": [],
+      "inUnitTexts": true
+    }
+  ],
+  "prerequisites": [],
+  "documents": [
+    {
+      "document": "سند الملكية المشهر",
+      "inModules": [
+        {
+          "module": "land-registry-publication",
+          "item": "documents:doc2",
+          "sharedWords": [
+            "سند",
+            "مشهر"
+          ],
+          "strength": "strong"
+        }
+      ]
+    },
+    {
+      "document": "محضر معاينة الشغل",
+      "inModules": [
+        {
+          "module": "conciliation-mediation",
+          "item": "documents:doc1",
+          "sharedWords": [
+            "محضر"
+          ],
+          "strength": "weak"
+        },
+        {
+          "module": "formal-notice",
+          "item": "documents:doc2",
+          "sharedWords": [
+            "محضر"
+          ],
+          "strength": "weak"
+        },
+        {
+          "module": "labour-prelitigation",
+          "item": "documents:doc1",
+          "sharedWords": [
+            "محضر"
+          ],
+          "strength": "weak"
+        },
+        {
+          "module": "periods",
+          "item": "documents:doc1",
+          "sharedWords": [
+            "محضر"
+          ],
+          "strength": "weak"
+        },
+        {
+          "module": "periods",
+          "item": "documents:doc3",
+          "sharedWords": [
+            "محضر"
+          ],
+          "strength": "weak"
+        },
+        {
+          "module": "petition-formal-elements",
+          "item": "documents:doc7",
+          "sharedWords": [
+            "محضر"
+          ],
+          "strength": "weak"
+        },
+        {
+          "module": "petition-formal-elements",
+          "item": "documents:doc9",
+          "sharedWords": [
+            "محضر"
+          ],
+          "strength": "weak"
+        }
+      ]
+    }
+  ],
+  "summary": {
+    "articles": 2,
+    "notInStore": [],
+    "repealedOrNotInForce": [],
+    "notVerified": [],
+    "proofLabels": {
+      "mechanical": 2,
+      "twoFamilies": 0,
+      "oneFamily": 0
+    },
+    "carriedByModules": [],
+    "documentsMatchedInModules": 1,
+    "prerequisitesMatchedInModules": 0,
+    "outsideUnitTexts": []
+  },
+  "rule": "facts read by script from the article store and the final module records; a module match by shared words is a lead for the deriver, never a finding"
+}

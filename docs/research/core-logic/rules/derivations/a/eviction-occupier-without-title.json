@@ -1,0 +1,642 @@
+{
+  "schemaVersion": "1.0",
+  "kind": "claim",
+  "id": "eviction-occupier-without-title",
+  "label": { "ar": "طرد شاغل بدون سند", "en": "Eviction of an occupier without title" },
+  "verified": false,
+  "stage": "derivationA",
+  "derivedBy": { "role": "derivationA", "model": "claude-opus-5-5", "date": "2026-11-19" },
+  "area": "civil",
+  "imports": [
+    {
+      "module": "court-sections",
+      "blocks": ["b4", "b16", "b17", "n2"],
+      "how": {
+        "ar": "تستند قاعدة القسم الخاصة بهذه الدعوى إلى نصوص القسم العقاري والمحاكم التي لم تنشأ فيها الأقسام؛ ويستورد التنبيه الخاص بطلبات الاستعجال لأن طرد الشاغل قد يطلب أمام قاضي الاستعجال.",
+        "en": "The claim's own section rule rests on the module's statements on the real-property section and on courts without sections; the urgent-measures boundary is imported because eviction of an occupier is often sought from the urgent-matters judge."
+      }
+    },
+    {
+      "module": "territorial-jurisdiction",
+      "blocks": ["t3", "t4", "t27", "t28"],
+      "how": {
+        "ar": "الدعوى تتعلق بعقار، فترفع أمام محكمة موقع العقار؛ وتستورد قواعد شرط الاختصاص والقاضي الطرف والدفع بعدم الاختصاص الإقليمي.",
+        "en": "The claim concerns real property, so it goes to the court of the property's location; the rules on jurisdiction clauses, a judge as party and the plea of territorial incompetence are imported with it."
+      }
+    },
+    {
+      "module": "ordinary-court-exits",
+      "blocks": ["x1", "x6"],
+      "how": {
+        "ar": "تخرج الدعوى من المحاكم العادية إذا كان أحد الأطراف شخصا عموميا، ويتأثر طلب التعويض بوجود متابعة جزائية على الوقائع نفسها (التعدي على الملكية العقارية).",
+        "en": "The claim leaves the ordinary courts when a public body is a party, and the damages request is affected by a criminal case on the same facts (trespass on real property)."
+      }
+    },
+    {
+      "module": "periods",
+      "blocks": ["d1", "d2"],
+      "how": {
+        "ar": "لا تحمل النصوص المتاحة أجلا لدعوى الطرد نفسها؛ أما طلب التعويض فيخضع لأجل دعوى التعويض عن الفعل الضار، أو للتقادم العام إن كيف التعويض ريعا مستحقا على الحائز سيئ النية.",
+        "en": "The texts in the store set no period for the eviction claim itself; the damages request falls under the period of the action for a harmful act, or under the general limitation if it is framed as revenue owed by a possessor in bad faith."
+      }
+    },
+    {
+      "module": "formal-notice",
+      "blocks": ["p1", "p3", "n1", "n11", "n12", "doc1", "doc2", "b1", "b5", "b6", "b8", "b9"],
+      "how": {
+        "ar": "يستورد الإعذار قبل التعويض وقبل طلب الإخلاء مع حالات الإعفاء منه، ولا سيما التعويض عن عمل مضر ورد شيء تسلمه المدين دون حق وهو عالم بذلك؛ وتطبيق الإعذار على شاغل لا يربطه بالمالك عقد قراءة (o3).",
+        "en": "Notice before damages and before a claim to vacate is imported with its exemptions, in particular compensation for a harmful act and the return of a thing the debtor knowingly holds without right; applying notice to an occupier bound to the owner by no contract is a reading (o3)."
+      }
+    },
+    {
+      "module": "land-registry-publication",
+      "blocks": ["p1", "n1", "doc1", "doc2"],
+      "how": {
+        "ar": "الدعوى تتعلق بعقار قد يكون سنده مشهرا، فيطرح وجوب إشهار العريضة؛ وشمول الواجب لدعوى الطرد محل قراءة في الوحدة (o1 فيها).",
+        "en": "The claim concerns a property whose title may be published, so publication of the petition is in question; whether the duty reaches an eviction claim is a reading kept in the module (its o1)."
+      }
+    },
+    {
+      "module": "petition-formal-elements",
+      "blocks": ["p1", "p2", "p3", "p4", "p5", "p6", "p7", "p8", "p9", "p10", "p11", "p12", "p13", "p14", "p15", "p19", "doc1", "doc2", "doc3", "doc4", "doc7", "b1", "b2"],
+      "how": {
+        "ar": "البيانات الإلزامية للعريضة والصفة والمصلحة والرسوم والوثائق تسري على هذه الدعوى كغيرها؛ ويترك إشهار العريضة لوحدة الإشهار العقاري تفاديا للتكرار.",
+        "en": "The petition's mandatory particulars, standing, interest, fees and documents apply to this claim as to any other; publication of the petition is left to the land-registry module to avoid a duplicate."
+      }
+    }
+  ],
+  "basis": [
+    {
+      "id": "b1", "role": "basis", "required": true,
+      "cite": { "code": "civil-code", "article": "674", "paragraphs": [1] },
+      "says": { "ar": "الملكية حق التمتع والتصرف في الأشياء ما لم تستعمل استعمالا تحرمه القوانين والأنظمة.", "en": "Ownership is the right to enjoy and dispose of things, provided they are not used in a way the laws and regulations forbid." },
+      "interpretive": true,
+      "interpretiveNote": "The paragraph defines ownership; that the owner may on this ground have an occupier without title evicted is a reading of the right to enjoy. The articles that protect the owner against deprivation and that follow the definition are not in the store (o1)."
+    },
+    {
+      "id": "b2", "role": "damages", "required": true,
+      "cite": { "code": "civil-code", "article": "124", "paragraphs": [1] },
+      "says": { "ar": "كل فعل خاطئ يسبب ضررا للغير يلزم فاعله بالتعويض.", "en": "Any act done by a person's fault that harms another obliges him to compensate." },
+      "interpretive": true,
+      "interpretiveNote": "That occupying another's property without any title is a fault in the sense of the paragraph is a reading; the store does not hold the possession articles on the fruits owed by a possessor in bad faith (o9)."
+    },
+    {
+      "id": "b3", "role": "damages",
+      "cite": { "code": "civil-code", "article": "131", "paragraphs": [1] },
+      "says": { "ar": "يقدر القاضي مدى التعويض عن الضرر وفق قواعد تقدير التعويض مع مراعاة الظروف الملابسة.", "en": "The judge assesses the extent of compensation for the harm under the rules on assessing damages, taking the circumstances into account." }
+    },
+    {
+      "id": "b4", "role": "damages",
+      "cite": { "code": "civil-code", "article": "182", "paragraphs": [1] },
+      "says": { "ar": "يشمل التعويض ما لحق الدائن من خسارة وما فاته من كسب متى كان نتيجة طبيعية.", "en": "Compensation covers the loss suffered and the gain missed, when they are the natural consequence." }
+    },
+    {
+      "id": "b5", "role": "damages",
+      "cite": { "code": "civil-code", "article": "132", "paragraphs": [2] },
+      "says": { "ar": "يقدر التعويض بالنقد، ويجوز للقاضي بطلب المضرور أن يأمر بإعادة الحالة إلى ما كانت عليه.", "en": "Compensation is in money, but at the victim's request the judge may order the former state restored." }
+    },
+    {
+      "id": "b6", "role": "proof",
+      "cite": { "code": "civil-code", "article": "323", "paragraphs": [1] },
+      "says": { "ar": "على الدائن إثبات الالتزام وعلى المدين إثبات التخلص منه.", "en": "The creditor proves the obligation and the debtor proves his release from it." }
+    },
+    {
+      "id": "b7", "role": "proof",
+      "cite": { "code": "civil-code", "article": "324 مكرر 5", "paragraphs": [1] },
+      "says": { "ar": "ما ورد في العقد الرسمي حجة حتى يثبت تزويره.", "en": "What an official deed states is proof until it is shown to be forged." }
+    },
+    {
+      "id": "b8", "role": "proof",
+      "cite": { "code": "civil-code", "article": "324 مكرر 1", "paragraphs": [1] },
+      "says": { "ar": "تحرر العقود الناقلة لملكية العقار أو الحقوق العقارية في شكل رسمي تحت طائلة البطلان.", "en": "Deeds transferring ownership of real property or real rights must be made in official form, on pain of nullity." }
+    },
+    {
+      "id": "b9", "role": "limit",
+      "cite": { "code": "civil-code", "article": "309", "paragraphs": [2] },
+      "says": { "ar": "لا يسقط الريع المستحق في ذمة الحائز سيئ النية إلا بانقضاء خمس عشرة سنة.", "en": "Revenue owed by a possessor in bad faith is lost only after fifteen years." },
+      "interpretive": true,
+      "interpretiveNote": "Cited only for the reading that an occupier without title, as a possessor in bad faith, owes the revenue of the property; the articles that state that duty are not in the store (o9)."
+    },
+    {
+      "id": "b10", "role": "limit",
+      "cite": { "code": "civil-code", "article": "502", "paragraphs": [1] },
+      "says": { "ar": "المستأجر الذي يبقي العين بعد انتهاء الإيجار دون حق يلزم بتعويض المؤجر باعتبار القيمة الإيجارية وما لحقه من ضرر.", "en": "A tenant who keeps the premises without right after the lease ends owes the landlord compensation by the rental value and the harm suffered." }
+    },
+    {
+      "id": "b11", "role": "limit",
+      "cite": { "code": "cpca", "article": "512", "paragraphs": [1, 5] },
+      "says": { "ar": "ينظر القسم العقاري في الملكية المشتركة للعقارات المبنية وفي الملكية على الشيوع.", "en": "The real-property section hears co-ownership of built property and undivided ownership." }
+    },
+    {
+      "id": "b12", "role": "limit",
+      "cite": { "code": "cpca", "article": "524", "paragraphs": [1] },
+      "says": { "ar": "ترفع دعاوى الحيازة ممن حاز العقار حيازة هادئة علنية مستمرة غير مؤقتة مدة سنة على الأقل، عدا دعوى الاسترداد.", "en": "Possessory claims, other than recovery of possession, are brought by one who has held the property peacefully, openly, continuously and not temporarily for at least a year." }
+    },
+    {
+      "id": "b13", "role": "limit",
+      "cite": { "code": "cpca", "article": "524", "paragraphs": [2] },
+      "says": { "ar": "لا تقبل دعاوى الحيازة إذا لم ترفع خلال سنة من التعرض.", "en": "Possessory claims are inadmissible unless brought within a year of the disturbance." }
+    },
+    {
+      "id": "b14", "role": "limit",
+      "cite": { "code": "cpca", "article": "527", "paragraphs": [1] },
+      "says": { "ar": "لا تفصل المحكمة المعروضة عليها دعوى الحيازة في الملكية.", "en": "The court hearing a possessory claim may not rule on ownership." }
+    },
+    {
+      "id": "b15", "role": "limit",
+      "cite": { "code": "cpca", "article": "529", "paragraphs": [1] },
+      "says": { "ar": "لا تقبل دعوى الحيازة ممن سلك طريق دعوى الملكية.", "en": "A possessory claim is not admitted from one who has taken the route of an ownership claim." }
+    },
+    {
+      "id": "b16", "role": "proof",
+      "cite": { "code": "cpca", "article": "146", "paragraphs": [1] },
+      "says": { "ar": "يجوز للقاضي من تلقاء نفسه أو بطلب الخصوم إجراء معاينات مع الانتقال إلى عين المكان عند الاقتضاء.", "en": "The judge may, of his own motion or on a party's request, carry out inspections, going to the site where needed." }
+    },
+    {
+      "id": "b17", "role": "procedure",
+      "cite": { "code": "cpca", "article": "323", "paragraphs": [2] },
+      "says": { "ar": "يؤمر بالنفاذ المعجل عند طلبه متى بني الحكم على عقد رسمي أو وعد معترف به أو حكم حائز لقوة الشيء المقضي به.", "en": "Provisional execution is ordered on request whenever the judgment rests on an official deed, an acknowledged promise or a final judgment." }
+    },
+    {
+      "id": "b18", "role": "procedure",
+      "cite": { "code": "cpca", "article": "323", "paragraphs": [3] },
+      "says": { "ar": "يجوز للقاضي في غير ذلك من الأحوال أن يأمر بالنفاذ المعجل في حالة الاستعجال بكفالة أو بدونها.", "en": "In other cases the judge may order provisional execution in urgency, with or without security." }
+    },
+    {
+      "id": "b19", "role": "procedure",
+      "cite": { "code": "cpca", "article": "419", "paragraphs": [1] },
+      "says": { "ar": "يتحمل الخصم الخاسر مصاريف الدعوى ما لم يقرر القاضي غير ذلك مسببا.", "en": "The losing party bears the costs, unless the judge decides otherwise with reasons." }
+    },
+    {
+      "id": "b20", "role": "limit",
+      "cite": { "code": "family-code", "article": "72", "paragraphs": [2] },
+      "says": { "ar": "تبقى الحاضنة في بيت الزوجية حتى ينفذ الأب الحكم المتعلق بالسكن.", "en": "The custodian stays in the marital home until the father carries out the judgment on housing." }
+    }
+  ],
+  "elements": [
+    {
+      "id": "e1",
+      "toProve": { "ar": "ملكية المدعي للعقار المشغول.", "en": "The plaintiff's ownership of the occupied property." },
+      "factsToState": [
+        { "ar": "سند ملكية المدعي (نوعه وتاريخه وجهة تحريره)، وبيان إشهاره بالمحافظة العقارية إن وجد.", "en": "The plaintiff's title (its kind, date and author) and whether it is published at the land registry." },
+        { "ar": "موقع العقار ومشتملاته وحدوده.", "en": "The property's location, contents and boundaries." }
+      ],
+      "slots": ["property_registered"],
+      "burden": "plaintiff",
+      "proof": [
+        { "means": "official deed", "basis": ["b7", "b8"], "note": { "ar": "العقد الرسمي حجة حتى يثبت تزويره، والعقود الناقلة لملكية العقار لا تصح إلا في شكل رسمي.", "en": "An official deed is proof until shown to be forged, and deeds transferring real property are valid only in official form." } }
+      ],
+      "basis": ["b1", "b6", "b7", "b8"]
+    },
+    {
+      "id": "e2",
+      "toProve": { "ar": "أن المدعى عليه يشغل العقار دون أي عقد أو سند يخوله ذلك.", "en": "That the defendant occupies the property without any contract or title entitling him to do so." },
+      "factsToState": [
+        { "ar": "واقعة الشغل وتاريخ بدايته وطبيعته (سكن، استغلال، بناء).", "en": "The occupation, the date it began and its nature (living, use, building)." },
+        { "ar": "انعدام أي إيجار أو إعارة أو وعد بالبيع أو حصة في الشيوع أو أي سند آخر للشاغل.", "en": "The absence of any lease, loan for use, promise of sale, co-ownership share or other title of the occupier." }
+      ],
+      "events": ["occupation_without_title"],
+      "slots": ["occupier_former_tenant", "occupier_is_co_owner"],
+      "burden": "plaintiff",
+      "proof": [
+        { "means": "bailiff's record of findings", "basis": ["b6"], "note": { "ar": "يثبت المدعي واقعة الشغل؛ والنص المنظم لمحاضر المحضر القضائي ليس في مخزن النصوص (o7).", "en": "The plaintiff proves the occupation; the text on bailiffs' records is not in the store (o7)." } },
+        { "means": "judicial site inspection", "basis": ["b16"] },
+        { "means": "defendant's alleged title", "basis": ["b6"], "note": { "ar": "إذا ادعى الشاغل سندا فعليه إثباته باعتباره سببا للتخلص؛ وهذه قراءة لقاعدة عبء الإثبات.", "en": "If the occupier alleges a title, he must prove it as a ground of release; this is a reading of the burden-of-proof rule." } }
+      ],
+      "basis": ["b1", "b6", "b16"]
+    },
+    {
+      "id": "e3",
+      "toProve": { "ar": "توجيه إعذار أو مطالبة بالخروج إلى المدعى عليه قبل رفع الدعوى، عند الاقتضاء.", "en": "That a formal notice or demand to leave was served on the defendant before the claim, where it is required." },
+      "factsToState": [
+        { "ar": "تاريخ الإعذار ووسيلته ومضمونه وموقف المدعى عليه منه.", "en": "The date, means and content of the notice, and the defendant's response." }
+      ],
+      "events": ["notice_served"],
+      "slots": ["notice_served", "notice_means", "notice_date"],
+      "burden": "plaintiff",
+      "basis": ["formal-notice.b1", "formal-notice.b5", "formal-notice.b6", "formal-notice.b8", "formal-notice.b9"]
+    },
+    {
+      "id": "e4",
+      "toProve": { "ar": "الضرر الناتج عن الشغل دون وجه حق ومقداره وعلاقته بالشغل.", "en": "The harm caused by the occupation without right, its amount and its link to the occupation." },
+      "factsToState": [
+        { "ar": "مدة الشغل والقيمة الإيجارية للعقار أو ما فات المالك من انتفاع.", "en": "The length of the occupation and the rental value of the property, or the use the owner lost." }
+      ],
+      "events": ["occupation_without_title", "harm_by_person"],
+      "slots": ["harmful_act_date", "obligation_is_tort_compensation"],
+      "burden": "plaintiff",
+      "basis": ["b2", "b3", "b4", "b9"]
+    }
+  ],
+  "requests": [
+    {
+      "id": "r1", "kind": "eviction", "accessory": false,
+      "text": { "ar": "الحكم بطرد المدعى عليه ومن يحل محله من العقار الكائن بـ (...)", "en": "Order the eviction of the defendant and anyone occupying in his place from the property located at (...)" },
+      "amount": false,
+      "basis": ["b1"]
+    },
+    {
+      "id": "r2", "kind": "damages", "accessory": false,
+      "text": { "ar": "إلزام المدعى عليه بتعويض عن الشغل دون وجه حق قدره (...) دج", "en": "Order the defendant to pay compensation of (...) DZD for occupation without right" },
+      "amount": true,
+      "basis": ["b2", "b3", "b4"]
+    },
+    {
+      "id": "r3", "kind": "other", "accessory": true,
+      "text": { "ar": "إلزام المدعى عليه بإعادة العقار إلى الحالة التي كان عليها قبل الشغل", "en": "Order the defendant to restore the property to its state before the occupation" },
+      "amount": false,
+      "basis": ["b5"]
+    },
+    {
+      "id": "r4", "kind": "provisional_execution", "accessory": true,
+      "text": { "ar": "شمول الحكم بالنفاذ المعجل", "en": "Order provisional execution of the judgment" },
+      "amount": false,
+      "basis": ["b17", "b18"]
+    },
+    {
+      "id": "r5", "kind": "other", "accessory": true,
+      "text": { "ar": "تحميل المدعى عليه المصاريف القضائية", "en": "Order the defendant to bear the costs" },
+      "amount": false,
+      "basis": ["b19"]
+    }
+  ],
+  "court": {
+    "section": {
+      "value": "realEstate",
+      "basis": ["court-sections.b16", "court-sections.b17"],
+      "alternatives": [
+        { "when": { "slot": "court_has_section_for_matter", "is": "no" }, "value": "civil", "basis": ["court-sections.b4"] }
+      ],
+      "message": {
+        "ar": "المادتان 511 و512 من قانون الإجراءات المدنية والإدارية: ينظر القسم العقاري في المنازعات المتعلقة بالأملاك العقارية ومنها حق الملكية؛ وفي المحاكم التي لم تنشأ فيها الأقسام ينظر القسم المدني في النزاع (المادة 32). القسم المختار يختلف عن القسم المقترح؛ تحقق من أقسام المحكمة.",
+        "en": "CPCA articles 511 and 512: the real-property section hears disputes about immovable property, ownership included; in a court without sections the civil section hears the dispute (article 32). The section chosen differs from the one proposed; check the court's sections."
+      }
+    }
+  },
+  "documents": [
+    {
+      "id": "doc1",
+      "name": { "ar": "سند ملكية المدعي (العقد الرسمي الناقل أو المقرر للملكية)", "en": "The plaintiff's title (the official deed transferring or declaring ownership)" },
+      "why": { "ar": "يثبت ملكية المدعي؛ والعقد الرسمي حجة حتى يثبت تزويره.", "en": "Proves the plaintiff's ownership; an official deed is proof until shown to be forged." },
+      "basis": ["b6", "b7", "b8"]
+    },
+    {
+      "id": "doc2",
+      "name": { "ar": "محضر معاينة يثبت شغل المدعى عليه للعقار وتاريخه", "en": "A record of findings establishing the defendant's occupation of the property and its date" },
+      "why": { "ar": "يقع على المدعي إثبات واقعة الشغل.", "en": "The plaintiff must prove the occupation." },
+      "basis": ["b6", "b16"]
+    }
+  ],
+  "boundaries": [
+    {
+      "id": "n1",
+      "looksLike": { "ar": "شاغل بدون سند", "en": "An occupier without title" },
+      "isActually": "outside:lease-holdover",
+      "tellingFacts": [
+        { "ar": "كان المدعى عليه مستأجرا للعقار وبقي فيه بعد انتهاء الإيجار.", "en": "The defendant was the tenant of the property and stayed on after the lease ended." }
+      ],
+      "when": { "slot": "occupier_former_tenant", "is": "yes" },
+      "slots": ["occupier_former_tenant"],
+      "message": {
+        "ar": "المادة 502 من القانون المدني: المستأجر الذي يبقي العين تحت يده دون حق بعد انتهاء الإيجار يلزم بتعويض باعتبار القيمة الإيجارية. تحقق من علاقة الإيجار السابقة ومن قواعد الإيجار التي تحكم الدعوى.",
+        "en": "Civil Code article 502: a tenant who keeps the premises without right after the lease ends owes compensation by the rental value. Check the former lease and the lease rules that govern the claim."
+      },
+      "basis": ["b10"]
+    },
+    {
+      "id": "n2",
+      "looksLike": { "ar": "شاغل بدون سند", "en": "An occupier without title" },
+      "isActually": "outside:co-ownership",
+      "tellingFacts": [
+        { "ar": "المدعى عليه شريك في ملكية العقار على الشيوع.", "en": "The defendant is a co-owner of the property in undivided ownership." }
+      ],
+      "when": { "slot": "occupier_is_co_owner", "is": "yes" },
+      "slots": ["occupier_is_co_owner"],
+      "message": {
+        "ar": "المادة 512 من قانون الإجراءات المدنية والإدارية: الملكية على الشيوع من منازعات القسم العقاري المستقلة. الشريك على الشيوع له حصة في العقار؛ تحقق من صفة الشاغل ومن الطريق المناسب (القسمة أو قواعد الشيوع).",
+        "en": "CPCA article 512: undivided ownership is a real-property dispute of its own. A co-owner holds a share of the property; check the occupier's status and the proper route (partition or the co-ownership rules)."
+      },
+      "basis": ["b11"]
+    },
+    {
+      "id": "n3",
+      "looksLike": { "ar": "طلب استرجاع عقار من شاغله", "en": "A claim to recover a property from its occupier" },
+      "isActually": "outside:possessory-action",
+      "tellingFacts": [
+        { "ar": "يستند المدعي إلى حيازته لا إلى ملكيته، ويطلب رد الحيازة أو منع التعرض.", "en": "The plaintiff relies on his possession, not his ownership, and asks for recovery of possession or an end to the disturbance." }
+      ],
+      "message": {
+        "ar": "المواد 524 و527 و529 من قانون الإجراءات المدنية والإدارية: لا تقبل دعاوى الحيازة إلا خلال سنة من التعرض، ولا يفصل قاضيها في الملكية، ولا تقبل ممن سلك طريق دعوى الملكية. تحقق من الطريق المختار قبل رفع الدعوى.",
+        "en": "CPCA articles 524, 527 and 529: possessory claims are admitted only within a year of the disturbance, their judge does not rule on ownership, and they are not admitted from one who took the ownership route. Check the route chosen before filing."
+      },
+      "basis": ["b12", "b13", "b14", "b15"]
+    },
+    {
+      "id": "n4",
+      "looksLike": { "ar": "شاغل لمسكن دون سند", "en": "An occupier of a dwelling without title" },
+      "isActually": "outside:family-housing",
+      "tellingFacts": [
+        { "ar": "الشاغلة مطلقة حاضنة تقيم في بيت الزوجية في انتظار تنفيذ حكم السكن.", "en": "The occupier is a divorced custodian living in the marital home pending the housing judgment." }
+      ],
+      "when": { "slot": "dispute_is_family", "is": "yes" },
+      "slots": ["dispute_is_family"],
+      "message": {
+        "ar": "المادة 72 من قانون الأسرة: تبقى الحاضنة في بيت الزوجية حتى تنفيذ الأب للحكم القضائي المتعلق بالسكن. تحقق من وجود نزاع أسري ومن حكم السكن قبل طلب الطرد.",
+        "en": "Family Code article 72: the custodian stays in the marital home until the father carries out the housing judgment. Check for a family dispute and the housing judgment before asking for eviction."
+      },
+      "basis": ["b20"]
+    }
+  ],
+  "slots": [
+    "requests",
+    "court_has_section_for_matter",
+    "occupier_former_tenant",
+    "occupier_is_co_owner",
+    "dispute_is_family",
+    "property_registered",
+    "dispute_concerns_real_property",
+    "petition_deposited_for_publication",
+    "notice_served",
+    "notice_means",
+    "notice_date",
+    "notice_before_petition_day",
+    "default_on_due_date_agreed",
+    "performance_impossible_or_useless_by_debtor",
+    "obligation_is_tort_compensation",
+    "return_of_thing_known_stolen_or_unduly_received",
+    "debtor_refused_in_writing",
+    "harmful_act_date",
+    "debt_due_date",
+    "public_body_party",
+    "public_vehicle_damage",
+    "criminal_case_on_same_facts",
+    "damage_caused_by_offence",
+    "petition_names_court",
+    "petition_gives_plaintiff_identity",
+    "petition_gives_defendant_identity",
+    "party_is_legal_person",
+    "petition_gives_legal_person_details",
+    "petition_states_facts_claims_grounds",
+    "petition_lists_documents",
+    "petition_signed_dated",
+    "petition_copies_for_each_party",
+    "court_fees_paid",
+    "fee_exemption_applies",
+    "party_lacks_capacity",
+    "incapable_party_represented",
+    "plaintiff_acts_through_representative",
+    "representative_has_authority",
+    "plaintiff_has_standing",
+    "plaintiff_has_interest",
+    "suit_authorisation_required",
+    "suit_authorisation_obtained",
+    "foreign_language_documents",
+    "foreign_documents_officially_translated",
+    "petition_in_arabic"
+  ],
+  "proposedSlots": [
+    {
+      "id": "occupier_former_tenant", "type": "yesNoUnknown",
+      "question": { "ar": "هل كان المدعى عليه مستأجرا للعقار وبقي فيه بعد انتهاء الإيجار؟", "en": "Was the defendant the tenant of the property, staying on after the lease ended?" },
+      "why": "Boundary n1 reads it: civil-code 502 ¶1 makes a tenant holding over without right owe compensation under the lease rules, so the case is a lease claim, not this one."
+    },
+    {
+      "id": "occupier_is_co_owner", "type": "yesNoUnknown",
+      "question": { "ar": "هل المدعى عليه شريك في ملكية العقار على الشيوع؟", "en": "Is the defendant a co-owner of the property in undivided ownership?" },
+      "why": "Boundary n2 reads it: cpca 512 ¶5 treats undivided ownership as its own real-property dispute; a co-owner is not an occupier without title."
+    }
+  ],
+  "openPoints": [
+    {
+      "id": "o1",
+      "question": { "ar": "ما النص الذي يخول المالك استرداد ملكه ممن يحوزه دون حق، وهل يشترط إشهار سند الملكية لإثبات الملكية في مواجهة الشاغل؟", "en": "Which text gives the owner the right to recover his property from one who holds it without right, and must the title be published to prove ownership against the occupier?" },
+      "why": { "ar": "لا يحمل المخزن من باب الملكية إلا تعريفها، ولا يحمل نصوص الشهر العقاري المتعلقة بانتقال الحقوق العينية. يذكر من الذاكرة نص يمنع حرمان أحد من ملكه إلا في الأحوال المقررة قانونا، ونص يجعل انتقال الحقوق العينية العقارية متوقفا على الشهر؛ طلبا ولم يقرآ.", "en": "The store holds only the definition of ownership from its chapter, and none of the land-registration texts on the transfer of real rights. From memory, one text forbids depriving anyone of his property save as the law provides, and another makes the transfer of real rights in property depend on publication; both requested, neither read." },
+      "readings": [
+        { "reading": { "ar": "يكفي العقد الرسمي لإثبات الملكية.", "en": "An official deed is enough to prove ownership." }, "basis": ["b7", "b8"] },
+        { "reading": { "ar": "لا تثبت الملكية العقارية في مواجهة الغير إلا بسند مشهر.", "en": "Ownership of real property is proven against others only by a published title." } }
+      ],
+      "protectiveReading": { "ar": "تقديم السند الرسمي مع ما يثبت إشهاره بالمحافظة العقارية، والتنبيه إن لم يكن مشهرا.", "en": "Produce the official deed with proof of its publication at the land registry, and warn when it is not published." },
+      "grade": "D",
+      "refs": ["b1", "e1", "doc1"]
+    },
+    {
+      "id": "o2",
+      "question": { "ar": "هل تسقط دعوى الطرد المبنية على الملكية بمرور الزمن، وهل يمكن للشاغل أن يدفع بالتقادم المكسب؟", "en": "Is an eviction claim based on ownership lost by lapse of time, and may the occupier plead acquisitive prescription?" },
+      "why": { "ar": "نصوص التقادم المكسب ليست في المخزن، ونصوص التقادم المسقط الموجودة تخص الالتزامات لا حق الملكية. يذكر من الذاكرة تقادم مكسب بحيازة مستمرة مدة طويلة، وأقصر مع السند الصحيح وحسن النية؛ طلب ولم يقرأ.", "en": "The acquisitive-prescription texts are not in the store, and the extinctive-prescription texts there concern obligations, not ownership. From memory, ownership is acquired by long continuous possession, sooner with just title and good faith; requested, not read." },
+      "protectiveReading": { "ar": "التحقق من مدة شغل المدعى عليه ومن ادعائه الحيازة المكسبة قبل رفع الدعوى، دون إنشاء أجل في هذا السجل.", "en": "Check how long the defendant has occupied and whether he claims acquisitive possession before filing, without creating a deadline in this record." },
+      "grade": "D",
+      "refs": ["e2"]
+    },
+    {
+      "id": "o3",
+      "question": { "ar": "هل يلزم إعذار الشاغل بدون سند قبل طلب طرده أو تعويضه؟", "en": "Must an occupier without title be given formal notice before his eviction or damages are claimed?" },
+      "why": { "ar": "يجعل نص الإعذار التعويض مستحقا بعد الإعذار، ويعفي منه التعويض عن العمل المضر ورد الشيء الذي تسلمه المدين دون حق وهو عالم؛ ولا يربط الشاغل بالمالك عقد، فتطبيق الإعذار على طلب الطرد قراءة.", "en": "The notice text makes compensation due after notice, and exempts compensation for a harmful act and the return of a thing knowingly held without right; the occupier is bound to the owner by no contract, so applying notice to the eviction request is a reading." },
+      "readings": [
+        { "reading": { "ar": "لا يلزم الإعذار لأن الالتزام ناشئ عن عمل مضر.", "en": "No notice is needed, the obligation arising from a harmful act." }, "basis": ["formal-notice.b6", "formal-notice.b8", "formal-notice.b9"] },
+        { "reading": { "ar": "يلزم الإعذار قبل المطالبة بالتعويض أو الإخلاء.", "en": "Notice is needed before claiming damages or the vacating of the property." }, "basis": ["formal-notice.b1", "formal-notice.b5"] }
+      ],
+      "protectiveReading": { "ar": "السؤال عن الإعذار والتنبيه عند غيابه دون منع، مع قبول حالات الإعفاء التي يقر بها المحامي.", "en": "Ask about the notice and warn when it is missing, never block, accepting the exemptions the lawyer confirms." },
+      "grade": "C",
+      "refs": ["e3", "formal-notice.p1", "formal-notice.p3"]
+    },
+    {
+      "id": "o4",
+      "question": { "ar": "هل يجب إشهار عريضة دعوى طرد شاغل بدون سند من عقار مشهر؟", "en": "Must the petition in a claim to evict an occupier without title from a published property be published?" },
+      "why": { "ar": "وحدة الإشهار العقاري تترك مسألة شمول الواجب لدعاوى الطرد مفتوحة وتنبه حماية للمحامي.", "en": "The land-registry module leaves open whether the duty reaches eviction claims and warns to protect the lawyer." },
+      "protectiveReading": { "ar": "السؤال عن الإشهار والتنبيه دون منع.", "en": "Ask about publication and warn, never block." },
+      "grade": "C",
+      "refs": ["land-registry-publication.p1"]
+    },
+    {
+      "id": "o5",
+      "question": { "ar": "ما حكم ما أقامه الشاغل من بناء أو غراس على أرض المدعي؟", "en": "What becomes of buildings or plantings the occupier made on the plaintiff's land?" },
+      "why": { "ar": "نصوص الالتصاق والمنشآت التي يقيمها الغير على أرض المالك ليست في المخزن؛ طلبت ولم تقرأ.", "en": "The texts on accession and on works a third party builds on the owner's land are not in the store; requested, not read." },
+      "protectiveReading": { "ar": "ذكر المنشآت في الوقائع وطلب ما يناسب بشأنها بعد التحقق من النص.", "en": "State the works in the facts and ask what fits once the text is checked." },
+      "grade": "D",
+      "refs": ["r3"]
+    },
+    {
+      "id": "o6",
+      "question": { "ar": "من أي يوم يسري أجل دعوى التعويض عن شغل مستمر؟", "en": "From which day does the period of the damages action run when the occupation continues?" },
+      "why": { "ar": "يجري الأجل من يوم وقوع الفعل الضار، والشغل فعل مستمر؛ فاعتبار تاريخ بدايته أو كل يوم من أيامه قراءة.", "en": "The period runs from the day of the harmful act, and occupation is a continuing act; counting from its start or from each day of it is a reading." },
+      "readings": [
+        { "reading": { "ar": "يسري من بداية الشغل.", "en": "It runs from the start of the occupation." } },
+        { "reading": { "ar": "يتجدد مع كل يوم شغل فلا يسقط إلا ما جاوز الأجل.", "en": "It renews with each day of occupation, so only the part older than the period is lost." } }
+      ],
+      "protectiveReading": { "ar": "إدخال تاريخ بداية الشغل في تاريخ الفعل الضار، فينبه الأجل مبكرا.", "en": "Enter the start of the occupation as the harmful-act date, so the period warns early." },
+      "grade": "C",
+      "refs": ["periods.d2", "e4"]
+    },
+    {
+      "id": "o7",
+      "question": { "ar": "ما حجية محضر المعاينة الذي يحرره المحضر القضائي؟", "en": "What is the evidential force of a bailiff's record of findings?" },
+      "why": { "ar": "القانون المنظم لمهنة المحضر القضائي ليس في المخزن؛ طلب ولم يقرأ.", "en": "The law organising the bailiff profession is not in the store; requested, not read." },
+      "protectiveReading": { "ar": "إرفاق المحضر وطلب المعاينة القضائية عند المنازعة.", "en": "Attach the record and ask for a judicial site inspection if it is disputed." },
+      "grade": "D",
+      "refs": ["doc2", "e2"]
+    },
+    {
+      "id": "o8",
+      "question": { "ar": "هل يشكل الشغل جريمة تعد على الملكية العقارية؟", "en": "Is the occupation a criminal trespass on real property?" },
+      "why": { "ar": "قانون العقوبات ليس في المخزن؛ طلب ولم يقرأ.", "en": "The Penal Code is not in the store; requested, not read." },
+      "protectiveReading": { "ar": "السؤال عن متابعة جزائية على الوقائع والتنبيه (المخرج المستورد).", "en": "Ask about a criminal case on the facts and warn (the imported exit)." },
+      "grade": "D",
+      "refs": ["ordinary-court-exits.x6"]
+    },
+    {
+      "id": "o9",
+      "question": { "ar": "هل يؤسس طلب التعويض على المسؤولية عن الفعل الشخصي أم على التزام الحائز سيئ النية برد الريع والثمار؟", "en": "Does the damages request rest on liability for a personal act, or on the duty of a possessor in bad faith to return revenue and fruits?" },
+      "why": { "ar": "يحمل المخزن نص المسؤولية عن الفعل الشخصي ونص تقادم الريع المستحق على الحائز سيئ النية، ولا يحمل نصوص الحيازة التي تلزمه بالثمار؛ وتختلف المدة وبدء سريانها باختلاف الأساس.", "en": "The store holds the personal-liability text and the limitation text on revenue owed by a possessor in bad faith, but not the possession texts that oblige him to return fruits; the period and its start differ with the ground." },
+      "readings": [
+        { "reading": { "ar": "تعويض عن عمل مضر.", "en": "Compensation for a harmful act." }, "basis": ["b2"] },
+        { "reading": { "ar": "ريع مستحق على حائز سيئ النية.", "en": "Revenue owed by a possessor in bad faith." }, "basis": ["b9"] }
+      ],
+      "protectiveReading": { "ar": "استيراد أجلي التقادم معا، والسؤال عن طبيعة الالتزام.", "en": "Import both limitation periods and ask what the obligation is." },
+      "grade": "C",
+      "refs": ["b2", "b9", "r2", "periods.d1", "periods.d2"]
+    }
+  ],
+  "checklist": [
+    { "id": "k1", "item": "Basis: the owner's right to enjoy and dispose of his property (civil code, ownership chapter, art. 674) and the rule that no one is deprived of his property except as the law provides (art. 677); check the paragraph that carries the right to recover the thing from whoever holds it without right.", "from": ["derivationA"], "answer": "applies", "refs": ["b1", "r1", "o1"], "note": "674 ¶1 is in the store; the following articles of the ownership chapter (677 included) are not: searched the civil-code text view, which jumps from 570 to 674 and then to 1002. Requested." },
+    { "id": "k2", "item": "Element 1: the plaintiff's ownership of the property, proven by a published (registered) title deed; check the rule that real rights are not transferred, even between the parties, without publication at the land registry (civil code art. 793 and ordinance 75-74).", "from": ["derivationA"], "answer": "searchedNotFound", "refs": ["e1", "doc1", "o1"], "note": "Civil code 793 and ordinance 75-74 are not in the store (searched the civil-code text view). What is in the store: 324 bis 1 ¶1 (official form for transfers of real property) and 324 bis 5 ¶1 (force of an official deed). Requested." },
+    { "id": "k3", "item": "Element 2: the defendant's actual occupation of the property, and its date; usually proven by a bailiff's record of findings (محضر معاينة).", "from": ["derivationA"], "answer": "applies", "refs": ["e2", "doc2", "b16", "o7"], "note": "The bailiffs' law is not in the store; the judicial site inspection is cpca 146 ¶1." },
+    { "id": "k4", "item": "Element 3: the absence of any title in the occupier (no lease, loan for use, sale promise, co-ownership share, family right); check who bears the proof of the negative fact and whether the occupier must prove the title he alleges (proof rules: the plaintiff proves his right, the debtor proves his release).", "from": ["derivationA"], "answer": "applies", "refs": ["e2", "b6"], "note": "civil-code 323 ¶1; that an alleged title is the occupier's to prove is a reading noted in e2." },
+    { "id": "k5", "item": "Burden of proof: the owner proves ownership and occupation; the occupier who pleads a lease or other title must prove it; check writing requirements for proving a lease.", "from": ["derivationA"], "answer": "applies", "refs": ["b6", "e1", "e2", "n1"], "note": "Writing requirements for a lease belong to the lease claims; boundary n1 sends a former tenancy there." },
+    { "id": "k6", "item": "Competent section: the real-estate section of the court (CPCA articles on the real-estate section); also check whether the urgent-matters judge (référé) may order eviction of an occupier without title as a measure that does not touch the merits.", "from": ["derivationA"], "answer": "applies", "refs": ["court-sections.b16", "court-sections.b17", "court-sections.b4", "court-sections.n2"], "note": "Section realEstate (cpca 511 ¶1, 512 ¶2), civil when the court has no sections (32). Urgent measures: imported boundary n2 (299, 521)." },
+    { "id": "k7", "item": "Territorial jurisdiction: the court where the property lies, for claims about real property (CPCA art. 40); check whether that rule is of public order.", "from": ["derivationA"], "answer": "applies", "refs": ["territorial-jurisdiction.t4", "territorial-jurisdiction.t28", "territorial-jurisdiction.t3"], "note": "40 ¶2 and 518 ¶1 (t4); how the plea is raised: t28." },
+    { "id": "k8", "item": "Exit from the ordinary courts: if a party is the State, a wilaya, a commune or a public administrative body, or the property is public domain, the administrative court may be competent (CPCA art. 800-801).", "from": ["derivationA"], "answer": "applies", "refs": ["ordinary-court-exits.x1"], "note": "The exit turns on the parties; public domain as such is not separately tested (no text in the store)." },
+    { "id": "k9", "item": "Exit: if the occupation was obtained by a criminal act (trespass on property, art. 386 penal code), check whether a criminal case on the same facts suspends the civil claim.", "from": ["derivationA"], "answer": "applies", "refs": ["ordinary-court-exits.x6", "o8"], "note": "The penal code is not in the store; requested. The imported exit warns on a criminal case on the same facts." },
+    { "id": "k10", "item": "Time limit for the eviction claim itself: the ownership claim (revendication) is not lost by lapse of time, but check acquisitive prescription by the occupier (15 years of possession, civil code art. 827; 10 years with just title and good faith, art. 828) as a defence.", "from": ["derivationA"], "answer": "searchedNotFound", "refs": ["o2"], "note": "Civil code 827 and 828 are not in the store, nor any text on the lapse of the ownership claim; requested. No deadline item." },
+    { "id": "k11", "item": "Time limit for damages: tort action is barred 15 years from the harmful act (civil code art. 133); check whether the occupation is a continuing act and how the period counts; limitation is raised only on a plea, not by the court of its own motion.", "from": ["derivationA"], "answer": "applies", "refs": ["periods.d2", "periods.d1", "o6", "o9"], "note": "Imported from the periods module; the continuing act is o6." },
+    { "id": "k12", "item": "Damages for occupation without right: civil code art. 124 (fault, harm, causation); also check the rules on the possessor in bad faith returning fruits (civil code art. 837-839) as an alternative ground for an occupation indemnity.", "from": ["derivationA"], "answer": "applies", "refs": ["b2", "b3", "b4", "b9", "r2", "o9"], "note": "124 ¶1, 131 ¶1, 182 ¶1 in the store; 837 to 839 are not (requested); 309 ¶2 shows revenue is owed by a possessor in bad faith." },
+    { "id": "k13", "item": "Formal notice: check whether a formal notice is required before claiming damages; civil code art. 181 says no notice is needed when the obligation is compensation for a harmful act; check whether a notice to leave is required before the eviction claim (probably not a condition of admissibility).", "from": ["derivationA"], "answer": "applies", "refs": ["formal-notice.p1", "formal-notice.p3", "e3", "o3"], "note": "Imported; 181 ¶3 and ¶4 are exemptions of the imported steps. No text makes notice a condition of admissibility: the steps warn." },
+    { "id": "k14", "item": "Land registry publication of the petition: CPCA art. 17 requires publication of a petition concerning published real property or a real right; check whether a pure eviction claim falls within it, and the sanction (inadmissibility, publication proof at the first hearing).", "from": ["derivationA"], "answer": "applies", "refs": ["land-registry-publication.p1", "land-registry-publication.n1", "o4"] },
+    { "id": "k15", "item": "Petition formal elements: CPCA art. 15 (court, parties' names and domiciles, facts, requests, grounds, documents), art. 8 Arabic language and official translation, fees, standing and interest (art. 13).", "from": ["derivationA"], "answer": "applies", "refs": ["petition-formal-elements.p1", "petition-formal-elements.p5", "petition-formal-elements.p9", "petition-formal-elements.p12", "petition-formal-elements.p19"] },
+    { "id": "k16", "item": "Possessory actions boundary: a claim to protect possession (recovery of possession, stopping disturbance) must be filed within one year of the disturbance (CPCA art. 524 and following); it is not the owner's eviction claim; check that possessory and ownership claims cannot be combined (non-cumul).", "from": ["derivationA"], "answer": "applies", "refs": ["n3", "b12", "b13", "b14", "b15"] },
+    { "id": "k17", "item": "Boundary: an occupier holding over after a lease ends is a former tenant: lease rules (civil code art. 467 and following, notice to quit, art. 469 bis) apply, not this claim.", "from": ["derivationA"], "answer": "applies", "refs": ["n1", "b10"] },
+    { "id": "k18", "item": "Boundary: a commercial tenant (commercial code art. 172 and following) has eviction-compensation rights; an eviction claim against him follows the commercial lease regime.", "from": ["derivationA"], "answer": "applies", "refs": ["n1"], "note": "A former tenant of any kind triggers n1; the commercial-lease regime belongs to the commercial-lease-regimes module, which is not among the final modules offered for import." },
+    { "id": "k19", "item": "Boundary: a co-owner in undivided ownership is not an occupier without title; the remedy is partition or the rules on co-ownership management.", "from": ["derivationA"], "answer": "applies", "refs": ["n2", "b11"] },
+    { "id": "k20", "item": "Boundary: an occupier who built or planted on the land: check the rules on buildings by a third party on another's land (civil code art. 784-786) and the owner's choice to keep or demolish.", "from": ["derivationA"], "answer": "searchedNotFound", "refs": ["o5", "r3"], "note": "Civil code 784 to 786 are not in the store; requested. 132 ¶2 (restoring the former state) is the nearest text." },
+    { "id": "k21", "item": "Boundary: an occupier with a family right (a former spouse with custody keeping the marital home) falls under the family code.", "from": ["derivationA"], "answer": "applies", "refs": ["n4", "b20"] },
+    { "id": "k22", "item": "Requests: eviction of the defendant and anyone occupying through him; damages (occupation indemnity) with an amount; accessory requests: provisional execution, penalty payment (astreinte), costs.", "from": ["derivationA"], "answer": "applies", "refs": ["r1", "r2", "r3", "r4", "r5"], "note": "No penalty-payment text for the ordinary court's judgment on the merits was found in the store (cpca 305 ¶1 gives it to the urgent-matters judge; civil code searched for تهديدية without result); no request item for it." },
+    { "id": "k23", "item": "Documents: published title deed or certificate of ownership/land book; bailiff's record of findings of occupation; notice to leave and its proof of service, if any; cadastral plan or property description.", "from": ["derivationA"], "answer": "applies", "refs": ["doc1", "doc2", "land-registry-publication.doc2", "formal-notice.doc1", "formal-notice.doc2"], "note": "No text requires a cadastral plan; the property's description goes in the facts (e1)." },
+    { "id": "k24", "item": "Check amendments: CPCA (law 08-09) as amended by law 22-13 (specialised commercial courts, conciliation); civil code art. 124 as amended by law 05-10.", "from": ["derivationA"], "answer": "applies", "refs": ["b2"], "note": "The store gives 124 in its law 05-10 wording; the CPCA articles cited here are in their law 08-09 wording, not touched by law 22-13." },
+    { "id": "k25", "item": "Check the rule on the defendant's domicile unknown (service by publication) and the defendant residing abroad (periods extended).", "from": ["derivationA"], "answer": "applies", "refs": ["petition-formal-elements.p3"], "note": "The petition gives the last domicile when none is known (15). Summons periods are outside this claim's record." },
+    { "id": "k26", "item": "Store note on civil-code 124: the temporal start of the law 05-10 wording is unsettled.", "from": ["derivationA"], "answer": "doesNotApply", "note": "The occupation and the petition are recent; the note bears on facts that date from the period of the amendment, not on a petition drafted now." },
+    { "id": "k27", "item": "Store notes on civil-code 131, 132, 133 and 502 and on family-code 72: current text snapshot only, earlier wordings not represented.", "from": ["derivationA"], "answer": "doesNotApply", "note": "The record cites the current wordings for a petition drafted now; an occupation that began long ago could be governed by an earlier wording, which the store does not hold." },
+    { "id": "k28", "item": "Shared modules labour-prelitigation and conciliation-mediation.", "from": ["derivationA"], "answer": "doesNotApply", "note": "The dispute is neither a labour dispute nor before the specialised commercial court; court-offered conciliation is not a step before filing." }
+  ],
+  "examples": [
+    {
+      "id": "ex1", "by": "derivationA",
+      "title": "Clean case: published property, notice by bailiff before the petition, damages framed as tort, everything in order.",
+      "petitionDate": "2026-11-19",
+      "slots": {
+        "requests": ["eviction", "damages"],
+        "court_has_section_for_matter": "yes",
+        "dispute_concerns_real_property": "yes",
+        "property_registered": "yes",
+        "petition_deposited_for_publication": "yes",
+        "notice_served": "yes",
+        "notice_means": "bailiff",
+        "notice_date": "2026-09-01",
+        "obligation_is_tort_compensation": "yes",
+        "harmful_act_date": "2025-01-10",
+        "public_body_party": "no",
+        "criminal_case_on_same_facts": "no",
+        "damage_caused_by_offence": "no",
+        "occupier_former_tenant": "no",
+        "occupier_is_co_owner": "no",
+        "dispute_is_family": "no",
+        "petition_names_court": "yes",
+        "petition_gives_plaintiff_identity": "yes",
+        "petition_gives_defendant_identity": "yes",
+        "party_is_legal_person": "no",
+        "petition_states_facts_claims_grounds": "yes",
+        "petition_lists_documents": "yes",
+        "petition_signed_dated": "yes",
+        "petition_copies_for_each_party": "yes",
+        "court_fees_paid": "yes",
+        "party_lacks_capacity": "no",
+        "plaintiff_acts_through_representative": "no",
+        "plaintiff_has_standing": "yes",
+        "plaintiff_has_interest": "yes",
+        "suit_authorisation_required": "no",
+        "foreign_language_documents": "no",
+        "petition_in_arabic": "yes"
+      },
+      "expect": {
+        "section": "realEstate",
+        "findings": [
+          { "ref": "n1", "effect": "none" },
+          { "ref": "n2", "effect": "none" },
+          { "ref": "n4", "effect": "none" }
+        ],
+        "questions": []
+      }
+    },
+    {
+      "id": "ex10", "by": "derivationA",
+      "title": "Look-alikes: the occupier is a former tenant and also claims a co-ownership share.",
+      "petitionDate": "2026-11-19",
+      "slots": { "requests": ["eviction"], "occupier_former_tenant": "yes", "occupier_is_co_owner": "yes", "dispute_is_family": "no" },
+      "expect": { "findings": [ { "ref": "n1", "effect": "warn" }, { "ref": "n2", "effect": "warn" }, { "ref": "n4", "effect": "none" } ] }
+    },
+    {
+      "id": "ex11", "by": "derivationA",
+      "title": "Look-alike: a divorced custodian in the marital home.",
+      "petitionDate": "2026-11-19",
+      "slots": { "requests": ["eviction"], "dispute_is_family": "yes" },
+      "expect": { "findings": [ { "ref": "n4", "effect": "warn" } ] }
+    },
+    {
+      "id": "ex13", "by": "derivationA",
+      "title": "Court without a real-property section: the civil section is proposed.",
+      "petitionDate": "2026-11-19",
+      "slots": { "requests": ["eviction"], "court_has_section_for_matter": "no" },
+      "expect": { "section": "civil", "findings": [] }
+    },
+    {
+      "id": "ex14", "by": "derivationA",
+      "title": "Nothing known: the boundaries ask; the real-property section is proposed.",
+      "petitionDate": "2026-11-19",
+      "slots": { "requests": ["eviction", "damages"] },
+      "expect": {
+        "section": "realEstate",
+        "findings": [
+          { "ref": "n1", "effect": "ask" },
+          { "ref": "n2", "effect": "ask" },
+          { "ref": "n4", "effect": "ask" }
+        ]
+      }
+    },
+    {
+      "id": "ex15", "by": "derivationA",
+      "title": "Former tenancy unknown, occupier not a co-owner, no family dispute: only the tenancy question is asked.",
+      "petitionDate": "2026-11-19",
+      "slots": { "requests": ["eviction"], "occupier_former_tenant": "unknown", "occupier_is_co_owner": "no", "dispute_is_family": "no", "court_has_section_for_matter": "yes" },
+      "expect": {
+        "section": "realEstate",
+        "findings": [
+          { "ref": "n1", "effect": "ask" },
+          { "ref": "n2", "effect": "none" },
+          { "ref": "n4", "effect": "none" }
+        ]
+      }
+    },
+    {
+      "id": "ex16", "by": "derivationA",
+      "title": "Squatter who entered without any agreement, court with sections: no look-alike fires.",
+      "petitionDate": "2026-11-19",
+      "slots": { "requests": ["eviction", "damages", "provisional_execution"], "occupier_former_tenant": "no", "occupier_is_co_owner": "no", "dispute_is_family": "no", "court_has_section_for_matter": "yes" },
+      "expect": {
+        "section": "realEstate",
+        "findings": [
+          { "ref": "n1", "effect": "none" },
+          { "ref": "n2", "effect": "none" },
+          { "ref": "n4", "effect": "none" }
+        ]
+      }
+    }
+  ]
+}

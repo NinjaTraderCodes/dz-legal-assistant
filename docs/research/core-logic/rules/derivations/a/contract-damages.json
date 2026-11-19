@@ -1,0 +1,1030 @@
+{
+  "schemaVersion": "1.0",
+  "kind": "claim",
+  "id": "contract-damages",
+  "label": {
+    "ar": "تعويض عن الإخلال بالتزام تعاقدي",
+    "en": "Damages for breach of contract"
+  },
+  "verified": false,
+  "stage": "derivationA",
+  "derivedBy": {
+    "role": "derivationA",
+    "model": "claude-opus-5-5",
+    "date": "2026-11-19"
+  },
+  "area": "civil",
+  "imports": [
+    {
+      "module": "formal-notice",
+      "blocks": ["b1", "b2", "b4", "b5", "b6", "b7", "b8", "b9", "b10", "b13", "b15", "b36", "p1", "p3", "doc1", "doc2", "doc3", "doc4", "n1", "n2", "n4", "n5", "n10", "n11", "n12"],
+      "how": {
+        "ar": "لا يستحق التعويض إلا بعد إعذار المدين ما لم يوجد نص مخالف أو حالة إعفاء؛ تستورد الدعوى خطوة الإعذار قبل طلب التعويض (p1)، وخطوته قبل طلب التسليم أو الأداء إن أضيف (p3)، ووثائقه وحدوده، وكذا نصوص قوة العقد والتعويض الاتفاقي والتأخر في دفع مبلغ نقدي.",
+        "en": "Compensation is due only after notice to the debtor unless a text or an exemption provides otherwise; the claim imports the notice step before a damages request (p1), the step before a delivery or payment request if one is added (p3), the notice documents and boundaries, and the statements on the binding force of the contract, agreed damages and delay in paying a sum of money."
+      }
+    },
+    {
+      "module": "periods",
+      "blocks": ["b11", "b23", "b27", "d1", "d6", "d7", "d8", "doc2", "doc3"],
+      "how": {
+        "ar": "دعوى التعويض العقدي تخضع للتقادم العام من يوم استحقاق الدين ولمدد التقادم الخاصة إن كان الدين من الحقوق المذكورة فيها، وتحسب المدد وتثار وفق أحكام هذه الوحدة؛ والنصوص المستوردة تحمل حساب المدد الخاصة بهذه الدعوى ومن يثير التقادم.",
+        "en": "A contractual damages claim is subject to the general limitation from the day the debt falls due and to the special periods where the debt is one of the rights they name, counted and raised under this module; the imported statements carry the counting of this claim's own periods and who raises limitation."
+      }
+    },
+    {
+      "module": "court-sections",
+      "blocks": ["section"],
+      "how": {
+        "ar": "القسم المدني أصلا، والتجاري إن كان النزاع تجاريا، والعقاري إن تعلق بعقار أو إيجار عقار، وفق قاعدة الأقسام.",
+        "en": "The civil section as a rule, the commercial section for a commercial dispute, and the real-estate section for real property or a lease of an immovable, under the section rule."
+      }
+    },
+    {
+      "module": "territorial-jurisdiction",
+      "blocks": ["t1", "t2", "t3", "t4", "t7", "t8", "t26", "t28", "t30", "n1", "n2", "n4", "n11"],
+      "how": {
+        "ar": "محكمة موطن المدعى عليه أصلا، ومحكمة مكان إبرام الاتفاق أو تنفيذه في التوريدات والأشغال، ومكان الوعد أو التسليم أو الوفاء في المواد التجارية، ومحكمة موقع العقار في إيجار العقارات والأشغال المتعلقة بها، وحكم شرط الاختصاص والمدعى عليه المقيم في الخارج.",
+        "en": "The court of the defendant's domicile as a rule; the place the agreement was made or performed for supplies and works; the place of the promise, delivery or payment in commercial matters; the place of the property for leases of immovables and works on them; and the rules on jurisdiction clauses and defendants abroad."
+      }
+    },
+    {
+      "module": "ordinary-court-exits",
+      "blocks": ["x1", "x4", "x6", "n2", "n3", "n5", "n6"],
+      "how": {
+        "ar": "يخرج النزاع من المحاكم العادية إذا كان أحد أطرافه شخصا عموميا إداريا، أو كان من مواد المحكمة التجارية المتخصصة، ويرتبط بالدعوى الجزائية إن قامت على الوقائع نفسها؛ ويحتمل شرط التحكيم في العقد.",
+        "en": "The dispute leaves the ordinary courts when a public administrative person is a party or it falls in a matter of the specialised commercial court, and is tied to criminal proceedings on the same facts; the contract may carry an arbitration clause."
+      }
+    },
+    {
+      "module": "petition-formal-elements",
+      "blocks": ["p1", "p2", "p3", "p4", "p5", "p6", "p7", "p8", "p9", "p10", "p11", "p12", "p13", "p14", "p15", "p19", "doc1", "doc2", "doc3", "doc4", "doc6", "doc7"],
+      "how": {
+        "ar": "بيانات العريضة وشروط الصفة والمصلحة والأهلية والتمثيل والرسوم واللغة تسري على هذه الدعوى كغيرها.",
+        "en": "The petition's particulars and the conditions of standing, interest, capacity, representation, fees and language apply to this claim as to any other."
+      }
+    },
+    {
+      "module": "conciliation-mediation",
+      "blocks": ["p1", "doc1"],
+      "how": {
+        "ar": "إذا كان العقد من مواد المحكمة التجارية المتخصصة (كعقد مع بنك أو تأمين مرتبط بنشاط تجاري أو تجارة دولية) سبق رفع الدعوى صلح ومحضر عدم صلح.",
+        "en": "When the contract falls in a matter of the specialised commercial court (a contract with a bank, insurance linked to commercial activity, international trade), a conciliation and its record of non-conciliation come before filing."
+      }
+    },
+    {
+      "module": "land-registry-publication",
+      "blocks": ["p1", "doc1"],
+      "how": {
+        "ar": "إذا تعلق العقد بعقار أو بحق عيني عقاري مشهر، كبيع عقار أو أشغال عليه، تنطبق قاعدة إشهار العريضة.",
+        "en": "When the contract concerns a published property or real right, such as a sale of land or works on it, the rule on publishing the petition applies."
+      }
+    }
+  ],
+  "slots": [
+    "requests",
+    "notice_served",
+    "notice_date",
+    "notice_means",
+    "contract_date",
+    "some_goods_delivered",
+    "goods_actually_delivered_on",
+    "sold_thing_defective",
+    "seller_concealed_defect_fraudulently",
+    "decennial_defect",
+    "collapse_or_defect_discovered_on",
+    "obligation_is_tort_compensation",
+    "dispute_is_social",
+    "commercial_lease"
+  ],
+  "proposedSlots": [
+    {
+      "id": "sold_thing_defective",
+      "type": "yesNoUnknown",
+      "question": {
+        "ar": "هل يقوم طلب التعويض على عيب في المبيع ينقص من قيمته أو من الانتفاع به، أو على تخلف صفة تعهد البائع بوجودها فيه وقت التسليم؟",
+        "en": "Does the damages claim rest on a defect in the thing sold that lessens its value or use, or on its lacking a quality the seller promised at delivery?"
+      },
+      "why": "Deadline d2 and document doc4 read it: civil-code 379 ¶1 makes the seller answer for these defects, and 383 ¶1 sets a one-year period from delivery for the warranty claim."
+    },
+    {
+      "id": "seller_concealed_defect_fraudulently",
+      "type": "yesNoUnknown",
+      "question": {
+        "ar": "هل أخفى البائع العيب غشا منه؟",
+        "en": "Did the seller conceal the defect fraudulently?"
+      },
+      "why": "Deadline d2 reads it: civil-code 383 ¶2 bars the seller from relying on the one-year period when he concealed the defect fraudulently."
+    },
+    {
+      "id": "decennial_defect",
+      "type": "yesNoUnknown",
+      "question": {
+        "ar": "هل يتعلق الطلب بتهدم كلي أو جزئي، أو بعيب يهدد متانة وسلامة بناء أو منشأة ثابتة شيدها المدعى عليه مقاولا أو مهندسا معماريا، وقع خلال مدة الضمان المحسوبة من تسلم العمل نهائيا؟",
+        "en": "Does the claim concern a total or partial collapse, or a defect threatening the solidity and safety, of a building or fixed structure the defendant built as contractor or architect, arising within the guarantee period counted from final acceptance of the work?"
+      },
+      "why": "Deadline d3 and document doc5 read it: civil-code 554 ¶1 and ¶2 set the joint guarantee of architect and contractor, and 557 ¶1 the period for the warranty claim."
+    },
+    {
+      "id": "collapse_or_defect_discovered_on",
+      "type": "date",
+      "question": {
+        "ar": "ما تاريخ حصول التهدم أو اكتشاف العيب؟",
+        "en": "On what date did the collapse occur, or the defect come to light?"
+      },
+      "why": "Deadline d3 starts from it: civil-code 557 ¶1 runs the period from the collapse or the discovery of the defect."
+    }
+  ],
+  "basis": [
+    {
+      "id": "b1",
+      "role": "basis",
+      "required": true,
+      "cite": { "code": "civil-code", "article": "176", "paragraphs": [1] },
+      "says": {
+        "ar": "إذا استحال على المدين التنفيذ العيني حكم عليه بتعويض الضرر الناجم عن عدم التنفيذ ما لم يثبت أن الاستحالة نشأت عن سبب لا يد له فيه، ويحكم عليه كذلك بالتعويض إذا تأخر في التنفيذ.",
+        "en": "A debtor for whom performance in kind has become impossible is ordered to compensate the damage from non-performance unless he proves the impossibility arose from a cause beyond his control; he is likewise ordered to compensate when he is late in performing."
+      }
+    },
+    {
+      "id": "b2",
+      "role": "damages",
+      "cite": { "code": "civil-code", "article": "182", "paragraphs": [1] },
+      "says": {
+        "ar": "إذا لم يقدر التعويض في العقد أو في القانون قدره القاضي، ويشمل ما لحق الدائن من خسارة وما فاته من كسب متى كان نتيجة طبيعية لعدم الوفاء أو للتأخر فيه، أي ضررا لم يكن في استطاعة الدائن توقيه ببذل جهد معقول.",
+        "en": "When neither the contract nor the law fixes the compensation, the judge assesses it; it covers the loss suffered and the profit lost when they are the natural result of the non-performance or the delay, that is damage the creditor could not have avoided by reasonable effort."
+      }
+    },
+    {
+      "id": "b3",
+      "role": "limit",
+      "cite": { "code": "civil-code", "article": "182", "paragraphs": [2] },
+      "says": {
+        "ar": "إذا كان مصدر الالتزام العقد فلا يلتزم المدين الذي لم يرتكب غشا أو خطأ جسيما إلا بتعويض الضرر الذي كان يمكن توقعه عادة وقت التعاقد.",
+        "en": "Where the obligation arises from a contract, a debtor who committed no fraud or gross fault owes only the damage that could normally be foreseen when the contract was made."
+      }
+    },
+    {
+      "id": "b4",
+      "role": "basis",
+      "cite": { "code": "civil-code", "article": "107", "paragraphs": [1] },
+      "says": {
+        "ar": "يجب تنفيذ العقد طبقا لما اشتمل عليه وبحسن نية.",
+        "en": "The contract must be performed according to its terms and in good faith."
+      }
+    },
+    {
+      "id": "b5",
+      "role": "basis",
+      "cite": { "code": "civil-code", "article": "107", "paragraphs": [2] },
+      "says": {
+        "ar": "لا يقتصر العقد على ما ورد فيه بل يشمل ما هو من مستلزماته وفقا للقانون والعرف والعدالة بحسب طبيعة الالتزام.",
+        "en": "The contract binds not only to what it states but also to what follows from it by law, custom and equity, according to the nature of the obligation."
+      }
+    },
+    {
+      "id": "b6",
+      "role": "limit",
+      "cite": { "code": "civil-code", "article": "107", "paragraphs": [3] },
+      "says": {
+        "ar": "إذا طرأت حوادث استثنائية عامة غير متوقعة جعلت تنفيذ الالتزام التعاقدي مرهقا للمدين يهدده بخسارة فادحة دون أن يصبح مستحيلا، جاز للقاضي أن يرد الالتزام المرهق إلى الحد المعقول، ويبطل كل اتفاق على خلاف ذلك.",
+        "en": "When general, exceptional and unforeseeable events make performance of a contractual obligation, though not impossible, so onerous that it threatens the debtor with heavy loss, the judge may reduce the onerous obligation to a reasonable level; any agreement to the contrary is void."
+      }
+    },
+    {
+      "id": "b7",
+      "role": "damages",
+      "cite": { "code": "civil-code", "article": "177", "paragraphs": [1] },
+      "says": {
+        "ar": "للقاضي أن ينقص التعويض أو لا يحكم به إذا اشترك الدائن بخطئه في إحداث الضرر أو زاد فيه.",
+        "en": "The judge may reduce the compensation, or award none, when the creditor's own fault contributed to the damage or increased it."
+      }
+    },
+    {
+      "id": "b8",
+      "role": "limit",
+      "cite": { "code": "civil-code", "article": "178", "paragraphs": [2] },
+      "says": {
+        "ar": "يجوز الاتفاق على إعفاء المدين من المسؤولية عن عدم تنفيذ التزامه التعاقدي إلا ما ينشأ عن غشه أو خطئه الجسيم، وله أن يشترط إعفاءه من غش أو خطأ جسيم يقع ممن يستخدمهم في التنفيذ.",
+        "en": "The parties may agree to exempt the debtor from liability for non-performance of his contractual obligation, except for his own fraud or gross fault; he may stipulate exemption for fraud or gross fault of those he employs in performing."
+      }
+    },
+    {
+      "id": "b9",
+      "role": "damages",
+      "cite": { "code": "civil-code", "article": "184", "paragraphs": [1] },
+      "says": {
+        "ar": "لا يستحق التعويض المحدد في الاتفاق إذا أثبت المدين أن الدائن لم يلحقه أي ضرر.",
+        "en": "Agreed damages are not due if the debtor proves the creditor suffered no damage."
+      }
+    },
+    {
+      "id": "b10",
+      "role": "damages",
+      "cite": { "code": "civil-code", "article": "184", "paragraphs": [2] },
+      "says": {
+        "ar": "للقاضي أن يخفض التعويض المتفق عليه إذا أثبت المدين أن التقدير كان مفرطا أو أن الالتزام الأصلي نفذ في جزء منه.",
+        "en": "The judge may reduce agreed damages if the debtor proves the figure was excessive or the main obligation was partly performed."
+      }
+    },
+    {
+      "id": "b11",
+      "role": "damages",
+      "cite": { "code": "civil-code", "article": "185", "paragraphs": [1] },
+      "says": {
+        "ar": "إذا جاوز الضرر التعويض المتفق عليه فلا يطالب الدائن بأكثر منه إلا إذا أثبت غش المدين أو خطأه الجسيم.",
+        "en": "When the damage exceeds the agreed damages, the creditor may claim more only by proving the debtor's fraud or gross fault."
+      }
+    },
+    {
+      "id": "b12",
+      "role": "damages",
+      "cite": { "code": "civil-code", "article": "182 مكرر", "paragraphs": [1] },
+      "says": {
+        "ar": "يشمل التعويض عن الضرر المعنوي كل مساس بالحرية أو الشرف أو السمعة.",
+        "en": "Compensation for moral damage covers any harm to liberty, honour or reputation."
+      }
+    },
+    {
+      "id": "b13",
+      "role": "proof",
+      "cite": { "code": "civil-code", "article": "323", "paragraphs": [1] },
+      "says": {
+        "ar": "على الدائن إثبات الالتزام وعلى المدين إثبات التخلص منه.",
+        "en": "The creditor proves the obligation; the debtor proves his release from it."
+      }
+    },
+    {
+      "id": "b14",
+      "role": "proof",
+      "cite": { "code": "civil-code", "article": "333", "paragraphs": [1] },
+      "says": {
+        "ar": "في غير المواد التجارية لا يجوز الإثبات بالشهود في وجود التصرف القانوني أو انقضائه إذا زادت قيمته على المبلغ الذي تحدده الفقرة أو كان غير محدد القيمة، ما لم يوجد نص يقضي بغير ذلك.",
+        "en": "Outside commercial matters, a legal act worth more than the sum the paragraph fixes, or of undetermined value, cannot be proved, nor its extinction, by witnesses, unless a text provides otherwise."
+      }
+    },
+    {
+      "id": "b15",
+      "role": "proof",
+      "cite": { "code": "commercial-code", "article": "30", "paragraphs": [1, 7] },
+      "says": {
+        "ar": "يثبت العقد التجاري بطرق منها البينة أو أية وسيلة أخرى إذا رأت المحكمة وجوب قبولها.",
+        "en": "A commercial contract may be proved by means that include witnesses or any other means the court sees fit to accept."
+      }
+    },
+    {
+      "id": "b16",
+      "role": "limit",
+      "cite": { "code": "civil-code", "article": "172", "paragraphs": [1] },
+      "says": {
+        "ar": "في الالتزام بعمل يقتضي المحافظة على الشيء أو إدارته أو توخي الحيطة، يكون المدين قد وفى إذا بذل عناية الشخص العادي ولو لم يتحقق الغرض، ما لم ينص القانون أو الاتفاق على خلاف ذلك.",
+        "en": "In an obligation to act that calls for keeping or managing a thing or for taking care, the debtor has performed if he took the care of an ordinary person, even if the aim was not reached, unless the law or the agreement provides otherwise."
+      }
+    },
+    {
+      "id": "b17",
+      "role": "limit",
+      "cite": { "code": "civil-code", "article": "172", "paragraphs": [2] },
+      "says": {
+        "ar": "يبقى المدين في كل حال مسؤولا عن غشه أو خطئه الجسيم.",
+        "en": "The debtor remains liable in any case for his fraud or gross fault."
+      }
+    },
+    {
+      "id": "b18",
+      "role": "basis",
+      "cite": { "code": "civil-code", "article": "364", "paragraphs": [1] },
+      "says": {
+        "ar": "يلتزم البائع بتسليم المبيع للمشتري في الحالة التي كان عليها وقت البيع.",
+        "en": "The seller must deliver the thing sold to the buyer in the state it was in at the time of the sale."
+      }
+    },
+    {
+      "id": "b19",
+      "role": "basis",
+      "cite": { "code": "civil-code", "article": "365", "paragraphs": [1] },
+      "says": {
+        "ar": "إذا عين في العقد مقدار المبيع كان البائع مسؤولا عما نقص منه بحسب العرف، ولا يطلب المشتري الفسخ لنقص إلا إذا كان بالغ الأهمية.",
+        "en": "When the contract states the quantity sold, the seller answers for any shortfall as custom provides; the buyer may seek rescission for a shortfall only if it is serious."
+      }
+    },
+    {
+      "id": "b20",
+      "role": "limit",
+      "cite": { "code": "civil-code", "article": "366", "paragraphs": [1] },
+      "says": {
+        "ar": "إذا وجد في قدر المبيع نقص أو زيادة سقط بالتقادم حق المشتري في طلب إنقاص الثمن أو فسخ العقد وحق البائع في طلب تكملة الثمن بمضي سنة من التسليم الفعلي.",
+        "en": "When the quantity sold is short or in excess, the buyer's right to a price reduction or rescission and the seller's right to a price supplement are time-barred one year after actual delivery."
+      }
+    },
+    {
+      "id": "b21",
+      "role": "basis",
+      "cite": { "code": "civil-code", "article": "379", "paragraphs": [1] },
+      "says": {
+        "ar": "يضمن البائع خلو المبيع من الصفات التي تعهد بوجودها وقت التسليم إذا تخلفت، ومن العيب الذي ينقص من قيمته أو من الانتفاع به، ولو لم يكن عالما به.",
+        "en": "The seller answers for the absence of qualities he promised at delivery and for defects that lessen the thing's value or use, even if he did not know of them."
+      }
+    },
+    {
+      "id": "b22",
+      "role": "limit",
+      "cite": { "code": "civil-code", "article": "383", "paragraphs": [1] },
+      "says": {
+        "ar": "تسقط بالتقادم دعوى الضمان بمضي سنة من يوم تسليم المبيع ولو لم يكتشف المشتري العيب إلا بعد ذلك، ما لم يلتزم البائع بالضمان مدة أطول.",
+        "en": "The warranty claim is time-barred one year after delivery of the thing sold, even if the buyer found the defect only later, unless the seller undertook a longer warranty."
+      }
+    },
+    {
+      "id": "b23",
+      "role": "limit",
+      "cite": { "code": "civil-code", "article": "383", "paragraphs": [2] },
+      "says": {
+        "ar": "لا يتمسك البائع بهذه المدة إذا ثبت أنه أخفى العيب غشا منه.",
+        "en": "The seller may not rely on this period if he is shown to have concealed the defect fraudulently."
+      }
+    },
+    {
+      "id": "b24",
+      "role": "limit",
+      "cite": { "code": "civil-code", "article": "554", "paragraphs": [1] },
+      "says": {
+        "ar": "يضمن المهندس المعماري والمقاول متضامنين التهدم الكلي أو الجزئي فيما شيداه من مبان أو منشآت ثابتة، والعيوب التي تهدد متانة البناء وسلامته، خلال مدة الضمان التي تحددها الفقرة.",
+        "en": "Architect and contractor jointly guarantee total or partial collapse of the buildings or fixed structures they built, and defects threatening their solidity and safety, during the guarantee period the paragraph sets."
+      }
+    },
+    {
+      "id": "b25",
+      "role": "limit",
+      "cite": { "code": "civil-code", "article": "554", "paragraphs": [2] },
+      "says": {
+        "ar": "تبدأ مدة الضمان من وقت تسلم العمل نهائيا.",
+        "en": "The guarantee period starts from final acceptance of the work."
+      }
+    },
+    {
+      "id": "b26",
+      "role": "limit",
+      "cite": { "code": "civil-code", "article": "557", "paragraphs": [1] },
+      "says": {
+        "ar": "تتقادم دعاوى ضمان المهندس المعماري والمقاول بانقضاء ثلاث سنوات من حصول التهدم أو اكتشاف العيب.",
+        "en": "Warranty claims against the architect and the contractor are time-barred three years after the collapse or the discovery of the defect."
+      }
+    },
+    {
+      "id": "b27",
+      "role": "procedure",
+      "cite": { "code": "civil-code", "article": "174", "paragraphs": [1] },
+      "says": {
+        "ar": "إذا كان التنفيذ العيني غير ممكن أو غير ملائم إلا إذا قام به المدين نفسه، جاز للدائن الحصول على حكم بإلزامه به وبغرامة إجبارية إن امتنع.",
+        "en": "When performance in kind is possible or fitting only if the debtor himself performs, the creditor may obtain a judgment ordering him to do so, with a penalty payment if he refuses."
+      }
+    },
+    {
+      "id": "b28",
+      "role": "procedure",
+      "cite": { "code": "civil-code", "article": "170", "paragraphs": [1] },
+      "says": {
+        "ar": "في الالتزام بعمل، إذا لم ينفذه المدين جاز للدائن أن يطلب من القاضي ترخيصا بتنفيذه على نفقة المدين متى كان ممكنا.",
+        "en": "In an obligation to act, when the debtor does not perform, the creditor may ask the judge for leave to have it performed at the debtor's expense, where possible."
+      }
+    },
+    {
+      "id": "b29",
+      "role": "damages",
+      "cite": { "code": "civil-code", "article": "175", "paragraphs": [1] },
+      "says": {
+        "ar": "إذا تم التنفيذ العيني أو أصر المدين على رفضه حدد القاضي التعويض مراعيا الضرر الذي أصاب الدائن والعنت الذي بدا من المدين.",
+        "en": "When performance in kind has been made, or the debtor persists in refusing it, the judge fixes the compensation, taking into account the creditor's damage and the obstinacy the debtor showed."
+      }
+    },
+    {
+      "id": "b30",
+      "role": "procedure",
+      "cite": { "code": "cpca", "article": "419", "paragraphs": [1] },
+      "says": {
+        "ar": "يتحمل الخصم الذي خسر الدعوى مصاريفها، ما لم يقرر القاضي مسببا تحميلها كليا أو جزئيا لخصم آخر.",
+        "en": "The losing party bears the costs of the claim, unless the judge, giving reasons, puts all or part of them on another party."
+      }
+    },
+    {
+      "id": "b31",
+      "role": "procedure",
+      "cite": { "code": "cpca", "article": "323", "paragraphs": [2] },
+      "says": {
+        "ar": "يؤمر بالنفاذ المعجل عند طلبه، رغم المعارضة أو الاستئناف، كلما حكم بناء على عقد رسمي أو وعد معترف به أو حكم سابق حائز لقوة الشيء المقضي به.",
+        "en": "Provisional execution, despite opposition or appeal, is ordered on request whenever the judgment rests on an official deed, an acknowledged promise or an earlier judgment with the force of res judicata."
+      }
+    },
+    {
+      "id": "b32",
+      "role": "procedure",
+      "cite": { "code": "cpca", "article": "323", "paragraphs": [3] },
+      "says": {
+        "ar": "في غير ذلك من الأحوال يجوز للقاضي أن يأمر بالنفاذ المعجل في حالة الاستعجال بكفالة أو بدونها.",
+        "en": "In every other case the judge may order provisional execution in urgency, with or without security."
+      }
+    },
+    {
+      "id": "b33",
+      "role": "limit",
+      "cite": { "code": "cpca", "article": "500", "paragraphs": [1, 3] },
+      "says": {
+        "ar": "يختص القسم الاجتماعي اختصاصا مانعا بتنفيذ عقود العمل والتكوين والتمهين وتعليقها وإنهائها.",
+        "en": "The social section has exclusive jurisdiction over the performance, suspension and termination of employment, training and apprenticeship contracts."
+      }
+    }
+  ],
+  "elements": [
+    {
+      "id": "e1",
+      "toProve": {
+        "ar": "قيام عقد صحيح بين المدعي والمدعى عليه يرتب على المدعى عليه الالتزام الذي يدعي المدعي الإخلال به.",
+        "en": "A valid contract between plaintiff and defendant that puts on the defendant the obligation said to be breached."
+      },
+      "factsToState": [
+        { "ar": "نوع العقد (بيع، مقاولة، نقل، إيجار، أو غيره) وتاريخ إبرامه وأطرافه ومقابله.", "en": "The kind of contract (sale, works, transport, lease or other), its date, its parties and its price." },
+        { "ar": "الالتزام المتفق عليه على المدعى عليه وموعد تنفيذه.", "en": "The obligation agreed on the defendant's side and the date it was due." },
+        { "ar": "أن المدعي نفذ ما عليه أو كان مستعدا لتنفيذه.", "en": "That the plaintiff performed his own side, or stood ready to." }
+      ],
+      "events": ["contract_concluded"],
+      "slots": ["contract_date"],
+      "burden": "plaintiff",
+      "proof": [
+        { "means": "written contract or other writing", "basis": ["b13", "b14"], "note": { "ar": "في غير المواد التجارية لا يثبت بالشهود تصرف تزيد قيمته على المبلغ الذي تحدده المادة 333 أو كان غير محدد القيمة.", "en": "Outside commercial matters, an act worth more than the sum article 333 fixes, or of undetermined value, cannot be proved by witnesses." } },
+        { "means": "any means in a commercial contract", "basis": ["b15"], "note": { "ar": "العقد التجاري يثبت بالسندات والفاتورة المقبولة والرسائل والدفاتر وبالبينة أو بأية وسيلة تقبلها المحكمة.", "en": "A commercial contract is proved by deeds, an accepted invoice, letters, books, witnesses or any means the court accepts." } }
+      ],
+      "basis": ["b13", "b14", "b15", "b4", "b5"]
+    },
+    {
+      "id": "e2",
+      "toProve": {
+        "ar": "إخلال المدعى عليه بالتزامه التعاقدي: عدم التنفيذ أو التأخر فيه أو التنفيذ المعيب.",
+        "en": "The defendant's breach of his contractual obligation: non-performance, late performance or defective performance."
+      },
+      "factsToState": [
+        { "ar": "الإخلال: التأخر عن الموعد المتفق عليه وتاريخه، أو عدم التسليم، أو توقف الأشغال أو الإخلال بتنفيذها، أو إخلال آخر.", "en": "The breach: lateness against the agreed date and its date, failure to deliver, stopping or botching the works, or another breach." },
+        { "ar": "أن التنفيذ العيني أصبح غير ممكن أو أن المدين تأخر فيه.", "en": "That performance in kind became impossible or that the debtor was late in it." }
+      ],
+      "events": ["delivery_late", "delivery_missing", "work_stopped", "other"],
+      "burden": "plaintiff",
+      "proof": [
+        { "means": "the contract and evidence of non-performance or delay", "basis": ["b13", "b1"], "note": { "ar": "يثبت الدائن الالتزام، ويقع على المدين إثبات التخلص منه أو السبب الذي لا يد له فيه.", "en": "The creditor proves the obligation; the debtor must prove his release or a cause beyond his control." } },
+        { "means": "obligation of care", "basis": ["b16", "b17"], "note": { "ar": "في الالتزام ببذل عناية يبرأ المدين إذا بذل عناية الشخص العادي، ويبقى مسؤولا عن غشه أو خطئه الجسيم.", "en": "In an obligation of care the debtor is released if he took an ordinary person's care, and stays liable for fraud or gross fault." } }
+      ],
+      "basis": ["b1", "b4", "b13", "b16", "b17", "b18", "b19"]
+    },
+    {
+      "id": "e3",
+      "toProve": {
+        "ar": "الضرر الذي لحق المدعي ومقداره: الخسارة اللاحقة والكسب الفائت، والضرر المعنوي إن وجد، مما كان يمكن توقعه وقت التعاقد ما لم يرتكب المدين غشا أو خطأ جسيما.",
+        "en": "The damage the plaintiff suffered and its amount: loss incurred and profit lost, and any moral damage, within what could be foreseen at contracting unless the debtor committed fraud or gross fault."
+      },
+      "factsToState": [
+        { "ar": "عناصر الضرر ومقدار كل منها بالدينار.", "en": "Each head of damage and its amount in dinars." },
+        { "ar": "أن الضرر كان متوقعا وقت التعاقد، أو أن المدين ارتكب غشا أو خطأ جسيما.", "en": "That the damage was foreseeable at contracting, or that the debtor committed fraud or gross fault." },
+        { "ar": "مقدار التعويض المتفق عليه في العقد إن وجد.", "en": "The damages fixed in the contract, if any." }
+      ],
+      "burden": "plaintiff",
+      "proof": [
+        { "means": "invoices, receipts, expert report", "basis": ["b2"] }
+      ],
+      "basis": ["b2", "b3", "b12", "b9", "b10", "b11"]
+    },
+    {
+      "id": "e4",
+      "toProve": {
+        "ar": "أن الضرر نتيجة طبيعية للإخلال لم يكن في استطاعة المدعي توقيه ببذل جهد معقول.",
+        "en": "That the damage is the natural result of the breach, which the plaintiff could not avoid by reasonable effort."
+      },
+      "factsToState": [
+        { "ar": "العلاقة بين الإخلال والضرر، وما بذله المدعي لتوقي الضرر أو الحد منه.", "en": "The link between the breach and the damage, and what the plaintiff did to avoid or limit it." }
+      ],
+      "burden": "plaintiff",
+      "basis": ["b2", "b7"]
+    },
+    {
+      "id": "e5",
+      "toProve": {
+        "ar": "إعذار المدعى عليه قبل المطالبة بالتعويض، أو قيام حالة تعفي من الإعذار.",
+        "en": "Notice to the defendant before claiming damages, or a case that dispenses with it."
+      },
+      "factsToState": [
+        { "ar": "تاريخ الإعذار ووسيلته واستمرار المدعى عليه في الإخلال بعده، أو حالة الإعفاء.", "en": "The date and means of the notice and the defendant's continued breach after it, or the exemption." }
+      ],
+      "events": ["notice_served"],
+      "slots": ["notice_served", "notice_date", "notice_means"],
+      "burden": "plaintiff",
+      "basis": ["b1"]
+    }
+  ],
+  "requests": [
+    {
+      "id": "r1",
+      "kind": "damages",
+      "accessory": false,
+      "text": {
+        "ar": "إلزام المدعى عليه بأن يؤدي للمدعي تعويضا قدره (...) دج جبرا للضرر اللاحق به من جراء الإخلال بالتزامه التعاقدي المتمثل في (...)",
+        "en": "Order the defendant to pay the plaintiff (...) DZD in compensation for the damage caused by the breach of his contractual obligation, namely (...)"
+      },
+      "amount": true,
+      "basis": ["b1", "b2", "b3"]
+    },
+    {
+      "id": "r2",
+      "kind": "other",
+      "accessory": false,
+      "text": {
+        "ar": "إلزام المدعى عليه بتنفيذ التزامه التعاقدي المتمثل في (...) في أجل (...)، أو الترخيص للمدعي بتنفيذه على نفقة المدعى عليه",
+        "en": "Order the defendant to perform his contractual obligation, namely (...), within (...), or authorise the plaintiff to have it performed at the defendant's expense"
+      },
+      "amount": false,
+      "basis": ["b28", "b4"]
+    },
+    {
+      "id": "r3",
+      "kind": "other",
+      "accessory": true,
+      "text": {
+        "ar": "إلزام المدعى عليه بالتنفيذ تحت غرامة إجبارية قدرها (...) دج عن كل يوم تأخير",
+        "en": "Order performance under a penalty payment of (...) DZD for each day of delay"
+      },
+      "amount": true,
+      "basis": ["b27", "b29"]
+    },
+    {
+      "id": "r4",
+      "kind": "other",
+      "accessory": true,
+      "text": {
+        "ar": "تحميل المدعى عليه المصاريف القضائية",
+        "en": "Order the defendant to bear the costs"
+      },
+      "amount": false,
+      "basis": ["b30"]
+    },
+    {
+      "id": "r5",
+      "kind": "provisional_execution",
+      "accessory": true,
+      "text": {
+        "ar": "شمول الحكم بالنفاذ المعجل",
+        "en": "Order provisional execution of the judgment"
+      },
+      "amount": false,
+      "basis": ["b31", "b32"]
+    }
+  ],
+  "deadlines": [
+    {
+      "id": "d1",
+      "kind": "limitation",
+      "period": { "value": 1, "unit": "year" },
+      "startsFrom": {
+        "slot": "goods_actually_delivered_on",
+        "event": "goods_delivered",
+        "description": { "ar": "يوم تسليم المبيع تسليما فعليا.", "en": "The day the thing sold was actually delivered." }
+      },
+      "counting": { "method": "excludeFirstDay", "extendToWorkingDay": false, "basis": ["periods.b11", "periods.b27"] },
+      "raisedBy": "pleaOnly",
+      "when": { "slot": "some_goods_delivered", "is": "yes" },
+      "effectWhenExpired": "warn",
+      "warnBandDays": 16,
+      "message": {
+        "ar": "المادة 366 من القانون المدني: إذا وجد في قدر المبيع نقص سقط بالتقادم حق المشتري في طلب إنقاص الثمن أو فسخ العقد بمضي سنة من التسليم الفعلي، ولا تقضي المحكمة بالتقادم تلقائيا (المادة 321). هل يشمل هذا الأجل طلب التعويض عن النقص: مسألة غير محسومة. تحقق من تاريخ التسليم الفعلي ومن طبيعة الإخلال (نقص في المقدار أو عيب في الصفة).",
+        "en": "Civil Code article 366: when the quantity sold is short, the buyer's right to a price reduction or rescission is time-barred one year after actual delivery, and the court does not apply limitation of its own motion (article 321). Whether this period reaches a damages claim for the shortfall is not settled. Check the date of actual delivery and the kind of breach (short quantity or wrong quality)."
+      },
+      "basis": ["b19", "b20", "periods.b23", "periods.b11"],
+      "extract": { "period": "مضي سنة", "sanction": "يسقطان بالتقادم" },
+      "interpretive": true,
+      "interpretiveNote": "Article 366 names the buyer's claims for a price reduction and for rescission, not a damages claim; and the slot some_goods_delivered also covers delivery not in the agreed state or qualities, which article 366 does not reach. Applying the one-year period to a damages claim for a short delivery is a reading (open point o3). A limitation only warns.",
+      "readings": [
+        { "reading": { "ar": "يسري أجل السنة على كل مطالبة ناشئة عن نقص قدر المبيع، ومنها التعويض.", "en": "The one-year period reaches every claim arising from a short quantity, damages included." }, "basis": ["b20"] },
+        { "reading": { "ar": "لا يسري أجل السنة إلا على طلبي إنقاص الثمن والفسخ، ويخضع التعويض للتقادم العام.", "en": "The one-year period reaches only the claims for a price reduction and for rescission; damages follow the general limitation." }, "basis": ["b20", "b1"] }
+      ]
+    },
+    {
+      "id": "d2",
+      "kind": "limitation",
+      "period": { "value": 1, "unit": "year" },
+      "startsFrom": {
+        "slot": "goods_actually_delivered_on",
+        "event": "goods_delivered",
+        "description": { "ar": "يوم تسليم المبيع.", "en": "The day the thing sold was delivered." }
+      },
+      "counting": { "method": "excludeFirstDay", "extendToWorkingDay": false, "basis": ["periods.b11", "periods.b27"] },
+      "raisedBy": "pleaOnly",
+      "when": {
+        "all": [
+          { "slot": "sold_thing_defective", "is": "yes" },
+          { "any": [
+            { "slot": "seller_concealed_defect_fraudulently", "known": false },
+            { "slot": "seller_concealed_defect_fraudulently", "is": "no" }
+          ] }
+        ]
+      },
+      "effectWhenExpired": "warn",
+      "warnBandDays": 16,
+      "message": {
+        "ar": "المادة 383 من القانون المدني: تسقط بالتقادم دعوى الضمان بمضي سنة من يوم تسليم المبيع ولو لم يكتشف العيب إلا بعد ذلك، ما لم يلتزم البائع بالضمان لمدة أطول، ولا يتمسك بها البائع الذي أخفى العيب غشا، ولا تقضي المحكمة بالتقادم تلقائيا (المادة 321). هل يحكم هذا الأجل طلب التعويض عن العيب أو عن تخلف الصفة (المادة 379): مسألة غير محسومة. تحقق من تاريخ التسليم ومن مدة الضمان المتفق عليها ومن غش البائع.",
+        "en": "Civil Code article 383: the warranty claim is time-barred one year after delivery, even if the defect came to light later, unless the seller undertook a longer warranty; a seller who concealed the defect fraudulently cannot rely on it, and the court does not apply limitation of its own motion (article 321). Whether this period governs a damages claim for the defect or a missing quality (article 379) is not settled. Check the delivery date, any longer agreed warranty, and any fraud by the seller."
+      },
+      "basis": ["b21", "b22", "b23", "periods.b23", "periods.b11"],
+      "extract": { "period": "انقضاء سنة", "sanction": "تسقط بالتقادم دعوى الضمان" },
+      "interpretive": true,
+      "interpretiveNote": "Article 383 times the warranty claim; whether a damages claim for a defect or for a missing promised quality is that claim, or a claim for breach of contract under the general limitation, is a reading (open point o4). The seller's fraud is read as lifting the period, so a known fraud makes the item silent and an unknown one leaves it to warn; no slot holds a longer agreed warranty, so the message names it. A limitation only warns.",
+      "readings": [
+        { "reading": { "ar": "التعويض عن العيب أو تخلف الصفة من دعاوى الضمان فيخضع لأجل السنة.", "en": "Damages for a defect or a missing quality are a warranty claim and fall under the one-year period." }, "basis": ["b21", "b22"] },
+        { "reading": { "ar": "التعويض عن الإخلال بالالتزام بالتسليم المطابق يخضع للتقادم العام لا لأجل السنة.", "en": "Damages for breach of the duty to deliver a conforming thing fall under the general limitation, not the one-year period." }, "basis": ["b18", "b1"] }
+      ]
+    },
+    {
+      "id": "d3",
+      "kind": "limitation",
+      "period": { "value": 3, "unit": "year" },
+      "startsFrom": {
+        "slot": "collapse_or_defect_discovered_on",
+        "description": { "ar": "يوم حصول التهدم أو اكتشاف العيب.", "en": "The day of the collapse or of the discovery of the defect." }
+      },
+      "counting": { "method": "excludeFirstDay", "extendToWorkingDay": false, "basis": ["periods.b11", "periods.b27"] },
+      "raisedBy": "pleaOnly",
+      "when": { "slot": "decennial_defect", "is": "yes" },
+      "effectWhenExpired": "warn",
+      "warnBandDays": 17,
+      "message": {
+        "ar": "المادة 557 من القانون المدني: تتقادم دعاوى ضمان المهندس المعماري والمقاول بانقضاء ثلاث سنوات من حصول التهدم أو اكتشاف العيب، والضمان نفسه مقيد بالمدة التي تحددها المادة 554 من تسلم العمل نهائيا، ولا تقضي المحكمة بالتقادم تلقائيا (المادة 321). تحقق من تاريخ التهدم أو اكتشاف العيب ومن تاريخ التسلم النهائي.",
+        "en": "Civil Code article 557: warranty claims against the architect and the contractor are time-barred three years after the collapse or the discovery of the defect; the guarantee itself is limited to the period article 554 sets from final acceptance, and the court does not apply limitation of its own motion (article 321). Check the date of the collapse or discovery and the date of final acceptance."
+      },
+      "basis": ["b24", "b25", "b26", "periods.b23", "periods.b11"],
+      "extract": { "period": "ثلاث سنوات", "sanction": "تتقادم دعاوى الضمان" }
+    }
+  ],
+  "documents": [
+    {
+      "id": "doc1",
+      "name": { "ar": "العقد أو ما يثبت إبرامه وشروطه", "en": "The contract, or proof that it was made and of its terms" },
+      "why": { "ar": "على الدائن إثبات الالتزام؛ ولا يثبت بالشهود في غير المواد التجارية تصرف تزيد قيمته على المبلغ الذي تحدده المادة 333.", "en": "The creditor proves the obligation; outside commercial matters an act above the sum article 333 fixes cannot be proved by witnesses." },
+      "basis": ["b13", "b14", "b15"]
+    },
+    {
+      "id": "doc2",
+      "name": { "ar": "ما يثبت الإخلال: المراسلات، أو محضر معاينة، أو ما يثبت فوات موعد التنفيذ", "en": "Proof of the breach: correspondence, a record of findings, or proof that the due date passed" },
+      "why": { "ar": "يحكم بالتعويض عن عدم التنفيذ أو التأخر فيه (المادة 176).", "en": "Damages are awarded for non-performance or delay (article 176)." },
+      "basis": ["b1", "b13"]
+    },
+    {
+      "id": "doc3",
+      "name": { "ar": "ما يثبت الضرر ومقداره: الفواتير والوصولات وتقرير الخبرة", "en": "Proof of the damage and its amount: invoices, receipts, expert report" },
+      "why": { "ar": "يشمل التعويض الخسارة اللاحقة والكسب الفائت المتوقعين (المادة 182).", "en": "Compensation covers the foreseeable loss incurred and profit lost (article 182)." },
+      "basis": ["b2", "b3"]
+    },
+    {
+      "id": "doc4",
+      "name": { "ar": "ما يثبت تاريخ تسليم المبيع تسليما فعليا (محضر أو وصل تسليم)", "en": "Proof of the date the thing sold was actually delivered (delivery record or receipt)" },
+      "requiredWhen": { "any": [
+        { "slot": "some_goods_delivered", "is": "yes" },
+        { "slot": "sold_thing_defective", "is": "yes" }
+      ] },
+      "why": { "ar": "يبدأ من هذا التاريخ أجل المادتين 366 و383.", "en": "The periods of articles 366 and 383 run from this date." },
+      "basis": ["b20", "b22"]
+    },
+    {
+      "id": "doc5",
+      "name": { "ar": "محضر التسلم النهائي للأشغال وما يثبت تاريخ التهدم أو اكتشاف العيب", "en": "The record of final acceptance of the works, and proof of the date of the collapse or discovery of the defect" },
+      "requiredWhen": { "slot": "decennial_defect", "is": "yes" },
+      "why": { "ar": "تبدأ مدة الضمان من التسلم النهائي (المادة 554) وأجل الدعوى من التهدم أو الاكتشاف (المادة 557).", "en": "The guarantee runs from final acceptance (article 554) and the period for the claim from the collapse or discovery (article 557)." },
+      "basis": ["b25", "b26"]
+    }
+  ],
+  "boundaries": [
+    {
+      "id": "n1",
+      "looksLike": { "ar": "طلب تعويض عن إخلال عقدي مع طلب فسخ العقد", "en": "A damages claim for breach together with a request to rescind the contract" },
+      "isActually": "outside:rescission-claim",
+      "tellingFacts": [ { "ar": "العريضة تطلب الفسخ وإرجاع الحالة إلى ما كانت عليه، لا التعويض وحده مع بقاء العقد.", "en": "The petition asks for rescission and restoration, not damages alone with the contract kept alive." } ],
+      "when": { "slot": "requests", "includes": "rescission" },
+      "slots": ["requests"],
+      "message": {
+        "ar": "المادة 176 من القانون المدني تؤسس التعويض عن عدم التنفيذ أو التأخر فيه مع بقاء العقد؛ أما الفسخ فطلب آخر له شروطه. تحقق من أن الدعوى المختارة تطابق الطلبات.",
+        "en": "Civil Code article 176 grounds damages for non-performance or delay with the contract kept alive; rescission is another request with its own conditions. Check that the claim type chosen matches the requests."
+      },
+      "basis": ["b1"]
+    },
+    {
+      "id": "n2",
+      "looksLike": { "ar": "مطالبة بثمن أو بمبلغ نقدي متأخر مع تعويض", "en": "A claim for an unpaid price or sum of money, with damages" },
+      "isActually": "outside:money-claim",
+      "tellingFacts": [ { "ar": "محل الالتزام المخل به مبلغ من النقود (ثمن، أجرة، قرض)، والمطلوب أداؤه.", "en": "The obligation breached is a sum of money (price, rent, loan) and the petition asks for it to be paid." } ],
+      "when": { "slot": "requests", "includes": "payment" },
+      "slots": ["requests"],
+      "message": {
+        "ar": "المادة 182 من القانون المدني تقدير التعويض عن الإخلال بالالتزام عموما؛ أما التأخر في الوفاء بمبلغ نقدي بين أفراد فله حكمه الخاص في المادة 186. تحقق من طبيعة الالتزام ومن الدعوى المناسبة.",
+        "en": "Civil Code article 182 governs damages for breach in general; delay in paying a sum of money between individuals has its own rule in article 186. Check the nature of the obligation and the fitting claim."
+      },
+      "basis": ["b2", "formal-notice.b15"]
+    },
+    {
+      "id": "n3",
+      "looksLike": { "ar": "تعويض عن ضرر بين شخصين تربطهما علاقة", "en": "Compensation for harm between two people who are in a relationship" },
+      "isActually": "outside:tort",
+      "tellingFacts": [ { "ar": "الضرر ناشئ عن عمل مضر لا عن الإخلال بالتزام نشأ من العقد.", "en": "The harm arises from a harmful act, not from breach of an obligation the contract created." } ],
+      "when": { "slot": "obligation_is_tort_compensation", "is": "yes" },
+      "slots": ["obligation_is_tort_compensation"],
+      "message": {
+        "ar": "المادة 182 من القانون المدني تقصر التعويض في الالتزام الذي مصدره العقد على الضرر المتوقع ما لم يكن غش أو خطأ جسيم؛ والتعويض عن العمل المضر دعوى أخرى. تحقق من مصدر الالتزام.",
+        "en": "Civil Code article 182 limits damages for an obligation arising from a contract to foreseeable damage, save fraud or gross fault; compensation for a harmful act is another claim. Check the source of the obligation."
+      },
+      "basis": ["b3"]
+    },
+    {
+      "id": "n4",
+      "looksLike": { "ar": "تعويض عن الإخلال بعقد عمل", "en": "Damages for breach of an employment contract" },
+      "isActually": "outside:labour-claim",
+      "tellingFacts": [ { "ar": "العقد عقد عمل أو تكوين أو تمهين.", "en": "The contract is an employment, training or apprenticeship contract." } ],
+      "when": { "slot": "dispute_is_social", "is": "yes" },
+      "slots": ["dispute_is_social"],
+      "message": {
+        "ar": "المادة 500 من قانون الإجراءات المدنية والإدارية: يختص القسم الاجتماعي اختصاصا مانعا بتنفيذ عقود العمل وتعليقها وإنهائها، ولهذه الدعوى إجراءاتها السابقة الخاصة. تحقق من طبيعة العقد.",
+        "en": "CPCA article 500: the social section has exclusive jurisdiction over the performance, suspension and termination of employment contracts, and such claims have their own prior steps. Check the nature of the contract."
+      },
+      "basis": ["b33"]
+    },
+    {
+      "id": "n5",
+      "looksLike": { "ar": "امتناع المدين عن التنفيذ بسبب ظروف طارئة", "en": "A debtor refusing to perform because of unforeseen events" },
+      "isActually": "outside:unforeseen-events-defence",
+      "tellingFacts": [ { "ar": "حوادث استثنائية عامة غير متوقعة جعلت التنفيذ مرهقا لا مستحيلا.", "en": "General, exceptional, unforeseeable events made performance onerous, not impossible." } ],
+      "message": {
+        "ar": "المادة 107 من القانون المدني: للقاضي أن يرد الالتزام المرهق إلى الحد المعقول، والمادة 176 تعفي من التعويض إذا ثبت أن استحالة التنفيذ نشأت عن سبب لا يد للمدين فيه. تحقق من دفوع المدعى عليه المحتملة.",
+        "en": "Civil Code article 107: the judge may reduce an onerous obligation to a reasonable level, and article 176 releases from damages when the impossibility arose from a cause beyond the debtor's control. Check the defences the defendant may raise."
+      },
+      "basis": ["b6", "b1"]
+    },
+    {
+      "id": "n6",
+      "looksLike": { "ar": "عقد يحدد مقدار التعويض مسبقا (شرط جزائي)", "en": "A contract that fixes the damages in advance (penalty clause)" },
+      "isActually": "outside:agreed-damages",
+      "tellingFacts": [ { "ar": "العقد أو اتفاق لاحق يحدد قيمة التعويض.", "en": "The contract or a later agreement sets the amount of damages." } ],
+      "message": {
+        "ar": "المادتان 184 و185 من القانون المدني: لا يستحق التعويض الاتفاقي إذا أثبت المدين انعدام الضرر، وللقاضي تخفيضه إذا كان مفرطا أو نفذ الالتزام جزئيا، ولا يطالب بأكثر منه إلا عند الغش أو الخطأ الجسيم. تحقق من البند ومن الضرر الفعلي.",
+        "en": "Civil Code articles 184 and 185: agreed damages are not due if the debtor proves no damage, the judge may reduce them if excessive or if the obligation was partly performed, and more may be claimed only for fraud or gross fault. Check the clause and the actual damage."
+      },
+      "basis": ["b9", "b10", "b11", "formal-notice.b13"]
+    },
+    {
+      "id": "n7",
+      "looksLike": { "ar": "عقد يتضمن شرط إعفاء من المسؤولية", "en": "A contract with a clause excluding liability" },
+      "isActually": "outside:exemption-clause",
+      "tellingFacts": [ { "ar": "بند يعفي المدعى عليه من المسؤولية عن عدم التنفيذ أو يحددها.", "en": "A clause that exempts the defendant from liability for non-performance, or limits it." } ],
+      "message": {
+        "ar": "المادة 178 من القانون المدني: يصح الاتفاق على إعفاء المدين من المسؤولية العقدية إلا ما ينشأ عن غشه أو خطئه الجسيم. تحقق من البند ومن وصف الخطأ.",
+        "en": "Civil Code article 178: an agreement exempting the debtor from contractual liability is valid except for his fraud or gross fault. Check the clause and how serious the fault was."
+      },
+      "basis": ["b8"]
+    },
+    {
+      "id": "n8",
+      "looksLike": { "ar": "تعويض عن تأخر أو هلاك أو تلف في عقد نقل بضاعة", "en": "Damages for delay, loss or damage under a contract to carry goods" },
+      "isActually": "outside:transport-contract",
+      "tellingFacts": [ { "ar": "المدعى عليه ناقل، والإخلال تأخر في وصول البضاعة أو هلاكها أو تلفها.", "en": "The defendant is a carrier, and the breach is late arrival, loss of or damage to the goods." } ],
+      "message": {
+        "ar": "أحكام عقد النقل في القانون التجاري، ومنها آجال دعوى المسؤولية على الناقل، غير موجودة في مخزن النصوص. تحقق من هذه الأحكام قبل رفع الدعوى.",
+        "en": "The Commercial Code's provisions on the contract of carriage, including the periods for claims against the carrier, are not in the article store. Check them before filing."
+      }
+    },
+    {
+      "id": "n9",
+      "looksLike": { "ar": "تعويض بين مؤجر ومستأجر محل تجاري", "en": "Damages between the lessor and lessee of business premises" },
+      "isActually": "outside:commercial-lease-regimes",
+      "tellingFacts": [ { "ar": "الإيجار إيجار محل تجاري يخضع لأحكام القانون التجاري.", "en": "The lease is a lease of business premises under the Commercial Code." } ],
+      "when": { "slot": "commercial_lease", "is": "yes" },
+      "slots": ["commercial_lease"],
+      "message": {
+        "ar": "الإيجار التجاري تحكمه أحكام خاصة في القانون التجاري (التجديد ورفضه وتعويض الاستحقاق)، ولا تتناولها هذه الدعوى. تحقق من النظام الذي يخضع له الإيجار.",
+        "en": "A commercial lease is governed by special Commercial Code provisions (renewal, refusal, eviction indemnity), which this claim does not cover. Check which regime governs the lease."
+      }
+    },
+    {
+      "id": "n10",
+      "looksLike": { "ar": "تعويض عن عيب في مبيع", "en": "Damages for a defect in a thing sold" },
+      "isActually": "outside:sale-warranty",
+      "tellingFacts": [ { "ar": "المدعي مشتر، والإخلال عيب خفي أو تخلف صفة تعهد بها البائع.", "en": "The plaintiff is a buyer, and the breach is a hidden defect or a missing quality the seller promised." } ],
+      "message": {
+        "ar": "المادتان 379 و383 من القانون المدني: ضمان العيوب الخفية وتخلف الصفة له أحكامه وأجله. تحقق من الأساس الذي تقوم عليه الدعوى.",
+        "en": "Civil Code articles 379 and 383: the warranty for hidden defects and missing qualities has its own rules and period. Check which ground the claim rests on."
+      },
+      "basis": ["b21", "b22"]
+    },
+    {
+      "id": "n11",
+      "looksLike": { "ar": "تعويض عن عيب في بناء شيده مقاول", "en": "Damages for a defect in a building a contractor built" },
+      "isActually": "outside:decennial-warranty",
+      "tellingFacts": [ { "ar": "تهدم أو عيب يهدد متانة البناء وسلامته بعد التسلم النهائي.", "en": "A collapse, or a defect threatening the building's solidity and safety, after final acceptance." } ],
+      "message": {
+        "ar": "المادتان 554 و557 من القانون المدني: ضمان المهندس المعماري والمقاول متضامنين له مدته وأجل دعواه. تحقق من الأساس الذي تقوم عليه الدعوى ومن التواريخ.",
+        "en": "Civil Code articles 554 and 557: the joint guarantee of architect and contractor has its own period and time limit for the claim. Check which ground the claim rests on, and the dates."
+      },
+      "basis": ["b24", "b26"]
+    }
+  ],
+  "openPoints": [
+    {
+      "id": "o1",
+      "question": { "ar": "ما أحكام مسؤولية الناقل وآجال الدعوى عليه في عقد نقل البضائع؟", "en": "What are the rules on the carrier's liability and the time limits for claims against him in a contract to carry goods?" },
+      "why": { "ar": "المدعي قد يكون كلف المدعى عليه بنقل بضاعة، وأحكام عقد النقل في القانون التجاري غير موجودة في مخزن النصوص. يذكر من الذاكرة دون تحقق أن القانون التجاري يقرر أجلا قصيرا لدعاوى المسؤولية على الناقل.", "en": "The plaintiff may have hired the defendant to carry goods, and the Commercial Code's carriage provisions are not in the article store. From memory, unverified: the Commercial Code sets a short period for liability claims against carriers." },
+      "protectiveReading": { "ar": "ينبه الحد n8 إلى التحقق من هذه الأحكام قبل رفع الدعوى، ولا يبنى عليه أي منع.", "en": "Boundary n8 warns to check these provisions before filing; nothing blocks on them." },
+      "grade": "D",
+      "refs": ["n8"]
+    },
+    {
+      "id": "o2",
+      "question": { "ar": "هل يلزم الإعذار قبل طلب التنفيذ العيني بنوع الطلب «أخرى»؟", "en": "Is notice required before a request for performance in kind entered under the request kind «other»?" },
+      "why": { "ar": "المادة 164 تجبر المدين على التنفيذ العيني بعد إعذاره، وخطوة الإعذار المستوردة p3 لا تنطلق إلا على طلبات الأداء والتسليم والرد والإخلاء، فلا تنبه إذا قيد طلب التنفيذ بنوع «أخرى».", "en": "Article 164 compels performance in kind after notice, and the imported notice step p3 fires only on payment, delivery, restitution and eviction requests, so it stays silent when the performance request is entered as «other»." },
+      "readings": [
+        { "reading": { "ar": "طلب التنفيذ العيني المقيد بنوع «أخرى» يقتضي الإعذار كطلب التسليم.", "en": "A performance request entered as «other» needs notice like a delivery request." }, "basis": ["formal-notice.b4"] }
+      ],
+      "protectiveReading": { "ar": "خطوة الإعذار قبل طلب التعويض (p1) تنبه في هذه الدعوى أصلا؛ ويقترح على الوحدة أن تشمل طلب التنفيذ بنوع «أخرى».", "en": "The notice step before the damages request (p1) already warns in this claim; the module is asked to cover a performance request entered as «other»." },
+      "grade": "C",
+      "refs": ["r2"]
+    },
+    {
+      "id": "o3",
+      "question": { "ar": "هل يسري أجل السنة المقرر لنقص قدر المبيع على طلب التعويض عن هذا النقص؟", "en": "Does the one-year period for a short quantity sold reach a damages claim for that shortfall?" },
+      "why": { "ar": "النص يذكر إنقاص الثمن والفسخ وتكملة الثمن ولا يذكر التعويض.", "en": "The text names a price reduction, rescission and a price supplement, not damages." },
+      "readings": [
+        { "reading": { "ar": "يسري على كل مطالبة ناشئة عن النقص.", "en": "It reaches every claim arising from the shortfall." }, "basis": ["b20"] },
+        { "reading": { "ar": "يقتصر على ما ذكره النص، ويخضع التعويض للتقادم العام.", "en": "It is limited to what the text names; damages follow the general limitation." }, "basis": ["b20", "b1"] }
+      ],
+      "protectiveReading": { "ar": "ينبه عند قرب انقضاء السنة أو بعده، ولا يمنع.", "en": "Warn near or after the end of the year; never block." },
+      "grade": "C",
+      "refs": ["d1"]
+    },
+    {
+      "id": "o4",
+      "question": { "ar": "هل التعويض عن عيب المبيع أو تخلف صفته دعوى ضمان يحكمها أجل السنة؟", "en": "Is a damages claim for a defect or a missing quality in the thing sold a warranty claim under the one-year period?" },
+      "why": { "ar": "المادة 383 تؤقت دعوى الضمان، ولا تبين النصوص هل يدخل فيها التعويض عن الإخلال بالالتزام بالتسليم المطابق.", "en": "Article 383 times the warranty claim; the texts do not say whether damages for breach of the duty to deliver a conforming thing fall within it." },
+      "readings": [
+        { "reading": { "ar": "نعم، دعوى ضمان.", "en": "Yes, it is a warranty claim." }, "basis": ["b21", "b22"] },
+        { "reading": { "ar": "لا، دعوى إخلال بالتزام عقدي تخضع للتقادم العام.", "en": "No, it is a claim for breach of contract under the general limitation." }, "basis": ["b18", "b1"] }
+      ],
+      "protectiveReading": { "ar": "ينبه عند قرب انقضاء السنة أو بعده، ولا يمنع.", "en": "Warn near or after the end of the year; never block." },
+      "grade": "C",
+      "refs": ["d2"]
+    },
+    {
+      "id": "o5",
+      "question": { "ar": "أين تستورد قواعد الإثبات والطلبات التبعية والإيجار التجاري؟", "en": "Where are the rules on proof, accessory requests and commercial leases imported from?" },
+      "why": { "ar": "الوحدات المشتركة للإثبات والطلبات التبعية والإيجار التجاري ليس لها سجل نهائي يمكن الاستيراد منه، فكتبت هذه الدعوى نصوصها الخاصة بالإثبات والمصاريف والنفاذ المعجل والغرامة الإجبارية، وأحالت الإيجار التجاري إلى حد دون قاعدة.", "en": "The shared modules on proof, accessory requests and commercial leases have no final record to import from, so this claim writes its own statements on proof, costs, provisional execution and the penalty payment, and sends commercial leases to a boundary without a rule." },
+      "protectiveReading": { "ar": "تستبدل هذه النصوص بكتل الوحدات عند صدور سجلاتها النهائية.", "en": "Replace these statements with the modules' blocks when their final records exist." },
+      "grade": "C",
+      "refs": ["b13", "b14", "b15", "b27", "b30", "b31", "b32", "n9"]
+    }
+  ],
+  "checklist": [
+    { "id": "k1", "item": "Basis: the civil-code article that makes the debtor liable in damages for non-performance or delay unless he proves a foreign cause (impossibility not due to him); check the exact paragraph and the exception for a cause beyond his control.", "from": ["derivationA"], "answer": "applies", "refs": ["b1"], "note": "The rule and its exception sit in one paragraph, cited whole." },
+    { "id": "k2", "item": "Binding force of the contract and good-faith performance (civil-code articles on the effects of the contract): supporting grounds, not a cause of action on their own.", "from": ["derivationA"], "answer": "applies", "refs": ["b4", "b5", "formal-notice.b36"] },
+    { "id": "k3", "item": "Element to prove: a valid contract binding both parties, its date, its object and the obligation the defendant undertook (sale, works contract, transport, lease or other).", "from": ["derivationA"], "answer": "applies", "refs": ["e1"] },
+    { "id": "k4", "item": "Element to prove: the breach - late performance, failure to deliver, stoppage or defective performance of works, or another contractual breach by the defendant; the date the performance was due.", "from": ["derivationA"], "answer": "applies", "refs": ["e2"] },
+    { "id": "k5", "item": "Element to prove: the damage suffered (loss incurred and profit lost) and its amount; whether the damage was foreseeable at the time of contracting, absent fraud or gross fault.", "from": ["derivationA"], "answer": "applies", "refs": ["e3", "b2", "b3"] },
+    { "id": "k6", "item": "Element to prove: the causal link between the breach and the damage (damage being the natural result of the breach, not avoidable by reasonable effort).", "from": ["derivationA"], "answer": "applies", "refs": ["e4", "b2"] },
+    { "id": "k7", "item": "Burden of proof: the creditor proves the obligation; the debtor proves its performance or the foreign cause that excuses him (civil-code proof rules - import the proof module).", "from": ["derivationA"], "answer": "applies", "refs": ["b13", "b1", "e2", "o5"], "note": "The proof module has no final record; the claim cites the proof articles itself." },
+    { "id": "k8", "item": "Formal notice (iedhar) before damages: damages are due only after the debtor is put on notice, unless the law or the contract dispenses with it; check the exceptions (performance impossible or useless through the debtor's act, tort compensation, return of stolen or unduly received thing, debtor's written refusal) - import formal-notice.", "from": ["derivationA"], "answer": "applies", "refs": ["formal-notice.p1", "formal-notice.b1", "e5"] },
+    { "id": "k9", "item": "Form and means of the notice: a bailiff's warning or an equivalent writ, or by post as the law allows; the date it was served; served before the petition is filed.", "from": ["derivationA"], "answer": "applies", "refs": ["formal-notice.b5", "formal-notice.p1", "formal-notice.n1", "formal-notice.n11", "formal-notice.n12"] },
+    { "id": "k10", "item": "Is a delay damage for a sum of money (interest-like) excluded or regulated differently? Check civil-code rules on delay damages for money obligations and the prohibition of interest between individuals.", "from": ["derivationA"], "answer": "applies", "refs": ["n2", "formal-notice.b15"], "note": "Delay in paying a sum of money between individuals has its own article; the article on loans between individuals concerns loans only and is not used here." },
+    { "id": "k11", "item": "Assessment of damages: the court assesses when the contract or the law does not fix them; loss suffered and profit lost; foreseeability limit in contract; liability for fraud or gross fault extends to unforeseeable damage.", "from": ["derivationA"], "answer": "applies", "refs": ["b2", "b3", "b12"] },
+    { "id": "k12", "item": "Agreed damages (penalty clause): if the contract fixes the compensation, it is due unless the debtor proves no damage; the judge may reduce it if excessive or if partly performed; increase only for fraud or gross fault.", "from": ["derivationA"], "answer": "applies", "refs": ["formal-notice.b13", "b9", "b10", "b11", "n6"] },
+    { "id": "k13", "item": "Clauses excluding or limiting liability: void for fraud or gross fault; check before relying on a clause.", "from": ["derivationA"], "answer": "applies", "refs": ["b8", "n7"] },
+    { "id": "k14", "item": "Creditor's own fault and duty to mitigate: the judge may reduce or refuse damages where the creditor contributed to the damage.", "from": ["derivationA"], "answer": "applies", "refs": ["b7", "b2", "e4"] },
+    { "id": "k15", "item": "Limitation: the general fifteen-year limitation for contractual obligations, counted from the day the debt became due; shorter periods for periodic rights (rent - five years), professional fees and trader supplies (one or two years); limitation is not raised by the court of its own motion - import periods.", "from": ["derivationA"], "answer": "applies", "refs": ["periods.d1", "periods.d6", "periods.d7", "periods.d8", "periods.b23"] },
+    { "id": "k16", "item": "Special limitation periods by contract type: carrier liability (transport contract - commercial code short period), works contract decennial liability of architect and contractor and the period to bring that claim, hidden defects in sale (one year from delivery); check that the claim is not really one of these.", "from": ["derivationA"], "answer": "applies", "refs": ["d1", "d2", "d3", "n8", "n10", "n11"], "note": "Sale and works periods are in the store; the carriage provisions are not (checklist line k34)." },
+    { "id": "k17", "item": "Competent section: the civil section of the tribunal (or the commercial section if the dispute is commercial; the real-property section for some leases of premises) - import court-sections.", "from": ["derivationA"], "answer": "applies", "note": "Answered by the import of the section rule of court-sections (civil as a rule; commercial, real-estate or social alternatives)." },
+    { "id": "k18", "item": "Territorial jurisdiction: the defendant's domicile as the rule; in contract matters, the court where the contract was concluded or performed may also be competent; a jurisdiction clause is valid only between traders - import territorial-jurisdiction.", "from": ["derivationA"], "answer": "applies", "refs": ["territorial-jurisdiction.t1", "territorial-jurisdiction.t3", "territorial-jurisdiction.t7", "territorial-jurisdiction.t8", "territorial-jurisdiction.n1"] },
+    { "id": "k19", "item": "Exits from the ordinary courts: a public administrative body as party (administrative courts, administrative contracts / public procurement); the specialised commercial court for its listed matters with prior conciliation; the criminal judge when the damage results from an offence; an order to pay for a fixed written debt - import ordinary-court-exits.", "from": ["derivationA"], "answer": "applies", "refs": ["ordinary-court-exits.x1", "ordinary-court-exits.x4", "ordinary-court-exits.x6", "ordinary-court-exits.n6"], "note": "The order-to-pay exit fires only on a payment request, which this claim does not make; boundary n2 sends such a case away." },
+    { "id": "k20", "item": "Conciliation before the specialised commercial court and the record of non-conciliation to attach where that court is competent - import conciliation-mediation.", "from": ["derivationA"], "answer": "applies", "refs": ["conciliation-mediation.p1", "conciliation-mediation.doc1"] },
+    { "id": "k21", "item": "Petition formalities: court, parties' identities, legal person details, brief facts, requests and grounds, list of documents, signature, Arabic, fees, standing and interest, capacity and representation (Code of civil and administrative procedure) - import petition-formal-elements.", "from": ["derivationA"], "answer": "applies", "refs": ["petition-formal-elements.p1", "petition-formal-elements.p5", "petition-formal-elements.p9", "petition-formal-elements.p12", "petition-formal-elements.p19"] },
+    { "id": "k22", "item": "Land registry publication: if the contract concerns real property rights (for example a lease or sale of real property with a published deed), check whether the petition must be published - import land-registry-publication.", "from": ["derivationA"], "answer": "applies", "refs": ["land-registry-publication.p1"] },
+    { "id": "k23", "item": "Boundary: rescission of the contract with damages is a different claim (rescission requests); this claim asks damages without rescission.", "from": ["derivationA"], "answer": "applies", "refs": ["n1", "formal-notice.b2"] },
+    { "id": "k24", "item": "Boundary: tortious liability (harm outside a contract) is a different claim; no cumulation of contractual and tortious liability between contracting parties.", "from": ["derivationA"], "answer": "applies", "refs": ["n3"], "note": "No text in the store states the rule against cumulation; the boundary rests on the foreseeability limit for obligations arising from a contract." },
+    { "id": "k25", "item": "Boundary: a claim for payment of the price, rent or wages (performance of a money obligation) is a different claim; delay damages on a sum of money follow special rules.", "from": ["derivationA"], "answer": "applies", "refs": ["n2"] },
+    { "id": "k26", "item": "Boundary: guarantee against hidden defects or eviction in sale, and the contractor's decennial liability, have their own rules and periods.", "from": ["derivationA"], "answer": "applies", "refs": ["n10", "n11", "d2", "d3"], "note": "Guarantee against eviction is not modelled: it is a different breach, and its texts were not read." },
+    { "id": "k27", "item": "Boundary: labour contract breaches go to the social section after labour conciliation; commercial lease disputes follow the commercial code.", "from": ["derivationA"], "answer": "applies", "refs": ["n4", "n9"], "note": "The imported section rule of court-sections also proposes the social or commercial section." },
+    { "id": "k28", "item": "Request: damages for loss suffered and profit lost, with the amount; supporting request for specific performance (execution in kind) where still possible, and a penalty payment (astreinte) to compel it.", "from": ["derivationA"], "answer": "applies", "refs": ["r1", "r2", "r3"] },
+    { "id": "k29", "item": "Accessory requests: costs borne by the losing party; provisional execution only within the procedure code's conditions; penalty payment; import accessory-requests where available.", "from": ["derivationA"], "answer": "applies", "refs": ["r3", "r4", "r5", "o5"], "note": "No final accessory-requests record exists; the claim cites the articles itself." },
+    { "id": "k30", "item": "Documents: the contract (or proof of it), the formal notice record (bailiff's report or registered letter receipt), proof of the damage and its amount (invoices, expert report), proof of the breach (report, correspondence), translation into Arabic of foreign-language documents.", "from": ["derivationA"], "answer": "applies", "refs": ["doc1", "doc2", "doc3", "doc4", "doc5", "formal-notice.doc1", "formal-notice.doc2", "petition-formal-elements.doc3"] },
+    { "id": "k31", "item": "Proof of the contract: writing required above the statutory sum in civil matters; freedom of proof in commercial matters - import proof.", "from": ["derivationA"], "answer": "applies", "refs": ["b14", "b15", "e1"] },
+    { "id": "k32", "item": "Expertise: the lawyer may ask the court for an expert to assess the damage; a request for expertise is not a substitute for stating the amount claimed.", "from": ["derivationA"], "answer": "doesNotApply", "note": "Expertise is a measure of inquiry the court may order; it adds no condition, step or period to this claim, so the record does not model it. The expert report appears among the proofs of damage (doc3)." },
+    { "id": "k33", "item": "Amendments to remember: the civil code reform of 2005 (law 05-10) touched several contract articles; the procedure code is law 08-09 as amended by law 22-13 (specialised commercial courts); check the version in force of each cited article.", "from": ["derivationA"], "answer": "applies", "refs": ["b1", "b2", "b4"], "note": "The catalogue check shows every catalogue article in force in the version of ordinance 75-58 with a clean ledger; the record cites the versions in force and names no older version." },
+    { "id": "k34", "item": "The Commercial Code's provisions on the contract of carriage (carrier's liability for delay, loss or damage, and the periods for claims against him).", "from": ["derivationA"], "answer": "searchedNotFound", "refs": ["n8", "o1"], "note": "Searched the commercial-code text view for «النقل», «الناقل» and «عقد النقل»: the store holds only articles 30 and the commercial-lease chapter. Request filed." }
+  ],
+  "examples": [
+    {
+      "id": "ex1", "by": "derivationA", "title": "Clean case: late delivery in a works contract, bailiff notice before filing, no special regime.",
+      "petitionDate": "2026-11-19",
+      "slots": {
+        "requests": ["damages"],
+        "notice_served": "yes", "notice_means": "bailiff", "notice_date": "2026-09-15",
+        "some_goods_delivered": "no", "sold_thing_defective": "no", "decennial_defect": "no",
+        "obligation_is_tort_compensation": "no", "dispute_is_social": "no", "commercial_lease": "no"
+      },
+      "expect": { "findings": [
+        { "ref": "d1", "effect": "none" }, { "ref": "d2", "effect": "none" }, { "ref": "d3", "effect": "none" },
+        { "ref": "n1", "effect": "none" }, { "ref": "n2", "effect": "none" }, { "ref": "n3", "effect": "none" },
+        { "ref": "n4", "effect": "none" }, { "ref": "n9", "effect": "none" }
+      ] }
+    },
+    {
+      "id": "ex2", "by": "derivationA", "title": "Short delivery, far inside the year after actual delivery.",
+      "petitionDate": "2026-11-19",
+      "slots": { "requests": ["damages"], "some_goods_delivered": "yes", "goods_actually_delivered_on": "2026-05-04" },
+      "expect": { "findings": [ { "ref": "d1", "effect": "none" } ] }
+    },
+    {
+      "id": "ex3", "by": "derivationA", "title": "Short delivery, far outside the year: a limitation only warns.",
+      "petitionDate": "2026-11-19",
+      "slots": { "requests": ["damages"], "some_goods_delivered": "yes", "goods_actually_delivered_on": "2024-09-02" },
+      "expect": { "findings": [ { "ref": "d1", "effect": "warn" } ] }
+    },
+    {
+      "id": "ex4", "by": "derivationA", "title": "Short delivery, a week after the last day: inside the band.",
+      "petitionDate": "2026-11-19",
+      "slots": { "requests": ["damages"], "some_goods_delivered": "yes", "goods_actually_delivered_on": "2025-11-12" },
+      "expect": { "findings": [ { "ref": "d1", "effect": "warn" } ] }
+    },
+    {
+      "id": "ex5", "by": "derivationA", "title": "Defective thing sold, far outside the year, no fraud.",
+      "petitionDate": "2026-11-19",
+      "slots": { "requests": ["damages"], "sold_thing_defective": "yes", "seller_concealed_defect_fraudulently": "no", "goods_actually_delivered_on": "2024-09-02" },
+      "expect": { "findings": [ { "ref": "d2", "effect": "warn" } ] }
+    },
+    {
+      "id": "ex6", "by": "derivationA", "title": "Defective thing sold, seller concealed it fraudulently: the exception silences the period.",
+      "petitionDate": "2026-11-19",
+      "slots": { "requests": ["damages"], "sold_thing_defective": "yes", "seller_concealed_defect_fraudulently": "yes", "goods_actually_delivered_on": "2024-09-02" },
+      "expect": { "findings": [ { "ref": "d2", "effect": "none" } ] }
+    },
+    {
+      "id": "ex7", "by": "derivationA", "title": "Defective thing sold, far inside the year; fraud unknown is not asked.",
+      "petitionDate": "2026-11-19",
+      "slots": { "requests": ["damages"], "sold_thing_defective": "yes", "goods_actually_delivered_on": "2026-05-04" },
+      "expect": { "findings": [ { "ref": "d2", "effect": "none" } ] }
+    },
+    {
+      "id": "ex8", "by": "derivationA", "title": "Defective thing sold, six days before the last day: a warning.",
+      "petitionDate": "2026-11-19",
+      "slots": { "requests": ["damages"], "sold_thing_defective": "yes", "seller_concealed_defect_fraudulently": "no", "goods_actually_delivered_on": "2025-11-25" },
+      "expect": { "findings": [ { "ref": "d2", "effect": "warn" } ] }
+    },
+    {
+      "id": "ex9", "by": "derivationA", "title": "Building defect found last year: far inside three years.",
+      "petitionDate": "2026-11-19",
+      "slots": { "requests": ["damages"], "decennial_defect": "yes", "collapse_or_defect_discovered_on": "2025-02-03" },
+      "expect": { "findings": [ { "ref": "d3", "effect": "none" } ] }
+    },
+    {
+      "id": "ex10", "by": "derivationA", "title": "Building collapse more than five years ago: far outside, a warning.",
+      "petitionDate": "2026-11-19",
+      "slots": { "requests": ["damages"], "decennial_defect": "yes", "collapse_or_defect_discovered_on": "2021-06-07" },
+      "expect": { "findings": [ { "ref": "d3", "effect": "warn" } ] }
+    },
+    {
+      "id": "ex11", "by": "derivationA", "title": "Building defect, eight days before the last day.",
+      "petitionDate": "2026-11-19",
+      "slots": { "requests": ["damages"], "decennial_defect": "yes", "collapse_or_defect_discovered_on": "2023-11-27" },
+      "expect": { "findings": [ { "ref": "d3", "effect": "warn" } ] }
+    },
+    {
+      "id": "ex12", "by": "derivationA", "title": "Nothing known but the damages request: the record asks.",
+      "petitionDate": "2026-11-19",
+      "slots": { "requests": ["damages"] },
+      "expect": { "findings": [
+        { "ref": "d1", "effect": "ask" }, { "ref": "d2", "effect": "ask" }, { "ref": "d3", "effect": "ask" },
+        { "ref": "n1", "effect": "none" }, { "ref": "n2", "effect": "none" },
+        { "ref": "n3", "effect": "ask" }, { "ref": "n4", "effect": "ask" }, { "ref": "n9", "effect": "ask" }
+      ],
+      "questions": ["some_goods_delivered", "sold_thing_defective", "decennial_defect", "obligation_is_tort_compensation", "dispute_is_social", "commercial_lease"] }
+    },
+    {
+      "id": "ex13", "by": "derivationA", "title": "Rescission asked as well: the boundary warns.",
+      "petitionDate": "2026-11-19",
+      "slots": { "requests": ["damages", "rescission"] },
+      "expect": { "findings": [ { "ref": "n1", "effect": "warn" } ] }
+    },
+    {
+      "id": "ex14", "by": "derivationA", "title": "Seller claims the unpaid price with damages: the money-claim boundary warns.",
+      "petitionDate": "2026-11-19",
+      "slots": { "requests": ["damages", "payment"] },
+      "expect": { "findings": [ { "ref": "n2", "effect": "warn" } ] }
+    },
+    {
+      "id": "ex15", "by": "derivationA", "title": "Harm from a harmful act, not the contract: the tort boundary warns.",
+      "petitionDate": "2026-11-19",
+      "slots": { "requests": ["damages"], "obligation_is_tort_compensation": "yes" },
+      "expect": { "findings": [ { "ref": "n3", "effect": "warn" } ] }
+    },
+    {
+      "id": "ex16", "by": "derivationA", "title": "Breach of an employment contract: the labour boundary warns.",
+      "petitionDate": "2026-11-19",
+      "slots": { "requests": ["damages"], "dispute_is_social": "yes" },
+      "expect": { "findings": [ { "ref": "n4", "effect": "warn" } ] }
+    }
+  ]
+}

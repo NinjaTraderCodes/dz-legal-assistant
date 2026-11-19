@@ -1,0 +1,1652 @@
+{
+  "schemaVersion": "1.0",
+  "kind": "claim",
+  "id": "commercial-lease-eviction",
+  "label": {
+    "ar": "إيجار تجاري: الإخلاء أو تعويض الاستحقاق",
+    "en": "Commercial lease: eviction or eviction indemnity"
+  },
+  "verified": false,
+  "stage": "derivationA",
+  "derivedBy": {
+    "role": "derivationA",
+    "model": "claude-opus-5-5",
+    "date": "2026-11-19"
+  },
+  "area": "commercial",
+  "imports": [
+    {
+      "module": "court-sections",
+      "blocks": ["section"],
+      "how": {
+        "ar": "يقترح القسم التجاري متى كان الإيجار إيجارا تجاريا، مع بقاء المسألة محل قراءة.",
+        "en": "Proposes the commercial section when the lease is a commercial lease; the point stays a reading."
+      }
+    },
+    {
+      "module": "territorial-jurisdiction",
+      "blocks": ["t4", "n7"],
+      "how": {
+        "ar": "ترفع دعاوى الإيجارات التجارية أمام المحكمة التي يتبعها موقع العمارة دون سواها.",
+        "en": "Commercial-lease claims go to the court of the place of the building, and no other."
+      }
+    },
+    {
+      "module": "ordinary-court-exits",
+      "blocks": ["x1", "x4", "x7"],
+      "how": {
+        "ar": "المؤجر هيئة عمومية (وتسري أحكام الإيجار التجاري على محلاتها مع مراعاة المادتين 185 و186)، والمواد المسندة للمحكمة التجارية المتخصصة، وأمر الأداء لبدلات الإيجار الثابتة بالكتابة.",
+        "en": "A public body as lessor (the commercial-lease rules reach its premises subject to articles 185 and 186), the matters of the specialised commercial court, and the order to pay for rent proved in writing."
+      }
+    },
+    {
+      "module": "formal-notice",
+      "blocks": ["b23", "b31", "b32", "b33", "b34", "p3", "n1", "n10", "n11", "n12", "doc1", "doc2"],
+      "how": {
+        "ar": "نصوص التنبيه بالإخلاء ونظامي الإيجار والإنذار في رفض التجديد لمخالفة المستأجر، والإعذار قبل طلب الأداء أو الإخلاء وما يتصل بوسيلته وتاريخه.",
+        "en": "The texts on the notice to quit, the two lease regimes and the warning before a refusal for the tenant's breach, and the formal notice before a claim for payment or eviction with its means and date."
+      }
+    },
+    {
+      "module": "periods",
+      "blocks": ["d8", "doc2"],
+      "how": {
+        "ar": "تقادم بدلات الإيجار المتأخرة بوصفها حقا دوريا متجددا.",
+        "en": "Limitation of rent arrears as a periodic renewable right."
+      }
+    },
+    {
+      "module": "conciliation-mediation",
+      "blocks": ["p1", "doc1"],
+      "how": {
+        "ar": "الصلح السابق أمام المحكمة التجارية المتخصصة لا يلزم إلا إذا كان النزاع من موادها.",
+        "en": "The prior conciliation of the specialised commercial court applies only when the dispute is one of its matters."
+      }
+    },
+    {
+      "module": "land-registry-publication",
+      "blocks": ["p1", "doc1"],
+      "how": {
+        "ar": "إشهار العريضة إذا تعلقت الدعوى بعقار مشهر.",
+        "en": "Publication of the petition when the claim concerns a published property."
+      }
+    },
+    {
+      "module": "petition-formal-elements",
+      "blocks": ["p1", "p2", "p3", "p4", "p5", "p6", "p7", "p8", "p9", "p10", "p11", "p12", "p13", "p14", "p15", "p19", "doc1", "doc2", "doc3", "doc4"],
+      "how": {
+        "ar": "البيانات الإلزامية للعريضة والصفة والمصلحة والرسوم.",
+        "en": "The petition's mandatory particulars, standing, interest and fees."
+      }
+    }
+  ],
+  "basis": [
+    {
+      "id": "b1",
+      "role": "basis",
+      "required": true,
+      "cite": { "code": "commercial-code", "article": "169", "paragraphs": [1] },
+      "says": {
+        "ar": "تطبق أحكام الإيجارات التجارية على إيجار العمارات أو المحلات التي يستغل فيها محل تجاري لتاجر أو صناعي أو حرفي أو مؤسسة حرفية مقيدين في السجل التجاري أو سجل الحرف والصناعات التقليدية.",
+        "en": "The commercial-lease rules apply to leases of buildings or premises in which a business is run by a trader, manufacturer, craftsman or craft enterprise entered in the commercial register or the craft register."
+      }
+    },
+    {
+      "id": "b2",
+      "role": "basis",
+      "cite": { "code": "commercial-code", "article": "172", "paragraphs": [1] },
+      "says": {
+        "ar": "لا يتمسك بحق التجديد إلا المستأجر الذي يثبت أنه يستغل المتجر بنفسه أو بواسطة تابعيه منذ سنتين متتابعتين وفق إيجار مكتوب أو أكثر، أو منذ أربع سنوات متتابعة وفق إيجار أو أكثر شفاهية كانت أو كتابية.",
+        "en": "Only a tenant who proves he has run the business himself or through his staff for two consecutive years under one or more written leases, or for four consecutive years under one or more leases oral or written, may claim renewal."
+      },
+      "interpretive": true,
+      "interpretiveNote": "The Arabic word «مقيدة» for the first case is read as written leases, by contrast with the second case that names oral or written leases."
+    },
+    {
+      "id": "b3",
+      "role": "limit",
+      "cite": { "code": "commercial-code", "article": "173", "paragraphs": [2] },
+      "says": {
+        "ar": "إذا لم يوجه تنبيه بالإخلاء استمر الإيجار المكتوب بالتمديد الضمني بعد الأجل المحدد في العقد.",
+        "en": "Without a notice to quit, a written lease continues by tacit extension past the term fixed in the contract."
+      }
+    },
+    {
+      "id": "b4",
+      "role": "damages",
+      "required": true,
+      "cite": { "code": "commercial-code", "article": "176", "paragraphs": [1] },
+      "says": {
+        "ar": "للمؤجر أن يرفض تجديد الإيجار، لكن عليه، خارج الاستثناءات المقررة، أن يدفع للمستأجر المخلي تعويض الاستحقاق المساوي للضرر الناتج عن عدم التجديد.",
+        "en": "The lessor may refuse renewal but, outside the stated exceptions, must pay the departing tenant the eviction indemnity equal to the harm caused by non-renewal."
+      }
+    },
+    {
+      "id": "b5",
+      "role": "damages",
+      "cite": { "code": "commercial-code", "article": "176", "paragraphs": [2] },
+      "says": {
+        "ar": "يشمل التعويض خصوصا القيمة التجارية للمحل وفق عرف المهنة ومصاريف النقل وإعادة التركيب ومصاريف وحقوق التحويل، ما لم يثبت المالك أن الضرر أقل من ذلك.",
+        "en": "The indemnity includes in particular the business's market value by trade custom, moving and reinstallation costs, and transfer costs and duties, unless the owner proves the harm is lower."
+      }
+    },
+    {
+      "id": "b6",
+      "role": "limit",
+      "cite": { "code": "commercial-code", "article": "177", "paragraphs": [1] },
+      "says": {
+        "ar": "يجوز للمؤجر رفض التجديد دون أي تعويض إذا أثبت سببا خطيرا ومشروعا تجاه المستأجر.",
+        "en": "The lessor may refuse renewal without any indemnity if he proves a serious and legitimate ground against the tenant."
+      }
+    },
+    {
+      "id": "b7",
+      "role": "limit",
+      "cite": { "code": "commercial-code", "article": "177", "paragraphs": [3] },
+      "says": {
+        "ar": "ويرفض دون تعويض كذلك إذا أثبت وجوب هدم العمارة كليا أو جزئيا لعدم صلاحيتها للسكن المعترف به إداريا، أو استحالة شغلها دون خطر.",
+        "en": "He may also refuse without indemnity if he proves that the building must be wholly or partly demolished as unfit, as acknowledged by the administration, or cannot be occupied without danger."
+      }
+    },
+    {
+      "id": "b8",
+      "role": "limit",
+      "cite": { "code": "commercial-code", "article": "187", "paragraphs": [1] },
+      "says": {
+        "ar": "لا يلزم المستأجر الذي له المطالبة بتعويض الإخلاء بمغادرة الأمكنة قبل قبضه، ويبقى فيها بشروط الإيجار المنقضي، مع تحديد تعويض الشغل وفق أحكام الفصل الخامس.",
+        "en": "A tenant entitled to claim the eviction indemnity cannot be made to leave before receiving it; he stays on the terms of the expired lease, the occupation indemnity being fixed under the fifth chapter."
+      }
+    },
+    {
+      "id": "b9",
+      "role": "proof",
+      "required": true,
+      "cite": { "code": "commercial-code", "article": "187 مكرر", "paragraphs": [1] },
+      "says": {
+        "ar": "تحرر عقود الإيجار المبرمة ابتداء من تاريخ نشر القانون في الجريدة الرسمية في الشكل الرسمي تحت طائلة البطلان، وتبرم لمدة يحددها الأطراف بحرية.",
+        "en": "Leases made from the date the law was published in the Official Journal are drawn up in official form on pain of nullity, for a term the parties set freely."
+      }
+    },
+    {
+      "id": "b10",
+      "role": "prerequisite",
+      "cite": { "code": "commercial-code", "article": "191", "paragraphs": [1] },
+      "says": {
+        "ar": "شرط الفسخ بقوة القانون لعدم دفع بدل الإيجار لا ينتج أثره إلا بعد مرور شهر واحد من إخطار بالدفع بقي دون نتيجة.",
+        "en": "A clause rescinding the lease by law for unpaid rent takes effect only one month after a demand to pay that went unanswered."
+      }
+    },
+    {
+      "id": "b11",
+      "role": "prerequisite",
+      "cite": { "code": "commercial-code", "article": "191", "paragraphs": [2] },
+      "says": {
+        "ar": "يجب أن يذكر الإخطار هذه المهلة.",
+        "en": "The demand must mention that period."
+      }
+    },
+    {
+      "id": "b12",
+      "role": "limit",
+      "cite": { "code": "commercial-code", "article": "191", "paragraphs": [3] },
+      "says": {
+        "ar": "يجوز للقضاة، عند منح المهل، وقف آثار شرط الفسخ ما لم يعلن الفسخ بحكم حائز لقوة الشيء المقضي فيه، ولا أثر للشرط إذا وفى المستأجر دينه في الشروط التي يحددها القاضي.",
+        "en": "Judges granting time may suspend the rescission clause unless rescission was declared by a final judgment; the clause has no effect if the tenant pays off his debt on the terms the judge sets."
+      }
+    },
+    {
+      "id": "b13",
+      "role": "procedure",
+      "cite": { "code": "commercial-code", "article": "194", "paragraphs": [1] },
+      "says": {
+        "ar": "عند عدم اتفاق الطرفين بانتهاء مهلة ثلاثة أشهر من التبليغ، ترفع كل النزاعات المتعلقة بتطبيق باب الإيجارات التجارية، مهما كان مبلغ الإيجار، أمام الجهة القضائية التي يتبعها موقع العمارة بتكليف بالحضور.",
+        "en": "Failing agreement when three months from the notification have run, every dispute on the commercial-lease title, whatever the rent, is brought by summons before the court of the place of the building."
+      }
+    },
+    {
+      "id": "b14",
+      "role": "procedure",
+      "cite": { "code": "commercial-code", "article": "194", "paragraphs": [2, 3] },
+      "says": {
+        "ar": "إذا طالب المستأجر بتعويض الإخلاء جاز لمن يهمه التعجيل، قبل انتهاء المهلة، أن يطلب من رئيس المحكمة الناظر في الاستعجال الأمر بالخبرة، ويلحق التقرير بملف دعوى الموضوع.",
+        "en": "When the tenant claims the eviction indemnity, the party in a hurry may, before the period ends, ask the urgent-matters president to order an expert report, which is joined to the file of the claim on the merits."
+      }
+    },
+    {
+      "id": "b15",
+      "role": "limit",
+      "cite": { "code": "commercial-code", "article": "195", "paragraphs": [1] },
+      "says": {
+        "ar": "إذا وافق المؤجر على التجديد وانحصر الخلاف في بدل الإيجار أو المدة أو الشروط، حضر الطرفان أمام رئيس المحكمة التي يتبعها موقع العمارة ليفصل حسب إجراءات الاستعجال.",
+        "en": "If the lessor agreed to renew and the dispute is only on the rent, the term or the conditions, the parties appear before the president of the court of the building's place, who rules under the urgent procedure."
+      }
+    },
+    {
+      "id": "b16",
+      "role": "basis",
+      "cite": { "code": "commercial-code", "article": "196", "paragraphs": [1] },
+      "says": {
+        "ar": "يستمر المستأجر طيلة الدعوى في دفع بدلات الإيجار المستحقة بالسعر القديم أو بالسعر المحدد مؤقتا.",
+        "en": "Throughout the proceedings the tenant keeps paying the rent due at the old rate or at the rate set provisionally."
+      }
+    },
+    {
+      "id": "b17",
+      "role": "basis",
+      "required": true,
+      "cite": { "code": "commercial-code", "article": "197", "paragraphs": [1] },
+      "says": {
+        "ar": "إذا رفض المؤجر التجديد وأراد المستأجر منازعة سبب الرفض أو طلب تعويض الإخلاء، وجب عليه رفع دعوى على المؤجر أمام المحكمة التي يتبعها موقع العمارة.",
+        "en": "When the lessor refuses renewal and the tenant wishes to contest the reason or claim the eviction indemnity, he must sue the lessor before the court of the building's place."
+      }
+    },
+    {
+      "id": "b18",
+      "role": "limit",
+      "required": true,
+      "cite": { "code": "commercial-code", "article": "197", "paragraphs": [3] },
+      "says": {
+        "ar": "يجب في هذه الحالة تبليغ التكليف بالحضور في الثلاثة أشهر من تاريخ تبليغ رفض التجديد.",
+        "en": "In that case the summons must be served within three months of the date the refusal of renewal was notified."
+      }
+    },
+    {
+      "id": "b19",
+      "role": "limit",
+      "cite": { "code": "commercial-code", "article": "197", "paragraphs": [6, 7] },
+      "says": {
+        "ar": "للمالك الذي خسر دعواه أن يتملص من التعويض في ظرف خمسة عشر يوما من صيرورة الحكم نهائيا بشرط تحمل المصاريف وقبول التجديد، ما دام المستأجر في الأمكنة ولم يؤجر أو يشتر عمارة أخرى.",
+        "en": "An owner who lost may escape the indemnity within fifteen days of the judgment becoming final, by bearing the costs and accepting renewal, as long as the tenant is still in the premises and has not leased or bought another building."
+      }
+    },
+    {
+      "id": "b20",
+      "role": "limit",
+      "cite": { "code": "commercial-code", "article": "198", "paragraphs": [1] },
+      "says": {
+        "ar": "ترفع جميع دعاوى باب الإيجارات التجارية، عدا الدعاوى المشار إليها في المادتين المحال إليهما، أمام محكمة موقع العمارة وتتقادم بمرور سنتين.",
+        "en": "Every action under the commercial-lease title, except those of the two articles referred to, is brought before the court of the building's place and is time-barred after two years."
+      }
+    },
+    {
+      "id": "b21",
+      "role": "basis",
+      "cite": { "code": "civil-code", "article": "498", "paragraphs": [1] },
+      "says": {
+        "ar": "يلتزم المستأجر بدفع بدل الإيجار في المواعيد المتفق عليها، وإلا ففي المواعيد المعمول بها في الجهة.",
+        "en": "The tenant must pay the rent on the agreed dates, failing which on the dates customary in the locality."
+      }
+    },
+    {
+      "id": "b22",
+      "role": "damages",
+      "cite": { "code": "civil-code", "article": "502", "paragraphs": [1] },
+      "says": {
+        "ar": "يرد المستأجر العين عند انتهاء الإيجار، فإن أبقاها دون حق دفع تعويضا باعتبار القيمة الإيجارية وما لحق المؤجر من ضرر.",
+        "en": "The tenant returns the property when the lease ends; if he keeps it without right he pays compensation measured on the rental value and the lessor's harm."
+      }
+    },
+    {
+      "id": "b23",
+      "role": "proof",
+      "cite": { "code": "civil-code", "article": "324 مكرر 1", "paragraphs": [1] },
+      "says": {
+        "ar": "تحرر عقود الإيجار التجارية في شكل رسمي تحت طائلة البطلان.",
+        "en": "Commercial leases are drawn up in official form on pain of nullity."
+      },
+      "interpretive": true,
+      "interpretiveNote": "The paragraph lists commercial leases among the deeds that need official form; whether it reaches a lease made before the commercial-lease reform, when article 172 still speaks of oral leases, is a reading (open point o6)."
+    },
+    {
+      "id": "b24",
+      "role": "limit",
+      "cite": { "code": "civil-code", "article": "4", "paragraphs": [1, 2] },
+      "says": {
+        "ar": "تطبق القوانين ابتداء من يوم نشرها، وتنفذ بالجزائر العاصمة بعد مضي يوم كامل من نشرها وفي النواحي الأخرى بعد مضي يوم كامل من وصول الجريدة الرسمية إلى مقر الدائرة.",
+        "en": "Laws apply from the day of publication; they take effect in Algiers a full day after publication and elsewhere a full day after the Official Journal reaches the daira's seat."
+      },
+      "interpretive": true,
+      "interpretiveNote": "That this rule fixes, for each place, the day from which a lease falls under the post-reform regime, rather than the issue date of the Official Journal, is a reading (open point o5)."
+    },
+    {
+      "id": "b25",
+      "role": "limit",
+      "cite": { "code": "commercial-code", "article": "201", "paragraphs": [1] },
+      "says": {
+        "ar": "لا يترتب بحكم القانون على إفلاس المستأجر أو تصفيته القضائية فسخ إيجار العمارات المخصصة لنشاطه، ويلغى كل شرط مخالف.",
+        "en": "The tenant's bankruptcy or judicial liquidation does not rescind by law the lease of the buildings used for his business; any contrary clause is void."
+      }
+    },
+    {
+      "id": "b26",
+      "role": "limit",
+      "cite": { "code": "commercial-code", "article": "185", "paragraphs": [1] },
+      "says": {
+        "ar": "لا يجوز رفض تجديد إيجارات العمارات التابعة للدولة أو الولايات أو البلديات أو المؤسسات العمومية دون أن تلزم الجماعة المالكة بتعويض الإخلاء ولو كان الرفض للمنفعة العمومية.",
+        "en": "Renewal of leases of buildings owned by the State, wilayas, communes or public institutions cannot be refused without the owner paying the eviction indemnity, even for public utility."
+      }
+    },
+    {
+      "id": "b27",
+      "role": "procedure",
+      "cite": { "code": "commercial-code", "article": "174", "paragraphs": [4] },
+      "says": {
+        "ar": "على المؤجر خلال ثلاثة أشهر من تبليغ طلب التجديد أن يعلم الطالب بإجراء من نفس النوع إن كان يرفض التجديد مع بيان أسبابه، وإلا اعتبر موافقا على مبدأ التجديد.",
+        "en": "Within three months of the renewal request's notification, the lessor must inform the applicant by the same kind of act if he refuses renewal, with reasons; otherwise he is deemed to accept renewal in principle."
+      }
+    },
+    {
+      "id": "b28",
+      "role": "procedure",
+      "cite": { "code": "commercial-code", "article": "174", "paragraphs": [5] },
+      "says": {
+        "ar": "يجب أن يذكر في تبليغ الرفض مضمون المادة المحال إليها وإلا كان باطلا.",
+        "en": "The notification of refusal must recite the article referred to, failing which it is void."
+      }
+    },
+    {
+      "id": "b29",
+      "role": "limit",
+      "cite": { "code": "commercial-code", "article": "192", "paragraphs": [1] },
+      "says": {
+        "ar": "يجوز إعادة النظر في بدلات إيجار المحلات الخاضعة لهذه الأحكام بطلب أحد الطرفين ضمن الشروط المقررة.",
+        "en": "The rent of premises under these rules may be revised at either party's request under the stated conditions."
+      }
+    },
+    {
+      "id": "b30",
+      "role": "procedure",
+      "cite": { "code": "commercial-code", "article": "175", "paragraphs": [3] },
+      "says": {
+        "ar": "يبلغ المؤجر نيته في عدم التجديد عن طريق التنبيه بالإخلاء أو عن طريق رفض التجديد، وإذا عدل وقبل التجديد سرى من يوم تبليغ القبول للمستأجر بإجراء غير قضائي.",
+        "en": "The lessor makes known his intention not to renew by a notice to quit or by a refusal of renewal; if he changes his mind and renews, renewal runs from the day the acceptance is notified to the tenant by extrajudicial act."
+      }
+    }
+  ],
+  "elements": [
+    {
+      "id": "e1",
+      "toProve": {
+        "ar": "قيام إيجار لمحل يستغل فيه محل تجاري مقيد في السجل التجاري أو سجل الحرف، وتاريخه وبدله وشكله.",
+        "en": "A lease of premises in which a business entered in the commercial or craft register is run, with its date, rent and form."
+      },
+      "factsToState": [
+        { "ar": "تاريخ إبرام العقد بالنسبة إلى نشر القانون الذي أضاف المادة 187 مكرر، لتحديد النظام الذي يخضع له.", "en": "The date the lease was made, compared with the publication of the law that added article 187 مكرر, to fix its regime." },
+        { "ar": "شكل العقد (رسمي أو عرفي أو شفهي) ومدته وبدل الإيجار.", "en": "The lease's form (official, private or oral), its term and the rent." },
+        { "ar": "طبيعة النشاط المستغل في المحل وقيد المستأجر في السجل التجاري أو سجل الحرف.", "en": "The business run in the premises and the tenant's entry in the commercial or craft register." }
+      ],
+      "events": ["contract_concluded", "lease_started"],
+      "slots": ["contract_date", "lease_form", "commercial_lease", "leased_thing"],
+      "burden": "plaintiff",
+      "proof": [
+        {
+          "means": "the lease deed, in official form when made after the reform",
+          "basis": ["b9", "b23"],
+          "note": { "ar": "العقد المبرم بعد نشر القانون يحرر في الشكل الرسمي تحت طائلة البطلان.", "en": "A lease made after the law's publication is in official form on pain of nullity." }
+        },
+        {
+          "means": "extract of the commercial or craft register",
+          "basis": ["b1"]
+        }
+      ],
+      "basis": ["b1", "b9", "formal-notice.b34"]
+    },
+    {
+      "id": "e2",
+      "toProve": {
+        "ar": "حلول بدلات الإيجار المطالب بها وعدم دفعها، ومقدارها.",
+        "en": "That the rent claimed fell due and was not paid, and its amount."
+      },
+      "factsToState": [
+        { "ar": "الفترات غير المدفوعة ومبلغ كل منها وتاريخ استحقاق أقدمها.", "en": "The unpaid periods, the amount of each and the due date of the oldest." },
+        { "ar": "الإخطار بالدفع وتاريخه إن كان المؤجر يتمسك بشرط الفسخ.", "en": "The demand to pay and its date, if the lessor relies on the rescission clause." }
+      ],
+      "events": ["rent_unpaid"],
+      "slots": ["debt_due_date", "lease_has_rescission_clause", "rescission_clause_notice_month_elapsed"],
+      "burden": "plaintiff",
+      "basis": ["b21", "b16", "b10", "b11"]
+    },
+    {
+      "id": "e3",
+      "toProve": {
+        "ar": "في الإيجار السابق على الإصلاح: توجيه تنبيه بالإخلاء صحيح الشكل وفي أجله.",
+        "en": "For a lease made before the reform: a notice to quit valid in form and in time."
+      },
+      "factsToState": [
+        { "ar": "تاريخ التنبيه بالإخلاء ووسيلته (عقد غير قضائي) والأسباب المبينة فيه وإعادة ذكر مضمون المادة 194.", "en": "The date of the notice to quit, its means (extrajudicial act), the reasons stated and the recital of article 194." },
+        { "ar": "أجل الإيجار أو مرحلته التي وجه التنبيه قبلها.", "en": "The lease term or period before which the notice was given." }
+      ],
+      "events": ["eviction_notice"],
+      "slots": ["notice_to_quit_served", "renewal_refusal_notified_on", "contract_date"],
+      "burden": "plaintiff",
+      "basis": ["formal-notice.b31", "formal-notice.b32", "b3", "formal-notice.b34"]
+    },
+    {
+      "id": "e4",
+      "toProve": {
+        "ar": "في الإيجار المبرم بعد الإصلاح: انتهاء الأجل المحدد في العقد، وعدم وجود شرط يخالف ذلك.",
+        "en": "For a lease made after the reform: the end of the term fixed in the contract, and no stipulation to the contrary."
+      },
+      "factsToState": [
+        { "ar": "الأجل المحدد في العقد وتاريخ انقضائه.", "en": "The term fixed in the lease and the date it ended." },
+        { "ar": "خلو العقد من شرط يمنح التجديد أو تعويض الاستحقاق.", "en": "That the lease holds no stipulation granting renewal or the eviction indemnity." }
+      ],
+      "events": ["contract_concluded", "deadline_passed"],
+      "slots": ["lease_term_expired", "contract_date", "lease_stipulates_renewal_or_indemnity"],
+      "burden": "plaintiff",
+      "basis": ["formal-notice.b33", "b9"]
+    },
+    {
+      "id": "e5",
+      "toProve": {
+        "ar": "دعوى المستأجر: رفض المؤجر التجديد، واستغلال المستأجر المتجر المدة التي تخول حق التجديد، ومقدار الضرر.",
+        "en": "The tenant's claim: the lessor's refusal to renew, the tenant's running of the business for the period that gives the renewal right, and the amount of harm."
+      },
+      "factsToState": [
+        { "ar": "تاريخ تبليغ التنبيه بالإخلاء أو رفض التجديد.", "en": "The date the notice to quit or the refusal of renewal was notified." },
+        { "ar": "مدة الاستغلال المتتابع وشكل الإيجار أو الإيجارات المتتالية.", "en": "The length of continuous running and the form of the successive lease or leases." },
+        { "ar": "عناصر الضرر: القيمة التجارية ومصاريف النقل وإعادة التركيب والتحويل.", "en": "The heads of harm: market value, moving and reinstallation, transfer costs." }
+      ],
+      "events": ["lease_renewal_refused", "eviction_notice"],
+      "slots": ["renewal_refusal_notified_on", "tenant_exploited_required_period"],
+      "burden": "plaintiff",
+      "proof": [
+        {
+          "means": "the act notifying the refusal or the notice to quit",
+          "basis": ["b17", "b30"]
+        },
+        {
+          "means": "the owner's proof of a lower harm",
+          "basis": ["b5"],
+          "note": { "ar": "يفترض أن التعويض يشمل العناصر المعددة ما لم يثبت المالك أن الضرر دون ذلك.", "en": "The indemnity covers the listed heads unless the owner proves the harm is lower." }
+        }
+      ],
+      "basis": ["b2", "b4", "b5", "b17"]
+    },
+    {
+      "id": "e6",
+      "toProve": {
+        "ar": "إذا أراد المؤجر الإخلاء دون تعويض: سبب خطير ومشروع تجاه المستأجر، أو حالة الهدم أو الخطر.",
+        "en": "Where the lessor seeks eviction without indemnity: a serious and legitimate ground against the tenant, or the demolition or danger case."
+      },
+      "factsToState": [
+        { "ar": "المخالفة المنسوبة إلى المستأجر، والإنذار بعقد غير قضائي واستمرار المخالفة أكثر من شهر بعده.", "en": "The tenant's breach, the warning by extrajudicial act, and the breach continuing more than a month after it." },
+        { "ar": "أو: قرار السلطة الإدارية بعدم صلاحية العمارة أو ما يثبت خطر شغلها.", "en": "Or: the administration's finding that the building is unfit, or proof of the danger of occupying it." }
+      ],
+      "events": ["rent_unpaid", "notice_served", "other"],
+      "slots": ["refusal_relies_on_tenant_breach", "breach_warning_month_elapsed"],
+      "burden": "plaintiff",
+      "basis": ["b6", "formal-notice.b23", "b7"]
+    }
+  ],
+  "requests": [
+    {
+      "id": "r1",
+      "kind": "eviction",
+      "accessory": false,
+      "text": {
+        "ar": "الحكم بإخلاء المدعى عليه ومن يقوم مقامه من المحل التجاري الكائن بـ (...)",
+        "en": "Order the defendant, and anyone in his place, to vacate the business premises at (...)"
+      },
+      "amount": false,
+      "basis": ["formal-notice.b31", "formal-notice.b33", "b8"]
+    },
+    {
+      "id": "r2",
+      "kind": "damages",
+      "accessory": false,
+      "text": {
+        "ar": "إلزام المدعى عليه (المؤجر) بأن يؤدي للمدعي تعويض الاستحقاق المقدر بـ (...) دج",
+        "en": "Order the defendant (the lessor) to pay the plaintiff the eviction indemnity of (...) DZD"
+      },
+      "amount": true,
+      "basis": ["b4", "b5", "b17"]
+    },
+    {
+      "id": "r3",
+      "kind": "other",
+      "accessory": true,
+      "text": {
+        "ar": "واحتياطيا: تعيين خبير لتقدير تعويض الاستحقاق وفقا لعرف المهنة",
+        "en": "In the alternative: appoint an expert to assess the eviction indemnity by trade custom"
+      },
+      "amount": false,
+      "basis": ["b5", "b14"]
+    },
+    {
+      "id": "r4",
+      "kind": "payment",
+      "accessory": false,
+      "text": {
+        "ar": "إلزام المدعى عليه بأن يؤدي للمدعي بدلات الإيجار المتأخرة عن الفترة من (...) إلى (...) بمبلغ (...) دج",
+        "en": "Order the defendant to pay the plaintiff the rent arrears for the period from (...) to (...), amounting to (...) DZD"
+      },
+      "amount": true,
+      "basis": ["b21", "b16"]
+    },
+    {
+      "id": "r5",
+      "kind": "damages",
+      "accessory": true,
+      "text": {
+        "ar": "إلزام المدعى عليه بأداء تعويض عن شغل المحل بعد انتهاء الإيجار يعادل القيمة الإيجارية بمبلغ (...) دج",
+        "en": "Order the defendant to pay compensation for occupying the premises after the lease ended, at the rental value, amounting to (...) DZD"
+      },
+      "amount": true,
+      "basis": ["b22", "b8"]
+    }
+  ],
+  "deadlines": [
+    {
+      "id": "d1",
+      "kind": "forfeiture",
+      "period": { "value": 3, "unit": "month" },
+      "startsFrom": {
+        "slot": "renewal_refusal_notified_on",
+        "event": "lease_renewal_refused",
+        "description": {
+          "ar": "تاريخ تبليغ رفض التجديد (أو التنبيه بالإخلاء الذي يعلن عدم التجديد) إلى المستأجر.",
+          "en": "The date the refusal of renewal (or the notice to quit announcing non-renewal) was notified to the tenant."
+        }
+      },
+      "raisedBy": "unclear",
+      "when": {
+        "all": [
+          { "slot": "requests", "includes": "damages" },
+          { "not": { "slot": "requests", "includes": "eviction" } }
+        ]
+      },
+      "effectWhenExpired": "warn",
+      "warnBandDays": 15,
+      "message": {
+        "ar": "المادة 197 من القانون التجاري: يجب تبليغ التكليف بالحضور في دعوى المستأجر لمنازعة رفض التجديد أو طلب تعويض الإخلاء خلال ثلاثة أشهر من تاريخ تبليغ الرفض، ولا تذكر الفقرة جزاء صريحا، والمادة 194 تتحدث عن مهلة ثلاثة أشهر من التبليغ. تحقق من تاريخ تبليغ الرفض ومن تاريخ تبليغ التكليف بالحضور.",
+        "en": "Commercial Code article 197: in the tenant's claim contesting the refusal or seeking the eviction indemnity, the summons must be served within three months of the date the refusal was notified; the paragraph states no express sanction, and article 194 speaks of a three-month period from the notification. Check the date the refusal was notified and the date the summons is served."
+      },
+      "basis": ["b18", "b17", "b13"],
+      "extract": { "period": "الثلاثة أشهر" },
+      "interpretive": true,
+      "interpretiveNote": "Article 197 ¶3 states the duty and no sanction, and no counting rule of the store reaches a Commercial Code period (cpca 405 counts the periods of the CPCA itself). The period is also measured to the service of the summons, not to the petition's date, so the petition date only approximates it. Warn, never block (open points o1, o2, o3).",
+      "readings": [
+        {
+          "reading": {
+            "ar": "أجل سقوط: يفقد المستأجر الذي لم يبلغ التكليف بالحضور في الأجل حقه في منازعة الرفض وفي تعويض الإخلاء.",
+            "en": "A forfeiture: a tenant who did not serve the summons in time loses the right to contest the refusal and to the eviction indemnity."
+          },
+          "basis": ["b18", "b13"]
+        },
+        {
+          "reading": {
+            "ar": "أجل إجرائي دون جزاء منصوص عليه، يترك أثر تجاوزه لتقدير القاضي.",
+            "en": "A procedural period with no stated sanction, whose breach is left to the judge."
+          },
+          "basis": ["b18"]
+        },
+        {
+          "reading": {
+            "ar": "مهلة المادة 194 مهلة تفاوض لا ترفع الدعوى قبل انقضائها، فيتعارض ظاهرها مع الفقرة الثالثة من المادة 197.",
+            "en": "The period of article 194 is a negotiation period before which no claim is filed, which on its face conflicts with article 197 ¶3."
+          },
+          "basis": ["b13", "b18"]
+        }
+      ]
+    },
+    {
+      "id": "d2",
+      "kind": "limitation",
+      "period": { "value": 2, "unit": "year" },
+      "startsFrom": {
+        "slot": "renewal_refusal_notified_on",
+        "event": "eviction_notice",
+        "description": {
+          "ar": "تاريخ تبليغ التنبيه بالإخلاء أو رفض التجديد (قراءة حمائية لبداية مدة لا يحددها النص).",
+          "en": "The date the notice to quit or the refusal of renewal was notified (a protective reading of a start the text does not fix)."
+        }
+      },
+      "raisedBy": "unclear",
+      "when": {
+        "all": [
+          { "slot": "requests", "includes": "eviction" },
+          { "slot": "contract_date", "before": "2005-02-09" }
+        ]
+      },
+      "effectWhenExpired": "warn",
+      "warnBandDays": 20,
+      "message": {
+        "ar": "المادة 198 من القانون التجاري: تتقادم دعاوى باب الإيجارات التجارية، عدا دعاوى المادتين 196 و197، بمرور سنتين، ولا يحدد النص بداية المدة. تحقق من تاريخ التنبيه بالإخلاء ومن كل سبب يقطع التقادم.",
+        "en": "Commercial Code article 198: actions under the commercial-lease title, except those of articles 196 and 197, are time-barred after two years; the text does not fix when the period starts. Check the date of the notice to quit and anything that interrupted the period."
+      },
+      "basis": ["b20"],
+      "extract": { "period": "سنتين", "sanction": "يشملها التقادم" },
+      "interpretive": true,
+      "interpretiveNote": "Article 198 ¶1 gives the period and not its starting event, and does not say whether the lessor's eviction action is among the actions it covers; no counting rule of the store reaches it. The rule starts it from the notice to quit, the earliest plausible start, and only warns (open point o4).",
+      "readings": [
+        {
+          "reading": {
+            "ar": "تبدأ المدة من تبليغ التنبيه بالإخلاء أو رفض التجديد.",
+            "en": "The period starts when the notice to quit or the refusal is notified."
+          },
+          "basis": ["b20", "b30"]
+        },
+        {
+          "reading": {
+            "ar": "تبدأ المدة من انتهاء الإيجار بأثر التنبيه، أو من نشوء الحق المطالب به.",
+            "en": "The period starts when the lease ends under the notice, or when the right claimed arises."
+          },
+          "basis": ["b20", "formal-notice.b31"]
+        },
+        {
+          "reading": {
+            "ar": "لا تشمل المادة دعوى المؤجر بالإخلاء.",
+            "en": "The article does not reach the lessor's eviction claim."
+          },
+          "basis": ["b20"]
+        }
+      ]
+    }
+  ],
+  "priorSteps": [
+    {
+      "id": "p1",
+      "kind": "noticeToQuit",
+      "slots": ["notice_to_quit_served", "requests", "contract_date", "lease_has_rescission_clause", "rescission_clause_notice_month_elapsed"],
+      "requiredWhen": {
+        "all": [
+          { "slot": "requests", "includes": "eviction" },
+          { "slot": "contract_date", "before": "2005-02-09" }
+        ]
+      },
+      "notRequiredWhen": [
+        {
+          "when": {
+            "all": [
+              { "slot": "lease_has_rescission_clause", "is": "yes" },
+              { "slot": "rescission_clause_notice_month_elapsed", "is": "yes" }
+            ]
+          },
+          "basis": ["b10", "b11"],
+          "note": {
+            "ar": "يتمسك المؤجر بشرط الفسخ لعدم دفع الأجرة بعد إخطار يذكر مهلة الشهر ومضيها دون دفع (قراءة).",
+            "en": "The lessor relies on the rescission clause for unpaid rent after a demand naming the one-month period, which ran without payment (a reading)."
+          }
+        }
+      ],
+      "acceptedMeans": [
+        {
+          "id": "m1",
+          "label": {
+            "ar": "تنبيه بالإخلاء بعقد غير قضائي يبين أسبابه ويعيد ذكر مضمون المادة 194، موجه في الأجل الذي تحدده المادة 173",
+            "en": "A notice to quit by extrajudicial act stating its reasons and reciting article 194, given within the time article 173 sets"
+          },
+          "basis": ["formal-notice.b31", "formal-notice.b32"]
+        }
+      ],
+      "effectWhenMissing": "warn",
+      "effectWhenUnknown": "ask",
+      "interpretive": true,
+      "interpretiveNote": "Article 173 makes a notice lacking its form void and keeps the lease running without a notice; it does not make the eviction claim inadmissible. Whether a rescission clause applied under article 191 replaces the notice is a reading (open point o8). Warn, never block.",
+      "message": {
+        "ar": "المادة 173 من القانون التجاري: لا ينتهي الإيجار السابق على نشر القانون الذي أضاف المادة 187 مكرر (المادة 187 مكرر 1) إلا بتنبيه بالإخلاء بعقد غير قضائي مسبب يعيد ذكر مضمون المادة 194 وإلا كان باطلا، وإلا استمر الإيجار. ويختلف عن ذلك شرط الفسخ لعدم الدفع (المادة 191). تحقق من التنبيه وشكله وتاريخه بالنسبة إلى أجل الإيجار.",
+        "en": "Commercial Code article 173: a lease made before the publication of the law that added article 187 مكرر (article 187 مكرر 1) ends only by a reasoned notice to quit by extrajudicial act reciting article 194, failing which the notice is void and the lease continues. A rescission clause for non-payment is a different route (article 191). Check the notice, its form and its date against the lease term."
+      },
+      "basis": ["formal-notice.b31", "formal-notice.b32", "formal-notice.b34", "b3", "b10", "b11"]
+    },
+    {
+      "id": "p2",
+      "kind": "formalNotice",
+      "slots": ["rescission_clause_notice_month_elapsed", "requests", "lease_has_rescission_clause", "notice_to_quit_served", "lease_term_expired"],
+      "requiredWhen": {
+        "all": [
+          { "slot": "requests", "includes": "eviction" },
+          { "slot": "lease_has_rescission_clause", "is": "yes" }
+        ]
+      },
+      "notRequiredWhen": [
+        {
+          "when": { "slot": "notice_to_quit_served", "is": "yes" },
+          "basis": ["formal-notice.b31"],
+          "note": {
+            "ar": "انتهى الإيجار بتنبيه بالإخلاء ولا يستند الطلب إلى شرط الفسخ.",
+            "en": "The lease ended by a notice to quit and the claim does not rest on the rescission clause."
+          }
+        },
+        {
+          "when": { "slot": "lease_term_expired", "is": "yes" },
+          "basis": ["formal-notice.b33"],
+          "note": {
+            "ar": "انقضى أجل الإيجار ولا يستند الطلب إلى شرط الفسخ.",
+            "en": "The lease term has ended and the claim does not rest on the rescission clause."
+          }
+        }
+      ],
+      "acceptedMeans": [
+        {
+          "id": "m1",
+          "label": {
+            "ar": "إخطار بالدفع يذكر مهلة الشهر، بقي دون نتيجة شهرا كاملا قبل العريضة",
+            "en": "A demand to pay that names the one-month period and went unanswered for a full month before the petition"
+          },
+          "basis": ["b10", "b11"]
+        }
+      ],
+      "effectWhenMissing": "warn",
+      "effectWhenUnknown": "ask",
+      "message": {
+        "ar": "المادة 191 من القانون التجاري: لا ينتج شرط الفسخ بقوة القانون لعدم دفع الأجرة أثره إلا بعد مرور شهر من إخطار بالدفع يذكر هذه المهلة ويبقى دون نتيجة، وللقاضي وقف أثره بمنح مهلة. تحقق من الإخطار ومن مضي المهلة إذا كان الطلب يستند إلى الشرط.",
+        "en": "Commercial Code article 191: a clause rescinding the lease by law for unpaid rent takes effect only a month after an unanswered demand to pay that names that period, and the judge may suspend it by granting time. Check the demand and that the period has run if the claim rests on the clause."
+      },
+      "basis": ["b10", "b11", "b12"]
+    },
+    {
+      "id": "p3",
+      "kind": "formalNotice",
+      "slots": ["breach_warning_month_elapsed", "requests", "contract_date", "refusal_relies_on_tenant_breach"],
+      "requiredWhen": {
+        "all": [
+          { "slot": "requests", "includes": "eviction" },
+          { "slot": "contract_date", "before": "2005-02-09" },
+          { "slot": "refusal_relies_on_tenant_breach", "is": "yes" }
+        ]
+      },
+      "acceptedMeans": [
+        {
+          "id": "m1",
+          "label": {
+            "ar": "إنذار بعقد غير قضائي يبين السبب ويذكر مضمون الفقرة الثانية من المادة 177، مع استمرار المخالفة أو تجددها أكثر من شهر بعده",
+            "en": "A warning by extrajudicial act stating the reason and reciting article 177 ¶2, with the breach continuing or repeated more than a month after it"
+          },
+          "basis": ["formal-notice.b23"]
+        }
+      ],
+      "effectWhenMissing": "warn",
+      "effectWhenUnknown": "ask",
+      "interpretive": true,
+      "interpretiveNote": "Without the warning the breach cannot be invoked, so the refusal carries the indemnity of article 176 and the tenant stays until paid (article 187); the claim is not made inadmissible. Warn.",
+      "message": {
+        "ar": "المادة 177 من القانون التجاري: إذا كان سبب رفض التجديد دون تعويض عدم تنفيذ التزام أو التوقف عن الاستغلال، فلا يحتج به إلا إذا استمر أكثر من شهر بعد إنذار بعقد غير قضائي يبين السبب ويذكر مضمون الفقرة وإلا كان باطلا؛ وإلا وجب تعويض الاستحقاق (المادة 176) وبقي المستأجر حتى قبضه (المادة 187). تحقق من الإنذار وتاريخه.",
+        "en": "Commercial Code article 177: where the ground for refusing renewal without indemnity is non-performance or ceasing to run the business, it counts only if it continued more than a month after a warning by extrajudicial act stating the reason and reciting the paragraph, failing which the warning is void; otherwise the indemnity is due (article 176) and the tenant stays until paid (article 187). Check the warning and its date."
+      },
+      "basis": ["formal-notice.b23", "b4", "b8"]
+    }
+  ],
+  "documents": [
+    {
+      "id": "doc1",
+      "name": { "ar": "عقد الإيجار التجاري (عقد رسمي إذا أبرم بعد نشر القانون الذي أضاف المادة 187 مكرر)", "en": "The commercial lease (an official deed if made after the publication of the law that added article 187 مكرر)" },
+      "why": { "ar": "يثبت الإيجار وتاريخه ومدته وبدله، والشكل الرسمي شرط صحة في الإيجار اللاحق للإصلاح (المادة 187 مكرر).", "en": "Proves the lease, its date, term and rent; official form is a condition of validity for a post-reform lease (article 187 مكرر)." },
+      "basis": ["b9", "b23", "b2"]
+    },
+    {
+      "id": "doc2",
+      "name": { "ar": "محضر التنبيه بالإخلاء (عقد غير قضائي)", "en": "The bailiff's record of the notice to quit (extrajudicial act)" },
+      "requiredWhen": { "slot": "contract_date", "before": "2005-02-09" },
+      "why": { "ar": "لا ينتهي الإيجار السابق على الإصلاح إلا بتنبيه صحيح الشكل (المادة 173)؛ ولا حاجة إليه في الإيجار اللاحق عند انتهاء أجله (المادة 187 مكرر).", "en": "A pre-reform lease ends only by a notice valid in form (article 173); a post-reform lease needs none at its term (article 187 مكرر)." },
+      "basis": ["formal-notice.b31", "formal-notice.b32", "formal-notice.b33"]
+    },
+    {
+      "id": "doc3",
+      "name": { "ar": "العقد غير القضائي المبلغ به رفض التجديد أو التنبيه بالإخلاء، وتاريخ تبليغه", "en": "The extrajudicial act notifying the refusal of renewal or the notice to quit, with its date of service" },
+      "requiredWhen": { "slot": "requests", "includes": "damages" },
+      "why": { "ar": "يبدأ منه أجل التكليف بالحضور في دعوى المستأجر (المادة 197)، ويجب أن يذكر مضمون المادة 194 (المادة 174).", "en": "The period for the tenant's summons runs from it (article 197), and it must recite article 194 (article 174)." },
+      "basis": ["b18", "b28", "b30"]
+    },
+    {
+      "id": "doc4",
+      "name": { "ar": "مستخرج السجل التجاري أو سجل الحرف والصناعات التقليدية", "en": "Extract of the commercial register or of the craft register" },
+      "why": { "ar": "تطبق أحكام الإيجار التجاري على المحل الذي يستغل فيه محل تجاري لمقيد في أحد السجلين (المادة 169).", "en": "The commercial-lease rules apply to premises where a business of a person entered in either register is run (article 169)." },
+      "basis": ["b1"]
+    },
+    {
+      "id": "doc5",
+      "name": { "ar": "ما يثبت مدة الاستغلال المتتابع للمتجر (عقود الإيجار المتتالية، وصولات الأجرة، القيد في السجل)", "en": "Proof of the continuous running of the business (successive leases, rent receipts, register entry)" },
+      "requiredWhen": { "slot": "requests", "includes": "damages" },
+      "why": { "ar": "لا يتمسك بحق التجديد إلا من يثبت مدة الاستغلال المقررة (المادة 172).", "en": "Only a tenant who proves the required period of running may claim renewal (article 172)." },
+      "basis": ["b2"]
+    },
+    {
+      "id": "doc6",
+      "name": { "ar": "الإخطار بالدفع الذي يذكر مهلة الشهر، ومحضر تبليغه", "en": "The demand to pay naming the one-month period, and its service record" },
+      "requiredWhen": { "slot": "lease_has_rescission_clause", "is": "yes" },
+      "why": { "ar": "لا ينتج شرط الفسخ أثره إلا بعد شهر من هذا الإخطار (المادة 191).", "en": "The rescission clause takes effect only a month after this demand (article 191)." },
+      "basis": ["b10", "b11"]
+    },
+    {
+      "id": "doc7",
+      "name": { "ar": "الإنذار بعقد غير قضائي بوقف المخالفة، ومحضر تبليغه", "en": "The warning by extrajudicial act to stop the breach, and its service record" },
+      "requiredWhen": { "slot": "refusal_relies_on_tenant_breach", "is": "yes" },
+      "why": { "ar": "لا يحتج بمخالفة المستأجر لرفض التجديد دون تعويض إلا بعد هذا الإنذار (المادة 177).", "en": "The tenant's breach can be relied on to refuse renewal without indemnity only after this warning (article 177)." },
+      "basis": ["formal-notice.b23"]
+    },
+    {
+      "id": "doc8",
+      "name": { "ar": "كشف بدلات الإيجار المستحقة غير المدفوعة وتواريخ استحقاقها", "en": "A statement of the unpaid rent due and its due dates" },
+      "requiredWhen": { "slot": "requests", "includes": "payment" },
+      "why": { "ar": "يحدد المبلغ المطالب به ومواعيد استحقاقه (المادة 498 من القانون المدني).", "en": "Sets out the sum claimed and its due dates (Civil Code article 498)." },
+      "basis": ["b21"]
+    }
+  ],
+  "boundaries": [
+    {
+      "id": "n1",
+      "looksLike": { "ar": "إيجار أبرم في الأسابيع التالية لصدور الجريدة الرسمية التي نشرت المادة 187 مكرر", "en": "A lease made in the weeks after the Official Journal issue that published article 187 مكرر" },
+      "isActually": "outside:regime-start-unsettled",
+      "tellingFacts": [
+        { "ar": "تاريخ العقد قريب من تاريخ العدد، ولا يعرف تاريخ وصول الجريدة إلى مقر الدائرة.", "en": "The lease date is close to the issue date, and the date the Journal reached the daira's seat is unknown." }
+      ],
+      "when": {
+        "all": [
+          { "slot": "contract_date", "after": "2005-02-09" },
+          { "slot": "contract_date", "before": "2005-04-01" }
+        ]
+      },
+      "slots": ["contract_date"],
+      "message": {
+        "ar": "المادة 187 مكرر تخضع للنظام الجديد العقود المبرمة ابتداء من تاريخ نشر القانون، والمادة 4 من القانون المدني تجعل نفاذ القوانين خارج العاصمة بعد يوم كامل من وصول الجريدة إلى مقر الدائرة. تحقق من النظام الذي يخضع له عقد أبرم في هذه الفترة.",
+        "en": "Article 187 مكرر puts under the new regime the leases made from the law's publication, and Civil Code article 4 makes laws effective outside Algiers a full day after the Journal reaches the daira's seat. Check which regime governs a lease made in this window."
+      },
+      "basis": ["b9", "b24", "formal-notice.b34"]
+    },
+    {
+      "id": "n2",
+      "looksLike": { "ar": "إيجار تجاري لاحق للإصلاح غير محرر في الشكل الرسمي", "en": "A post-reform commercial lease not in official form" },
+      "isActually": "outside:void-commercial-lease",
+      "tellingFacts": [
+        { "ar": "عقد عرفي أو شفهي أبرم بعد نشر القانون الذي أضاف المادة 187 مكرر.", "en": "A private or oral lease made after the publication of the law that added article 187 مكرر." }
+      ],
+      "when": {
+        "all": [
+          { "slot": "contract_date", "after": "2005-02-09" },
+          { "slot": "lease_form", "in": ["private_fixed_date", "private_no_fixed_date", "oral"] }
+        ]
+      },
+      "slots": ["contract_date", "lease_form"],
+      "message": {
+        "ar": "المادة 187 مكرر من القانون التجاري والمادة 324 مكرر 1 من القانون المدني: يحرر الإيجار التجاري في الشكل الرسمي تحت طائلة البطلان. تحقق من شكل العقد ومن الأساس الذي تقوم عليه الدعوى.",
+        "en": "Commercial Code article 187 مكرر and Civil Code article 324 مكرر 1: a commercial lease is drawn up in official form on pain of nullity. Check the lease's form and the ground of the claim."
+      },
+      "basis": ["b9", "b23"]
+    },
+    {
+      "id": "n3",
+      "looksLike": { "ar": "خلاف حول بدل الإيجار أو مدته أو شروطه بعد قبول التجديد", "en": "A dispute on the rent, term or conditions after renewal was accepted" },
+      "isActually": "outside:new-lease-terms-before-president",
+      "tellingFacts": [
+        { "ar": "المؤجر وافق على التجديد، والخلاف لا يتعلق إلا بشروط الإيجار الجديد.", "en": "The lessor agreed to renew, and the dispute is only on the terms of the new lease." }
+      ],
+      "when": { "slot": "dispute_only_new_lease_terms", "is": "yes" },
+      "slots": ["dispute_only_new_lease_terms"],
+      "message": {
+        "ar": "المادة 195 من القانون التجاري: إذا وافق المؤجر على التجديد وانحصر الخلاف في البدل أو المدة أو الشروط، يحضر الطرفان أمام رئيس المحكمة ليفصل حسب إجراءات الاستعجال. تحقق من موضوع الخلاف ومن الجهة التي يرفع أمامها.",
+        "en": "Commercial Code article 195: when the lessor agreed to renew and the dispute is only on rent, term or conditions, the parties appear before the court president, who rules under the urgent procedure. Check what the dispute is about and where it goes."
+      },
+      "basis": ["b15"]
+    },
+    {
+      "id": "n4",
+      "looksLike": { "ar": "مطالبة المستأجر بتعويض الاستحقاق دون مدة الاستغلال المقررة", "en": "A tenant's claim to the eviction indemnity without the required period of running" },
+      "isActually": "outside:no-renewal-right",
+      "tellingFacts": [
+        { "ar": "استغلال المتجر أقل من المدة التي تحددها المادة 172 بحسب شكل الإيجار.", "en": "The business was run for less than the period article 172 sets for the lease's form." }
+      ],
+      "when": {
+        "all": [
+          { "slot": "requests", "includes": "damages" },
+          { "not": { "slot": "requests", "includes": "eviction" } },
+          { "slot": "tenant_exploited_required_period", "is": "no" }
+        ]
+      },
+      "slots": ["requests", "tenant_exploited_required_period"],
+      "message": {
+        "ar": "المادة 172 من القانون التجاري: لا يتمسك بحق التجديد إلا المستأجر الذي يثبت استغلال المتجر المدة المتتابعة التي تحددها المادة. تحقق من مدة الاستغلال وشكل الإيجارات.",
+        "en": "Commercial Code article 172: only a tenant who proves he ran the business for the continuous period the article sets may claim renewal. Check the period of running and the form of the leases."
+      },
+      "basis": ["b2", "b4"]
+    },
+    {
+      "id": "n5",
+      "looksLike": { "ar": "مطالبة بتعويض الاستحقاق في إيجار لاحق للإصلاح", "en": "A claim to the eviction indemnity under a post-reform lease" },
+      "isActually": "outside:no-indemnity-at-term",
+      "tellingFacts": [
+        { "ar": "العقد أبرم بعد نشر القانون الذي أضاف المادة 187 مكرر، ولا يتضمن شرطا بالتجديد أو بالتعويض.", "en": "The lease was made after the publication of the law that added article 187 مكرر and holds no stipulation of renewal or indemnity." }
+      ],
+      "when": {
+        "all": [
+          { "slot": "requests", "includes": "damages" },
+          { "not": { "slot": "requests", "includes": "eviction" } },
+          { "slot": "contract_date", "after": "2005-02-09" },
+          { "slot": "lease_stipulates_renewal_or_indemnity", "is": "no" }
+        ]
+      },
+      "slots": ["requests", "contract_date", "lease_stipulates_renewal_or_indemnity"],
+      "message": {
+        "ar": "المادة 187 مكرر من القانون التجاري: يغادر المستأجر عند انتهاء الأجل دون تنبيه ودون حق في تعويض الاستحقاق ما لم يشترط الأطراف خلاف ذلك. تحقق من تاريخ العقد ومن شروطه.",
+        "en": "Commercial Code article 187 مكرر: the tenant leaves at the end of the term with no notice and no right to the eviction indemnity unless the parties stipulated otherwise. Check the lease's date and terms."
+      },
+      "basis": ["formal-notice.b33", "b9"]
+    },
+    {
+      "id": "n6",
+      "looksLike": { "ar": "إيجار محل لا تنطبق عليه أحكام الإيجار التجاري", "en": "A lease of premises outside the commercial-lease rules" },
+      "isActually": "outside:civil-code-lease",
+      "tellingFacts": [
+        { "ar": "مسكن أو محل مهني، أو محل لا يستغل فيه محل تجاري لمقيد في السجل التجاري أو سجل الحرف.", "en": "A dwelling or professional premises, or premises where no business of a registered trader or craftsman is run." }
+      ],
+      "when": { "slot": "commercial_lease", "is": "no" },
+      "slots": ["commercial_lease"],
+      "message": {
+        "ar": "المادة 169 من القانون التجاري: تطبق أحكام الإيجار التجاري على المحلات التي يستغل فيها محل تجاري لمقيد في السجل التجاري أو سجل الحرف. تحقق من طبيعة الإيجار ومن النصوص التي تحكمه.",
+        "en": "Commercial Code article 169: the commercial-lease rules apply to premises where a business of a person entered in the commercial or craft register is run. Check the nature of the lease and the texts that govern it."
+      },
+      "basis": ["b1"]
+    },
+    {
+      "id": "n7",
+      "looksLike": { "ar": "إيجار أرض فلاحية أو تسيير محل تجاري أو منقول", "en": "A lease of farmland, a management contract of a business, or a lease of a movable" },
+      "isActually": "outside:not-business-premises-lease",
+      "tellingFacts": [
+        { "ar": "محل العقد ليس عمارة أو محلا يستغل فيه محل تجاري.", "en": "What is leased is not a building or premises in which a business is run." }
+      ],
+      "when": { "slot": "leased_thing", "in": ["agricultural", "business_management", "movable"] },
+      "slots": ["leased_thing"],
+      "message": {
+        "ar": "المادة 169 من القانون التجاري: تخص أحكام الإيجار التجاري إيجار العمارات أو المحلات التي يستغل فيها محل تجاري. تحقق من محل العقد ومن النصوص التي تحكمه.",
+        "en": "Commercial Code article 169: the commercial-lease rules concern leases of buildings or premises in which a business is run. Check what is leased and the texts that govern it."
+      },
+      "basis": ["b1"]
+    },
+    {
+      "id": "n8",
+      "looksLike": { "ar": "إخلاء مستأجر في حالة إفلاس أو تسوية أو تصفية قضائية", "en": "Evicting a tenant in bankruptcy, judicial settlement or liquidation" },
+      "isActually": "outside:collective-procedure",
+      "tellingFacts": [
+        { "ar": "صدر حكم بإفلاس المستأجر أو تسويته أو تصفيته القضائية.", "en": "A judgment opened bankruptcy, settlement or liquidation against the tenant." }
+      ],
+      "when": { "slot": "tenant_in_collective_procedure", "is": "yes" },
+      "slots": ["tenant_in_collective_procedure"],
+      "message": {
+        "ar": "المادة 201 من القانون التجاري: لا يترتب بحكم القانون على الإفلاس أو التصفية القضائية فسخ إيجار العمارات المخصصة لنشاط المدين، ويلغى كل شرط مخالف. تحقق من أثر الإجراء الجماعي ومن الجهة المختصة.",
+        "en": "Commercial Code article 201: bankruptcy or judicial liquidation does not rescind by law the lease of the buildings used for the debtor's business, and any contrary clause is void. Check the effect of the collective procedure and the competent court."
+      },
+      "basis": ["b25"]
+    },
+    {
+      "id": "n9",
+      "looksLike": { "ar": "طلب مراجعة بدل الإيجار", "en": "A claim to revise the rent" },
+      "isActually": "outside:rent-revision",
+      "tellingFacts": [
+        { "ar": "لا يطلب الإخلاء ولا التعويض، بل تعديل البدل.", "en": "Neither eviction nor indemnity is sought, only a change of rent." }
+      ],
+      "message": {
+        "ar": "المادة 192 من القانون التجاري: لمراجعة بدل الإيجار إجراء وشروط خاصة.",
+        "en": "Commercial Code article 192: revising the rent follows its own procedure and conditions."
+      },
+      "basis": ["b29", "b15"]
+    },
+    {
+      "id": "n10",
+      "looksLike": { "ar": "طلب إخلاء في إيجار لاحق للإصلاح قبل انقضاء أجله", "en": "An eviction claim under a post-reform lease before its term ends" },
+      "isActually": "outside:term-not-expired",
+      "tellingFacts": [
+        { "ar": "الأجل المحدد في العقد لم ينقض، والطلب لا يستند إلى فسخ.", "en": "The term fixed in the lease has not ended, and the claim does not rest on rescission." }
+      ],
+      "when": {
+        "all": [
+          { "slot": "requests", "includes": "eviction" },
+          { "slot": "contract_date", "after": "2005-02-09" },
+          { "slot": "lease_term_expired", "is": "no" }
+        ]
+      },
+      "slots": ["requests", "contract_date", "lease_term_expired"],
+      "message": {
+        "ar": "المادة 187 مكرر من القانون التجاري: يلزم المستأجر بالمغادرة بانتهاء الأجل المحدد في العقد. تحقق من الأجل ومن أساس طلب الإخلاء قبل انقضائه، كشرط الفسخ (المادة 191).",
+        "en": "Commercial Code article 187 مكرر: the tenant must leave when the term fixed in the lease ends. Check the term and the ground for eviction before it ends, such as a rescission clause (article 191)."
+      },
+      "basis": ["formal-notice.b33", "b10"]
+    },
+    {
+      "id": "n12",
+      "looksLike": { "ar": "إخلاء مستأجر في إيجار سابق على الإصلاح دون عرض تعويض الاستحقاق", "en": "Evicting a tenant under a pre-reform lease without offering the eviction indemnity" },
+      "isActually": "outside:indemnity-due-before-departure",
+      "tellingFacts": [
+        { "ar": "رفض التجديد لا يستند إلى مخالفة المستأجر، ولا يعرض المؤجر التعويض.", "en": "The refusal does not rest on the tenant's breach, and the lessor offers no indemnity." }
+      ],
+      "when": {
+        "all": [
+          { "slot": "requests", "includes": "eviction" },
+          { "slot": "contract_date", "before": "2005-02-09" },
+          { "slot": "refusal_relies_on_tenant_breach", "is": "no" }
+        ]
+      },
+      "slots": ["requests", "contract_date", "refusal_relies_on_tenant_breach"],
+      "message": {
+        "ar": "المواد 176 و177 و187 من القانون التجاري: يلزم المؤجر الرافض للتجديد بتعويض الاستحقاق خارج الاستثناءات، ولا يلزم المستأجر بالمغادرة قبل قبضه. تحقق من السبب الذي يستند إليه الإخلاء ومن التعويض.",
+        "en": "Commercial Code articles 176, 177 and 187: a lessor refusing renewal owes the eviction indemnity outside the exceptions, and the tenant need not leave before receiving it. Check the ground for eviction and the indemnity."
+      },
+      "basis": ["b4", "b6", "b7", "b8", "b26"]
+    }
+  ],
+  "slots": [
+    "requests",
+    "contract_date",
+    "lease_form",
+    "commercial_lease",
+    "leased_thing",
+    "debt_due_date",
+    "lease_has_rescission_clause",
+    "rescission_clause_notice_month_elapsed",
+    "lease_term_expired",
+    "tenant_in_collective_procedure",
+    "notice_to_quit_served",
+    "renewal_refusal_notified_on",
+    "refusal_relies_on_tenant_breach",
+    "breach_warning_month_elapsed",
+    "dispute_only_new_lease_terms",
+    "tenant_exploited_required_period",
+    "lease_stipulates_renewal_or_indemnity",
+    "dispute_is_social",
+    "dispute_is_family",
+    "worker_is_public_servant",
+    "court_has_section_for_matter",
+    "dispute_concerns_real_property",
+    "dispute_is_commercial",
+    "notice_served",
+    "notice_means",
+    "notice_date",
+    "notice_before_petition_day",
+    "default_on_due_date_agreed",
+    "performance_impossible_or_useless_by_debtor",
+    "obligation_is_tort_compensation",
+    "return_of_thing_known_stolen_or_unduly_received",
+    "debtor_refused_in_writing",
+    "contract_sets_notice_terms",
+    "public_body_party",
+    "public_vehicle_damage",
+    "specialised_commercial_matter",
+    "debt_written_fixed_due",
+    "claim_is_periodic_renewable_right",
+    "property_registered",
+    "petition_names_court",
+    "petition_gives_plaintiff_identity",
+    "petition_gives_defendant_identity",
+    "party_is_legal_person",
+    "petition_states_facts_claims_grounds",
+    "petition_lists_documents",
+    "petition_signed_dated",
+    "petition_copies_for_each_party",
+    "court_fees_paid",
+    "fee_exemption_applies",
+    "party_lacks_capacity",
+    "plaintiff_acts_through_representative",
+    "plaintiff_has_standing",
+    "plaintiff_has_interest",
+    "suit_authorisation_required",
+    "foreign_language_documents",
+    "petition_in_arabic"
+  ],
+  "proposedSlots": [
+    {
+      "id": "notice_to_quit_served",
+      "type": "yesNoUnknown",
+      "question": {
+        "ar": "هل وجه المؤجر إلى المستأجر تنبيها بالإخلاء بعقد غير قضائي (محضر قضائي) يبين أسبابه ويعيد ذكر مضمون المادة 194 من القانون التجاري، قبل أجل الإيجار بالمدة التي تحددها المادة 173؟",
+        "en": "Did the lessor serve the tenant a notice to quit by extrajudicial act (bailiff) stating its reasons and reciting Commercial Code article 194, ahead of the lease term by the time article 173 sets?"
+      },
+      "why": "Prior step p1 reads it; commercial-code 173 ¶1 and ¶5 end a pre-reform lease only by such a notice and make a notice lacking this form void."
+    },
+    {
+      "id": "renewal_refusal_notified_on",
+      "type": "date",
+      "question": {
+        "ar": "ما تاريخ تبليغ التنبيه بالإخلاء أو رفض تجديد الإيجار إلى المستأجر؟",
+        "en": "On what date was the notice to quit or the refusal to renew served on the tenant?"
+      },
+      "why": "Deadlines d1 and d2 run from it; commercial-code 197 ¶3 counts the tenant's period from the notification of the refusal, and 175 ¶3 makes the notice to quit one way of announcing non-renewal."
+    },
+    {
+      "id": "refusal_relies_on_tenant_breach",
+      "type": "yesNoUnknown",
+      "question": {
+        "ar": "هل يستند رفض التجديد أو طلب الإخلاء دون تعويض إلى مخالفة المستأجر (عدم تنفيذ التزام كعدم دفع الأجرة، أو التوقف عن الاستغلال دون سبب جدي ومشروع)؟",
+        "en": "Does the refusal to renew, or the eviction claim without indemnity, rest on the tenant's breach (non-performance such as unpaid rent, or ceasing to run the business without serious and legitimate reason)?"
+      },
+      "why": "Prior step p3 and boundary n12 read it; commercial-code 177 ¶1 and ¶2 let the lessor refuse without indemnity for a serious ground, a breach counting only after a warning."
+    },
+    {
+      "id": "breach_warning_month_elapsed",
+      "type": "yesNoUnknown",
+      "question": {
+        "ar": "هل أنذر المؤجر المستأجر بعقد غير قضائي يبين السبب ويذكر مضمون الفقرة الثانية من المادة 177 من القانون التجاري، واستمرت المخالفة أو تجددت أكثر من شهر بعد الإنذار؟",
+        "en": "Did the lessor warn the tenant by extrajudicial act stating the reason and reciting Commercial Code article 177 ¶2, and did the breach continue or recur more than a month after the warning?"
+      },
+      "why": "Prior step p3 reads it; commercial-code 177 ¶2 allows the breach to be invoked only after this warning and month."
+    },
+    {
+      "id": "dispute_only_new_lease_terms",
+      "type": "yesNoUnknown",
+      "question": {
+        "ar": "هل وافق المؤجر على تجديد الإيجار وينحصر الخلاف في بدل الإيجار أو مدته أو شروطه؟",
+        "en": "Did the lessor agree to renew the lease, with the dispute limited to the rent, the term or the conditions?"
+      },
+      "why": "Boundary n3 reads it; commercial-code 195 ¶1 sends that dispute to the court president under the urgent procedure."
+    },
+    {
+      "id": "tenant_exploited_required_period",
+      "type": "yesNoUnknown",
+      "question": {
+        "ar": "هل استغل المستأجر المتجر بنفسه أو بواسطة تابعيه مدة سنتين متتابعتين بإيجار مكتوب، أو أربع سنوات متتابعة بإيجار شفهي أو مكتوب؟",
+        "en": "Did the tenant run the business himself or through his staff for two consecutive years under a written lease, or four consecutive years under an oral or written lease?"
+      },
+      "why": "Boundary n4 and element e5 read it; commercial-code 172 ¶1 limits the renewal right, and so the indemnity, to such a tenant."
+    },
+    {
+      "id": "lease_stipulates_renewal_or_indemnity",
+      "type": "yesNoUnknown",
+      "question": {
+        "ar": "هل يتضمن عقد الإيجار شرطا يمنح المستأجر حق التجديد أو تعويض الاستحقاق عند انتهاء الأجل؟",
+        "en": "Does the lease contain a stipulation giving the tenant a renewal right or the eviction indemnity at the end of the term?"
+      },
+      "why": "Boundary n5 and element e4 read it; commercial-code 187 مكرر ¶2 removes the indemnity and the notice at term unless the parties stipulated otherwise."
+    }
+  ],
+  "examples": [
+    {
+      "id": "ex1",
+      "by": "derivationA",
+      "title": "Clean case: lessor, pre-reform lease, valid notice to quit, breach warned, eviction and rent arrears.",
+      "petitionDate": "2026-03-16",
+      "slots": {
+        "requests": ["eviction", "payment"],
+        "contract_date": "2000-05-10",
+        "lease_form": "official",
+        "commercial_lease": "yes",
+        "leased_thing": "premises",
+        "notice_to_quit_served": "yes",
+        "renewal_refusal_notified_on": "2025-09-01",
+        "lease_has_rescission_clause": "no",
+        "lease_term_expired": "yes",
+        "refusal_relies_on_tenant_breach": "yes",
+        "breach_warning_month_elapsed": "yes",
+        "dispute_only_new_lease_terms": "no",
+        "tenant_in_collective_procedure": "no",
+        "dispute_is_social": "no",
+        "dispute_is_family": "no",
+        "worker_is_public_servant": "no",
+        "court_has_section_for_matter": "yes",
+        "dispute_concerns_real_property": "no",
+        "property_registered": "no",
+        "dispute_is_commercial": "yes",
+        "notice_served": "yes",
+        "notice_means": "bailiff",
+        "notice_date": "2026-01-10",
+        "notice_before_petition_day": "yes",
+        "default_on_due_date_agreed": "no",
+        "performance_impossible_or_useless_by_debtor": "no",
+        "obligation_is_tort_compensation": "no",
+        "return_of_thing_known_stolen_or_unduly_received": "no",
+        "debtor_refused_in_writing": "no",
+        "contract_sets_notice_terms": "no",
+        "public_body_party": "no",
+        "public_vehicle_damage": "no",
+        "specialised_commercial_matter": "none",
+        "debt_written_fixed_due": "no",
+        "claim_is_periodic_renewable_right": "yes",
+        "debt_due_date": "2025-06-01",
+        "petition_names_court": "yes",
+        "petition_gives_plaintiff_identity": "yes",
+        "petition_gives_defendant_identity": "yes",
+        "party_is_legal_person": "no",
+        "petition_states_facts_claims_grounds": "yes",
+        "petition_lists_documents": "yes",
+        "petition_signed_dated": "yes",
+        "petition_copies_for_each_party": "yes",
+        "court_fees_paid": "yes",
+        "fee_exemption_applies": "no",
+        "party_lacks_capacity": "no",
+        "plaintiff_acts_through_representative": "no",
+        "plaintiff_has_standing": "yes",
+        "plaintiff_has_interest": "yes",
+        "suit_authorisation_required": "no",
+        "foreign_language_documents": "no",
+        "petition_in_arabic": "yes"
+      },
+      "expect": {
+        "findings": [
+          { "ref": "p1", "effect": "none" },
+          { "ref": "p2", "effect": "none" },
+          { "ref": "p3", "effect": "none" },
+          { "ref": "d1", "effect": "none" },
+          { "ref": "d2", "effect": "none" },
+          { "ref": "n1", "effect": "none" },
+          { "ref": "n2", "effect": "none" },
+          { "ref": "n10", "effect": "none" },
+          { "ref": "n12", "effect": "none" }
+        ],
+        "questions": []
+      }
+    },
+    {
+      "id": "ex2",
+      "by": "derivationA",
+      "title": "Pre-reform lease, no notice to quit and no rescission clause: the notice step warns.",
+      "petitionDate": "2026-03-16",
+      "slots": {
+        "requests": ["eviction"],
+        "contract_date": "1999-01-15",
+        "notice_to_quit_served": "no",
+        "lease_has_rescission_clause": "no"
+      },
+      "expect": {
+        "findings": [
+          { "ref": "p1", "effect": "warn" },
+          { "ref": "p2", "effect": "none" }
+        ]
+      }
+    },
+    {
+      "id": "ex3",
+      "by": "derivationA",
+      "title": "Pre-reform lease, notice to quit unknown: the step asks for it.",
+      "petitionDate": "2026-03-16",
+      "slots": {
+        "requests": ["eviction"],
+        "contract_date": "1999-01-15"
+      },
+      "expect": {
+        "findings": [
+          { "ref": "p1", "effect": "ask" }
+        ]
+      }
+    },
+    {
+      "id": "ex4",
+      "by": "derivationA",
+      "title": "Exemption: no notice to quit, but the rescission clause applied after a month's demand to pay.",
+      "petitionDate": "2026-03-16",
+      "slots": {
+        "requests": ["eviction", "payment"],
+        "contract_date": "1999-01-15",
+        "notice_to_quit_served": "no",
+        "lease_has_rescission_clause": "yes",
+        "rescission_clause_notice_month_elapsed": "yes"
+      },
+      "expect": {
+        "findings": [
+          { "ref": "p1", "effect": "none" },
+          { "ref": "p2", "effect": "none" }
+        ]
+      }
+    },
+    {
+      "id": "ex5",
+      "by": "derivationA",
+      "title": "Rescission clause relied on, demand not served or month not run, no notice to quit, term not ended: both steps warn.",
+      "petitionDate": "2026-03-16",
+      "slots": {
+        "requests": ["eviction"],
+        "contract_date": "1999-01-15",
+        "notice_to_quit_served": "no",
+        "lease_has_rescission_clause": "yes",
+        "rescission_clause_notice_month_elapsed": "no",
+        "lease_term_expired": "no"
+      },
+      "expect": {
+        "findings": [
+          { "ref": "p1", "effect": "warn" },
+          { "ref": "p2", "effect": "warn" }
+        ]
+      }
+    },
+    {
+      "id": "ex6",
+      "by": "derivationA",
+      "title": "Tenant claims the indemnity a month after the refusal: far inside the period.",
+      "petitionDate": "2026-02-10",
+      "slots": {
+        "requests": ["damages"],
+        "contract_date": "1998-04-01",
+        "renewal_refusal_notified_on": "2026-01-05",
+        "tenant_exploited_required_period": "yes"
+      },
+      "expect": {
+        "findings": [
+          { "ref": "d1", "effect": "none" },
+          { "ref": "d2", "effect": "none" },
+          { "ref": "n4", "effect": "none" },
+          { "ref": "p1", "effect": "none" }
+        ]
+      }
+    },
+    {
+      "id": "ex7",
+      "by": "derivationA",
+      "title": "Tenant claims the indemnity eight months after the refusal: far outside, a warning only.",
+      "petitionDate": "2026-02-10",
+      "slots": {
+        "requests": ["damages"],
+        "contract_date": "1998-04-01",
+        "renewal_refusal_notified_on": "2025-06-01",
+        "tenant_exploited_required_period": "yes"
+      },
+      "expect": {
+        "findings": [
+          { "ref": "d1", "effect": "warn" }
+        ]
+      }
+    },
+    {
+      "id": "ex8",
+      "by": "derivationA",
+      "title": "Tenant files three days after the last day: inside the band, a warning.",
+      "petitionDate": "2026-02-13",
+      "slots": {
+        "requests": ["damages"],
+        "contract_date": "1998-04-01",
+        "renewal_refusal_notified_on": "2025-11-10"
+      },
+      "expect": {
+        "findings": [
+          { "ref": "d1", "effect": "warn" }
+        ]
+      }
+    },
+    {
+      "id": "ex9",
+      "by": "derivationA",
+      "title": "Lessor's eviction three years after the notice to quit: the two-year limitation warns.",
+      "petitionDate": "2026-02-10",
+      "slots": {
+        "requests": ["eviction"],
+        "contract_date": "1990-06-01",
+        "notice_to_quit_served": "yes",
+        "renewal_refusal_notified_on": "2023-01-10"
+      },
+      "expect": {
+        "findings": [
+          { "ref": "d2", "effect": "warn" },
+          { "ref": "p1", "effect": "none" },
+          { "ref": "d1", "effect": "none" }
+        ]
+      }
+    },
+    {
+      "id": "ex10",
+      "by": "derivationA",
+      "title": "Lessor's eviction five days before two years from the notice: inside the band, a warning.",
+      "petitionDate": "2026-02-15",
+      "slots": {
+        "requests": ["eviction"],
+        "contract_date": "1990-06-01",
+        "notice_to_quit_served": "yes",
+        "renewal_refusal_notified_on": "2024-02-20"
+      },
+      "expect": {
+        "findings": [
+          { "ref": "d2", "effect": "warn" }
+        ]
+      }
+    },
+    {
+      "id": "ex11",
+      "by": "derivationA",
+      "title": "Refusal for the tenant's breach without the warning: the step warns.",
+      "petitionDate": "2026-03-16",
+      "slots": {
+        "requests": ["eviction"],
+        "contract_date": "1995-02-01",
+        "notice_to_quit_served": "yes",
+        "refusal_relies_on_tenant_breach": "yes",
+        "breach_warning_month_elapsed": "no"
+      },
+      "expect": {
+        "findings": [
+          { "ref": "p3", "effect": "warn" },
+          { "ref": "n12", "effect": "none" }
+        ]
+      }
+    },
+    {
+      "id": "ex12",
+      "by": "derivationA",
+      "title": "Refusal for the tenant's breach, warning not known: the step asks.",
+      "petitionDate": "2026-03-16",
+      "slots": {
+        "requests": ["eviction"],
+        "contract_date": "1995-02-01",
+        "refusal_relies_on_tenant_breach": "yes"
+      },
+      "expect": {
+        "findings": [
+          { "ref": "p3", "effect": "ask" }
+        ]
+      }
+    },
+    {
+      "id": "ex13",
+      "by": "derivationA",
+      "title": "Post-reform official lease, term ended: no notice to quit needed, no warning.",
+      "petitionDate": "2026-03-16",
+      "slots": {
+        "requests": ["eviction"],
+        "contract_date": "2015-03-01",
+        "lease_form": "official",
+        "lease_term_expired": "yes",
+        "lease_has_rescission_clause": "no"
+      },
+      "expect": {
+        "findings": [
+          { "ref": "p1", "effect": "none" },
+          { "ref": "p3", "effect": "none" },
+          { "ref": "d2", "effect": "none" },
+          { "ref": "n2", "effect": "none" },
+          { "ref": "n10", "effect": "none" },
+          { "ref": "n1", "effect": "none" }
+        ]
+      }
+    },
+    {
+      "id": "ex14",
+      "by": "derivationA",
+      "title": "Post-reform private lease, term not ended: void form and early eviction warn.",
+      "petitionDate": "2026-03-16",
+      "slots": {
+        "requests": ["eviction"],
+        "contract_date": "2012-07-01",
+        "lease_form": "private_fixed_date",
+        "lease_term_expired": "no"
+      },
+      "expect": {
+        "findings": [
+          { "ref": "n2", "effect": "warn" },
+          { "ref": "n10", "effect": "warn" }
+        ]
+      }
+    },
+    {
+      "id": "ex15",
+      "by": "derivationA",
+      "title": "Tenant under a post-reform lease with no stipulation and too short a period: both boundaries warn.",
+      "petitionDate": "2026-03-16",
+      "slots": {
+        "requests": ["damages"],
+        "contract_date": "2019-05-01",
+        "lease_stipulates_renewal_or_indemnity": "no",
+        "tenant_exploited_required_period": "no",
+        "renewal_refusal_notified_on": "2026-02-01"
+      },
+      "expect": {
+        "findings": [
+          { "ref": "n5", "effect": "warn" },
+          { "ref": "n4", "effect": "warn" },
+          { "ref": "d1", "effect": "none" }
+        ]
+      }
+    },
+    {
+      "id": "ex16",
+      "by": "derivationA",
+      "title": "Contract date unknown: the regime-dependent items ask.",
+      "petitionDate": "2026-03-16",
+      "slots": {
+        "requests": ["eviction"]
+      },
+      "expect": {
+        "findings": [
+          { "ref": "p1", "effect": "ask" },
+          { "ref": "d2", "effect": "ask" },
+          { "ref": "n10", "effect": "ask" }
+        ]
+      }
+    },
+    {
+      "id": "ex17",
+      "by": "derivationA",
+      "title": "Lease made a week after the Journal issue: the regime-start boundary warns.",
+      "petitionDate": "2026-03-16",
+      "slots": {
+        "requests": ["eviction"],
+        "contract_date": "2005-02-16",
+        "lease_form": "official",
+        "lease_term_expired": "yes"
+      },
+      "expect": {
+        "findings": [
+          { "ref": "n1", "effect": "warn" },
+          { "ref": "p1", "effect": "none" }
+        ]
+      }
+    },
+    {
+      "id": "ex18",
+      "by": "derivationA",
+      "title": "Exits and boundaries: public body lessor, tenant in liquidation, dispute only on new terms.",
+      "petitionDate": "2026-03-16",
+      "slots": {
+        "requests": ["eviction"],
+        "public_body_party": "yes",
+        "tenant_in_collective_procedure": "yes",
+        "dispute_only_new_lease_terms": "yes",
+        "commercial_lease": "yes",
+        "leased_thing": "business_management"
+      },
+      "expect": {
+        "findings": [
+          { "ref": "n8", "effect": "warn" },
+          { "ref": "n3", "effect": "warn" },
+          { "ref": "n6", "effect": "none" },
+          { "ref": "n7", "effect": "warn" }
+        ]
+      }
+    }
+  ],
+  "openPoints": [
+    {
+      "id": "o1",
+      "question": { "ar": "ما جزاء عدم تبليغ التكليف بالحضور في الأجل الذي تحدده الفقرة الثالثة من المادة 197 من القانون التجاري؟", "en": "What follows when the summons is not served within the period of Commercial Code article 197 ¶3?" },
+      "why": { "ar": "الفقرة تقرر الواجب والأجل دون جزاء صريح، ولا يحدد أي نص في المخزن طريقة حسابه.", "en": "The paragraph states the duty and the period without an express sanction, and no text in the store sets how it is counted." },
+      "readings": [
+        { "reading": { "ar": "سقوط حق المستأجر في المنازعة وفي التعويض.", "en": "The tenant forfeits the right to contest and to the indemnity." }, "basis": ["b18", "b13"] },
+        { "reading": { "ar": "أجل دون جزاء منصوص عليه.", "en": "A period with no stated sanction." }, "basis": ["b18"] }
+      ],
+      "protectiveReading": { "ar": "التنبيه دون منع التصدير النظيف.", "en": "Warn; never block the clean export." },
+      "grade": "C",
+      "refs": ["d1"]
+    },
+    {
+      "id": "o2",
+      "question": { "ar": "هل يقرر النص الفرنسي للمادة 197 (أو المادة 194) جزاء السقوط صراحة؟", "en": "Does the French text of article 197 (or 194) state forfeiture expressly?" },
+      "why": { "ar": "يتذكر المحرر من الذاكرة أن النص الفرنسي يقرن الأجل بعبارة السقوط؛ النص الفرنسي ليس في المخزن.", "en": "The deriver remembers that the French text attaches forfeiture to the period; the French text is not in the store." },
+      "protectiveReading": { "ar": "يبقى الأجل تفسيريا وينبه فقط إلى أن يقرأ النص الرسمي.", "en": "The deadline stays interpretive and only warns until the official text is read." },
+      "grade": "D",
+      "refs": ["d1"]
+    },
+    {
+      "id": "o3",
+      "question": { "ar": "كيف يوفق بين مهلة الثلاثة أشهر في الفقرة الأولى من المادة 194 والأجل نفسه في الفقرة الثالثة من المادة 197؟", "en": "How does the three-month period of article 194 ¶1 fit with the same period in article 197 ¶3?" },
+      "why": { "ar": "ظاهر المادة 194 أن النزاع يرفع بعد انقضاء المهلة دون اتفاق، وظاهر المادة 197 أن التكليف يبلغ خلالها.", "en": "Article 194 reads as bringing the dispute after the period runs without agreement; article 197 as serving the summons within it." },
+      "readings": [
+        { "reading": { "ar": "مهلة المادة 194 هي نفسها أجل رفع دعوى المستأجر.", "en": "The article 194 period is the tenant's filing period itself." }, "basis": ["b13", "b18"] },
+        { "reading": { "ar": "مهلة المادة 194 مهلة تفاوض تخص النزاعات الأخرى للباب.", "en": "The article 194 period is a negotiation period for the title's other disputes." }, "basis": ["b13"] }
+      ],
+      "protectiveReading": { "ar": "التنبيه بتاريخ التبليغ وبكلا النصين.", "en": "Warn on the notification date and name both texts." },
+      "grade": "C",
+      "refs": ["d1"]
+    },
+    {
+      "id": "o4",
+      "question": { "ar": "متى تبدأ مدة السنتين في المادة 198، وهل تشمل دعوى المؤجر بالإخلاء؟", "en": "When does the two-year period of article 198 start, and does it reach the lessor's eviction claim?" },
+      "why": { "ar": "تحدد المادة المدة والدعاوى المستثناة دون بداية المدة.", "en": "The article gives the period and the excluded actions, not the start." },
+      "protectiveReading": { "ar": "حسابها من تاريخ التنبيه بالإخلاء والتنبيه فقط.", "en": "Count it from the notice to quit and only warn." },
+      "grade": "C",
+      "refs": ["d2"]
+    },
+    {
+      "id": "o5",
+      "question": { "ar": "من أي يوم بالضبط يخضع الإيجار التجاري للنظام الذي أنشأته المادة 187 مكرر؟", "en": "From exactly which day does a commercial lease fall under the regime of article 187 مكرر?" },
+      "why": { "ar": "تنص المادة على تاريخ النشر، ويحمل المخزن ملاحظة بأن بداية النفاذ غير محسومة، والمادة 4 من القانون المدني تجعل النفاذ يختلف بحسب الدائرة.", "en": "The article names the publication date; the store notes that the start is unsettled, and Civil Code article 4 makes it vary by daira." },
+      "protectiveReading": { "ar": "اعتبار تاريخ العدد حدا، والتنبيه في الأسابيع التالية له.", "en": "Use the issue date as the line and warn in the weeks after it." },
+      "grade": "C",
+      "refs": ["n1", "p1", "d2", "p3", "n12"]
+    },
+    {
+      "id": "o6",
+      "question": { "ar": "هل يشترط الشكل الرسمي في إيجار تجاري سابق على الإصلاح؟", "en": "Does a pre-reform commercial lease need official form?" },
+      "why": { "ar": "المادة 324 مكرر 1 من القانون المدني تشترطه، والمادة 172 من القانون التجاري تذكر الإيجار الشفهي.", "en": "Civil Code article 324 مكرر 1 requires it, while Commercial Code article 172 mentions oral leases." },
+      "protectiveReading": { "ar": "عدم التنبيه على الشكل في الإيجار السابق، مع ذكر النص في قائمة الوثائق.", "en": "No warning on form for a pre-reform lease; the document list names the text." },
+      "grade": "C",
+      "refs": ["doc1", "n2"]
+    },
+    {
+      "id": "o7",
+      "question": { "ar": "هل يلزم إعذار بمفهوم القانون المدني قبل طلب الإخلاء، فضلا عن التنبيه بالإخلاء؟", "en": "Is a formal notice under the Civil Code needed before an eviction claim, on top of the notice to quit?" },
+      "why": { "ar": "الخطوة المستوردة من وحدة الإعذار تشمل طلب الإخلاء، والقانون التجاري يفرد له التنبيه بالإخلاء.", "en": "The step imported from the formal-notice module covers eviction, while the Commercial Code has its own notice to quit." },
+      "protectiveReading": { "ar": "إبقاء التنبيه المستورد.", "en": "Keep the imported warning." },
+      "grade": "C",
+      "refs": ["p1"]
+    },
+    {
+      "id": "o8",
+      "question": { "ar": "هل يغني إعمال شرط الفسخ وفق المادة 191 عن التنبيه بالإخلاء في الإيجار السابق على الإصلاح؟", "en": "Does applying the rescission clause under article 191 replace the notice to quit in a pre-reform lease?" },
+      "why": { "ar": "المادة 173 تخص انتهاء الإيجار عند أجله، والمادة 191 تخص فسخه لعدم الدفع.", "en": "Article 173 concerns the lease ending at its term; article 191 its rescission for non-payment." },
+      "protectiveReading": { "ar": "إعفاء الخطوة مع بقاء التنبيه إلى شرط الفسخ نفسه.", "en": "Exempt the step while the rescission clause keeps its own warning." },
+      "grade": "C",
+      "refs": ["p1", "p2"]
+    },
+    {
+      "id": "o9",
+      "question": { "ar": "هل ينظر في الإيجار التجاري القسم التجاري أم القسم العقاري؟", "en": "Does the commercial section or the real-estate section hear a commercial lease?" },
+      "why": { "ar": "قاعدة القسم المستوردة قراءة، والنصوص تذكر الإيجار التجاري في الاختصاص الإقليمي دون القسم.", "en": "The imported section rule is a reading; the texts name commercial leases in the territorial rule, not the section." },
+      "protectiveReading": { "ar": "اقتراح القسم التجاري مع التنبيه إذا اختار المحامي غيره.", "en": "Propose the commercial section and warn if the lawyer chooses another." },
+      "grade": "C"
+    }
+  ],
+  "checklist": [
+    { "id": "k1", "item": "Which regime governs the lease: a lease concluded before the 2005 reform of the Commercial Code (renewal right, notice to vacate, eviction indemnity) or one concluded after it (term-limited lease, departure at term without indemnity unless agreed): the date of the contract decides.", "from": ["derivationA"], "answer": "applies", "refs": ["e1", "b9", "formal-notice.b33", "formal-notice.b34", "n1", "p1"], "note": "The contract date against the publication date of the law that added article 187 مكرر." },
+    { "id": "k2", "item": "Basis of the renewal right under the old regime: the premises must house a business (fonds de commerce) exploited by the tenant, with the required minimum period of continuous exploitation (shorter for a written lease, longer for an oral one).", "from": ["derivationA"], "answer": "applies", "refs": ["b1", "b2", "e5", "n4"] },
+    { "id": "k3", "item": "Form of the lease after 2005: must the commercial lease be in an official (notarial) deed, and what follows if it is not (nullity or loss of the commercial regime)?", "from": ["derivationA"], "answer": "applies", "refs": ["b9", "b23", "n2", "doc1", "o6"] },
+    { "id": "k4", "item": "Notice to vacate (congé): must be served by an extrajudicial act (bailiff), a set time ahead (six months in my memory), state the grounds for refusing renewal, and reproduce the text that tells the tenant to sue within a set time; what sanction attaches to a notice lacking these (nullity).", "from": ["derivationA"], "answer": "applies", "refs": ["p1", "formal-notice.b31", "formal-notice.b32", "b3"], "note": "Six months confirmed by article 173 ¶1; nullity by ¶5." },
+    { "id": "k5", "item": "Time limit for the tenant to contest the notice or claim the eviction indemnity: from the date of the notice, a short forfeiture period (three months in my memory) after which the tenant loses the right to renewal and indemnity; check the exact article and its counting.", "from": ["derivationA"], "answer": "applies", "refs": ["d1", "b18", "b13", "o1", "o2", "o3"], "note": "Three months in article 197 ¶3, with no sanction in the Arabic text and no counting rule: interpretive, warn." },
+    { "id": "k6", "item": "Refusal of renewal: the lessor may refuse, but must pay the eviction indemnity equal to the harm caused by non-renewal (market value of the business, moving costs, reinstallation), unless an exception applies.", "from": ["derivationA"], "answer": "applies", "refs": ["b4", "b5", "r2", "e5"] },
+    { "id": "k7", "item": "Exceptions to the indemnity: a serious and legitimate ground against the tenant (non-payment of rent, breach of the lease) only if the breach continued or was renewed more than a month after a formal notice to stop it; demolition of an insalubrious or dangerous building; reconstruction or personal occupation with priority rights.", "from": ["derivationA"], "answer": "applies", "refs": ["b6", "b7", "formal-notice.b23", "p3", "e6", "n12", "b26"], "note": "Reconstruction (178) and taking back dwelling parts (182) were read and left as context: both keep an indemnity or a substitute and are not usual in this claim." },
+    { "id": "k8", "item": "Right of the tenant to stay in the premises until the indemnity is paid, and the lessor's right to withdraw the refusal (droit de repentir) within a set period.", "from": ["derivationA"], "answer": "applies", "refs": ["b8", "b19", "b30"] },
+    { "id": "k9", "item": "Elements to prove for an eviction claim by the lessor: the lease and its date and rent; the lessor's title or standing; the notice to vacate and its date and service; the expiry of the notice period; the ground relied on (unpaid rent, end of term for a post-2005 lease).", "from": ["derivationA"], "answer": "applies", "refs": ["e1", "e2", "e3", "e4", "e6", "petition-formal-elements.p12"] },
+    { "id": "k10", "item": "Elements to prove for an indemnity claim by the tenant: the lease, its date, the exploitation of the business for the required period, the registration in the commercial register, the notice/refusal of renewal, the amount of harm.", "from": ["derivationA"], "answer": "applies", "refs": ["e1", "e5", "doc3", "doc4", "doc5"] },
+    { "id": "k11", "item": "Unpaid rent as a ground: formal notice to pay (by bailiff) and the one-month period before the lessor may rely on it; any rescission clause in the lease.", "from": ["derivationA"], "answer": "applies", "refs": ["b10", "b11", "b12", "p2", "e2", "doc6"] },
+    { "id": "k12", "item": "Who bears the proof: the lessor proves the lease and the notice; the tenant proves the exploitation period and the harm; the lessor proves the serious and legitimate ground that removes the indemnity.", "from": ["derivationA"], "answer": "applies", "refs": ["e1", "e3", "e5", "e6", "b5", "b6"], "note": "Article 176 ¶2 puts on the owner the proof that the harm is lower; article 177 ¶1 the proof of the serious ground." },
+    { "id": "k13", "item": "Proof of the lease: written official deed for post-2005 leases; commercial freedom of proof for the business elements.", "from": ["derivationA"], "answer": "applies", "refs": ["b9", "b23", "doc1"], "note": "Freedom of proof in commercial matters belongs to the proof module, which has no final record yet; not restated." },
+    { "id": "k14", "item": "Court and section: the ordinary court (tribunal), commercial section; check whether commercial leases fall within the specialised commercial courts (law of 2022) - in my memory they do not.", "from": ["derivationA"], "answer": "applies", "refs": ["ordinary-court-exits.x4", "o9"], "note": "The section comes from the imported court-sections section rule, which proposes the commercial section when commercial_lease is yes." },
+    { "id": "k15", "item": "Territorial jurisdiction: the court of the place where the leased property lies (lease of real property, commercial leases included) under the Code of Civil and Administrative Procedure.", "from": ["derivationA"], "answer": "applies", "refs": ["territorial-jurisdiction.t4", "territorial-jurisdiction.n7", "b13", "b17", "b20"] },
+    { "id": "k16", "item": "Exits from the ordinary courts: a public body as lessor (State, wilaya, commune, public administrative body) may move the case to the administrative court; urgent eviction of an occupant without title belongs to the summary judge.", "from": ["derivationA"], "answer": "applies", "refs": ["ordinary-court-exits.x1", "ordinary-court-exits.x7", "n3", "b26"], "note": "Occupation without title is not a commercial-lease claim; the urgent route is the subject of the ordinary-court-exits module." },
+    { "id": "k17", "item": "Limitation of the claim for rent arrears: periodic renewable rights (five years in my memory, Civil Code); and a general limitation for actions under the commercial-lease chapter (two years in my memory) - check.", "from": ["derivationA"], "answer": "applies", "refs": ["periods.d8", "d2", "b20"] },
+    { "id": "k18", "item": "Counting of periods: by days, months or years under the CCAP rules; the starting day not counted; the last day extended if a holiday.", "from": ["derivationA"], "answer": "applies", "refs": ["d1", "d2"], "note": "The CPCA counting article speaks of the periods of that code; no store text counts Commercial Code periods, so counting is left out and both deadlines are interpretive." },
+    { "id": "k19", "item": "Does the court raise forfeiture of the tenant's right of its own motion, or only on a plea?", "from": ["derivationA"], "answer": "applies", "refs": ["d1", "d2", "o1"], "note": "No text says: raisedBy unclear." },
+    { "id": "k20", "item": "Prior steps before filing: the notice to vacate (lessor) or the request for renewal (tenant); a formal notice for unpaid rent; no compulsory conciliation before the ordinary court in a commercial-lease case (check).", "from": ["derivationA"], "answer": "applies", "refs": ["p1", "p2", "p3", "formal-notice.p3", "conciliation-mediation.p1", "b27", "b28"] },
+    { "id": "k21", "item": "Is publication of the petition at the land registry required? Probably not for an eviction claim, which does not seek to annul or rescind a published right - check the module.", "from": ["derivationA"], "answer": "applies", "refs": ["land-registry-publication.p1"], "note": "Imported: it fires only when the lawyer answers that the dispute concerns a published property." },
+    { "id": "k22", "item": "Required documents: the lease (official deed if post-2005), the bailiff's record of the notice to vacate, extract of the commercial register, proof of title of the lessor, proof of unpaid rent.", "from": ["derivationA"], "answer": "applies", "refs": ["doc1", "doc2", "doc3", "doc4", "doc5", "doc6", "doc7", "doc8"] },
+    { "id": "k23", "item": "Petition formal elements: the general CCAP requirements (court, parties, facts, requests, documents, Arabic, fees).", "from": ["derivationA"], "answer": "applies", "refs": ["petition-formal-elements.p1", "petition-formal-elements.p19"] },
+    { "id": "k24", "item": "Boundaries: residential or professional leases under the Civil Code (not commercial); management contracts (location-gérance) of a business; occupation without title; lease of land without a business; leases of public domain; leases of premises for craft activities (also covered?).", "from": ["derivationA"], "answer": "applies", "refs": ["n6", "n7", "n8", "n9", "n3", "b1"], "note": "Craft activities are covered by article 169 ¶1 (craft register); temporary permits on administration-acquired buildings are excluded by article 170 ¶5, read as context." },
+    { "id": "k25", "item": "Accessory requests: rent arrears, occupation indemnity after the term, damages for delay, provisional execution, costs, appointment of an expert to assess the indemnity.", "from": ["derivationA"], "answer": "applies", "refs": ["r3", "r4", "r5"], "note": "Delay damages, provisional execution and costs belong to the accessory-requests module, which has no final record yet." },
+    { "id": "k26", "item": "Amendments in memory: law 05-02 of 6 February 2005 (article 187 bis and following); law 22-13 of 2022 on specialised commercial courts; Civil Code amendments of 2007 on leases (article 467 bis and the written form).", "from": ["derivationA"], "answer": "applies", "refs": ["b9", "formal-notice.b33", "formal-notice.b34", "ordinary-court-exits.x4"], "note": "The store dates the issue carrying 187 مكرر to 9 February 2005. The civil-code lease amendments concern civil leases; boundary n6." },
+    { "id": "k27", "item": "Request kind eviction: the lessor's claim; request kind damages: the tenant's eviction indemnity; request kind payment: the lessor's claim for unpaid rent.", "from": ["derivationA"], "answer": "applies", "refs": ["r1", "r2", "r4", "r5"] },
+    { "id": "k28", "item": "The store notes on commercial-code 187 مكرر and 187 مكرر 1 that the temporal start is unsettled (no national commencement date; Civil Code article 4 gives a per-locality rule): from which day does the new regime apply?", "from": ["derivationA"], "answer": "applies", "refs": ["n1", "b24", "o5"] },
+    { "id": "k29", "item": "A text that states the sanction of the three-month period for the tenant's summons.", "from": ["derivationA"], "answer": "searchedNotFound", "note": "Read commercial-code 169 to 202 in the unit's texts and the store's commercial-code text view: articles 194 and 197 give the period without sanction words; the French text is not in the store (request line written; open point o2)." }
+  ]
+}

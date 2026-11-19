@@ -1,0 +1,27 @@
+{
+  "unit": "commercial-lease-regimes",
+  "attacks": [
+    {
+      "id": "bc-bc16",
+      "who": "boundaryCase",
+      "target": "p1",
+      "kind": "wrongEffect",
+      "claim": "Blind boundary case bc16 (1998 lease; notice to quit by bailiff, end of the term not known; petition 2026-06-15; eviction asked) expects «ask» about commercial-code 173 ¶1: the notice must come six months before the term, no slot holds the end of the term, so the rule must ask and never say done. The runner finds no matched item whose effect is ask, because p1 now warns while its own slot is unknown (owner's decision of 18 November 2026, followup3 uncertain-bc15/bc17).",
+      "verdict": "open",
+      "verifierQuote": "لا ينتهي إيجار المحلات الخاصة بهذه الأحكام إلا بأثر تنبيه بالإخلاء حسبما جرت عليه العادات المحلية وفي مدة ستة أشهر قبل الأجل على الأقل. / ويجب أن يتم التنبيه بالإخلاء بعقد غير قضائي وأن تبين فيه الأسباب التي أدت إلى توجيهه مع إعادة ذكر مضمون المادة 194، وإلا اعتبر باطلا.",
+      "quoteRef": "commercial-code 173 ¶1 and ¶5 (version ordinance-75-59), in the store (text view commercial-code.txt); the old regime reached through 187 مكرر 1 ¶1 (version law-05-02), in the store",
+      "change": "The text bears out the case's substance and the record already meets it: 173 ¶1 makes the six months before the term a condition, so a bailiff's notice whose timing against the term is unknown is not a done step. p1 does not say done: it asks its own slot notice_to_quit_valid, whose question joins the means, the reasons, 194 and the six months before the term (slot lease_term_end_date also exists). The only gap is warn-and-ask (the record) against ask alone (the case). The text does not say what an unknown fact does to the petition, so the item stays interpretive, effectWhenUnknown warn kept (protective reading), and open point o17 now names this case: its question and why extended, a third reading added (an unknown service or timing is only a question, not a warning; basis b11, b13). p1 interpretiveNote names that reading. New example exV29 (this case: p1 warns and asks notice_to_quit_valid). The case slots notice_served / notice_means / notice_date are not read by p1 (reconciler's question 1); not changed."
+    },
+    {
+      "id": "bc-bc19",
+      "who": "boundaryCase",
+      "target": "p1",
+      "kind": "wrongEffect",
+      "claim": "Blind boundary case bc19 (1998 lease; whether a notice to quit was served is unknown; petition 2026-06-15; eviction asked) expects «ask» about commercial-code 173 ¶1: the notice is required for the lease to end, and an unknown fact is not a no. The runner finds no matched item whose effect is ask, because p1 now warns while its own slot is unknown.",
+      "verdict": "open",
+      "verifierQuote": "لا ينتهي إيجار المحلات الخاصة بهذه الأحكام إلا بأثر تنبيه بالإخلاء حسبما جرت عليه العادات المحلية وفي مدة ستة أشهر قبل الأجل على الأقل. / وفي حالة عدم التنبيه بالإخلاء يتواصل الإيجار المنعقد كتابة بالتمديد الضمني إلى ما بعد الأجل المحدد في العقد",
+      "quoteRef": "commercial-code 173 ¶1 and ¶2 (version ordinance-75-59), in the store (text view commercial-code.txt); the old regime reached through 187 مكرر 1 ¶1 (version law-05-02), in the store",
+      "change": "173 ¶1 requires the notice for the lease to end and ¶2 states the consequence of its absence; neither says how a petition is to be treated while service is unknown. The record treats the unknown as unknown: p1 does not report the notice as missing (its missing-step reading needs notice_to_quit_valid = no, exV28); it asks notice_to_quit_valid, and warns beside the question under the owner's protective decision of 18 November 2026. Ask alone (the case) or warn and ask (the record): the text allows both, so the item stays interpretive with effectWhenUnknown warn kept, and open point o17 keeps the case's reading as its third reading (same edit as bc-bc16). New example exV30 (this case: p1 warns and asks notice_to_quit_valid)."
+    }
+  ]
+}

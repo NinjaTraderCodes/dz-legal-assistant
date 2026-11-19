@@ -2601,6 +2601,76 @@
       "readFromNote": false,
       "origin": "conciliation-mediation",
       "why": "The fourth exemption of prior step p1 and boundary n11 read it (attack adv-5): cpca 536 مكرر 4 ¶1 has the conciliation requested by one of the adversaries and notified to the other parties to the dispute; the Commercial Code (arts. 215 and 216, Official Journal 1975 no. 101, p. 1328; not in the store, open point o17) opens judicial settlement or bankruptcy on the debtor's own declaration or on a creditor's summons, and lets the court rule of its own motion."
+    },
+    {
+      "id": "price_supplement_for_excess_quantity",
+      "type": "yesNoUnknown",
+      "question": {
+        "ar": "هل يطالب المدعي بتكملة الثمن لأن قدر المبيع الذي سلمه زاد على القدر المذكور في العقد؟",
+        "en": "Does the plaintiff claim a supplement of the price because the quantity he delivered exceeded the quantity stated in the contract?"
+      },
+      "askedFor": [
+        "unpaid-sale-price"
+      ],
+      "readFromNote": false,
+      "origin": "unpaid-sale-price",
+      "why": "Deadline d1 and boundary n6 read it: civil-code 366 ¶1 sets a short limitation, from actual delivery, for the seller's claim to a price supplement for an excess in quantity, and civil-code 365 ¶2 sets the conditions of that claim; no existing slot says whether the price claimed is such a supplement."
+    },
+    {
+      "id": "goods_actually_delivered_on",
+      "type": "date",
+      "question": {
+        "ar": "ما تاريخ تسليم المبيع إلى المشتري تسليما فعليا؟",
+        "en": "On what date was the thing sold actually delivered to the buyer?"
+      },
+      "askedFor": [
+        "unpaid-sale-price"
+      ],
+      "readFromNote": false,
+      "origin": "unpaid-sale-price",
+      "why": "Deadline d1 starts from it: civil-code 366 ¶1 runs the period from actual delivery of the thing sold; debt_due_date is not the same event, since the price may fall due on an agreed term (civil-code 388 ¶1)."
+    },
+    {
+      "id": "price_payable_in_instalments",
+      "type": "yesNoUnknown",
+      "question": {
+        "ar": "هل اتفق على دفع الثمن أقساطا؟",
+        "en": "Was the price agreed to be paid in instalments?"
+      },
+      "askedFor": [
+        "unpaid-sale-price"
+      ],
+      "readFromNote": false,
+      "origin": "unpaid-sale-price",
+      "why": "Boundary n7 reads it (verifier, attack adv-6): civil-code 315 ¶2 runs limitation on a deferred debt only from the end of its term, so each instalment has its own due date, while the imported limitations read a single debt_due_date; civil-code 390 ¶2 shows the term can be forfeited."
+    },
+    {
+      "id": "some_goods_delivered",
+      "type": "yesNoUnknown",
+      "question": {
+        "ar": "هل سلم المدعى عليه جزءا من المبيع، أو سلمه ناقصا في المقدار أو على غير الحالة أو الصفات المتفق عليها؟",
+        "en": "Did the defendant deliver part of the goods, or deliver them short in quantity or not in the agreed state or qualities?"
+      },
+      "askedFor": [
+        "sale-non-delivery"
+      ],
+      "readFromNote": false,
+      "origin": "sale-non-delivery",
+      "why": "Boundary n1 reads it: a shortfall in quantity has its own regime and a one-year limitation from actual delivery (civil-code 365 ¶1, 366 ¶1), and defects or missing qualities fall under the guarantee with its one-year limitation from delivery (civil-code 379 ¶1, 383 ¶1), which the seller may not invoke when he concealed the defect by fraud (civil-code 383 ¶2); these are not non-delivery."
+    },
+    {
+      "id": "price_balance_due_unpaid",
+      "type": "yesNoUnknown",
+      "question": {
+        "ar": "هل بقي على المدعي جزء من الثمن حل أجل دفعه عند التسليم أو قبله ولم يدفعه دون أن يمنحه البائع أجلا بعد البيع، أو جزء مؤجل من الثمن سقط حقه في أجله؟",
+        "en": "Does the plaintiff still owe part of the price that fell due at or before delivery and is unpaid, without the seller having granted him time after the sale, or a deferred part of the price whose term he has lost?"
+      },
+      "askedFor": [
+        "sale-non-delivery"
+      ],
+      "readFromNote": false,
+      "origin": "sale-non-delivery",
+      "why": "Boundary n7 reads it: the price is due when delivery is due unless agreed otherwise (civil-code 388 ¶1), the seller may keep the thing until he receives the price due at once (civil-code 390 ¶1), and also before the agreed term when the buyer has lost the benefit of the term (civil-code 390 ¶2); each party to a bilateral contract may withhold performance while the other does not perform (civil-code 123 ¶1)."
     }
   ]
 }

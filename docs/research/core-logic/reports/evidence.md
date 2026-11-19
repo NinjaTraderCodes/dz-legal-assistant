@@ -209,7 +209,7 @@ Same 62 dev notes, same scorer, paired by note. The 1,938 kept training notes in
 | ngrams-1938 vs ngrams-812 | Sonnet | requests | +12 | +3 to +19 | ngrams-1938 beats ngrams-812 |
 | ngrams-1938 vs ngrams-812 | Sonnet | dates and amounts | +2 | -4 to +10 | not yet settled (about 302 notes would settle it if the difference held) |
 
-**How the run went.** The first launch (02:33) stopped at once: the encoding step refuses a note already in its cache, and 1,125 of the 1,938 notes were new. Those 1,125 were encoded on their own, and the run was started again at 02:35. The n-grams finished at 02:41 and the three fine-tuning seeds at 04:14, 05:46 and 07:18, on mains. Logs:  and .
+**How the run went.** The first launch (02:33) stopped at once: the encoding step refuses a note already in its cache, and 1,125 of the 1,938 notes were new. Those 1,125 were encoded on their own, and the run was started again at 02:35. The n-grams finished at 02:41 and the three fine-tuning seeds at 04:14, 05:46 and 07:18, on mains. Logs: `dz-core-research\reader\runs\curve-1938.log` and `curve-1938-failed-encode.log`.
 
 ## 3. The rules against the app today
 

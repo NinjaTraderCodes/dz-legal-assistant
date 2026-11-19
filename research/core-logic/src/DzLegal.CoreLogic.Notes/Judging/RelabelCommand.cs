@@ -18,12 +18,26 @@ public static class RelabelCommand
 {
     public const int PerRun = 25;
 
+    // The owner, 19 November 2026: "Codex relabels the Sonnet-written dev and challenge notes; Sonnet relabels the
+    // Codex-written ones. No Opus relabels." Every test note is then relabelled by the other family.
     public static string RelabellerOf(string writer) => writer switch
     {
         "codex" or "local" => "sonnet",
-        "sonnet" => "opus",
+        "sonnet" => "codex",
         _ => throw new InvalidDataException($"no relabeller for writer {writer}: Opus writes no note"),
     };
+
+    /// <summary>The model family of a writer or relabeller: codex is OpenAI's, sonnet and opus Anthropic's.</summary>
+    public static string FamilyOf(string model) => model switch
+    {
+        "codex" => "openai",
+        "sonnet" or "opus" => "anthropic",
+        "local" => "local",
+        _ => throw new InvalidDataException($"unknown model {model}"),
+    };
+
+    /// <summary>The proof a relabel gives: two families when writer and relabeller differ in family, else one.</summary>
+    public static string ProofOf(string writer, string relabeller) => FamilyOf(writer) == FamilyOf(relabeller) ? "oneFamily" : "twoFamilies";
 
     public static int Prepare(NotesFiles files, string set, IReadOnlyDictionary<string, string> options)
     {

@@ -154,7 +154,12 @@ public sealed class JudgingTests
     public void NotesGoToTheOtherModelAndAGroupIsNeverInOneRun()
     {
         Assert.Equal("sonnet", RelabelCommand.RelabellerOf("codex"));
-        Assert.Equal("opus", RelabelCommand.RelabellerOf("sonnet"));
+        // The owner, 19 November 2026: Sonnet's notes go to Codex (was Opus); each test note is relabelled by the other family.
+        Assert.Equal("codex", RelabelCommand.RelabellerOf("sonnet"));
+        Assert.Equal("twoFamilies", RelabelCommand.ProofOf("sonnet", "codex"));
+        Assert.Equal("twoFamilies", RelabelCommand.ProofOf("codex", "sonnet"));
+        Assert.Equal("oneFamily", RelabelCommand.ProofOf("sonnet", "opus"));  // the runs made before the change
+        Assert.Equal("openai", RelabelCommand.FamilyOf("codex"));
         Assert.Throws<InvalidDataException>(() => RelabelCommand.RelabellerOf("opus"));
         var scenarios = new Dictionary<string, JsonObject>(StringComparer.Ordinal);
         var lines = new List<JsonObject>();

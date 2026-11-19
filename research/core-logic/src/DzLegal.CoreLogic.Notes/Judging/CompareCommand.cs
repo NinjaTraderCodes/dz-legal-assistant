@@ -42,8 +42,9 @@ public static class CompareCommand
             var provenance = note["provenance"]!.DeepClone().AsObject();
             provenance["relabel"] = new JsonObject
             {
-                ["family"] = "anthropic", ["model"] = (string)relabel["relabeller"]!, ["run"] = (string)relabel["run"]!,
-                ["proof"] = (string)relabel["writer"]! == "sonnet" ? "oneFamily" : "twoFamilies",
+                ["family"] = RelabelCommand.FamilyOf((string)relabel["relabeller"]!), ["model"] = (string)relabel["relabeller"]!,
+                ["run"] = (string)relabel["run"]!,
+                ["proof"] = RelabelCommand.ProofOf((string)relabel["writer"]!, (string)relabel["relabeller"]!),
             };
             var output = new JsonObject
             {
